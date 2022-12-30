@@ -4,6 +4,8 @@ import WithSidebarWrapper from '../../common/views/WithSidebarWrapper'
 import QuizDetails from './forms/QuizDetails'
 import SideNavContent from './sideNav'
 import { QuizCreationSteps } from './types'
+import RegistrationForm from './forms/RegistrationForm'
+
 
 const CreateQuiz = () => {
   const [quizStage, setQuizStage] = useState<QuizCreationSteps>(0)
@@ -13,7 +15,8 @@ const CreateQuiz = () => {
       case QuizCreationSteps.info:
         return <QuizDetails />
       case QuizCreationSteps.registrationForm:
-        return <Text>Registration Form</Text>
+return <RegistrationForm />
+
       case QuizCreationSteps.questions:
         return <Text>Questions</Text>
       default:

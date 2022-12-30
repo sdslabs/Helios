@@ -1,8 +1,28 @@
-import { Box, Button, Grid, GridItem, Heading, VStack, HStack } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Grid,
+  GridItem,
+  Heading,
+  VStack,
+  HStack,
+  FormControl,
+  FormLabel,
+} from '@chakra-ui/react'
+import { useState } from 'react'
+
 import InputField from '../../../common/components/customInputFields/CustomInputWithLabel'
+import CustomRichTextEditor from '../../../common/components/customRichTextEditor'
+
 import ImageUpload from './ImageUpload'
 
 const QuizDetails = () => {
+const [quizInstructions, setQuizInstructions] = useState<string>('')
+
+const handleChangeQuizInstructions = (value?: string) => {
+  setQuizInstructions(value ?? '')
+}
+
   return (
     <Box w='930px' mx='auto' my={14}>
       <Heading fontSize='3xl' color='accentBlack'>
@@ -83,14 +103,12 @@ const QuizDetails = () => {
             placeholder: 'Enter a quiz description',
           }}
           subtext='0/150 characters'
-        />
-        <InputField
-          label='Quiz Instructions'
-          inputProps={{
-            placeholder: 'Enter quiz instruction',
-          }}
-          subtext='TODO: Replace with a rich text editor'
-        />
+        /><FormControl>
+        <FormLabel fontWeight='400' fontSize='sm' color='gray.500' >
+          Quiz Instructions
+        </FormLabel>
+        <CustomRichTextEditor value={quizInstructions} onChange={handleChangeQuizInstructions} />
+      </FormControl>
       </VStack>
       <HStack justifyContent='end' my={12}>
         <Button color='white' colorScheme='purple' bgColor='brand' fontWeight='400'>
