@@ -49,7 +49,7 @@ const CustomRichTextEditor = ({ value, onChange }: CustomRichTextEditorProps) =>
   return (
     <div data-color-mode='light'>
       <Tabs colorScheme='purple' size='sm'>
-        <TabList>
+        <TabList maxW='max-content'>
           <Tab>Write</Tab>
           <Tab>Preview</Tab>
         </TabList>

@@ -1,11 +1,8 @@
-import { Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import WithSidebarWrapper from '../../common/views/WithSidebarWrapper'
-import QuizDetails from './forms/QuizDetails'
 import SideNavContent from './sideNav'
 import { QuizCreationSteps } from './types'
-import RegistrationForm from './forms/RegistrationForm'
-
+import { QuestionDetails, QuizDetails, RegistrationForm, SectionDetails } from './forms'
 
 const CreateQuiz = () => {
   const [quizStage, setQuizStage] = useState<QuizCreationSteps>(0)
@@ -15,10 +12,12 @@ const CreateQuiz = () => {
       case QuizCreationSteps.info:
         return <QuizDetails />
       case QuizCreationSteps.registrationForm:
-return <RegistrationForm />
-
+        return <RegistrationForm />
       case QuizCreationSteps.questions:
-        return <Text>Questions</Text>
+      case QuizCreationSteps.sectionDetails:
+        return <SectionDetails />
+      case QuizCreationSteps.questionDetails:
+        return <QuestionDetails />
       default:
         return null
     }

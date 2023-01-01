@@ -103,14 +103,18 @@ const handleChangeQuizInstructions = (value?: string) => {
             placeholder: 'Enter a quiz description',
           }}
           subtext='0/150 characters'
-        /><FormControl>
-        <FormLabel fontWeight='400' fontSize='sm' color='gray.500' >
-          Quiz Instructions
-        </FormLabel>
-        <CustomRichTextEditor value={quizInstructions} onChange={handleChangeQuizInstructions} />
-      </FormControl>
+        />
+        <FormControl>
+          <FormLabel fontWeight='400' fontSize='sm' color='gray.500'>
+            Quiz Instructions
+          </FormLabel>
+          <CustomRichTextEditor value={quizInstructions} onChange={handleChangeQuizInstructions} />
+        </FormControl>
       </VStack>
-      <HStack justifyContent='end' my={12}>
+      <HStack justifyContent='end' my={12} gap={3}>
+        <Button color='brand' colorScheme='purple' fontWeight='400' variant='outline'>
+          Reset
+        </Button>
         <Button color='white' colorScheme='purple' bgColor='brand' fontWeight='400'>
           Save & Continue
         </Button>

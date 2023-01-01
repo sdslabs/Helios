@@ -1,21 +1,12 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  Button,
-  Heading,
-  Text,
-  VStack,
-} from '@chakra-ui/react'
+import { Button, Heading, VStack } from '@chakra-ui/react'
 import {
   PageInfoIcon,
   PagePersonIcon,
-  AddQuestionIcon,
   RegistrantsOutlinedIcon,
 } from '../../../common/components/Icons'
 import BasicNavButton from '../../../common/components/sideNav/BasicNavButton'
 import { QuizCreationSteps } from '../types'
+import QuestionsNavItem from './QuestionsNavItem'
 
 interface SideNavContentProps {
   stage: QuizCreationSteps
@@ -42,17 +33,7 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
       >
         Registration Form
       </BasicNavButton>
-      <Accordion w='100%' allowToggle>
-        <AccordionItem>
-          <AccordionButton color='v6' onClick={() => setStage(2)}>
-            <AddQuestionIcon w={6} h={6} />
-            <Text flexGrow={1} textAlign='left' pl={2} fontWeight='600'>
-              Questions
-            </Text>
-            <AccordionIcon />
-          </AccordionButton>
-        </AccordionItem>
-      </Accordion>
+      <QuestionsNavItem setStage={setStage} />
       <BasicNavButton leftIcon={<RegistrantsOutlinedIcon w={6} h={6} />}>
         Registrants
       </BasicNavButton>

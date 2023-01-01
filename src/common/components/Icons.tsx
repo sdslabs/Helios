@@ -82,3 +82,10 @@ export const AddQuestionIcon = (props: IconProps) => (
     />
   </Icon>
 )
+
+export const CircleIconOutlined = (props: IconProps) => (
+  <Icon viewBox='0 0 24 24' {...props}>
+    <circle cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='3' fill='transparent' />
+  </Icon>
+)
+
