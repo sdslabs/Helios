@@ -3,6 +3,7 @@ import WithSidebarWrapper from '../../common/views/WithSidebarWrapper'
 import SideNavContent from './sideNav'
 import { QuizCreationSteps } from './types'
 import { QuestionDetails, QuizDetails, RegistrationForm, SectionDetails } from './forms'
+import TopNav from '../topNav'
 
 const CreateQuiz = () => {
   const [quizStage, setQuizStage] = useState<QuizCreationSteps>(0)
@@ -24,11 +25,14 @@ const CreateQuiz = () => {
   }
 
   return (
-    <WithSidebarWrapper
-      sidebarContent={<SideNavContent stage={quizStage} setStage={setQuizStage} />}
-    >
-      {renderQuizForm()}
-    </WithSidebarWrapper>
+    <>
+      <TopNav />
+      <WithSidebarWrapper
+        sidebarContent={<SideNavContent stage={quizStage} setStage={setQuizStage} />}
+      >
+        {renderQuizForm()}
+      </WithSidebarWrapper>
+    </>
   )
 }
 
