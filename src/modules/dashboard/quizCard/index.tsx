@@ -1,10 +1,10 @@
-import { Text,Stack,Box,Card, CardHeader, CardBody, CardFooter, Button, Heading } from '@chakra-ui/react'
+import { Square,Text,Stack,Box,Card, CardHeader, CardBody, CardFooter, Button, Heading } from '@chakra-ui/react'
 
 const QuizCard=()=>{
     return(
-        <Card m={4} width="40%">
+        <Card m={4} width="30%" mr={20} ml={20}>
             <Stack direction="row" spacing={4}>
-                <Box bgImage="url('https://www.google.com/url?sa=i&url=http%3A%2F%2Fwww.clker.com%2Fclipart-25196.html&psig=AOvVaw3DTNA7pZ-U_VVA2VVEN2Dm&ust=1686682736119000&source=images&cd=vfe&ved=0CBMQjhxqFwoTCLjPlZq1vv8CFQAAAAAdAAAAABAZ')" height="30%" width="30%">Component 2</Box>
+                <Box bg="lavender" height={36} width={40} ml={4} mt={16}></Box>
                 <Stack>
                     <CardBody>
                     <Heading size='md'>Recruitment Test</Heading>
