@@ -4,26 +4,26 @@ import { VStack,Text,Flex, Spacer,Box,Grid, GridItem,Stack,Button, ButtonGroup, 
 const Highlight = () => {
     return(
         <>
-        <Box width="78%" height={200}>
-            <Flex ml="14%" height="100%">
-                <Box width="66%" bg="#EBE7F2">
+        <Box width="78%" margin={16} height={200}>
+            <Flex height="100%">
+                <Box width="66%" bg="rgba(235, 231, 242, 0.4)">
                 <VStack alignItems='flex-start' color='brand' pt={12} pl={20}>
-                    <Heading fontSize='larger'>Maths Quiz has Started</Heading>
-                    <Text pb={4}>All the Best!</Text>
+                    <Heading fontSize='2rem'>Maths Quiz has Started</Heading>
+                    <Text fontSize='larger' pb={4}>All the Best!</Text>
                     <Button colorScheme='purple' bgColor='brand' px={10}>
                         Start Quiz
                     </Button>
                 </VStack>
                 </Box>
                 <Spacer/>
-                <Box width="15%" bg="#EBE7F2">
+                <Box width="15%" bg="rgba(235, 231, 242, 0.4)">
                 <VStack alignItems='center' color='brand' pt={12}>
                     <Heading fontSize='3rem' pb={2}>3</Heading>
                     <Text align='center' width="60%" pb={4}>Attempted Quizes</Text>
                 </VStack>
                 </Box>
                 <Spacer/>
-                <Box width="15%" bg='#EBE7F2'> 
+                <Box width="15%" bg="rgba(235, 231, 242, 0.4)"> 
                 <VStack alignItems='center' color='brand' pt={12}>
                     <Heading fontSize='3rem' pb={2}>10</Heading>
                     <Text align='center' width="60%" pb={4}>quizzes created</Text>
