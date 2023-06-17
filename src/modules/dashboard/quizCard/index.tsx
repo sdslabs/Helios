@@ -2,9 +2,9 @@ import { Square,Text,Stack,Box,Card, CardHeader, CardBody, CardFooter, Button, H
 
 const QuizCard=()=>{
     return(
-        <Card  width="456px" height="208px" mr={20} >
+        <Card  width="28rem" height="14rem" mr={4} >
             <Stack direction="row" spacing={2}>
-                <Box bg="#EBE7F2" height={24} width={36} ml={2} mt={16}></Box>
+                <Box bg="#EBE7F2" height={24} width={36} ml={12} mt={16}></Box>
                 <Stack>
                     <CardBody>
                     <Heading size='md'>Recruitment Test</Heading>
