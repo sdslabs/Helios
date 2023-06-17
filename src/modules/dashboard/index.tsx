@@ -85,27 +85,7 @@ const Dashboard = () => {
         <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
           <ScrollView />
         </Box>
-
-        
-
-        {/* <Flex wrap="wrap">
-                <QuizCard ></QuizCard>
-                <Spacer/>
-                <QuizCard></QuizCard>
-                <Spacer/>
-                <QuizCard></QuizCard>
-                <Spacer/>
-                <QuizCard></QuizCard>
-                <Spacer/>
-                <QuizCard></QuizCard>
-            </Flex> */}
       </Stack>
-      {/* <Card>
-            <CardHeader>
-    <Heading size='md'></Heading>
-  </CardHeader>
-        </Card>
-        <Button>Hello</Button> */}
     </>
   )
 }

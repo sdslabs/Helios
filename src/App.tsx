@@ -29,11 +29,6 @@ function App() {
       </Routes>
     </ChakraProvider>
   )
-  // return (
-  //   <ChakraProvider theme={theme}>
-  //       <h1>HELLO</h1>
-  //   </ChakraProvider>
-  // )
 }
 
 export default App
