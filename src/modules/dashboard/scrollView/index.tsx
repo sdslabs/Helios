@@ -13,7 +13,6 @@ const ScrollView=()=>{
         <Box><QuizCard/></Box>
         <Box><QuizCard/></Box>
         <Box><QuizCard/></Box>
-        {/* Add more components as needed */}
       </Flex>
     </Box>
     )
