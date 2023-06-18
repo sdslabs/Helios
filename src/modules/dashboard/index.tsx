@@ -1,23 +1,11 @@
 import { useState } from 'react'
 import {
-  VStack,
-  Text,
-  Flex,
-  Spacer,
-  Box,
-  Grid,
-  GridItem,
   Stack,
-  Button,
-  ButtonGroup,
+  Text,
+  Box,
   Heading,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
 } from '@chakra-ui/react'
-import QuizCard from './quizCard'
-import Highlight from './highlight'
+import HighlightContent from './highlight'
 import ScrollView from './scrollView'
 import TopNav from '../topNav'
 
@@ -26,11 +14,9 @@ const Dashboard = () => {
     <>
       <Stack spacing={0}>
         <TopNav />
-
         <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
-          <Highlight />
+          <HighlightContent />
         </Box>
-
         <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
           <Box mb={4} width='78%' display='flex'>
             <Text
@@ -38,15 +24,10 @@ const Dashboard = () => {
               borderBottom='2px'
               borderBottomColor='brand'
               py={2}
-            >
-              Quizzes
-            </Text>
-            <Text borderBottom='2px' borderBottomColor='#939393' px={5} py={2}>
-              Created Quizzes
-            </Text>
+            >Quizzes</Text>
+            <Text borderBottom='2px' borderBottomColor='#939393' px={5} py={2}>Created Quizzes</Text>
           </Box>
         </Box>
-
         <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
           <Box
             width='78%'
@@ -56,16 +37,12 @@ const Dashboard = () => {
             alignItems='center'
             justifyContent='center'
           >
-            <Heading opacity='2.5' fontSize='large' color='brand'>
-              Ongoing Quizzes
-            </Heading>
+            <Heading opacity='2.5' fontSize='large' color='brand'>Ongoing Quizzes</Heading>
           </Box>
         </Box>
-
         <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
           <ScrollView />
         </Box>
-
         <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
           <Box
             width='78%'
