@@ -28,7 +28,6 @@ const TopNav = () => {
         alt='Dan Abramov'
         m='16px'
       />
-
     </HStack>
   )
 }

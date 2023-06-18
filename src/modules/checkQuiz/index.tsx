@@ -1,11 +1,23 @@
-import Highlight from "./highlight";
-import TopNav from "../topNav";
-import { VStack } from "@chakra-ui/react";
-const checkQuiz = () => {
-    return(
-        <>
-        </>
-    )
-}
+import { useState } from 'react'
+import {
+  Stack,
+  Text,
+  Box,
+  Heading,
+} from '@chakra-ui/react'
+import HighlightContent from './highlight'
+import TopNav from '../topNav'
 
-export default checkQuiz;
+const Dashboard = () => {
+  return (
+    <>
+      <Stack spacing={0}>
+        <TopNav />
+        <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
+            <HighlightContent />
+        </Box>
+      </Stack>
+    </>
+  )
+}
+export default Dashboard

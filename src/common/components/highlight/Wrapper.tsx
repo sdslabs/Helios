@@ -12,7 +12,7 @@ const HighlightWrapper = ({details, cardinfo1, cardinfo2} : HighlightWrapperProp
             <Box width="78%" margin={16} height={212}>
                 <Flex height="100%">
                     <Box width="66%" bg="rgba(235, 231, 242, 0.4)">
-                        <VStack alignItems='flex-start' color='brand' pt={12} pl={20}>
+                        <VStack alignItems='flex-start' color='brand' px={20} py={8}>
                             {details}
                         </VStack>
                     </Box>
