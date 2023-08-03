@@ -5,30 +5,43 @@ import JoinUs from './modules/auth/joinUs'
 import { Register } from './modules/auth/register'
 import Dashboard  from "./modules/dashboard"
 import CreateQuiz from './modules/createQuiz'
+import Profile from './modules/profile'
 
 function App() {
   const isLoggedIn = false // TODO: add logged in user logic
   
-  if (!isLoggedIn) {
-    return (
+  return (
       <ChakraProvider theme={theme}>
         <Routes>
           <Route path='/register' element={<Register />} />
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/profile' element={<Profile />} />
           <Route path='/' element={<JoinUs />} />
           <Route path='*' element={<Navigate to='/' />} />
         </Routes>
       </ChakraProvider>
     )
-  }
 
-  return (
-    <ChakraProvider theme={theme}>
-      <Routes>
-        <Route path='/create/:quizID' element={<CreateQuiz />} />
-      </Routes>
-    </ChakraProvider>
-  )
+  // if (!isLoggedIn) {
+  //   return (
+  //     <ChakraProvider theme={theme}>
+  //       <Routes>
+  //         <Route path='/register' element={<Register />} />
+  //         <Route path='/dashboard' element={<Dashboard />} />
+  //         <Route path='/' element={<JoinUs />} />
+  //         <Route path='*' element={<Navigate to='/' />} />
+  //       </Routes>
+  //     </ChakraProvider>
+  //   )
+  // }
+
+  // return (
+  //   <ChakraProvider theme={theme}>
+  //     <Routes>
+  //       <Route path='/create/:quizID' element={<CreateQuiz />} />
+  //     </Routes>
+  //   </ChakraProvider>
+  // )
 }
 
 export default App
