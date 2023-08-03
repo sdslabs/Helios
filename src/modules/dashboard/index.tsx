@@ -19,7 +19,7 @@ import {
 import QuizCard from './quizCard'
 import Highlight from './highlight'
 import ScrollView from './scrollView'
-import TopNav from '../topNav'
+import TopNav from '@common/components/TopNav'
 
 const Dashboard = () => {
   return (

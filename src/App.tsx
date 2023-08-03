@@ -6,6 +6,7 @@ import { Register } from './modules/auth/views/register'
 import CreateQuiz from './modules/createQuiz/views/createQuiz'
 import GiveQuiz from './modules/giveQuiz/views/giveQuiz' 
 import Dashboard  from "./modules/dashboard"
+import Profile from './modules/profile'
 
 function App() {
   const isLoggedIn = false // TODO: add logged in user logic
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path='/register' element={<Register />} />
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/profile' element={<Profile />} />
           <Route path='/' element={<JoinUs />} />
           <Route path='*' element={<Navigate to='/' />} />
           <Route path='/create/:quizID' element={<CreateQuiz />} />
