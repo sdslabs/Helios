@@ -18,12 +18,13 @@ import {
 } from '@chakra-ui/react'
 import QuizCard from './quizCard'
 import Highlight from './highlight'
-import ScrollView from './scrollView'
+import HorizontalScrollView from './horizontalScrollView'
 import TopNav from '../topNav'
 
 const Dashboard = () => {
   return (
     <>
+      {/* <horizontalScroll></horizontalScroll> */}
       <Stack spacing={0}>
         <TopNav />
 
@@ -63,7 +64,7 @@ const Dashboard = () => {
         </Box>
 
         <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
-          <ScrollView />
+          <HorizontalScrollView />
         </Box>
 
         <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
@@ -83,7 +84,7 @@ const Dashboard = () => {
         </Box>
 
         <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
-          <ScrollView />
+          <HorizontalScrollView />
         </Box>
       </Stack>
     </>
