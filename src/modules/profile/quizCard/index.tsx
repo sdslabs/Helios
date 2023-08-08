@@ -2,10 +2,10 @@ import { Square,Text,Stack,Box,Card, CardHeader, CardBody, CardFooter, Button, H
 
 const QuizCard=()=>{
     return(
-        <Card width="100%" >
-            <Stack direction="row" spacing={20}>
-                
-                    <Box bg="#EBE7F2" height={24} width={28} ml={8} mt={12} mr={-16}></Box>
+        <Card width="78vw" >
+            <Stack width="100%" direction="row" spacing="30vw" >
+                    <Stack direction="row">
+                    <Box bg="#EBE7F2" height={24} width={36} ml={12} mt={16} ></Box>
                     
                     <Stack>
                         <CardBody>
@@ -24,6 +24,7 @@ const QuizCard=()=>{
                             View report
                         </Button>
                         </CardFooter>
+                    </Stack>
                     </Stack>
                 
 

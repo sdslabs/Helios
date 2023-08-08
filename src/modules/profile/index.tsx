@@ -16,7 +16,7 @@ import {
   CardBody,
   CardFooter,
 } from '@chakra-ui/react'
-import QuizCard from './quizCard'
+import VerticalScrollView from './verticalScrollView'
 import Highlight from './highlight'
 import TopNav from '@common/components/TopNav'
 
@@ -42,11 +42,7 @@ const Profile = () => {
         </Box>
 
         <Box width="100%"  display='flex' justifyContent='center' alignItems='center'>
-            <VStack width="78%">
-                <QuizCard></QuizCard>
-                <QuizCard></QuizCard>
-                <QuizCard></QuizCard>
-            </VStack>
+            <VerticalScrollView ></VerticalScrollView>
         </Box>
 
       </Stack>
