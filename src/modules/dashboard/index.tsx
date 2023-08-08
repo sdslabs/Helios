@@ -24,7 +24,6 @@ import TopNav from '@common/components/TopNav'
 const Dashboard = () => {
   return (
     <>
-      {/* <horizontalScroll></horizontalScroll> */}
       <Stack spacing={0}>
         <TopNav />
 
