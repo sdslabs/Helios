@@ -11,12 +11,14 @@ Chakra UI is a component library that is built on top of Emotion and Styled Comp
 Note: This project uses eslint for linting and prettier for code formatting. Please make sure to install the eslint and prettier extensions for your code editor.
 
 ### Scripts
-- `yarn start` - Start the development server
 
-- `yarn build` - Build the application for production
+- `npm run start` - Start the development server
 
-- `yarn lint` - Run eslint and check for linting errors
+- `npm run build` - Build the application for production
 
-- `yarn lint:fix` - Run eslint and fix linting errors
+- `npm run lint` - Run eslint and check for linting errors
 
-- `yarn format` - Run prettier and format the code
+- `npm run lint:fix` - Run eslint and fix linting errors
+
+- `npm run format` - Run prettier and format the code
+
