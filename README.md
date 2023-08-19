@@ -1,34 +1,22 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Quizio Frontend (beta) [Dev]
 
-## Getting Started
+- Built using React, Typescript, and Chakra UI
 
-First, run the development server:
+### Why Typescript?
+Avoid bugs and improve code quality by using Typescript. Typescript is a superset of Javascript that adds static typing to Javascript. This allows for more robust code and better developer experience.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+### Why Chakra UI?
+Chakra UI is a component library that is built on top of Emotion and Styled Components. It is a great library for building React applications. It is also very customizable and has a great developer experience. We won't have to worry about styling our components and can focus on building the application.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Note: This project uses eslint for linting and prettier for code formatting. Please make sure to install the eslint and prettier extensions for your code editor.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Scripts
+- `yarn start` - Start the development server
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- `yarn build` - Build the application for production
 
-## Learn More
+- `yarn lint` - Run eslint and check for linting errors
 
-To learn more about Next.js, take a look at the following resources:
+- `yarn lint:fix` - Run eslint and fix linting errors
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- `yarn format` - Run prettier and format the code
