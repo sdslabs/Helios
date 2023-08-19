@@ -12,13 +12,11 @@ Note: This project uses eslint for linting and prettier for code formatting. Ple
 
 ### Scripts
 
-- `npm run start` - Start the development server
+- `npm run dev` - Start the development server
 
 - `npm run build` - Build the application for production
 
 - `npm run lint` - Run eslint and check for linting errors
 
-- `npm run lint:fix` - Run eslint and fix linting errors
 
-- `npm run format` - Run prettier and format the code
 
