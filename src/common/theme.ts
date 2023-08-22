@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react'
+import '../app/globals.scss'
 
 const theme = extendTheme({
   colors: {

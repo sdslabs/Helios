@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { RegisterPageWrapper } from '../../modules/auth/components/RegisterPageWrapper'
+import { RegisterPageWrapper } from '../modules/auth/components/RegisterPageWrapper'
 let Register1 = '/assets/images/register-1.png'
 let Register2 = './assets/images/register-2.png'
 let Register3 = '/assets/images/register-3.png'
-import { REGISTRATION_STEPS } from '../../modules/auth/constants'
+import { REGISTRATION_STEPS } from '../modules/auth/constants'
 
 const Register = () => {
   const [step, setStep] = useState<REGISTRATION_STEPS>(1) 
