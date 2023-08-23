@@ -1,9 +1,9 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import theme from './common/theme'
-import JoinUs from './modules/auth/joinUs'
-import { Register } from './modules/auth/register'
-import CreateQuiz from './modules/createQuiz'
+import JoinUs from './modules/auth/joinUs/joinUs'
+import { Register } from './modules/auth/views/register'
+import CreateQuiz from './modules/createQuiz/views/createQuiz'
 
 function App() {
   const isLoggedIn = false // TODO: add logged in user logic
