@@ -1,4 +1,4 @@
-import { Heading, HStack } from '@chakra-ui/react'
+import { Button, Heading, HStack, Avatar } from '@chakra-ui/react';
 
 const TopNav = () => {
   return (
@@ -12,12 +12,19 @@ const TopNav = () => {
       id='top-nav'
       zIndex='banner'
       bg='white'
+      justifyContent='space-between'
     >
       <Heading color='brand' fontSize='xl' fontWeight='700'>
         Quizio
       </Heading>
+      <HStack spacing={4}>
+        <Button colorScheme='purple' bgColor='brand' px={4}>
+          Host Quiz
+        </Button>
+        <Avatar name='User Name' src='/path-to-your-profile-picture.jpg' size='sm' />
+      </HStack>
     </HStack>
-  )
+  );
 }
 
-export default TopNav
+export default TopNav;
