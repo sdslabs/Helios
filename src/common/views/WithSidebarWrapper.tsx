@@ -1,5 +1,5 @@
 import { Box, HStack } from '@chakra-ui/react'
-import SideNavWrapper from '../components/sideNav/Wrapper'
+import SideNavWrapper from '../components/SideNavWrapper'
 
 interface WithSidebarWrapperProps {
   children: React.ReactNode

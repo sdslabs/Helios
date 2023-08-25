@@ -7,9 +7,9 @@ const useGetTopNavHeight = () => {
   const [topNavHeight, setTopNavHeight] = useState(DEFAULT_HEIGHT)
 
   useMount(() => {
-    const topNav = document.getElementById('top-nav')
-    if (topNav) {
-      setTopNavHeight(topNav.clientHeight)
+    const TopNav = document.getElementById('top-nav')
+    if (TopNav) {
+      setTopNavHeight(TopNav.clientHeight)
     }
   })
 

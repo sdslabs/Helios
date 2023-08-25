@@ -1,7 +1,7 @@
 import { Button, Center, Heading, Image, Text, VStack } from '@chakra-ui/react'
 import { useToggle, useUnmount } from 'react-use'
-import JoinBg from '../../../assets/images/join-bg.png'
-import JoinIllustration from '../../../assets/images/join-illustration.png'
+import JoinBg from '@assets/images/join-bg.png'
+import JoinIllustration from '@assets/images/join-illustration.png'
 import { JoinUsModal } from '../components/JoinUsModal'
 
 const JoinUs = () => {

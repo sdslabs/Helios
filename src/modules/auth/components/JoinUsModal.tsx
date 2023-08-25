@@ -8,7 +8,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react'
-import { GithubIcon, GoogleIcon } from '../../../common/components/Icons'
+import { GithubIcon, GoogleIcon } from '@common/components/Icons'
 import { AUTH_TYPES } from '../constants'
 import { AuthButton } from './AuthButton'
 

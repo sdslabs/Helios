@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import WithSidebarWrapper from '../../../common/views/WithSidebarWrapper'
+import WithSidebarWrapper from '@common/views/WithSidebarWrapper'
 import SideNavContent from '../sideNav'
 import { QuizCreationSteps } from '../types'
 import { QuestionDetails, QuizDetails, RegistrationForm, SectionDetails } from '../forms'
-import TopNav from '../../../common/components/topNav'
+import TopNav from '@common/components/TopNav'
 
 const CreateQuiz = () => {
   const [quizStage, setQuizStage] = useState<QuizCreationSteps>(0)

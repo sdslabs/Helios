@@ -11,8 +11,8 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 
-import InputField from '../../../common/components/customInputFields/CustomInputWithLabel'
-import CustomRichTextEditor from '../../../common/components/customRichTextEditor'
+import InputField from '@common/components/CustomInputWithLabel'
+import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 
 import ImageUpload from './ImageUpload'
 
