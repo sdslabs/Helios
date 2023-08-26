@@ -16,6 +16,7 @@ function App() {
           <Route path='/' element={<JoinUs />} />
           <Route path='*' element={<Navigate to='/' />} />
           <Route path='/create/:quizID' element={<CreateQuiz />} />
+          <Route path='/onboard' element={<Register />} />
         </Routes>
       </ChakraProvider>
     )

@@ -22,7 +22,7 @@ export const RegisterPageWrapper = ({
         <Image src={imageUrl} w='500px' h='500px' />
       </Center>
       <Center p={40}>
-        <RegistrationProgress step={step} />
+        {/* <RegistrationProgress step={step} /> */}
         {children}
       </Center>
     </Box>

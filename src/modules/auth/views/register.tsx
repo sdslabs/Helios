@@ -4,6 +4,7 @@ import Register1 from '@assets/images/register-1.png'
 import Register2 from '@assets/images/register-2.png'
 import Register3 from '@assets/images/register-3.png'
 import { REGISTRATION_STEPS } from '../constants'
+import { BasicStepper } from '../components/BasicStepper'
 
 export const Register = () => {
   const [step, setStep] = useState<REGISTRATION_STEPS>(1) // TODO: Move to a logic governed by backend
@@ -41,7 +42,7 @@ export const Register = () => {
 
   return (
     <RegisterPageWrapper step={step} imageUrl={getImage()} heading={getPageHeading()}>
-      {renderPageContent()}
+      <BasicStepper variant='circles' />
     </RegisterPageWrapper>
   )
 }
