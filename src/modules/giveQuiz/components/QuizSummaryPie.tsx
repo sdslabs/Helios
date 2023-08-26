@@ -1,4 +1,4 @@
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, plugins } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
 import { Box, Flex, Text } from '@chakra-ui/react'
 
@@ -19,11 +19,19 @@ export const data = {
   ],
 }
 
+export const options = {
+    plugins: {
+        legend: {
+            display: false,
+        },
+    },
+}
+
 function QuizSummaryPie() {
   return (
     <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'center'} gap='4.5rem'>
         <Box w={'10rem'} h={'10rem'} >
-      <Pie data={data} />
+      <Pie data={data} options={options}/>
         </Box>
         <Flex flexDirection={'column'} alignItems={'flex-start'} justifyContent={'center'}>
             <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'center'} mb={5}>

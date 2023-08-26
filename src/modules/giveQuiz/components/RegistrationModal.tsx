@@ -27,7 +27,7 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
   return (
     <Modal isOpen={open} onClose={toggleIsOpen} isCentered size="6xl">
       <ModalOverlay />
-      <ModalContent padding={6} borderRadius={0}>
+      <ModalContent padding={6} borderRadius={0} overflowY='scroll'>
         <Text fontSize="1.125rem" fontStyle="normal" fontWeight="600">
           Registration form
         </Text>

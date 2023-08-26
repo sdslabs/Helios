@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { QuestionType } from '../../types'
 
 const QuestionView = () => {
-  const [questionType, setQuestionType] = useState(QuestionType.SUB)
+  const [questionType, setQuestionType] = useState(QuestionType.MCQ)
   const [sectionNumber, setSectionNumber] = useState(1)
   const [questionNumber, setQuestionNumber] = useState(1)
   const [question, setQuestion] = useState(

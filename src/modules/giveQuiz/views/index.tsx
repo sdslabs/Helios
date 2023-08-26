@@ -1,5 +1,5 @@
 import TopNav from '../../../common/components/TopNav';
-import { Button } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 import { useState } from 'react';
 import { StartModal } from '../components/StartQuizModal';
 import { RegisterModal } from '../components/RegistrationModal';
@@ -13,7 +13,7 @@ const GiveQuiz = () => {
         setIsModalOpen(!isModalOpen);
     };
   return (
-    <>
+    <Box overflow='hidden'> 
       <TopNav />
       <Button colorScheme='purple' bgColor='brand' px={10} onClick={toggleModal}>
             Register
@@ -22,7 +22,7 @@ const GiveQuiz = () => {
        {/* <StartModal open={isModalOpen} toggleIsOpen={toggleModal} /> */}
         {/* <SubmitQuizModal open={isModalOpen} toggleIsOpen={toggleModal} /> */}
         {/* <QuizSummaryModal open={isModalOpen} toggleIsOpen={toggleModal} /> */}
-    </>
+    </Box>
   )
 }
 

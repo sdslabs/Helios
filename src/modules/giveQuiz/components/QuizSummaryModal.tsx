@@ -2,6 +2,7 @@ import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-u
 import { LabelModal } from './LabelModal'
 import { useState } from 'react'
 import { TimeIcon } from '@chakra-ui/icons'
+import QuizSummaryPie from './QuizSummaryPie'
 
 interface QuizSummaryModalProps {
   open: boolean
@@ -49,7 +50,7 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
             </Text>
           </Flex>
         </Flex>
-
+        <QuizSummaryPie />
         <Flex flexDirection={'row'} justifyContent='flex-end'>
           <Button
             colorScheme='purple'
