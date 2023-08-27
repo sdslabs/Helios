@@ -11,7 +11,7 @@ import {
   Wrap,
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import { AddQuestionIcon } from '../../../common/components/Icons'
+import { AddQuestionIcon } from '@common/components/Icons'
 import useSectionStore from '../hooks/useSectionStore'
 import { QuizCreationSteps } from '../types'
 

@@ -3,8 +3,8 @@ import {
   PageInfoIcon,
   PagePersonIcon,
   RegistrantsOutlinedIcon,
-} from '../../../common/components/Icons'
-import BasicNavButton from '../../../common/components/sideNav/BasicNavButton'
+} from '@common/components/Icons'
+import BasicNavButton from '@common/components/BasicNavButton'
 import { QuizCreationSteps } from '../types'
 import QuestionsNavItem from './QuestionsNavItem'
 

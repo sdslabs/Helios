@@ -10,9 +10,9 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import useGetTopNavHeight from '../../../common/hooks/useGetTopNavHeight'
-import InputField from '../../../common/components/customInputFields/CustomInputWithLabel'
-import CustomRichTextEditor from '../../../common/components/customRichTextEditor'
+import useGetTopNavHeight from '@common/hooks/useGetTopNavHeight'
+import InputField from '@common/components/CustomInputWithLabel'
+import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { useState } from 'react'
 
 const SectionDetails = () => {

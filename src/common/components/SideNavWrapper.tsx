@@ -1,5 +1,5 @@
 import { VStack } from '@chakra-ui/react'
-import useGetTopNavHeight from '../../hooks/useGetTopNavHeight'
+import useGetTopNavHeight from '../hooks/useGetTopNavHeight'
 
 interface SideNavWrapperProps {
   children: React.ReactNode

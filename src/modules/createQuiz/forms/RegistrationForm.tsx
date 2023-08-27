@@ -11,7 +11,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import InputField from '../../../common/components/customInputFields/CustomInputWithLabel'
+import InputField from '@common/components/CustomInputWithLabel'
 
 const RegistrationForm = () => {
   return (

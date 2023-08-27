@@ -20,10 +20,10 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import CustomRichTextEditor from '../../../common/components/customRichTextEditor'
+import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { QuestionType } from '../../types'
 import { DeleteIcon } from '@chakra-ui/icons'
-import { CircleIconOutlined } from '../../../common/components/Icons'
+import { CircleIconOutlined } from '@common/components/Icons'
 
 const QuestionDetails = () => {
   const [val1, setVal1] = useState<string>('')
