@@ -5,7 +5,7 @@ import { RegistrationProgress } from './RegistrationProgress'
 interface RegisterPageWrapperProps {
   imageUrl: string
   children: JSX.Element | null
-  step: REGISTRATION_STEPS
+  step: number
   heading: string
 }
 

@@ -5,9 +5,10 @@ import Register2 from '@assets/images/register-2.png'
 import Register3 from '@assets/images/register-3.png'
 import { REGISTRATION_STEPS } from '../constants'
 import { BasicStepper } from '../components/BasicStepper'
+import StepContext from '../context/StepContext'
 
 export const Register = () => {
-  const [step, setStep] = useState<REGISTRATION_STEPS>(1) // TODO: Move to a logic governed by backend
+  const [step, setStep] = useState<number>(1) // TODO: Move to a logic governed by backend
 
   const renderPageContent = () => {
     switch (step) {
@@ -26,6 +27,8 @@ export const Register = () => {
         return Register2
       case 3:
         return Register3
+      default:
+        return Register1
     }
   }
 
@@ -37,12 +40,16 @@ export const Register = () => {
         return 'Take a deep breath !'
       case 3:
         return 'Getting Started !'
+      default:
+        return 'Finished!'
     }
   }
 
   return (
-    <RegisterPageWrapper step={step} imageUrl={getImage()} heading={getPageHeading()}>
-      <BasicStepper variant='circles' />
-    </RegisterPageWrapper>
+    <StepContext.Provider value={{ step, setStep }}>
+      <RegisterPageWrapper step={step} imageUrl={getImage()} heading={getPageHeading()}>
+        <BasicStepper variant='circles' />
+      </RegisterPageWrapper>
+    </StepContext.Provider>
   )
 }
