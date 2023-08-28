@@ -6,14 +6,6 @@
       "dom.iterable",
       "esnext"
     ],
-    "paths": {
-      "@common/*": ["./src/common/*"],
-      "@assets/*":["./src/assets/*"],
-      "@auth/*":["./src/modules/auth/*"],
-      "@createQuiz/*":["./src/modules/createQuiz/*"],
-      "@checkQuiz/*":["./src/modules/checkQuiz/*"],
-      "@giveQuiz/*":["./src/modules/giveQuiz/*"],
-    },
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -30,5 +22,6 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "extends": "./tsconfig.paths.json" 
 }
