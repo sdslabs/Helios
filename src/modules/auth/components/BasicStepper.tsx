@@ -2,8 +2,8 @@ import { useColorModeValue } from '@chakra-ui/color-mode'
 import { Box } from '@chakra-ui/layout'
 import { Button, Flex, Heading } from '@chakra-ui/react'
 import { Step, Steps, useSteps } from 'chakra-ui-steps'
-import StepContext from '../context/StepContext'
-import { useContext } from 'react'
+import useOnBoardStore from '../store/store'
+
 // import { REGISTRATION_STEPS } from "../constants";
 
 const steps = [{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }]
@@ -13,9 +13,7 @@ export const BasicStepper = ({
 }: {
   variant: 'circles' | 'circles-alt' | 'simple' | undefined
 }) => {
-  const stepContext = useContext(StepContext)
-  // console.log(stepContext.step)
-  const { step, setStep } = stepContext
+  const { appendStep, resetStep } = useOnBoardStore()
   const { nextStep, prevStep, reset, activeStep } = useSteps({
     initialStep: 0,
   })
@@ -48,7 +46,7 @@ export const BasicStepper = ({
             size='sm'
             onClick={() => {
               reset()
-              setStep(1)
+              resetStep()
             }}
           >
             Reset
@@ -61,7 +59,7 @@ export const BasicStepper = ({
               variant='ghost'
               onClick={() => {
                 prevStep()
-                setStep(step - 1)
+                appendStep(-1)
               }}
             >
               Prev
@@ -70,7 +68,7 @@ export const BasicStepper = ({
               size='sm'
               onClick={() => {
                 nextStep()
-                setStep(step + 1)
+                appendStep(1)
               }}
             >
               {isLastStep ? 'Finish' : 'Next'}
