@@ -1,10 +1,8 @@
-import TopNav from '../../../common/components/TopNav';
-import { Box, Button } from '@chakra-ui/react';
+import TopNav from '@common/components/TopNav';
+import { Button, Box } from '@chakra-ui/react';
 import { useState } from 'react';
-import { StartModal } from '../components/StartQuizModal';
+import { StartModal } from '../components/StartQuiz';
 import { RegisterModal } from '../components/RegistrationModal';
-import { SubmitQuizModal } from '../components/SubmitQuizModal';
-import { QuizSummaryModal } from '@giveQuiz/components/QuizSummaryModal';
 
 const GiveQuiz = () => { 
     const [isModalOpen, setIsModalOpen] = useState(false);
