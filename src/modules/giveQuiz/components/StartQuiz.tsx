@@ -1,4 +1,4 @@
-import CustomInputWithLabel from '../../../common/components/customInputFields/CustomInputWithLabel'
+import CustomInputWithLabel from '../../../common/components/CustomInputWithLabel'
 import {
     Modal,
     ModalContent,
