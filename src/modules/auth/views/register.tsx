@@ -1,23 +1,14 @@
 import { RegisterPageWrapper } from '../components/RegisterPageWrapper'
-import Register1 from '@assets/images/register-1.png'
-import Register2 from '@assets/images/register-2.png'
-import Register3 from '@assets/images/register-3.png'
-import { REGISTRATION_STEPS } from '../constants'
-import { BasicStepper } from '../components/BasicStepper'
-import useOnBoardStore from '../store/store'
+import Register1 from '../../../assets/images/register-1.png'
+import Register2 from '../../../assets/images/register-2.png'
+import Register3 from '../../../assets/images/register-3.png'
+// import { REGISTRATION_STEPS } from '../constants'
+import { Stepper } from '../components/Stepper'
+import useStepStore from '../store/StepStore'
 
 export const Register = () => {
-  // const [step, setStep] = useState<number>(1) // TODO: Move to a logic governed by backend
-  const { step } = useOnBoardStore()
-
-  const renderPageContent = () => {
-    switch (step) {
-      case 1:
-        return <div>Step 1</div>
-      default:
-        return null
-    }
-  }
+  // TODO: Move to a logic governed by backend
+  const step = useStepStore((state) => state.step)
 
   const getImage = () => {
     switch (step) {
@@ -47,7 +38,7 @@ export const Register = () => {
 
   return (
     <RegisterPageWrapper step={step} imageUrl={getImage()} heading={getPageHeading()}>
-      <BasicStepper variant='circles' />
+      <Stepper variant='circles' />
     </RegisterPageWrapper>
   )
 }
