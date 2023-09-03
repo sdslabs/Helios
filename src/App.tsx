@@ -4,6 +4,7 @@ import theme from '@common/theme'
 import JoinUs from './modules/auth/views/joinUs'
 import { Register } from './modules/auth/views/register'
 import CreateQuiz from './modules/createQuiz/views/createQuiz'
+import GiveQuiz from './modules/giveQuiz/views/giveQuiz' 
 
 function App() {
   const isLoggedIn = false // TODO: add logged in user logic
@@ -16,6 +17,7 @@ function App() {
           <Route path='/' element={<JoinUs />} />
           <Route path='*' element={<Navigate to='/' />} />
           <Route path='/create/:quizID' element={<CreateQuiz />} />
+          <Route path='/givequiz' element={<GiveQuiz />} />
         </Routes>
       </ChakraProvider>
     )
