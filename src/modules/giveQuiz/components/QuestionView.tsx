@@ -7,10 +7,8 @@ const QuestionView = () => {
   const [questionType, setQuestionType] = useState(QuestionType.SUB)
   const [sectionNumber, setSectionNumber] = useState(1)
   const [questionNumber, setQuestionNumber] = useState(1)
-  const [question, setQuestion] = useState(
-    'The smallest division on the main scale of a Vernier calipers is 0.1 cm. Ten divisions of the Vernier scale correspond to nine divisions of the main scale. The figure below on the left shows the reading of this calipers with no gap between its two jaws. The figure on the right shows the reading with a solid sphere held between the jaws. The correct diameter of the sphere is',
-  )
-  const [options, setOptions] = useState(['1', '2', '3', '4'])
+  const [question, setQuestion] = useState('')
+  const [options, setOptions] = useState([])
   const [answer, setAnswer] = useState<string>('')
   const [mark, setMark] = useState(4)
 

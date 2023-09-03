@@ -8,9 +8,7 @@ interface SideNavContentProps {
 }
 
 const SectionInstructions = ({ stage, setStage }: SideNavContentProps) => {
-  const [sectionInstructions, setSectionInstructions] = useState(
-    'Paper: There were two papers in JEE Advanced 2020 exam which are Paper 1 and Paper 2. Aspirants must attempt both the papers to qualify for the exam. Duration of Exam: The exam will be conducted for 3 hours for each paper. Type of questions: The JEE Advanced 2020 question paper has both multiple-choice questions and numerical type questions. Language: Based on the aspirants’ preference, they can choose the language either English or Hindi anytime during the exam.',
-  )
+  const [sectionInstructions, setSectionInstructions] = useState('')
   const [sectionNumber, setSectionNumber] = useState(1)
 
   return (

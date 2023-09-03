@@ -10,8 +10,6 @@ interface SubmitQuizModalProps {
 }
 
 export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) => {
-  const [headingText, setHeadingText] = useState('You still have 00 : 00 : 00 left')
-  const [subheadingText, setSubheadingText] = useState('Are you sure you want to submit ?')
   const [timeLeft, setTimeLeft] = useState('00 : 00 : 00')
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
 
