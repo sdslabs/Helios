@@ -7,6 +7,7 @@ const SectionTopBar = () => {
   const [markedForReviewQuestions, setMarkedForReviewQuestions] = useState(0)
   const [answeredQuestions, setAnsweredQuestions] = useState(0)
   const [answeredAndMarkedForReviewQuestions, setAnsweredAndMarkedForReviewQuestions] = useState(0)
+
   return (
     <HStack
       top={0}
@@ -38,10 +39,10 @@ const SectionTopBar = () => {
         <Center flexDirection='row' gap={'1rem'}>
           <Button
             colorScheme='purple'
-            bgColor='accentYellow'
+            bgColor='yellowMarkedForReview'
             variant='outline'
             color='white'
-            borderColor='#FF8900'
+            borderColor='markedForReviewBubbleBorder'
             rounded={'full'}
             borderRadius='2.5rem'
             ml={4}
@@ -60,7 +61,7 @@ const SectionTopBar = () => {
             bgColor='green'
             variant='outline'
             color='white'
-            borderColor='#27A624'
+            borderColor='answeredBubbleBorder'
             rounded={'full'}
             borderRadius='2.5rem'
             width='2.5rem'
@@ -75,10 +76,10 @@ const SectionTopBar = () => {
         <Center flexDirection='row' gap={'1rem'}>
           <Button
             colorScheme='purple'
-            bgColor='accentYellow'
+            bgColor='yellowMarkedForReview'
             variant='outline'
             color='white'
-            borderColor='#FF8900'
+            borderColor='markedForReviewBubbleBorder'
             rounded={'full'}
             borderRadius='2.5rem'
             width='2.5rem'

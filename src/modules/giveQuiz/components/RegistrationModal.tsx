@@ -1,4 +1,4 @@
-import CustomInputWithLabel from '../../../common/components/CustomInputWithLabel'
+import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 import { useState } from 'react'
 import { Modal, ModalContent, ModalOverlay, Button, Text, Flex } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
@@ -14,9 +14,12 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
   const [email, setEmail] = useState('')
   const [contactNo, setContactNo] = useState('')
   const [organisationName, setOrganisationName] = useState('')
-  const [codechefId, setCodechefId] = useState('')
-  const [codechefId2, setCodechefId2] = useState('')
-  const [codechefId3, setCodechefId3] = useState('')
+  const [additionalDetails, setAdditionalDetails] = useState([
+    { label: 'Additional Detail1', placeholder: 'Label 1', isRequired: true },
+    { label: 'Additional Detail2', placeholder: 'Label 2', isRequired: false },
+    { label: 'Additional Detail3', placeholder: 'Label 3', isRequired: false }
+  ])
+
 
   return (
     <Modal isOpen={open} onClose={toggleIsOpen} isCentered size='6xl'>
@@ -28,7 +31,7 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
           </Text>
           <CloseIcon
             onClick={toggleIsOpen}
-            color='#B3B3B3'
+            color='crossBlack'
             w={'0.875rem'}
             h={'0.875rem'}
             alignSelf='center'
@@ -68,20 +71,16 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
         <Text fontSize='1.125rem' fontStyle='normal' fontWeight='700' mt={4} mb={4}>
           Additional Details
         </Text>
-        <CustomInputWithLabel
-          isRequired={true}
-          label='CodechefID'
-          inputProps={{ value: codechefId, onChange: (e) => setCodechefId(e.target.value) }}
-        />
-        <CustomInputWithLabel
-          label='CodechefID'
-          inputProps={{ value: codechefId2, onChange: (e) => setCodechefId2(e.target.value) }}
-        />
-        <CustomInputWithLabel
-          label='CodechefID'
-          inputProps={{ value: codechefId3, onChange: (e) => setCodechefId3(e.target.value) }}
-        />
-        <Button colorScheme='purple' bgColor='brand' px={6} alignSelf='flex-end' mt={4}>
+        <Flex flexDirection='column' gap='1.5rem'>
+        {additionalDetails.map((detail, index) => (
+          <CustomInputWithLabel
+            key={index}
+            label={detail.label}
+            inputProps={{ placeholder: detail.placeholder, isRequired: detail.isRequired }}
+          />
+        ))}
+        </Flex>
+        <Button colorScheme='purple' bgColor='brand' px={6} alignSelf='flex-end' mt={10}>
           Register
         </Button>
       </ModalContent>

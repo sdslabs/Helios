@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, plugins } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
-import { Box, Flex, Text } from '@chakra-ui/react'
+import { background, Box, Flex, Text } from '@chakra-ui/react'
 
 ChartJS.register(ArcElement, Legend)
 
@@ -22,8 +22,7 @@ function QuizSummaryPie() {
     datasets: [
       {
         data: summaryData,
-        backgroundColor: ['#AD9EC9', '#27A624', '#FF8900', '#604195'],
-        hoverBackgroundColor: ['#AD9EC9', '#27A624', '#FF8900', '#604195'],
+        backgroundColor: ['#AD9EC9', '#27A624', '#FF8900', '#604195'], // pie chart colors
       },
     ],
   }
@@ -44,7 +43,7 @@ function QuizSummaryPie() {
         </Flex>
         <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'center'} mb={3}>
           <Box
-            bgColor={'#AD9EC9'}
+            bgColor={data.datasets[0].backgroundColor[0]}
             w={'1rem'}
             h={'1rem'}
             borderRadius={'20%'}
@@ -59,7 +58,7 @@ function QuizSummaryPie() {
         </Flex>
         <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'center'} mb={3}>
           <Box
-            bgColor={'#27A624'}
+            bgColor={data.datasets[0].backgroundColor[1]}
             w={'1rem'}
             h={'1rem'}
             borderRadius={'20%'}
@@ -74,7 +73,7 @@ function QuizSummaryPie() {
         </Flex>
         <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'center'} mb={3}>
           <Box
-            bgColor={'#FF8900'}
+            bgColor={data.datasets[0].backgroundColor[2]}
             w={'1rem'}
             h={'1rem'}
             borderRadius={'20%'}
@@ -89,7 +88,7 @@ function QuizSummaryPie() {
         </Flex>
         <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'center'} mb={3}>
           <Box
-            bgColor={'#604195'}
+            bgColor={data.datasets[0].backgroundColor[3]}
             w={'1rem'}
             h={'1rem'}
             borderRadius={'20%'}

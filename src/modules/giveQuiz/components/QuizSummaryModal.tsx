@@ -9,7 +9,8 @@ interface QuizSummaryModalProps {
 }
 
 export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) => {
-  const [labelColor, setlabelColor] = useState('#27A624')
+  const labelColor= '#27A624'
+  const lableBgColor = '#E5F4E5'
 
   const handleReturnDashboard = () => {
     // route to dashboard
@@ -25,7 +26,7 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
           </Text>
           <CloseIcon
             onClick={toggleIsOpen}
-            color='#B3B3B3'
+            color='crossBlack'
             w={'0.875rem'}
             h={'0.875rem'}
             alignSelf='center'
@@ -36,7 +37,7 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
           alignItems='center'
           justifyContent='center'
           w={'full'}
-          bg='#e5f4e5'
+          bg={lableBgColor}
           px={8}
           py={4}
         >

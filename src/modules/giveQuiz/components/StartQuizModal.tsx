@@ -1,4 +1,4 @@
-import CustomInputWithLabel from '../../../common/components/CustomInputWithLabel'
+import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
 
@@ -23,7 +23,7 @@ export const StartModal = ({ open, toggleIsOpen }: StartModalProps) => {
           </Text>
           <CloseIcon
             onClick={toggleIsOpen}
-            color='#B3B3B3'
+            color='crossBlack'
             w={'0.875rem'}
             h={'0.875rem'}
             alignSelf='center'

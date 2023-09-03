@@ -1,5 +1,4 @@
 import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-ui/react'
-// import { LabelModal } from './LabelModal'
 import { useState } from 'react'
 import { TimeIcon, CloseIcon } from '@chakra-ui/icons'
 import { QuizSummaryModal } from './QuizSummaryModal'
@@ -14,7 +13,6 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
   const [headingText, setHeadingText] = useState('You still have 00 : 00 : 00 left')
   const [subheadingText, setSubheadingText] = useState('Are you sure you want to submit ?')
   const [timeLeft, setTimeLeft] = useState('00 : 00 : 00')
-  const [color, setColor] = useState('v5')
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
 
   const handleQuizSubmit = () => {
@@ -31,7 +29,7 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
           </Text>
           <CloseIcon
             onClick={toggleIsOpen}
-            color='#B3B3B3'
+            color='crossBlack'
             w={'0.875rem'}
             h={'0.875rem'}
             alignSelf='center'
@@ -46,7 +44,7 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
           px={8}
           py={4}
         >
-          <TimeIcon color={color} w={14} h={14} />
+          <TimeIcon color='v5' w={14} h={14} />
           <Flex
             flexDirection='column'
             alignItems='flex-start'
@@ -54,10 +52,10 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
             w={'full'}
             ml={6}
           >
-            <Text fontSize='1.25rem' fontWeight='600' mb={1} color={color}>
+            <Text fontSize='1.25rem' fontWeight='600' mb={1} color='v5'>
               You still have {timeLeft} left
             </Text>
-            <Text fontSize='1rem' fontWeight='400' color={color}>
+            <Text fontSize='1rem' fontWeight='400' color='v5'>
               Are you sure you want to submit ?
             </Text>
           </Flex>
