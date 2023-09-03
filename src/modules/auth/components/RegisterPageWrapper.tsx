@@ -1,17 +1,13 @@
 import { Box, Center, Heading, Image } from '@chakra-ui/react'
-import { REGISTRATION_STEPS } from '../constants'
-import { RegistrationProgress } from './RegistrationProgress'
 
 interface RegisterPageWrapperProps {
   imageUrl: string
   children: JSX.Element | null
-  step: REGISTRATION_STEPS
   heading: string
 }
 
 export const RegisterPageWrapper = ({
   imageUrl,
-  step,
   children,
   heading,
 }: RegisterPageWrapperProps) => {
@@ -22,7 +18,6 @@ export const RegisterPageWrapper = ({
         <Image src={imageUrl} w='500px' h='500px' />
       </Center>
       <Center p={40}>
-        <RegistrationProgress step={step} />
         {children}
       </Center>
     </Box>

@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react'
+import { StepsTheme as Steps } from 'chakra-ui-steps'
 
 const theme = extendTheme({
   colors: {
@@ -16,6 +17,9 @@ const theme = extendTheme({
   fonts: {
     heading: 'Open Sans',
     body: 'Open Sans',
+  },
+  components: {
+    Steps,
   },
 })
 
