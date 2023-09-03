@@ -1,7 +1,6 @@
 import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-ui/react'
-import { LabelModal } from './LabelModal'
 import { useState } from 'react'
-import { TimeIcon } from '@chakra-ui/icons'
+import { TimeIcon, CloseIcon } from '@chakra-ui/icons'
 import QuizSummaryPie from './QuizSummaryPie'
 
 interface QuizSummaryModalProps {
@@ -19,12 +18,21 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
   }
 
   return (
-    <Modal isOpen={open} onClose={toggleIsOpen} isCentered size={'xl'}>
+    <Modal isOpen={open} onClose={toggleIsOpen} isCentered size={'3xl'}>
       <ModalOverlay />
       <ModalContent padding={6} borderRadius={0}>
-        <Text fontSize='1.125rem' fontWeight='600' mb={4}>
-          Quiz Summary
-        </Text>
+        <Flex flexDirection='row' justifyContent='space-between' mb={4}>
+          <Text fontSize='1.125rem' fontWeight='600'>
+            Quiz Summary
+          </Text>
+          <CloseIcon
+            onClick={toggleIsOpen}
+            color='#B3B3B3'
+            w={'0.875rem'}
+            h={'0.875rem'}
+            alignSelf='center'
+          />
+        </Flex>
         <Flex
           flexDirection='row'
           alignItems='center'
@@ -50,7 +58,9 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
             </Text>
           </Flex>
         </Flex>
-        <QuizSummaryPie />
+        <Flex flexDirection='row' alignItems='center' justifyContent='center' mt={9}>
+          <QuizSummaryPie />
+        </Flex>
         <Flex flexDirection={'row'} justifyContent='flex-end'>
           <Button
             colorScheme='purple'
