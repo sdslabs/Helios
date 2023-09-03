@@ -1,10 +1,9 @@
 import { RegisterPageWrapper } from '../components/RegisterPageWrapper'
-import Register1 from '../../../assets/images/register-1.png'
-import Register2 from '../../../assets/images/register-2.png'
-import Register3 from '../../../assets/images/register-3.png'
-// import { REGISTRATION_STEPS } from '../constants'
-import { Stepper } from '../components/Stepper'
-import useStepStore from '../store/StepStore'
+import Register1 from '@assets/images/register-1.png'
+import Register2 from '@assets/images/register-2.png'
+import Register3 from '@assets/images/register-3.png'
+import { Stepper } from '@auth/components/Stepper'
+import useStepStore from '@auth/store/StepStore'
 
 export const Register = () => {
   // TODO: Move to a logic governed by backend
@@ -18,8 +17,6 @@ export const Register = () => {
         return Register2
       case 3:
         return Register3
-      default:
-        return Register1
     }
   }
 
@@ -31,13 +28,11 @@ export const Register = () => {
         return 'Take a deep breath !'
       case 3:
         return 'Getting Started !'
-      default:
-        return 'Finished!'
     }
   }
 
   return (
-    <RegisterPageWrapper step={step} imageUrl={getImage()} heading={getPageHeading()}>
+    <RegisterPageWrapper imageUrl={getImage()} heading={getPageHeading()}>
       <Stepper variant='circles' />
     </RegisterPageWrapper>
   )

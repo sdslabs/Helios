@@ -1,6 +1,4 @@
-import { useColorModeValue } from '@chakra-ui/color-mode'
-import { Box } from '@chakra-ui/layout'
-import { Flex, Heading } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 import { Step, Steps, useSteps } from 'chakra-ui-steps'
 import useStepStore from '../store/StepStore'
 import { PersonalDetailsForm } from '../forms/PersonalDetails'
@@ -31,7 +29,7 @@ export const Stepper = ({
   return (
     <Flex flexDir='column' width='100%'>
       <Steps variant={variant} colorScheme='purple' activeStep={activeStep}>
-        {steps.map(({ label }, index) => (
+        {steps.map(({ label }) => (
           <Step key={label}>{renderForm()}</Step>
         ))}
       </Steps>

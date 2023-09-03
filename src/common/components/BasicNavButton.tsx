@@ -1,7 +1,7 @@
 import { Button, ButtonProps } from '@chakra-ui/react'
 
 const BasicNavButton = (props: ButtonProps) => (
-  <Button variant='ghost' colorScheme={'purple'} justifyContent='flex-start' px={6} borderRadius={3} {...props}>
+  <Button {...props} variant='ghost' color='v6' width={'100%'} justifyContent='flex-start'>
     {props.children}
   </Button>
 )

@@ -10,10 +10,10 @@ import {
   Grid,
   GridItem,
   Text,
+  Button,
 } from '@chakra-ui/react'
-import useStepStore from '../store/StepStore'
-import BasicNavButton from '../../../common/components/sideNav/BasicNavButton'
-import CustomInputWithLabel from '../../../common/components/customInputFields/CustomInputWithLabel'
+import useStepStore from '@auth/store/StepStore'
+import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 import React, { useState } from 'react'
 import {
   BehanceIcon,
@@ -24,10 +24,10 @@ import {
   LinkedinIcon,
   CodeForcesIcon,
   CodeChefIcon,
-} from '../../../common/components/Icons'
+} from '@common/components/Icons'
 
 import { Select } from 'chakra-react-select'
-import useSocialHandlesStore from '../store/SocialHandlesStore'
+import useSocialHandlesStore from '@auth/store/SocialHandlesStore'
 
 // Making the select
 interface SocialMediaOption {
@@ -124,7 +124,6 @@ const SocialMediaSelect: React.FC = () => {
   )
 }
 
-
 // The actual form
 interface FormProps {
   nextStep: () => void
@@ -144,28 +143,35 @@ export const SocialHandlesForm = (props: FormProps) => {
           <SocialMediaSelect />
         </Stack>
         <Flex alignItems='center' my='6'>
-          <BasicNavButton>Skip Step</BasicNavButton>
+          <Button variant={'ghost'} px={6} color={'gray.400'} _hover={{ bg: 'gray.100' }}>
+            Skip Step
+          </Button>
           <Spacer />
           <ButtonGroup gap={2}>
-            <BasicNavButton
-              variant='outline'
+            <Button
+              variant={'outline'}
+              color={'v6'}
+              borderColor={'v6'}
+              px={6}
+              borderRadius={3}
               onClick={() => {
                 props.prevStep()
                 setStep(2)
               }}
             >
               Back
-            </BasicNavButton>
-            <BasicNavButton
-              variant='solid'
-              onClick={() => {
-                // TODO: Change this as per backend requirements.
-                props.reset()
-                setStep(1)
-              }}
+            </Button>
+            <Button
+              colorScheme='purple'
+              bgColor='brand'
+              type='submit'
+              variant={'solid'}
+              px={6}
+              borderRadius={3}
+              //TODO: Define its logic based on backend.
             >
               Get Started
-            </BasicNavButton>
+            </Button>
           </ButtonGroup>
         </Flex>
       </Box>

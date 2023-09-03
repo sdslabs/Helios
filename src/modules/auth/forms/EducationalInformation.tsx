@@ -1,8 +1,17 @@
-import { Box, Grid, GridItem, Stack, Flex, Spacer, ButtonGroup, Heading } from '@chakra-ui/react'
-import useStepStore from '../store/StepStore'
-import CustomInputWithLabel from '../../../common/components/customInputFields/CustomInputWithLabel'
-import BasicNavButton from '../../../common/components/sideNav/BasicNavButton'
-import useEducationalInfoStore from '../store/EducationalInformationStore'
+import {
+  Box,
+  Grid,
+  GridItem,
+  Stack,
+  Flex,
+  Spacer,
+  ButtonGroup,
+  Heading,
+  Button,
+} from '@chakra-ui/react'
+import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
+import useStepStore from '@auth/store/StepStore'
+import useEducationalInfoStore from '@auth/store/EducationalInformationStore'
 
 interface FormProps {
   nextStep: () => void
@@ -66,21 +75,29 @@ export const EducationalDetailsForm = (props: FormProps) => {
           <Flex alignItems='center' my='6'>
             <Spacer />
             <ButtonGroup gap={2}>
-              <BasicNavButton
-                variant='outline'
+              <Button
+                variant={'outline'}
+                color={'v6'}
+                borderColor={'v6'}
+                px={6}
+                borderRadius={3}
                 onClick={() => {
                   props.prevStep()
                   setStep(1)
                 }}
               >
                 Back
-              </BasicNavButton>
-              <BasicNavButton
-                variant='solid'
+              </Button>
+              <Button
+                colorScheme='purple'
+                bgColor='brand'
                 type='submit'
+                variant={'solid'}
+                px={6}
+                borderRadius={3}
               >
                 Next
-              </BasicNavButton>
+              </Button>
             </ButtonGroup>
           </Flex>
         </form>
@@ -88,3 +105,4 @@ export const EducationalDetailsForm = (props: FormProps) => {
     </>
   )
 }
+

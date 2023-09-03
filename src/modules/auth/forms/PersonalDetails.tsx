@@ -1,8 +1,17 @@
-import { Box, Grid, GridItem, Stack, Flex, Spacer, ButtonGroup, Heading } from '@chakra-ui/react'
-import useStepStore from '../store/StepStore'
-import CustomInputWithLabel from '../../../common/components/customInputFields/CustomInputWithLabel'
-import BasicNavButton from '../../../common/components/sideNav/BasicNavButton'
-import usePersonalDetailsStore from '../store/PersonalDetailsStore'
+import {
+  Box,
+  Grid,
+  GridItem,
+  Stack,
+  Flex,
+  Spacer,
+  ButtonGroup,
+  Heading,
+  Button,
+} from '@chakra-ui/react'
+import useStepStore from '@auth/store/StepStore'
+import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
+import usePersonalDetailsStore from '@auth/store/PersonalDetailsStore'
 interface FormProps {
   nextStep: () => void
 }
@@ -33,7 +42,7 @@ export const PersonalDetailsForm = (props: FormProps) => {
                     placeholder: 'First Name',
                     type: 'text',
                     defaultValue: personalDetails.firstName,
-                    onChange: (e) => personalDetails.updateFirstName(e.target.value)
+                    onChange: (e) => personalDetails.updateFirstName(e.target.value),
                   }}
                 />
               </GridItem>
@@ -65,16 +74,16 @@ export const PersonalDetailsForm = (props: FormProps) => {
                 placeholder: 'Phone Number',
                 type: 'number',
                 defaultValue: personalDetails.phone,
-                onChange: (e) => personalDetails.updatePhone(e.target.value)
+                onChange: (e) => personalDetails.updatePhone(e.target.value),
               }}
             />
           </Stack>
           <Flex minWidth={'max-content'} alignItems='center' my='6'>
             <Spacer />
             <ButtonGroup>
-              <BasicNavButton variant='solid' type='submit'>
+              <Button type='submit' colorScheme='purple' bgColor='brand' px={6} borderRadius={3}>
                 Next
-              </BasicNavButton>
+              </Button>
             </ButtonGroup>
           </Flex>
         </form>
@@ -82,3 +91,4 @@ export const PersonalDetailsForm = (props: FormProps) => {
     </>
   )
 }
+
