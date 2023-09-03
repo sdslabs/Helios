@@ -17,9 +17,8 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
   const [additionalDetails, setAdditionalDetails] = useState([
     { label: 'Additional Detail1', placeholder: 'Label 1', isRequired: true },
     { label: 'Additional Detail2', placeholder: 'Label 2', isRequired: false },
-    { label: 'Additional Detail3', placeholder: 'Label 3', isRequired: false }
+    { label: 'Additional Detail3', placeholder: 'Label 3', isRequired: false },
   ])
-
 
   return (
     <Modal isOpen={open} onClose={toggleIsOpen} isCentered size='6xl'>
@@ -32,8 +31,8 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
           <CloseIcon
             onClick={toggleIsOpen}
             color='crossBlack'
-            w={'0.875rem'}
-            h={'0.875rem'}
+            w='0.875rem'
+            h='0.875rem'
             alignSelf='center'
           />
         </Flex>
@@ -72,13 +71,13 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
           Additional Details
         </Text>
         <Flex flexDirection='column' gap='1.5rem'>
-        {additionalDetails.map((detail, index) => (
-          <CustomInputWithLabel
-            key={index}
-            label={detail.label}
-            inputProps={{ placeholder: detail.placeholder, isRequired: detail.isRequired }}
-          />
-        ))}
+          {additionalDetails.map((detail, index) => (
+            <CustomInputWithLabel
+              key={index}
+              label={detail.label}
+              inputProps={{ placeholder: detail.placeholder, isRequired: detail.isRequired }}
+            />
+          ))}
         </Flex>
         <Button colorScheme='purple' bgColor='brand' px={6} alignSelf='flex-end' mt={10}>
           Register

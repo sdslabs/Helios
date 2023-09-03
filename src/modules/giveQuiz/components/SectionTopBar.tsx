@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button, HStack, Text, Box, Flex, Center } from '@chakra-ui/react'
 import Countdown from './Countdown'
+import Bubble from './Bubble'
 
 const SectionTopBar = () => {
   const [notVisitedQuestions, setNotVisitedQuestions] = useState(0)
@@ -14,83 +15,40 @@ const SectionTopBar = () => {
       id='top-nav'
       bg='white'
       justifyContent='space-between'
-      position={'sticky'}
-      width={'100%'}
+      position='sticky'
+      width='100%'
       borderBottom='1px solid #F1EEF5'
-      height={'100%'}
+      height='100%'
     >
-      <HStack spacing='2.5rem' height={'100%'} px={12} py={3}>
-        <Center flexDirection='row' gap={'1rem'}>
-          <Button
-            colorScheme='purple'
-            variant='outline'
-            color='v6'
-            rounded={'full'}
-            borderRadius='2.5rem'
-            width='2.5rem'
-            height='2.5rem'
-            _hover={{}}
-            _focus={{}}
-          >
-            {notVisitedQuestions}
-          </Button>
-          <Text fontWeight={600}>Not Visited</Text>
-        </Center>
-        <Center flexDirection='row' gap={'1rem'}>
-          <Button
-            colorScheme='purple'
-            bgColor='yellowMarkedForReview'
-            variant='outline'
-            color='white'
-            borderColor='markedForReviewBubbleBorder'
-            rounded={'full'}
-            borderRadius='2.5rem'
-            ml={4}
-            width='2.5rem'
-            height='2.5rem'
-            _hover={{}}
-            _focus={{}}
-          >
-            {markedForReviewQuestions}
-          </Button>
-          <Text fontWeight={600}>Marked for Review</Text>
-        </Center>
-        <Center flexDirection='row' gap={'1rem'}>
-          <Button
-            colorScheme='purple'
-            bgColor='green'
-            variant='outline'
-            color='white'
-            borderColor='answeredBubbleBorder'
-            rounded={'full'}
-            borderRadius='2.5rem'
-            width='2.5rem'
-            height='2.5rem'
-            _hover={{}}
-            _focus={{}}
-          >
-            {answeredQuestions}
-          </Button>
-          <Text fontWeight={600}>Answered</Text>
-        </Center>
-        <Center flexDirection='row' gap={'1rem'}>
-          <Button
-            colorScheme='purple'
-            bgColor='yellowMarkedForReview'
-            variant='outline'
-            color='white'
-            borderColor='markedForReviewBubbleBorder'
-            rounded={'full'}
-            borderRadius='2.5rem'
-            width='2.5rem'
-            height='2.5rem'
-            _hover={{}}
-            _focus={{}}
-          >
-            {answeredAndMarkedForReviewQuestions}
-          </Button>
-          <Text fontWeight={600}>Answered and Marked for Review</Text>
-        </Center>
+      <HStack spacing='2.5rem' height='100%' px={12} py={3}>
+        <Bubble
+          Label='Not Visited'
+          Value={notVisitedQuestions}
+          BorderColor='v6'
+          BgColor='white'
+          FontColor='v6'
+        />
+        <Bubble
+          Label='Marked for Review'
+          Value={markedForReviewQuestions}
+          BgColor='yellowMarkedForReview'
+          BorderColor='markedForReviewBubbleBorder'
+          FontColor='white'
+        />
+        <Bubble
+          Label='Answered'
+          Value={answeredQuestions}
+          BgColor='green'
+          BorderColor='answeredBubbleBorder'
+          FontColor='white'
+        />
+        <Bubble
+          Label='Answered & Marked for Review'
+          Value={answeredAndMarkedForReviewQuestions}
+          BgColor='yellowMarkedForReview'
+          BorderColor='markedForReviewBubbleBorder'
+          FontColor='white'
+        />
       </HStack>
       <Box justifySelf='end' color='v6' bgColor='v1' py={5} px={4} height='100%'>
         <Countdown />

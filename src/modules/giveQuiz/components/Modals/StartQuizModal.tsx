@@ -24,8 +24,8 @@ export const StartModal = ({ open, toggleIsOpen }: StartModalProps) => {
           <CloseIcon
             onClick={toggleIsOpen}
             color='crossBlack'
-            w={'0.875rem'}
-            h={'0.875rem'}
+            w='0.875rem'
+            h='0.875rem'
             alignSelf='center'
           />
         </Flex>

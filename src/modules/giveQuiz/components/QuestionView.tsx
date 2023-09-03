@@ -30,7 +30,7 @@ const QuestionView = () => {
           <Text fontSize='2rem' fontWeight='700' mb={6} alignSelf='start'>
             Section {sectionNumber}
           </Text>
-          <Flex flexDirection='row' w={'full'} justifyContent='space-between'>
+          <Flex flexDirection='row' w='full' justifyContent='space-between'>
             <Text fontSize='1rem' fontWeight='600' mb={6} alignSelf='self-start'>
               Question {questionNumber}
             </Text>
@@ -68,11 +68,11 @@ const QuestionView = () => {
               </Button>
             </Flex>
           ) : (
-            <Box w={'full'} height='max-content' mb={4}>
+            <Box w='full' height='max-content' mb={4}>
               <CustomRichTextEditor value={answer} onChange={(value) => setAnswer(value ?? '')} />
             </Box>
           )}
-          <Flex flexDirection='row' w={'full'} justifyContent='flex-end'>
+          <Flex flexDirection='row' w='full' justifyContent='flex-end'>
             <Button variant='outline' color='v6' borderColor='v6' mr={4}>
               Marked for Review
             </Button>

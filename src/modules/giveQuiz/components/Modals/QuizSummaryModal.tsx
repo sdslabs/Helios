@@ -9,7 +9,7 @@ interface QuizSummaryModalProps {
 }
 
 export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) => {
-  const labelColor= '#27A624'
+  const labelColor = '#27A624'
   const lableBgColor = '#E5F4E5'
 
   const handleReturnDashboard = () => {
@@ -17,7 +17,7 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
   }
 
   return (
-    <Modal isOpen={open} onClose={toggleIsOpen} isCentered size={'3xl'}>
+    <Modal isOpen={open} onClose={toggleIsOpen} isCentered size='3xl'>
       <ModalOverlay />
       <ModalContent padding={6} borderRadius={0}>
         <Flex flexDirection='row' justifyContent='space-between' mb={4}>
@@ -27,8 +27,8 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
           <CloseIcon
             onClick={toggleIsOpen}
             color='crossBlack'
-            w={'0.875rem'}
-            h={'0.875rem'}
+            w='0.875rem'
+            h='0.875rem'
             alignSelf='center'
           />
         </Flex>
@@ -36,7 +36,7 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
           flexDirection='row'
           alignItems='center'
           justifyContent='center'
-          w={'full'}
+          w='full'
           bg={lableBgColor}
           px={8}
           py={4}
@@ -46,7 +46,7 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
             flexDirection='column'
             alignItems='flex-start'
             justifyContent='center'
-            w={'full'}
+            w='full'
             ml={6}
           >
             <Text fontSize='1.25rem' fontWeight='600' mb={1} color={labelColor}>
@@ -65,7 +65,7 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
         <Flex flexDirection='row' alignItems='center' justifyContent='center' mt={9}>
           <QuizSummaryPie />
         </Flex>
-        <Flex flexDirection={'row'} justifyContent='flex-end'>
+        <Flex flexDirection='row' justifyContent='flex-end'>
           <Button
             variant='outline'
             color='v6'
