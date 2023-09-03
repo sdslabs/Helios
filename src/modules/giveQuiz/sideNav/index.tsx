@@ -13,7 +13,7 @@ import {
 import { useState } from 'react'
 import BasicNavButton from '@common/components/BasicNavButton'
 import { GiveQuizSteps } from '../types'
-import { SubmitQuizModal } from '../components/SubmitQuizModal'
+import { SubmitQuizModal } from '../components/Modals/SubmitQuizModal'
 
 interface SideNavContentProps {
   stage: GiveQuizSteps

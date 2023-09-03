@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import WithSidebarWrapper from '@common/views/WithSidebarWrapper'
 import { GiveQuizSteps } from '../types'
-import Instructions from './instructions'
+import Instructions from '@giveQuiz/components/Instructions'
 import TopNav from '@common/components/TopNav'
 import SideNavContent from '@giveQuiz/sideNav'
 import SectionTopBar from '@giveQuiz/components/SectionTopBar'
-import SectionInstructions from './sectionInstructions'
-import QuestionView from './questionView'
+import SectionInstructions from '@giveQuiz/components/SectionInstructions'
+import QuestionView from '@giveQuiz/components/QuestionView'
 
 const giveQuiz = () => {
   const [quizStage, setQuizStage] = useState<GiveQuizSteps>(0)

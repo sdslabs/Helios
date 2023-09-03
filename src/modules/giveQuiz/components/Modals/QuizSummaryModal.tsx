@@ -1,31 +1,28 @@
 import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
 import { TimeIcon, CloseIcon } from '@chakra-ui/icons'
-import { QuizSummaryModal } from './QuizSummaryModal'
-import QuizSummaryPie from './QuizSummaryPie'
+import QuizSummaryPie from '../QuizSummaryPie'
 
-interface SubmitQuizModalProps {
+interface QuizSummaryModalProps {
   open: boolean
   toggleIsOpen: () => void
 }
 
-export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) => {
-  const [headingText, setHeadingText] = useState('You still have 00 : 00 : 00 left')
-  const [subheadingText, setSubheadingText] = useState('Are you sure you want to submit ?')
-  const [timeLeft, setTimeLeft] = useState('00 : 00 : 00')
-  const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
+export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) => {
+  const labelColor= '#27A624'
+  const lableBgColor = '#E5F4E5'
 
-  const handleQuizSubmit = () => {
-    setIsQuizSubmitted(true)
+  const handleReturnDashboard = () => {
+    // route to dashboard
   }
 
   return (
     <Modal isOpen={open} onClose={toggleIsOpen} isCentered size={'3xl'}>
       <ModalOverlay />
       <ModalContent padding={6} borderRadius={0}>
-        <Flex flexDirection='row' justifyContent='space-between' mb={6}>
+        <Flex flexDirection='row' justifyContent='space-between' mb={4}>
           <Text fontSize='1.125rem' fontWeight='600'>
-            Submit Quiz
+            Quiz Summary
           </Text>
           <CloseIcon
             onClick={toggleIsOpen}
@@ -40,11 +37,11 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
           alignItems='center'
           justifyContent='center'
           w={'full'}
-          bg='v1'
+          bg={lableBgColor}
           px={8}
           py={4}
         >
-          <TimeIcon color='v5' w={14} h={14} />
+          <TimeIcon color={labelColor} w={14} h={14} />
           <Flex
             flexDirection='column'
             alignItems='flex-start'
@@ -52,38 +49,32 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
             w={'full'}
             ml={6}
           >
-            <Text fontSize='1.25rem' fontWeight='600' mb={1} color='v5'>
-              You still have {timeLeft} left
+            <Text fontSize='1.25rem' fontWeight='600' mb={1} color={labelColor}>
+              Time’s up!
             </Text>
-            <Text fontSize='1rem' fontWeight='400' color='v5'>
-              Are you sure you want to submit ?
-            </Text>
+            <Flex flexDirection='row'>
+              <Text fontSize='1rem' fontWeight='400' color={labelColor}>
+                Your quiz have been
+              </Text>
+              <Text fontSize='1rem' fontWeight='700' color={labelColor} ml={1}>
+                successfully submitted.
+              </Text>
+            </Flex>
           </Flex>
         </Flex>
         <Flex flexDirection='row' alignItems='center' justifyContent='center' mt={9}>
           <QuizSummaryPie />
         </Flex>
-
         <Flex flexDirection={'row'} justifyContent='flex-end'>
           <Button
             variant='outline'
             color='v6'
             borderColor='v6'
-            alignSelf='flex-end'
             mt={4}
             mr={4}
-            onClick={toggleIsOpen}
+            onClick={handleReturnDashboard}
           >
-            Cancel
-          </Button>
-          <Button
-            colorScheme='purple'
-            bgColor='brand'
-            alignSelf='flex-end'
-            mt={4}
-            onClick={handleQuizSubmit}
-          >
-            Submit
+            Return to Dashboard
           </Button>
         </Flex>
       </ModalContent>
