@@ -1,5 +1,4 @@
 import { Center, Button, Text } from '@chakra-ui/react'
-import { Color } from 'chart.js'
 
 interface BubbleProps {
   Label: string

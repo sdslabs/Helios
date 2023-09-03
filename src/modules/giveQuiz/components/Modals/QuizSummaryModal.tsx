@@ -13,7 +13,7 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
   const lableBgColor = '#E5F4E5'
 
   const handleReturnDashboard = () => {
-    // route to dashboard
+    //TODO: route to dashboard
   }
 
   return (

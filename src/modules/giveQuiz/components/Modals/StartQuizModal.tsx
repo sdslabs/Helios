@@ -13,6 +13,10 @@ export const StartModal = ({ open, toggleIsOpen }: StartModalProps) => {
   const [accessCode, setAccessCode] = useState('')
   const [isAccessCodeNeeded, setIsAccessCodeNeeded] = useState(true)
 
+  const handleStartQuiz = () => {
+    // TODO: start quiz and route to quiz page
+  }
+
   return (
     <Modal isOpen={open} onClose={toggleIsOpen} isCentered>
       <ModalOverlay />
@@ -38,7 +42,13 @@ export const StartModal = ({ open, toggleIsOpen }: StartModalProps) => {
             inputProps={{ value: accessCode, onChange: (e) => setAccessCode(e.target.value) }}
           />
         ) : null}
-        <Button colorScheme='purple' bgColor='brand' alignSelf='flex-end' mt={4}>
+        <Button
+          colorScheme='purple'
+          bgColor='brand'
+          alignSelf='flex-end'
+          mt={4}
+          onClick={handleStartQuiz}
+        >
           Start Quiz
         </Button>
       </ModalContent>

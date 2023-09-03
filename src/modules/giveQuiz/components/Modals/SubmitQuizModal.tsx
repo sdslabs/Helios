@@ -17,6 +17,7 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
 
   const handleQuizSubmit = () => {
     setIsQuizSubmitted(true)
+    // TODO: submit quiz and route to quiz summary modal
   }
 
   return (

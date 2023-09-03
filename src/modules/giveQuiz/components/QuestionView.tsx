@@ -73,7 +73,13 @@ const QuestionView = () => {
             </Box>
           )}
           <Flex flexDirection='row' w='full' justifyContent='flex-end'>
-            <Button variant='outline' color='v6' borderColor='v6' mr={4}>
+            <Button
+              variant='outline'
+              color='v6'
+              borderColor='v6'
+              mr={4}
+              //TODO: on click Marked for Review
+            >
               Marked for Review
             </Button>
             <Button

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, HStack, Text, Box, Flex, Center } from '@chakra-ui/react'
+import { HStack, Box } from '@chakra-ui/react'
 import Countdown from './Countdown'
 import Bubble from './Bubble'
 

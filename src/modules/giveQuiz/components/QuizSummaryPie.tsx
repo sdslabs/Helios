@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, plugins } from 'chart.js'
+import { Chart as ChartJS, ArcElement, Legend } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
-import { background, Box, Flex, Text } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import SummaryStats from './SummaryStats'
 
 ChartJS.register(ArcElement, Legend)

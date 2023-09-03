@@ -20,6 +20,10 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
     { label: 'Additional Detail3', placeholder: 'Label 3', isRequired: false },
   ])
 
+  const handleSubmit = () => {
+    // TODO: submit registration form and open access code modal
+  }
+
   return (
     <Modal isOpen={open} onClose={toggleIsOpen} isCentered size='6xl'>
       <ModalOverlay />
@@ -79,7 +83,7 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
             />
           ))}
         </Flex>
-        <Button colorScheme='purple' bgColor='brand' px={6} alignSelf='flex-end' mt={10}>
+        <Button colorScheme='purple' bgColor='brand' px={6} alignSelf='flex-end' mt={10} onClick={handleSubmit}>
           Register
         </Button>
       </ModalContent>
