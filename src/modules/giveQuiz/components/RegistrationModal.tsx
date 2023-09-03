@@ -47,11 +47,15 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
         <Flex flexDirection='row' mb={4} gap='0.625rem'>
           <CustomInputWithLabel
             label='Email'
-            inputProps={{ value: email, onChange: (e) => setEmail(e.target.value) }}
+            inputProps={{ value: email, onChange: (e) => setEmail(e.target.value), type: 'email' }}
           />
           <CustomInputWithLabel
             label='Contact No.'
-            inputProps={{ value: contactNo, onChange: (e) => setContactNo(e.target.value) }}
+            inputProps={{
+              value: contactNo,
+              onChange: (e) => setContactNo(e.target.value),
+              type: 'tel',
+            }}
           />
         </Flex>
         <CustomInputWithLabel

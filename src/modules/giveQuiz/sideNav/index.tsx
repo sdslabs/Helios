@@ -13,7 +13,7 @@ import {
 import { useState } from 'react'
 import BasicNavButton from '@common/components/BasicNavButton'
 import { GiveQuizSteps } from '../types'
-import { SubmitQuizModal } from '../components/SubmitQuizModal';
+import { SubmitQuizModal } from '../components/SubmitQuizModal'
 
 interface SideNavContentProps {
   stage: GiveQuizSteps
@@ -21,11 +21,11 @@ interface SideNavContentProps {
 }
 
 const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const toggleModal = () => {
-      setIsModalOpen(!isModalOpen);
-  };
+    setIsModalOpen(!isModalOpen)
+  }
 
   return (
     <>

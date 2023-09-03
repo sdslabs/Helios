@@ -9,9 +9,7 @@ interface QuizSummaryModalProps {
 }
 
 export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) => {
-  const [headingText, setHeadingText] = useState('Submit Quiz')
-  const [subheadingText, setSubheadingText] = useState('Are you sure you want to submit this quiz?')
-  const [color, setColor] = useState('green')
+  const [labelColor, setlabelColor] = useState('#27A624')
 
   const handleReturnDashboard = () => {
     // route to dashboard
@@ -42,7 +40,7 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
           px={8}
           py={4}
         >
-          <TimeIcon color={color} w={14} h={14} />
+          <TimeIcon color={labelColor} w={14} h={14} />
           <Flex
             flexDirection='column'
             alignItems='flex-start'
@@ -50,12 +48,17 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
             w={'full'}
             ml={6}
           >
-            <Text fontSize='1.25rem' fontWeight='600' mb={1} color={color}>
-              {headingText}
+            <Text fontSize='1.25rem' fontWeight='600' mb={1} color={labelColor}>
+              Time’s up!
             </Text>
-            <Text fontSize='1rem' fontWeight='400' color={color}>
-              {subheadingText}
-            </Text>
+            <Flex flexDirection='row'>
+              <Text fontSize='1rem' fontWeight='400' color={labelColor}>
+                Your quiz have been
+              </Text>
+              <Text fontSize='1rem' fontWeight='700' color={labelColor} ml={1}>
+                successfully submitted.
+              </Text>
+            </Flex>
           </Flex>
         </Flex>
         <Flex flexDirection='row' alignItems='center' justifyContent='center' mt={9}>
@@ -63,9 +66,9 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
         </Flex>
         <Flex flexDirection={'row'} justifyContent='flex-end'>
           <Button
-            colorScheme='purple'
-            bgColor='brand'
-            alignSelf='flex-end'
+            variant='outline'
+            color='v6'
+            borderColor='v6'
             mt={4}
             mr={4}
             onClick={handleReturnDashboard}

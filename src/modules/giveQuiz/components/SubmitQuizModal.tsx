@@ -13,6 +13,7 @@ interface SubmitQuizModalProps {
 export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) => {
   const [headingText, setHeadingText] = useState('You still have 00 : 00 : 00 left')
   const [subheadingText, setSubheadingText] = useState('Are you sure you want to submit ?')
+  const [timeLeft, setTimeLeft] = useState('00 : 00 : 00')
   const [color, setColor] = useState('v5')
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
 
@@ -54,10 +55,10 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
             ml={6}
           >
             <Text fontSize='1.25rem' fontWeight='600' mb={1} color={color}>
-              {headingText}
+              You still have {timeLeft} left
             </Text>
             <Text fontSize='1rem' fontWeight='400' color={color}>
-              {subheadingText}
+              Are you sure you want to submit ?
             </Text>
           </Flex>
         </Flex>

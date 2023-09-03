@@ -17,7 +17,7 @@ const giveQuiz = () => {
       case GiveQuizSteps.Instructions:
         return <Instructions stage={quizStage} setStage={setQuizStage} />
       case GiveQuizSteps.Sections:
-        return <SectionInstructions stage={quizStage} setStage={setQuizStage}  />
+        return <SectionInstructions stage={quizStage} setStage={setQuizStage} />
       case GiveQuizSteps.Questions:
         return <QuestionView />
       default:
