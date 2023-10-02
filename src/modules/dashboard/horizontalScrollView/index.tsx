@@ -2,7 +2,7 @@ import { Flex,Square,Text,Stack,Box,Card, CardHeader, CardBody, CardFooter, Butt
 import QuizCard from "../quizCard"
 const HorizontalScrollView=()=>{
     return(
-        <Box overflowX="scroll" bg="white" p={4} width="80%" sx={{ "&::-webkit-scrollbar": { display: "none" } }}>
+        <Box overflowX="scroll" bg="white" pt={4} sx={{ "&::-webkit-scrollbar": { display: "none" } }}>
       <Flex>
         <Box><QuizCard/></Box>
         <Box><QuizCard/></Box>
