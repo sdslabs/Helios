@@ -33,7 +33,7 @@ const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
         width='1'
         onClick={() => setStage(4)}
       >
-        {i}
+        {i+1}
       </Button>
     ))
   }
