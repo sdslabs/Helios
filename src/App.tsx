@@ -5,7 +5,7 @@ import JoinUs from './modules/auth/views/joinUs'
 import { Register } from './modules/auth/views/register'
 import CreateQuiz from './modules/createQuiz/views/createQuiz'
 import GiveQuiz from './modules/giveQuiz/views/giveQuiz' 
-import Dashboard  from "./modules/dashboard"
+import Dashboard  from "./modules/dashboard/views/dashboard"
 import Profile from './modules/profile'
 
 function App() {
