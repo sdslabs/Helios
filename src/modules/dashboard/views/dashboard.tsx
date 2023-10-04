@@ -22,7 +22,34 @@ const Quizzes = () => {
       </Box>
 
       <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
-        <HorizontalScrollView />
+        <HorizontalScrollView
+          QuizCards={[
+            {
+              HeadingText: 'Recruitment Test',
+              DescriptionText:
+                'This test is for the recruitments of SDSLabs, PAG, DSG and InfoSec.',
+              StartTime: '26 Jun, 2021 03:00 pm',
+              ButtonText: 'Start Test',
+              QuizID: 5,
+            },
+            {
+              HeadingText: 'Recruitment Test',
+              DescriptionText:
+                'This test is for the recruitments of SDSLabs, PAG, DSG and InfoSec.',
+              StartTime: '26 Jun, 2021 03:00 pm',
+              ButtonText: 'Start Test',
+              QuizID: 5,
+            },
+            {
+              HeadingText: 'Recruitment Test',
+              DescriptionText:
+                'This test is for the recruitments of SDSLabs, PAG, DSG and InfoSec.',
+              StartTime: '26 Jun, 2021 03:00 pm',
+              ButtonText: 'Start Test',
+              QuizID: 5,
+            },
+          ]}
+        />
       </Box>
 
       <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
@@ -41,7 +68,34 @@ const Quizzes = () => {
         </Box>
       </Box>
       <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
-        <HorizontalScrollView />
+        <HorizontalScrollView
+          QuizCards={[
+            {
+              HeadingText: 'Recruitment Test',
+              DescriptionText:
+                'This test is for the recruitments of SDSLabs, PAG, DSG and InfoSec.',
+              StartTime: '26 Jun, 2021 03:00 pm',
+              ButtonText: 'Start Test',
+              QuizID: 5,
+            },
+            {
+              HeadingText: 'Recruitment Test',
+              DescriptionText:
+                'This test is for the recruitments of SDSLabs, PAG, DSG and InfoSec.',
+              StartTime: '26 Jun, 2021 03:00 pm',
+              ButtonText: 'Start Test',
+              QuizID: 5,
+            },
+            {
+              HeadingText: 'Recruitment Test',
+              DescriptionText:
+                'This test is for the recruitments of SDSLabs, PAG, DSG and InfoSec.',
+              StartTime: '26 Jun, 2021 03:00 pm',
+              ButtonText: 'Start Test',
+              QuizID: 5,
+            },
+          ]}
+        />
       </Box>
     </>
   )
@@ -52,7 +106,13 @@ const Dashboard = () => {
       <Stack spacing={0}>
         <TopNav />
         <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
-          <Highlight />
+          <Highlight
+            HeadingText='Maths Quiz has started'
+            DescriptionText='All the Best'
+            ButtonText='Start Quiz'
+            AttemptedQuizes={3}
+            HostedQuizes={10}
+          />
         </Box>
         <Box width='100%' display='flex' justifyContent='center' alignItems='center'>
           <Tabs

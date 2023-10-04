@@ -1,18 +1,26 @@
 import { VStack, Text, Flex, Spacer, Box, Button, Heading } from '@chakra-ui/react'
 
-const Highlight = () => {
+interface HighlightProps {
+  HeadingText: string
+  DescriptionText: string
+  ButtonText: string
+  AttemptedQuizes: number
+  HostedQuizes: number
+}
+
+const Highlight = ({ HeadingText, DescriptionText, ButtonText, AttemptedQuizes, HostedQuizes, }: HighlightProps) => {
   return (
     <>
       <Box width='78%' margin={16} height={200}>
         <Flex height='100%'>
           <Box width='66%' bg='rgba(235, 231, 242, 0.4)'>
             <VStack alignItems='flex-start' color='brand' pt={12} pl={20}>
-              <Heading fontSize='2rem'>Maths Quiz has Started</Heading>
+              <Heading fontSize='2rem'>{HeadingText}</Heading>
               <Text fontSize='larger' pb={4}>
-                All the Best!
+                {DescriptionText}
               </Text>
               <Button colorScheme='purple' bgColor='brand' px={10}>
-                Start Quiz
+                {ButtonText}
               </Button>
             </VStack>
           </Box>
@@ -20,7 +28,7 @@ const Highlight = () => {
           <Box width='15%' bg='rgba(235, 231, 242, 0.4)'>
             <VStack alignItems='center' color='brand' pt={12}>
               <Heading fontSize='3rem' pb={2}>
-                3
+                {AttemptedQuizes}
               </Heading>
               <Text align='center' width='60%' pb={4}>
                 Attempted Quizes
@@ -31,10 +39,10 @@ const Highlight = () => {
           <Box width='15%' bg='rgba(235, 231, 242, 0.4)'>
             <VStack alignItems='center' color='brand' pt={12}>
               <Heading fontSize='3rem' pb={2}>
-                10
+                {HostedQuizes}
               </Heading>
               <Text align='center' width='60%' pb={4}>
-                quizzes created
+                Hosted Quizes
               </Text>
             </VStack>
           </Box>
