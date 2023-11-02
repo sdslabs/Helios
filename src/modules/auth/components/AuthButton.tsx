@@ -1,17 +1,21 @@
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { Button, ButtonProps } from '@chakra-ui/react'
-import { AUTH_TYPES, AUTH_REDIRECT_URL } from '../constants'
+import axios from 'axios'
+import { AUTH_TYPES} from '../constants'
+import useAuthStore from '@auth/store/authStore'
 
 interface AuthButtonProps extends ButtonProps {
   authType: AUTH_TYPES
 }
 
 export const AuthButton = ({ authType, ...props }: AuthButtonProps) => {
+
   return (
     <Button
       {...props}
       as='a'
-      href={`${AUTH_REDIRECT_URL}/${authType}`}
+      href={authType==='google'?process.env.REACT_APP_GOOGLE_AUTH_URL:process.env.REACT_APP_GITHUB_AUTH_URL}
+      // onClick={handleClick}
       textTransform='capitalize'
       shadow='xl'
       backgroundColor='white'
