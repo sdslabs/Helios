@@ -8,6 +8,7 @@ module.exports = {
       '@createQuiz': path.resolve(__dirname, 'src/modules/createQuiz'),
       '@checkQuiz': path.resolve(__dirname, 'src/modules/checkQuiz'),
       '@giveQuiz': path.resolve(__dirname, 'src/modules/giveQuiz'),
+      '@api':path.resolve(__dirname,'src/api')
     },
   },
 };
