@@ -48,7 +48,7 @@ function Countdown() {
       setCountMinutes(minutes.toString().padStart(2, '0'));
       setCountSeconds(seconds.toString().padStart(2, '0'));
   
-      return () => clearInterval(interval);
+      return
     }, [countdown]);
 
    
