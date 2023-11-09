@@ -1,9 +1,5 @@
 import { Button, Heading, VStack } from '@chakra-ui/react'
-import {
-  PageInfoIcon,
-  PagePersonIcon,
-  RegistrantsOutlinedIcon,
-} from '@common/components/Icons'
+import { PageInfoIcon, PagePersonIcon, RegistrantsOutlinedIcon } from '@common/components/Icons'
 import BasicNavButton from '@common/components/BasicNavButton'
 import { QuizCreationSteps } from '../types'
 import QuestionsNavItem from './QuestionsNavItem'
@@ -34,7 +30,10 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
         Registration Form
       </BasicNavButton>
       <QuestionsNavItem setStage={setStage} />
-      <BasicNavButton leftIcon={<RegistrantsOutlinedIcon w={6} h={6} />}>
+      <BasicNavButton
+        leftIcon={<RegistrantsOutlinedIcon w={6} h={6}/>}
+        onClick={() => setStage(5)} isActive={stage === 5}
+      >
         Registrants
       </BasicNavButton>
       <VStack flexGrow={1} justifyContent='flex-end' w='100%' alignItems='stretch'>

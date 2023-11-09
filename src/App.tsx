@@ -5,32 +5,33 @@ import JoinUs from './modules/auth/views/joinUs'
 import { Register } from './modules/auth/views/register'
 import CreateQuiz from './modules/createQuiz/views/createQuiz'
 import GiveQuiz from './modules/giveQuiz/views/giveQuiz'
-import { Dashboard } from './modules/dashboard/Dashboard'
+import { Dashboard } from './modules/dashboard/views/Dashboard'
 import useAuthStore from '@auth/store/authStore'
-import { useAuth } from '@api/auth/hooks/useAuth'
+import { useAuth } from '@auth/api/auth/hooks/useAuth'
 import { useEffect, useState } from 'react'
 
 function App() {
   const authStore = useAuthStore()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  // const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const isLoggedIn = true;
 
-  const { data, isLoading, isFetched, refetch } = useAuth() as any
+  // const { data, isLoading, isFetched, refetch } = useAuth()
 
-  useEffect(() => {
-    console.log(data)
-    if (isFetched && !isLoading && !data) {
-      refetch()
-    } else if (isFetched && !isLoading && data.user !== null) {
-      authStore.setUser(data.user)
-      console.log(data.user)
-      authStore.setOnboarded(data.onboarded)
-      setIsLoggedIn(true)
-    }
-  }, [isFetched, isLoading, data])
+  // useEffect(() => {
+  //   console.log(data)
+  //   if (isFetched && !isLoading && !data) {
+  //     refetch()
+  //   } else if (isFetched && !isLoading && data.user !== null) {
+  //     authStore.setUser(data.user)
+  //     console.log(data.user)
+  //     authStore.setOnboarded(data.onboarded)
+  //     setIsLoggedIn(true)
+  //   }
+  // }, [isFetched, isLoading, data])
 
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>
+  // }
 
   if (!isLoggedIn && !isLoading && data.user == null) {
     return (
@@ -48,17 +49,17 @@ function App() {
     )
   }
 
-  if (isLoggedIn && authStore.onboarded && !isLoading) {
+  // if (isLoggedIn && authStore.onboarded && !isLoading) {
     return (
       <ChakraProvider theme={theme}>
         <Routes>
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/' element={<Dashboard />} />
-          <Route path='*' element={<Dashboard />} />
+          <Route path='*' element={<CreateQuiz />} />
         </Routes>
       </ChakraProvider>
     )
-  }
+  // }
 
   return (
     

@@ -1,4 +1,4 @@
-import axiosInstance from "@api/axiosInstance";
+import axiosInstance from "@auth/api/axiosInstance";
 
 export const checkAuth= async () => {
 	try {
