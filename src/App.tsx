@@ -33,23 +33,7 @@ function App() {
   //   return <div>Loading...</div>
   // }
 
-  if (!isLoggedIn && !isLoading && data.user == null) {
-    return (
-      
-      <ChakraProvider theme={theme}>
-        <QueryClientProvider client={queryClient}>
-        <Routes>
-          <Route path='/register' element={<Register />} />
-          <Route path='/' element={<JoinUs />} />
-          <Route path='*' element={<Navigate to='/' />} />
-          <Route path='/create/:quizID' element={<CreateQuiz />} />
-          <Route path='/givequiz' element={<GiveQuiz />} /> 
-        </Routes>
-      </ChakraProvider>
-    )
-  }
-
-  // if (isLoggedIn && authStore.onboarded && !isLoading) {
+  if (isLoggedIn && authStore.onboarded && !isLoading) {
     return (
       <ChakraProvider theme={theme}>
         <Routes>
@@ -62,16 +46,12 @@ function App() {
   // }
 
   return (
-    
     <ChakraProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
       <Routes>
         <Route path='/' element={<Register />} />
         <Route path='/register' element={<Register />} />
       </Routes>
-      </QueryClientProvider>
     </ChakraProvider>
-    
   )
 }
 
