@@ -17,116 +17,6 @@ type Registrant = {
   Status: string
 }
 
-// const data: Registrant[] = [
-//   {
-//     Sr: 1,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   },
-//   {
-//     Sr: 2,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   },
-//   {
-//     Sr: 3,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   }
-//   ,
-//   {
-//     Sr: 3,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   },
-//   {
-//     Sr: 3,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   },
-//   {
-//     Sr: 3,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   },
-//   {
-//     Sr: 3,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   },
-//   {
-//     Sr: 3,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   },
-//   {
-//     Sr: 3,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   },
-//   {
-//     Sr: 3,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   },
-//   {
-//     Sr: 3,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   },
-//   {
-//     Sr: 3,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   },
-//   {
-//     Sr: 3,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   },
-//   {
-//     Sr: 3,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   },
-//   {
-//     Sr: 3,
-//     Name: '<NAME>',
-//     StartTime: '<START_TIME>',
-//     SubmissionTime: '<SUB>',
-//     Status: Status.Submitted,
-//   }
-// ]
-
-
 
 const columnHelper = createColumnHelper<Registrant>()
 
@@ -134,6 +24,7 @@ const columns = [
   columnHelper.accessor('Sr', {
     cell: (info) => info.getValue(),
     header: 'Sr.',
+    enableColumnFilter:false
   }),
   columnHelper.accessor('Name', {
     cell: (row) => {
@@ -142,14 +33,17 @@ const columns = [
       )
     },
     header: 'Name',
+    enableColumnFilter:false
   }),
   columnHelper.accessor('StartTime', {
     cell: (info) => info.getValue(),
     header: 'Start Time',
+    enableColumnFilter:false
   }),
   columnHelper.accessor('SubmissionTime', {
     cell: (info) => info.getValue(),
     header: 'Submission Time',
+    enableColumnFilter:false
   }),
   columnHelper.accessor("Status", {
     cell: (row) => {
@@ -158,6 +52,7 @@ const columns = [
       )
     },
     header: "Status",
+    enableColumnFilter:true
   })
 ]
 
