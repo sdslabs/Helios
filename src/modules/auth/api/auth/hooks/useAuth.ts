@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import * as fetchers from '@api/auth/authFetcher';
+import * as fetchers from '@auth/api/auth/authFetcher';
 
 export const useAuth = ()=>{
     const query= useQuery({
