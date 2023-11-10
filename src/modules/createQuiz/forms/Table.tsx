@@ -14,8 +14,9 @@ import {
 } from '@tanstack/react-table'
 import { Select } from 'chakra-react-select'
 import { useMemo, useState } from 'react'
+import { usePaginationRange } from '@createQuiz/hooks/usePaginationRange'
 
-const Filter = ({ column, table }: any) => {
+const Filter = ({ column, table,setFilter }: any) => {
   const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id)
 
   const columnFilterValue = column.getFilterValue()
@@ -30,16 +31,15 @@ const Filter = ({ column, table }: any) => {
 
   return (
     <>
-      {console.log(sortedUniqueValues)}
       <select
         value={column.filterValue}
         onChange={(e) => {
           if (e.target.value !== 'none') {
             column.setFilterValue(e.target.value)
-            console.log(e.target.value)
           } else {
             column.setFilterValue(null)
           }
+          setFilter(e.target.value);
         }}
       >
         <option value='none'>none</option>
@@ -55,6 +55,7 @@ const Filter = ({ column, table }: any) => {
 
 const Table = ({ data, columns }: any) => {
   const [columnFilters, setColumnFilters] = useState([])
+  const [filter,setFilter] = useState('')
 
   const table = useReactTable({
     data,
@@ -67,15 +68,24 @@ const Table = ({ data, columns }: any) => {
     },
     onColumnFiltersChange: setColumnFilters as any, //!
     getFacetedUniqueValues: getFacetedUniqueValues(),
-  })
+  });
 
-  const getPagination = (pages: any, current: any) => {
-    const pagesList = []
-    for (let i = 1; i <= pages; i++) {
-      const push = current === i ? <Button>{i}</Button> : <div>{i}</div>
-      pagesList.push(push)
-    }
-    return <Flex gap='5px'>{pagesList}</Flex>
+  const changePage = (pageNumber:any,table:any)=>{
+    table.setPageIndex(pageNumber)
+  }
+
+  const getPagination = (pages: any, current: any,table:any) => {
+    const paginationRange = usePaginationRange({ currentPage: current, totalPageCount: pages })
+    const pagesList: any = [];
+
+    paginationRange?.map((num) => {
+      if (num != '...') {
+        pagesList.push(<Button color={num+1===current?'#191919':'#575757'} border='none' bg="white" onClick={()=>changePage(num,table)}>{num}</Button>)
+      } else {
+        pagesList.push(<Button disabled color='#575757' border='none' bg="white">...</Button>)
+      }
+    })
+    return <Flex>{pagesList}</Flex>
   }
 
   return (
@@ -86,13 +96,13 @@ const Table = ({ data, columns }: any) => {
             <Tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <Th key={header.id}>
-                  <Flex justifyContent='space-between' >
+                  <Flex justifyContent='space-between'>
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
                     {header.column.getCanFilter() ? (
                       <div>
-                        <Filter column={header.column} table={table} />
+                        <Filter setFilter={setFilter} column={header.column} table={table} />
                       </div>
                     ) : null}
                   </Flex>
@@ -114,11 +124,11 @@ const Table = ({ data, columns }: any) => {
         </Tbody>
       </T>
       <Flex>
-        <Button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+        <Button color='#604195' border='none' bg="white" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
           Previous
         </Button>
-        <div>{getPagination(table.getPageCount(), table.getState().pagination.pageIndex + 1)}</div>
-        <Button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+        <div>{getPagination(table.getPageCount(), table.getState().pagination.pageIndex + 1,table)}</div>
+        <Button color='#604195' border='none' bg="white" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
           Next
         </Button>
       </Flex>
