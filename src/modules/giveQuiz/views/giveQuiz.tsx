@@ -7,17 +7,23 @@ import SideNavContent from '@giveQuiz/sideNav'
 import SectionTopBar from '@giveQuiz/components/SectionTopBar'
 import SectionInstructions from '@giveQuiz/components/SectionInstructions'
 import QuestionView from '@giveQuiz/components/QuestionView'
-import { TimerProvider } from '@giveQuiz/components/TimerContext';
+import { TimeProvider } from '@giveQuiz/components/TimeContext';
 
 const giveQuiz = () => {
   const [quizStage, setQuizStage] = useState<GiveQuizSteps>(0)
+  const [receivedTimeQty, setReceivedTimeQty] = useState(0);
+
+  const updateReceivedTimeQty = (newTimeQty) => {
+    setReceivedTimeQty(newTimeQty);
+  };
 
   const renderQuiz = () => {
     switch (quizStage) {
       case GiveQuizSteps.Instructions:
         return <Instructions stage={quizStage} setStage={setQuizStage} />
       case GiveQuizSteps.Sections:
-        return <SectionInstructions stage={quizStage} setStage={setQuizStage} />
+        return <SectionInstructions stage={quizStage} setStage={setQuizStage} receivedTimeQtyProp={receivedTimeQty}
+        updateReceivedTimeQtyProp={updateReceivedTimeQty}/>
       case GiveQuizSteps.Questions:
         return <QuestionView />
       default:
