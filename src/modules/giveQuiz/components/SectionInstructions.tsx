@@ -1,15 +1,32 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import { GiveQuizSteps } from '../types'
+import * as io from "socket.io-client";
+import { useTimer } from './TimerContext';
 
 interface SideNavContentProps {
   stage: GiveQuizSteps
   setStage: (stage: GiveQuizSteps) => void
 }
 
+
 const SectionInstructions = ({ stage, setStage }: SideNavContentProps) => {
   const [sectionInstructions, setSectionInstructions] = useState('')
   const [sectionNumber, setSectionNumber] = useState(1)
+  const { setTimer } = useTimer();
+    // Function to handle the button click and emit the socket event
+    const handleButtonClick = () => {
+
+      const socket = io.connect("http://localhost:3000");
+    
+      socket.emit('join_quiz', { quizId: "64f03422df4af65f96380c43", userId: "64f03422df4af65f96380c3e" });
+      socket.on('sendTime', (timeLeft) => {
+        setTimer(timeLeft);
+        console.log(timeLeft)
+      })
+  
+  };
+
 
   return (
     <>
@@ -36,6 +53,7 @@ const SectionInstructions = ({ stage, setStage }: SideNavContentProps) => {
               alignSelf='flex-end'
               mt={12}
               onClick={() => {
+                handleButtonClick();
                 setStage(2)
               }}
             >
