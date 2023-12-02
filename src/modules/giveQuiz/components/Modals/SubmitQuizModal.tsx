@@ -3,19 +3,29 @@ import { useState } from 'react'
 import { TimeIcon, CloseIcon } from '@chakra-ui/icons'
 import { QuizSummaryModal } from './QuizSummaryModal'
 import QuizSummaryPie from '../QuizSummaryPie'
+import * as io from "socket.io-client";
+import { useNavigate } from 'react-router-dom';
 
 interface SubmitQuizModalProps {
   open: boolean
   toggleIsOpen: () => void
 }
 
+const socket = io.connect("http://localhost:3000");
+
+
 export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) => {
   const [timeLeft, setTimeLeft] = useState('00 : 00 : 00')
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
-
+  const navigate = useNavigate(); 
   const handleQuizSubmit = () => {
+    
     setIsQuizSubmitted(true)
     // TODO: submit quiz and route to quiz summary modal
+
+socket.disconnect();
+      navigate('/');
+  
   }
 
   return (

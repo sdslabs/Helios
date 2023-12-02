@@ -10,6 +10,7 @@ const SectionTopBar = () => {
   const [answeredAndMarkedForReviewQuestions, setAnsweredAndMarkedForReviewQuestions] = useState(0)
 
   return (
+
     <HStack
       top={0}
       id='top-nav'
@@ -54,6 +55,7 @@ const SectionTopBar = () => {
         <Countdown />
       </Box>
     </HStack>
+    
   )
 }
 
