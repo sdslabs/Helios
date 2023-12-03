@@ -7,7 +7,7 @@ import CreateQuiz from './modules/createQuiz/views/createQuiz'
 import GiveQuiz from './modules/giveQuiz/views/giveQuiz'
 import { Dashboard } from './modules/dashboard/views/Dashboard'
 import useAuthStore from '@auth/store/authStore'
-import { useAuth } from '@auth/hooks/useAuth' 
+import { useAuth } from '@auth/api/useAuth' 
 import { useEffect, useState } from 'react'
 import OAuthPopup from "@auth/views/OAuthPopup"
 
