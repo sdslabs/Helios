@@ -1,8 +1,10 @@
 import React from 'react'
-import { Card, CardBody, CardFooter, Image, Stack, Heading, Text, Button } from '@chakra-ui/react'
+import { Card, CardBody, CardFooter, Image, Stack, Heading, Text, Button, Flex } from '@chakra-ui/react'
 
 const QuizCard: React.FC<any> = ({ title, content,time }) => {
   return (
+    <Flex zIndex='-1'>
+
     <Card
       direction={{ base: 'column', sm: 'row' }}
       overflow='hidden'
@@ -38,6 +40,7 @@ const QuizCard: React.FC<any> = ({ title, content,time }) => {
         </CardBody>
       </Stack>
     </Card>
+      </Flex>
   )
 }
 

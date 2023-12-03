@@ -1,25 +1,17 @@
-import { Table as T, Thead, Tbody, Tr, Th, Td, chakra, Button, Flex } from '@chakra-ui/react'
+import { Table as T, Thead, Tbody, Tr, Th, Td, Button, Flex } from '@chakra-ui/react'
 import {
   useReactTable,
   flexRender,
   getCoreRowModel,
-  ColumnDef,
-  SortingState,
-  ColumnFiltersState,
-  getSortedRowModel,
-  FilterFn,
   getPaginationRowModel,
   getFilteredRowModel,
   getFacetedUniqueValues,
 } from '@tanstack/react-table'
-import { Select } from 'chakra-react-select'
 import { useMemo, useState } from 'react'
 import { usePaginationRange } from '@createQuiz/hooks/usePaginationRange'
 
 const Filter = ({ column, table,setFilter }: any) => {
   const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id)
-
-  const columnFilterValue = column.getFilterValue()
 
   const sortedUniqueValues = useMemo(
     () =>
@@ -55,7 +47,7 @@ const Filter = ({ column, table,setFilter }: any) => {
 
 const Table = ({ data, columns }: any) => {
   const [columnFilters, setColumnFilters] = useState([])
-  const [filter,setFilter] = useState('')
+  const [_,setFilter] = useState('')
 
   const table = useReactTable({
     data,
@@ -71,7 +63,7 @@ const Table = ({ data, columns }: any) => {
   });
 
   const changePage = (pageNumber:any,table:any)=>{
-    table.setPageIndex(pageNumber)
+    table.setPageIndex(pageNumber-1)
   }
 
   const getPagination = (pages: any, current: any,table:any) => {
@@ -80,7 +72,7 @@ const Table = ({ data, columns }: any) => {
 
     paginationRange?.map((num) => {
       if (num != '...') {
-        pagesList.push(<Button color={num+1===current?'#191919':'#575757'} border='none' bg="white" onClick={()=>changePage(num,table)}>{num}</Button>)
+        pagesList.push(<Button color={num===current?'#191919':'#575757'} border='none' bg="white" onClick={()=>changePage(num,table)}>{num}</Button>)
       } else {
         pagesList.push(<Button disabled color='#575757' border='none' bg="white">...</Button>)
       }
