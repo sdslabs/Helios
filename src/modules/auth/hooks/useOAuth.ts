@@ -1,0 +1,154 @@
+import axiosInstance from '@auth/api/axiosInstance'
+import { useQuery } from '@tanstack/react-query'
+import { useCallback, useRef, useState } from 'react'
+import { generateState } from '@auth/tools/generateState'
+import { useNavigate } from "react-router-dom";
+
+const OAUTH_STATE_KEY = process.env.REACT_APP_OAUTH_STATE_KEY as string
+const POPUP_HEIGHT = 700
+const POPUP_WIDTH = 600
+const OAUTH_RESPONSE = process.env.REACT_APP_OAUTH_RESPONSE as string
+
+type UIState = {
+  loading: boolean
+  error: string | null
+}
+
+const saveState = (state: string): void => {
+  sessionStorage.setItem(OAUTH_STATE_KEY || '', state)
+}
+
+const removeState = () => {
+  sessionStorage.removeItem(OAUTH_STATE_KEY)
+}
+
+const openPopUp = (url: string): Window | null => {
+  const top = window.outerHeight / 2 + window.screenY - POPUP_HEIGHT / 2
+  const left = window.outerWidth / 2 + window.screenX - POPUP_WIDTH / 2
+  return window.open(
+    url,
+    'OAuth2 Popup',
+    `height=${POPUP_HEIGHT},width=${POPUP_WIDTH},top=${top},left=${left}`,
+  )
+}
+
+const closePopup = (popupRef: React.RefObject<Window | undefined>) => {
+  popupRef.current?.close()
+}
+
+const cleanup = (
+  intervalRef: any, //!
+  popupRef: React.RefObject<Window | undefined>,
+  handleMessageListener: EventListener,
+) => {
+  clearInterval(intervalRef.current)
+  closePopup(popupRef)
+  removeState()
+  window.removeEventListener('message', handleMessageListener)
+}
+
+export const useOAuth = (authType: string) => {
+  const Navigate = useNavigate();
+  const authUrl: string =
+    authType === 'google'
+      ? process.env.REACT_APP_GOOGLE_AUTH_URL || ''
+      : process.env.REACT_APP_GITHUB_AUTH_URL || ''
+  const clientId: string =
+    authType === 'google'
+      ? process.env.REACT_APP_GOOGLE_CLIENT_ID || ''
+      : process.env.REACT_APP_GITHUB_CLIENT_ID || ''
+  const redirectUri:string= process.env.REACT_APP_GOOGLE_REDIRECT_URI  ||''
+  const popupRef = useRef<Window | null>()
+  const intervalRef = useRef<any>()
+
+  const [{ loading, error }, setUI] = useState<UIState>({ loading: false, error: null })
+
+  const getAuth = useCallback(() => {
+    setUI({
+      loading: true,
+      error: null,
+    })
+
+    const state = generateState()
+    saveState(state)
+
+    popupRef.current = openPopUp(authUrl)
+    async function handleMessageListener(message: any) {
+      try {
+        const type = message?.data?.type
+        if (type === OAUTH_RESPONSE) {
+          const errorMaybe = message?.data?.error
+          if (errorMaybe) {
+            setUI({
+              loading: false,
+              error: errorMaybe || 'Unknown Error',
+            })
+          } else {
+            const code = message?.data?.payload?.code
+            const params = new URLSearchParams({
+              client_id: clientId,
+              code,
+              redirect_uri: redirectUri,
+            })
+            const { data, isLoading, isError } = useQuery({
+              queryKey: ['auth'],
+              queryFn: async () => {
+                try {
+                  const res = await axiosInstance.post(`http://localhost:4000/${authType}/token?${params}`)
+                  return res.data
+                } catch (err: any) {
+                  return err.response.data
+                }
+              },
+            })
+            if (isLoading) {
+              setUI({
+                loading: true,
+                error: null,
+              })
+            } else if (isError) {
+              setUI({
+                loading: false,
+                error: 'Failed to exchange code for token',
+              })
+            } else {
+              setUI({
+                loading: false,
+                error: null,
+              })
+              Navigate('/')
+            }
+          }
+        }
+      } catch (error: any) {
+        console.error(error)
+        setUI({
+          loading: false,
+          error: error.toString(),
+        })
+      } finally {
+        cleanup(intervalRef, popupRef, handleMessageListener)
+      }
+    }
+    window.addEventListener('message', handleMessageListener);
+
+    intervalRef.current = setInterval(()=>{
+      const popupClosed = !popupRef.current || !popupRef.current.window || popupRef.current.window.closed;
+      if(popupClosed){
+        setUI((ui)=>({
+          ...ui,
+          loading:false
+        }));
+        console.warn('warning:popup closed before authentication');
+        clearInterval(intervalRef.current);
+        removeState();
+        window.removeEventListener('message',handleMessageListener);
+      }
+    },250);
+    return () => {
+      window.removeEventListener('message', handleMessageListener);
+      if(intervalRef.current) clearInterval(intervalRef.current);
+    }
+  }, [])
+  return { loading, error,getAuth }
+}

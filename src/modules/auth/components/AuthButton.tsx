@@ -2,20 +2,24 @@ import { ChevronRightIcon } from '@chakra-ui/icons'
 import { Button, ButtonProps } from '@chakra-ui/react'
 import axios from 'axios'
 import { AUTH_TYPES} from '../constants'
-import useAuthStore from '@auth/store/authStore'
+import { useOAuth } from '@auth/hooks/useOAuth'
 
 interface AuthButtonProps extends ButtonProps {
   authType: AUTH_TYPES
 }
 
 export const AuthButton = ({ authType, ...props }: AuthButtonProps) => {
+  const {loading,error,getAuth} = useOAuth(authType);
+
+  const handleClick = ()=>{
+    getAuth();
+  }
 
   return (
     <Button
       {...props}
       as='a'
-      href={authType==='google'?process.env.REACT_APP_GOOGLE_AUTH_URL:process.env.REACT_APP_GITHUB_AUTH_URL}
-      // onClick={handleClick}
+      onClick={handleClick}
       textTransform='capitalize'
       shadow='xl'
       backgroundColor='white'

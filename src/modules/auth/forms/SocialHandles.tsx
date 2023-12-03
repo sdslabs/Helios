@@ -33,6 +33,7 @@ import useEducationalInfoStore from '@auth/store/EducationalInformationStore'
 import axios from 'axios'
 import useAuthStore from '@auth/store/authStore'
 import { useNavigate } from 'react-router-dom'
+import { useAuth, useOnboard } from '../hooks/useAuth'
 
 // Making the select
 interface SocialMediaOption {
@@ -144,40 +145,35 @@ export const SocialHandlesForm = (props: FormProps) => {
   const { firstName, lastName, email, phone } = usePersonalDetailsStore()
   const { country, city, org } = useEducationalInfoStore()
   const { user, setOnboarded } = useAuthStore()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const personalDetails = {
-    firstName,
-    lastName,
-    email,
-    phone,
+    name: firstName + lastName,
+    emailAdd: email,
+    phoneNo: phone,
   }
 
   const educationalDetails = {
-    country,
-    city,
-    org,
+    instituteName: org,
+    country: country,
+    city: city,
+  }
+ const {mutate} = useOnboard();
+  async function handleRegister() {
+    mutate({
+      personalDetails,
+      educationalDetails,
+      socialMediaHandles,
+      user,
+    }
+    ,{
+      onSuccess:()=>{
+        setOnboarded(true)
+        navigate('/dashboard')
+      }
+    })
   }
 
-  async function handleRegister() {
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}auth/onboard`,
-      {
-        personalDetails,
-        educationalDetails,
-        socialMediaHandles,
-        user,
-      },
-      {
-        withCredentials: true,
-      },
-    )
-    console.log(response)
-    if (response.status === 200) {
-      setOnboarded(true);
-      navigate("/dashboard")
-    }
-  }
   return (
     <>
       <Box sx={{ borderRadius: 'md', my: 8, boxSize: '26rem', minW: 'xl' }}>

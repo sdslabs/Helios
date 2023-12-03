@@ -7,8 +7,9 @@ import CreateQuiz from './modules/createQuiz/views/createQuiz'
 import GiveQuiz from './modules/giveQuiz/views/giveQuiz'
 import { Dashboard } from './modules/dashboard/views/Dashboard'
 import useAuthStore from '@auth/store/authStore'
-import { useAuth } from '@auth/api/auth/hooks/useAuth'
+import { useAuth } from '@auth/hooks/useAuth' 
 import { useEffect, useState } from 'react'
+import OAuthPopup from "@auth/views/OAuthPopup"
 
 function App() {
   const authStore = useAuthStore()
@@ -62,6 +63,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Register />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/callback' element={<OAuthPopup/>}/>
       </Routes>
     </ChakraProvider>
   )

@@ -16,7 +16,6 @@ interface authStore {
 }
 
 const useAuthStore = create<authStore>()(
-    // persist<authStore>(
         set=>({
             user:{
                 userId:0,
@@ -27,11 +26,6 @@ const useAuthStore = create<authStore>()(
             setUser:(to:User)=>set({user:to}),
             setOnboarded:(to:boolean)=>set({onboarded:to}),
     }),
-    // {
-    //     name:'auth-store',
-    //     storage:createJSONStorage(()=>sessionStorage)
-    // }
-    // )
 )
 
 export default useAuthStore;
