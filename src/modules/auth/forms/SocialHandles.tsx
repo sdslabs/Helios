@@ -33,7 +33,7 @@ import useEducationalInfoStore from '@auth/store/EducationalInformationStore'
 import axios from 'axios'
 import useAuthStore from '@auth/store/authStore'
 import { useNavigate } from 'react-router-dom'
-import { useAuth, useOnboard } from '../hooks/useAuth'
+import { useAuth, useOnboard } from '../api/useAuth'
 
 // Making the select
 interface SocialMediaOption {
