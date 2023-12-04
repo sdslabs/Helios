@@ -116,7 +116,9 @@ export const useOAuth = (authType: string) => {
                 loading: false,
                 error: null,
               })
-              Navigate('/')
+              if(data.data.status === 200){
+                Navigate('/')
+              }
             }
           }
         }
