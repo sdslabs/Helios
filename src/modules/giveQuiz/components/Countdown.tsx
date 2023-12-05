@@ -3,6 +3,8 @@ import { TimeIcon } from '@chakra-ui/icons';
 import { Flex } from '@chakra-ui/react';
 import { useTimer } from './TimerContext';
 import { QuizSummaryModal } from './Modals/QuizSummaryModal';
+import { useNavigate } from 'react-router-dom';
+
 
 function Countdown() {
   const { timerValue } = useTimer();
@@ -15,6 +17,7 @@ function Countdown() {
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen)
   }
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     setDuration((prevDuration) => (timerValue !== null ? timerValue : prevDuration));

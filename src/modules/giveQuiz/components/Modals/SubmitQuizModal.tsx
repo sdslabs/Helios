@@ -19,7 +19,7 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
   const [timeLeft, setTimeLeft] = useState('00 : 00 : 00')
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
   const navigate = useNavigate(); 
-  // quizId is hardcoded for now
+  // quiz
   const quizId = '64f03422df4af65f96380c43';
 
       const {mutate} = useSubmitQuiz();
