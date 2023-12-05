@@ -5,28 +5,37 @@ import { QuizSummaryModal } from './QuizSummaryModal'
 import QuizSummaryPie from '../QuizSummaryPie'
 import * as io from "socket.io-client";
 import { useNavigate } from 'react-router-dom';
+import { useSubmitQuiz } from '../../api/UseSubmitQuiz';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 interface SubmitQuizModalProps {
   open: boolean
   toggleIsOpen: () => void
 }
 
-const socket = io.connect("http://localhost:3000");
-
+const socket = io.connect("http://localhost:4000");
 
 export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) => {
+
   const [timeLeft, setTimeLeft] = useState('00 : 00 : 00')
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
   const navigate = useNavigate(); 
-  const handleQuizSubmit = () => {
-    
-    setIsQuizSubmitted(true)
-    // TODO: submit quiz and route to quiz summary modal
+  // quizId is hardcoded for now
+  const quizId = '64f03422df4af65f96380c43';
 
-socket.disconnect();
-      navigate('/');
+      const {mutate} = useSubmitQuiz();
+      const handleQuizSubmit = async () => {
+        socket.disconnect();
+        mutate(quizId, { onSuccess:()=>{
+          console.log(quizId);
+          console.log({ quizId});
+            setIsQuizSubmitted(true);
+            navigate('/')
+          }
+        })
+      }
   
-  }
+  
 
   return (
     <Modal isOpen={open} onClose={toggleIsOpen} isCentered size='3xl'>
@@ -98,4 +107,4 @@ socket.disconnect();
       </ModalContent>
     </Modal>
   )
-}
+  }

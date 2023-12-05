@@ -16,9 +16,7 @@ const SectionInstructions = ({ stage, setStage }: SideNavContentProps) => {
   const { setTimer } = useTimer();
     // Function to handle the button click and emit the socket event
     const handleButtonClick = () => {
-
-      const socket = io.connect("http://localhost:3000");
-    
+      const socket = io.connect("http://localhost:4000");
       socket.emit('join_quiz', { quizId: "64f03422df4af65f96380c43", userId: "64f03422df4af65f96380c3e" });
       socket.on('sendTime', (timeLeft) => {
         setTimer(timeLeft);
