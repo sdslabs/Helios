@@ -44,7 +44,9 @@ function App() {
   }
 
   return (
+    
     <ChakraProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>
       <Routes>
         {!isLoggedIn && !isLoading && data.user === null ? (
           <>
@@ -67,7 +69,9 @@ function App() {
           </>
         )}
       </Routes>
+      </QueryClientProvider>
     </ChakraProvider>
+    
   )
 }
 
