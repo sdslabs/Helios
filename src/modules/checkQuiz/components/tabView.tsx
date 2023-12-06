@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator } from '@chakra-ui/react'
-import Filters from './filters'
+import Filters from './Filters'
 
 const TabView = () => {
   const tabStyle = {
