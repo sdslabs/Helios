@@ -1,6 +1,6 @@
 import { Box, Grid, Heading, Text } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
-import Table from './Table'
+import Table from '../components/Table'
 import data from "./MOCK_DATA.json"
 
 enum Status {
@@ -58,7 +58,7 @@ const columns = [
 
 const Registrants = () => {
   return (
-    <Box w='930px' mx='auto' my={14}>
+    <Box w='48vw' mx='auto' my='8vh'>
       <Heading>Registrants</Heading>
       <Table data={data} columns={columns} />
     </Box>

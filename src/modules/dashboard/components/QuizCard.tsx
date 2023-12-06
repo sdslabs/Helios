@@ -9,14 +9,14 @@ const QuizCard: React.FC<any> = ({ title, content,time }) => {
       direction={{ base: 'column', sm: 'row' }}
       overflow='hidden'
       variant='outline'
-      width='560px'
-      height='220px'
-      p='16px'
-      marginY='24px'
+      width='30vw'
+      height='22vh'
+      p='1.6vh'
+      marginY='2.4vh'
     >
       <Image
         objectFit='cover'
-        w='200px'
+        w='10vw'
         src='https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60'
         alt='Caffe Latte'
       />
@@ -33,7 +33,7 @@ const QuizCard: React.FC<any> = ({ title, content,time }) => {
         <Text fontSize='14px'>
           Scheduled:{time}
         </Text>
-        <Button colorScheme='purple' color='white' bgColor='brand' height='32px' width='104px' fontSize='12px' marginTop='16px'>
+        <Button colorScheme='purple' color='white' bgColor='brand' height='3.2vh' width='5.2vw' fontSize='12px' marginTop='1.6vh'>
           Start Quiz
         </Button>
 

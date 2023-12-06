@@ -2,7 +2,7 @@ import { Card, Flex, Heading, Text } from '@chakra-ui/react'
 
 const QuizStartedBanner: React.FC = () => {
   return (
-    <Card w='1130px' h='208px' backgroundColor='#EBE7F2' boxShadow='none' padding='66px'>
+    <Card w='60vw' h='21vh' backgroundColor='#EBE7F2' boxShadow='none' padding='66px'>
       <Flex flexDirection='column' gap='8px'>
         <Heading color='#604195' fontSize='32px' fontWeight='600'>
           Register For a Quiz

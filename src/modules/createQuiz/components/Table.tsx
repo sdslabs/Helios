@@ -7,7 +7,7 @@ import {
   getFilteredRowModel,
   getFacetedUniqueValues,
 } from '@tanstack/react-table'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { usePaginationRange } from '@createQuiz/hooks/usePaginationRange'
 
 const Filter = ({ column, table,setFilter }: any) => {
@@ -25,13 +25,13 @@ const Filter = ({ column, table,setFilter }: any) => {
     <>
       <select
         value={column.filterValue}
+        
         onChange={(e) => {
           if (e.target.value !== 'none') {
             column.setFilterValue(e.target.value)
           } else {
             column.setFilterValue(null)
           }
-          setFilter(e.target.value);
         }}
       >
         <option value='none'>none</option>
@@ -46,8 +46,12 @@ const Filter = ({ column, table,setFilter }: any) => {
 }
 
 const Table = ({ data, columns }: any) => {
-  const [columnFilters, setColumnFilters] = useState([])
-  const [_,setFilter] = useState('')
+  const [columnFilters, setColumnFilters] = useState()
+  const [filta,setFilter] = useState(0) /* used this  */
+
+  useEffect(()=>{
+    setFilter((value)=>{return value++})
+  },[columnFilters])
 
   const table = useReactTable({
     data,
@@ -95,7 +99,7 @@ const Table = ({ data, columns }: any) => {
                     {header.column.getCanFilter() ? (
                       <div>
                         <Filter setFilter={setFilter} column={header.column} table={table} />
-                      </div>
+                      </div>////////////////////////////////////////////////////////////////
                     ) : null}
                   </Flex>
                 </Th>

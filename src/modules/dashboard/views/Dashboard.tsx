@@ -15,8 +15,8 @@ export const Dashboard = () => {
   return (
     <>
       <Navbar />
-      <div style={{ paddingLeft: '250px', paddingRight: '250px', paddingTop: '79px' }}>
-        <Flex gap='23px' marginBottom='50px'>
+      <div style={{ paddingLeft: '12.5vw', paddingRight: '12.5vw', paddingTop: '8vh' }}>
+        <Flex gap='2.3vh' marginBottom='5vh'>
           <QuizStartedBanner/>
           <AttemptedQuizzesCard quantity={attemptedQuantity}/>
           <HostedQuizzesCard quantity={hostedQuantity}/>

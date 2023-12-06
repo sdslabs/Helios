@@ -13,9 +13,9 @@ const Navbar:React.FC=()=> {
       bg="white"
       color="white"
       boxShadow='md'
-      height='52px'
-      paddingLeft='44px'
-      paddingRight='44px'
+      height='5.2vh'
+      paddingLeft='2.2vw'
+      paddingRight='2.2vw'
     >
       <Flex align="center"  justifyItems='center'>
         <Heading as="h1" fontSize='20px' color="var(--V6, #604195)">
@@ -30,12 +30,12 @@ const Navbar:React.FC=()=> {
         <Button variant="solid"
           bg="var(--V6, #604195)"
           color="white"
-          height='36px'
-          width='126px'
+          height='3.6vh'
+          width='6.3vw'
           fontSize='14px'>
           + Host Quiz
         </Button>
-        <Avatar size="sm" name="User" marginLeft='16px' src={profilepic} />
+        <Avatar size="sm" name="User" marginLeft='1.6vh' src={profilepic} />
       </Box>
     </Flex>
   )

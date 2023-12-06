@@ -17,7 +17,6 @@ function App() {
   const { data, isLoading, isFetched, refetch } = useAuth()
 
   useEffect(() => {
-    console.log(data)
     if (isFetched && !isLoading && !data) {
       refetch()
     } else if (isFetched && !isLoading && data.user !== null) {
@@ -41,6 +40,7 @@ function App() {
           <Route path='*' element={<Navigate to='/' />} />
           <Route path='/create/:quizID' element={<CreateQuiz />} />
           <Route path='/givequiz' element={<GiveQuiz />} />
+        <Route path='/callback' element={<OAuthPopup/>}/>
         </Routes>
       </ChakraProvider>
     )
@@ -63,10 +63,11 @@ function App() {
       <Routes>
         <Route path='/' element={<Register />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/callback' element={<OAuthPopup/>}/>
       </Routes>
     </ChakraProvider>
   )
+
+  //! better way 
 }
 
 export default App

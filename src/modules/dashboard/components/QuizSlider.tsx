@@ -37,7 +37,7 @@ const QuizSlider: React.FC = () => {
 
   return (
     <Flex zIndex='5' >  
-        <Flex overflowY='scroll' gap='10px' backgroundImage='linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0),rgba(255, 255, 255, 0),rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8))'>
+        <Flex overflowY='scroll' gap='1vh' backgroundImage='linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0),rgba(255, 255, 255, 0),rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8))'>
             {cards.map((card, index) => (
               <QuizCard title={card.title} key={index} content={card.content} time={card.time} />
             ))}

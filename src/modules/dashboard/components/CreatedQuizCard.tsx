@@ -2,15 +2,15 @@ import { Box, Button, Card, Flex, Heading, Image, Tag, Text } from '@chakra-ui/r
 
 const CreatedQuizCard: React.FC<any> = ({ image, name, tags, content, schedule, edit }) => {
   return (
-    <Card padding='16px' height='200px'>
-      <Flex gap='16px'>
+    <Card padding='1.6vh' height='20vh'>
+      <Flex gap='1.6vh'>
         <Image
-          width='144px'
+          width='7.5vw'
           src='https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60'
         />
         <Box>
-          <Flex flexDirection='column' gap='10px'>
-            <Flex gap='8px' alignItems='center'>
+          <Flex flexDirection='column' gap='1vh'>
+            <Flex gap='0.75vh' alignItems='center'>
               <Heading fontSize='14px'>{name}</Heading>
               {tags.map((t: any, i: any) => (
                 <Tag
@@ -22,7 +22,7 @@ const CreatedQuizCard: React.FC<any> = ({ image, name, tags, content, schedule, 
                       : '#EBE7F2'
                   }
                   color={t === 'Completed' ? '#FF8900' : t === 'Live' ? '#27A624' : '#775BA4'}
-                  padding='4px, 10px'
+                  padding='4px, 1px'
                   key={i}
                 >
                   {t}
@@ -33,7 +33,7 @@ const CreatedQuizCard: React.FC<any> = ({ image, name, tags, content, schedule, 
               <Text color='#939393'>{content}</Text>
               <Flex color='#939393'>Scheduled:<Text color='black'>{schedule}</Text></Flex>
             </Flex>
-            <Button height='32px' width='111px' bgColor='#593C8F' color='#FFFFFF'>{edit ? 'Edit Quiz' : 'Check Quiz'}</Button>
+            <Button height='3.3vh' width='5.5vw' bgColor='#593C8F' color='#FFFFFF'>{edit ? 'Edit Quiz' : 'Check Quiz'}</Button>
           </Flex>
         </Box>
       </Flex>
