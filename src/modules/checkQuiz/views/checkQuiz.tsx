@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import TopNav from '@common/components/TopNav'
 import { Box, Button, Flex } from '@chakra-ui/react'
-import DashboardHeader from '@checkQuiz/components/dashboardHeader'
-import TabView from '@checkQuiz/components/tabView'
+import DashboardHeader from '@checkQuiz/components/DashboardHeader'
+import TabView from '@checkQuiz/components/TabView'
 
 const CheckQuiz = () => {
   const [quizName, setQuizName] = useState('Maths Quiz')
