@@ -1,6 +1,5 @@
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { Button, ButtonProps } from '@chakra-ui/react'
-import axios from 'axios'
 import { AUTH_TYPES} from '../constants'
 import { useOAuth } from '@auth/hooks/useOAuth'
 

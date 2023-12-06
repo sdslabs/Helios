@@ -39,7 +39,7 @@ const QuizTabs: React.FC = () => {
 
         <TabPanels borderColor='#E7E7E7'>
           <TabPanel borderColor='#E7E7E7'>
-            <Flex bgColor='#EBE7F2' height='40px' align='center' justify='center'>
+            <Flex bgColor='#EBE7F2' height='4vh' align='center' justify='center'>
               <Heading
                 bgColor='#EBE7F2'
                 textAlign='center'
@@ -51,7 +51,7 @@ const QuizTabs: React.FC = () => {
               </Heading>
             </Flex>
             <QuizSlider />
-            <Flex bgColor='#EBE7F2' height='40px' align='center' justify='center'>
+            <Flex bgColor='#EBE7F2' height='4vh' align='center' justify='center'>
               <Heading
                 bgColor='#EBE7F2'
                 textAlign='center'
@@ -65,7 +65,7 @@ const QuizTabs: React.FC = () => {
             <QuizSlider />
           </TabPanel>
           <TabPanel borderColor='#E7E7E7'>
-            <Flex flexDirection='column' gap='24px'>
+            <Flex flexDirection='column' gap='2.4vh'>
               {createdQuizzes.map((quiz, index) => (
                 <CreatedQuizCard
                   key={index}

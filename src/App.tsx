@@ -16,7 +16,16 @@ function App() {
   // const [isLoggedIn, setIsLoggedIn] = useState(false)
   const isLoggedIn = true;
 
-  // const { data, isLoading, isFetched, refetch } = useAuth()
+  useEffect(() => {
+    if (isFetched && !isLoading && !data) {
+      refetch()
+    } else if (isFetched && !isLoading && data.user !== null) {
+      authStore.setUser(data.user)
+      console.log(data.user)
+      authStore.setOnboarded(data.onboarded)
+      setIsLoggedIn(true)
+    }
+  }, [isFetched, isLoading, data])
 
   // useEffect(() => {
   //   console.log(data)
@@ -30,9 +39,20 @@ function App() {
   //   }
   // }, [isFetched, isLoading, data])
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>
-  // }
+  if (!isLoggedIn && !isLoading && data.user == null) {
+    return (
+      <ChakraProvider theme={theme}>
+        <Routes>
+          <Route path='/register' element={<Register />} />
+          <Route path='/' element={<JoinUs />} />
+          <Route path='*' element={<Navigate to='/' />} />
+          <Route path='/create/:quizID' element={<CreateQuiz />} />
+          <Route path='/givequiz' element={<GiveQuiz />} />
+        <Route path='/callback' element={<OAuthPopup/>}/>
+        </Routes>
+      </ChakraProvider>
+    )
+  }
 
   if (isLoggedIn && authStore.onboarded && !isLoading) {
     return (
@@ -51,10 +71,11 @@ function App() {
       <Routes>
         <Route path='/' element={<Register />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/callback' element={<OAuthPopup/>}/>
       </Routes>
     </ChakraProvider>
   )
+
+  //! better way 
 }
 
 export default App

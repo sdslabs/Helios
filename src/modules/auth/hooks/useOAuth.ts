@@ -1,8 +1,6 @@
 import axiosInstance from '@auth/api/axiosInstance'
-import { useQuery } from '@tanstack/react-query'
 import { useCallback, useRef, useState } from 'react'
 import { generateState } from '@auth/tools/generateState'
-import { useNavigate } from "react-router-dom";
 
 const OAUTH_STATE_KEY = process.env.REACT_APP_OAUTH_STATE_KEY as string
 const POPUP_HEIGHT = 700
@@ -48,16 +46,10 @@ const cleanup = (
 }
 
 export const useOAuth = (authType: string) => {
-  const Navigate = useNavigate();
   const authUrl: string =
     authType === 'google'
       ? process.env.REACT_APP_GOOGLE_AUTH_URL || ''
       : process.env.REACT_APP_GITHUB_AUTH_URL || ''
-  const clientId: string =
-    authType === 'google'
-      ? process.env.REACT_APP_GOOGLE_CLIENT_ID || ''
-      : process.env.REACT_APP_GITHUB_CLIENT_ID || ''
-  const redirectUri:string= process.env.REACT_APP_GOOGLE_REDIRECT_URI  ||''
   const popupRef = useRef<Window | null>()
   const intervalRef = useRef<any>()
 
@@ -85,31 +77,32 @@ export const useOAuth = (authType: string) => {
             })
           } else {
             const code = message?.data?.payload?.code
-            const params = new URLSearchParams({
-              client_id: clientId,
-              code,
-              redirect_uri: redirectUri,
-            })
-            const { data, isLoading, isError } = useQuery({
-              queryKey: ['auth'],
-              queryFn: async () => {
-                try {
-                  const res = await axiosInstance.post(`http://localhost:4000/${authType}/token?${params}`)
-                  return res.data
-                } catch (err: any) {
-                  return err.response.data
-                }
-              },
-            })
-            if (isLoading) {
-              setUI({
-                loading: true,
-                error: null,
-              })
-            } else if (isError) {
+            console.log(code)
+            // const params = new URLSearchParams({
+            //   client_id: clientId,
+            //   code,
+            //   redirect_uri: redirectUri,
+            // })
+            
+            // const { data, isLoading, isError } = useQuery({
+            //   queryKey: ['auth'],
+            //   queryFn: async () => {
+            //     try {
+            //       const res = await axiosInstance.post(`http://localhost:4000/${authType}/token?${params}`)
+            //       return res.data
+            //     } catch (err: any) {
+            //       return err.response.data
+            //     }
+            //   },
+            // })
+            const data:any = await axiosInstance.post(`http://localhost:4000/auth/${authType}/token?`,
+            {code},
+            {withCredentials:true}
+            )
+            if (!data.ok) {
               setUI({
                 loading: false,
-                error: 'Failed to exchange code for token',
+                error: "failed",
               })
             } else {
               setUI({
@@ -117,7 +110,7 @@ export const useOAuth = (authType: string) => {
                 error: null,
               })
               if(data.data.status === 200){
-                Navigate('/')
+                window.location.reload()
               }
             }
           }
