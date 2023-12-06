@@ -6,7 +6,6 @@ import QuizSummaryPie from '../QuizSummaryPie'
 import * as io from "socket.io-client";
 import { useNavigate } from 'react-router-dom';
 import { useSubmitQuiz } from '../../api/UseSubmitQuiz';
-import { QueryClient, QueryClientProvider } from 'react-query';
 
 interface SubmitQuizModalProps {
   open: boolean

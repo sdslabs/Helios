@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TimeIcon } from '@chakra-ui/icons';
 import { Flex } from '@chakra-ui/react';
 import { useTimer } from './TimerContext';
+import { QuizSummaryModal } from './Modals/QuizSummaryModal';
 
 function Countdown() {
   const { timerValue } = useTimer();
@@ -9,6 +10,11 @@ function Countdown() {
   const [countHours, setCountHours] = useState('00');
   const [countMinutes, setCountMinutes] = useState('00');
   const [countSeconds, setCountSeconds] = useState('00');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen)
+  }
 
   useEffect(() => {
     setDuration((prevDuration) => (timerValue !== null ? timerValue : prevDuration));
@@ -22,12 +28,17 @@ function Countdown() {
   
         if (duration <= 0) {
           clearInterval(interval);
+          
         } else {
           setCountHours(hours.toString().padStart(2, '0'));
           setCountMinutes(minutes.toString().padStart(2, '0'));
           setCountSeconds(seconds.toString().padStart(2, '0'));
           setDuration((prevDuration) => (prevDuration !== null) ? (prevDuration - 1000) : prevDuration);
           console.log(duration);
+          if (duration <= 1000) {
+            setIsModalOpen(true);
+            clearInterval(interval);
+          }
         }
       }, 1000)
       return () => clearInterval(interval);
@@ -43,6 +54,7 @@ function Countdown() {
     >
       <TimeIcon color='v6' />
       <span>{`${countHours} : ${countMinutes} : ${countSeconds}`}</span>
+      <QuizSummaryModal open={isModalOpen} toggleIsOpen={toggleModal} />
     </Flex>
   );
 }
