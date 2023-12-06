@@ -11,6 +11,8 @@ import { useAuth } from '@auth/api/useAuth'
 import { useEffect, useState } from 'react'
 import OAuthPopup from '@auth/views/OAuthPopup'
 import { UserRoles } from './modules/types'
+import GiveQuiz from './modules/giveQuiz/views/giveQuiz' 
+import CheckQuiz from '@checkQuiz/views/checkQuiz'
 
 function App() {
   const authStore = useAuthStore()
@@ -40,6 +42,16 @@ function App() {
       >
         <Spinner size='xl' />
       </div>
+      <ChakraProvider theme={theme}>
+        <Routes>
+          <Route path='/register' element={<Register />} />
+          <Route path='/' element={<JoinUs />} />
+          <Route path='*' element={<Navigate to='/' />} />
+          <Route path='/create/:quizID' element={<CreateQuiz />} />
+          <Route path='/givequiz' element={<GiveQuiz />} />
+          <Route path='/checkquiz' element={<CheckQuiz />} />
+        </Routes>
+      </ChakraProvider>
     )
   }
 

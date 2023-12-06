@@ -9758,7 +9758,7 @@ react-scripts@5.0.1:
   optionalDependencies:
     fsevents "^2.3.2"
 
-react-select@5.7.4, react-select@^5.7.4:
+react-select@5.7.4:
   version "5.7.4"
   resolved "https://registry.npmjs.org/react-select/-/react-select-5.7.4.tgz"
   integrity sha512-NhuE56X+p9QDFh4BgeygHFIvJJszO1i1KSkg/JPcIJrbovyRtI+GuOEa4XzFCEpZRAEoEI8u/cAHK+jG/PgUzQ==
