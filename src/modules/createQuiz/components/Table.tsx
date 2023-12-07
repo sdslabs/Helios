@@ -7,10 +7,10 @@ import {
   getFilteredRowModel,
   getFacetedUniqueValues,
 } from '@tanstack/react-table'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { usePaginationRange } from '@createQuiz/hooks/usePaginationRange'
 
-const Filter = ({ column, table, setFilter }: any) => {
+const Filter = ({ column, table }: any) => {
   const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id)
 
   const sortedUniqueValues = useMemo(
@@ -46,13 +46,6 @@ const Filter = ({ column, table, setFilter }: any) => {
 
 const Table = ({ data, columns }: any) => {
   const [columnFilters, setColumnFilters] = useState()
-  const [filta, setFilter] = useState(0) /* used this  */
-
-  useEffect(() => {
-    setFilter((value) => {
-      return value++
-    })
-  }, [columnFilters])
 
   const table = useReactTable({
     data,
@@ -63,7 +56,7 @@ const Table = ({ data, columns }: any) => {
     state: {
       columnFilters,
     },
-    onColumnFiltersChange: setColumnFilters as any, //!
+    onColumnFiltersChange: setColumnFilters as any,
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
@@ -112,8 +105,8 @@ const Table = ({ data, columns }: any) => {
                       : flexRender(header.column.columnDef.header, header.getContext())}
                     {header.column.getCanFilter() ? (
                       <div>
-                        <Filter setFilter={setFilter} column={header.column} table={table} />
-                      </div> ////////////////////////////////////////////////////////////////
+                        <Filter column={header.column} table={table} />
+                      </div> 
                     ) : null}
                   </Flex>
                 </Th>

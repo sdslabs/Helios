@@ -21,7 +21,6 @@ function App() {
       refetch()
     } else if (isFetched && !isLoading && data.user !== null) {
       authStore.setUser(data.user)
-      console.log(data.user)
       authStore.setOnboarded(data.onboarded)
       setIsLoggedIn(true)
     }

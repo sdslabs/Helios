@@ -15,9 +15,7 @@ export const onboard = async ({
   socialMediaHandles,
   user,
 }: any) => {
-  //!
   try {
-    console.log('sent')
     const res = await axiosInstance.post('auth/onboard', {
       personalDetails,
       educationalDetails,
