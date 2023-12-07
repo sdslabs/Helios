@@ -1,7 +1,7 @@
 import { Box, Grid, Heading, Text } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import Table from '../components/Table'
-import data from "./MOCK_DATA.json"
+import data from './MOCK_DATA.json'
 
 enum Status {
   Registered = 'Registered',
@@ -17,43 +17,51 @@ type Registrant = {
   Status: string
 }
 
-
 const columnHelper = createColumnHelper<Registrant>()
 
 const columns = [
   columnHelper.accessor('Sr', {
     cell: (info) => info.getValue(),
     header: 'Sr.',
-    enableColumnFilter:false
+    enableColumnFilter: false,
   }),
   columnHelper.accessor('Name', {
     cell: (row) => {
-      return(
-        <Text color='#604195'>{row.getValue()}</Text>
-      )
+      return <Text color='#604195'>{row.getValue()}</Text>
     },
     header: 'Name',
-    enableColumnFilter:false
+    enableColumnFilter: false,
   }),
   columnHelper.accessor('StartTime', {
     cell: (info) => info.getValue(),
     header: 'Start Time',
-    enableColumnFilter:false
+    enableColumnFilter: false,
   }),
   columnHelper.accessor('SubmissionTime', {
     cell: (info) => info.getValue(),
     header: 'Submission Time',
-    enableColumnFilter:false
+    enableColumnFilter: false,
   }),
-  columnHelper.accessor("Status", {
+  columnHelper.accessor('Status', {
     cell: (row) => {
       return (
-        <Text color={row.getValue()==='Submitted'?'#006F16':row.getValue()==='Started'?'#604195':'#191919'} fontWeight='600'>{row.getValue().toUpperCase()}</Text>
+        <Text
+          color={
+            row.getValue() === 'Submitted'
+              ? '#006F16'
+              : row.getValue() === 'Started'
+              ? '#604195'
+              : '#191919'
+          }
+          fontWeight='600'
+        >
+          {row.getValue().toUpperCase()}
+        </Text>
       )
     },
-    header: "Status",
-    enableColumnFilter:true
-  })
+    header: 'Status',
+    enableColumnFilter: true,
+  }),
 ]
 
 const Registrants = () => {

@@ -31,9 +31,13 @@ const CreatedQuizCard: React.FC<any> = ({ image, name, tags, content, schedule, 
             </Flex>
             <Flex flexDirection='column' gap='8px'>
               <Text color='#939393'>{content}</Text>
-              <Flex color='#939393'>Scheduled:<Text color='black'>{schedule}</Text></Flex>
+              <Flex color='#939393'>
+                Scheduled:<Text color='black'>{schedule}</Text>
+              </Flex>
             </Flex>
-            <Button height='3.3vh' width='5.5vw' bgColor='#593C8F' color='#FFFFFF'>{edit ? 'Edit Quiz' : 'Check Quiz'}</Button>
+            <Button height='3.3vh' width='5.5vw' bgColor='#593C8F' color='#FFFFFF'>
+              {edit ? 'Edit Quiz' : 'Check Quiz'}
+            </Button>
           </Flex>
         </Box>
       </Flex>
