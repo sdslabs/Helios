@@ -158,20 +158,22 @@ export const SocialHandlesForm = (props: FormProps) => {
     country: country,
     city: city,
   }
- const {mutate} = useOnboard();
+  const { mutate } = useOnboard()
   async function handleRegister() {
-    mutate({
-      personalDetails,
-      educationalDetails,
-      socialMediaHandles,
-      user,
-    }
-    ,{
-      onSuccess:()=>{
-        setOnboarded(true)
-        navigate('/dashboard')
-      }
-    })
+    mutate(
+      {
+        personalDetails,
+        educationalDetails,
+        socialMediaHandles,
+        user,
+      },
+      {
+        onSuccess: () => {
+          setOnboarded(true)
+          navigate('/dashboard')
+        },
+      },
+    )
   }
 
   return (

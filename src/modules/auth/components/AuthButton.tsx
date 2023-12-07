@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { Button, ButtonProps } from '@chakra-ui/react'
-import { AUTH_TYPES} from '../constants'
+import { AUTH_TYPES } from '../constants'
 import { useOAuth } from '@auth/hooks/useOAuth'
 
 interface AuthButtonProps extends ButtonProps {
@@ -8,10 +8,10 @@ interface AuthButtonProps extends ButtonProps {
 }
 
 export const AuthButton = ({ authType, ...props }: AuthButtonProps) => {
-  const {loading,error,getAuth} = useOAuth(authType);
+  const { loading, error, getAuth } = useOAuth(authType)
 
-  const handleClick = ()=>{
-    getAuth();
+  const handleClick = () => {
+    getAuth()
   }
 
   return (

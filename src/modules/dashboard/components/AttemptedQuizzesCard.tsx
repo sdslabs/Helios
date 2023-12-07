@@ -1,6 +1,6 @@
 import { Card, Heading } from '@chakra-ui/react'
 
-const AttemptedQuizzesCard: React.FC<any> = ({quantity}) => {
+const AttemptedQuizzesCard: React.FC<any> = ({ quantity }) => {
   return (
     <Card
       w='11vw'
@@ -14,7 +14,7 @@ const AttemptedQuizzesCard: React.FC<any> = ({quantity}) => {
         {quantity}
       </Heading>
       <Heading fontSize='20px' textAlign='center' fontWeight='400' color='#604195'>
-        Attempted <br/> Quizzes
+        Attempted <br /> Quizzes
       </Heading>
     </Card>
   )

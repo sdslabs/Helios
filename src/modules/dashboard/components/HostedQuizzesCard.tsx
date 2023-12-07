@@ -1,6 +1,6 @@
 import { Card, Heading } from '@chakra-ui/react'
 
-const HostedQuizzesCard: React.FC <any>= ({quantity}) => {
+const HostedQuizzesCard: React.FC<any> = ({ quantity }) => {
   return (
     <Card
       w='11vw'

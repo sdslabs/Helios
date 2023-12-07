@@ -10,7 +10,7 @@ import {
 import { useEffect, useMemo, useState } from 'react'
 import { usePaginationRange } from '@createQuiz/hooks/usePaginationRange'
 
-const Filter = ({ column, table,setFilter }: any) => {
+const Filter = ({ column, table, setFilter }: any) => {
   const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id)
 
   const sortedUniqueValues = useMemo(
@@ -25,7 +25,6 @@ const Filter = ({ column, table,setFilter }: any) => {
     <>
       <select
         value={column.filterValue}
-        
         onChange={(e) => {
           if (e.target.value !== 'none') {
             column.setFilterValue(e.target.value)
@@ -47,11 +46,13 @@ const Filter = ({ column, table,setFilter }: any) => {
 
 const Table = ({ data, columns }: any) => {
   const [columnFilters, setColumnFilters] = useState()
-  const [filta,setFilter] = useState(0) /* used this  */
+  const [filta, setFilter] = useState(0) /* used this  */
 
-  useEffect(()=>{
-    setFilter((value)=>{return value++})
-  },[columnFilters])
+  useEffect(() => {
+    setFilter((value) => {
+      return value++
+    })
+  }, [columnFilters])
 
   const table = useReactTable({
     data,
@@ -64,21 +65,34 @@ const Table = ({ data, columns }: any) => {
     },
     onColumnFiltersChange: setColumnFilters as any, //!
     getFacetedUniqueValues: getFacetedUniqueValues(),
-  });
+  })
 
-  const changePage = (pageNumber:any,table:any)=>{
-    table.setPageIndex(pageNumber-1)
+  const changePage = (pageNumber: any, table: any) => {
+    table.setPageIndex(pageNumber - 1)
   }
 
-  const getPagination = (pages: any, current: any,table:any) => {
+  const getPagination = (pages: any, current: any, table: any) => {
     const paginationRange = usePaginationRange({ currentPage: current, totalPageCount: pages })
-    const pagesList: any = [];
+    const pagesList: any = []
 
     paginationRange?.map((num) => {
       if (num != '...') {
-        pagesList.push(<Button color={num===current?'#191919':'#575757'} border='none' bg="white" onClick={()=>changePage(num,table)}>{num}</Button>)
+        pagesList.push(
+          <Button
+            color={num === current ? '#191919' : '#575757'}
+            border='none'
+            bg='white'
+            onClick={() => changePage(num, table)}
+          >
+            {num}
+          </Button>,
+        )
       } else {
-        pagesList.push(<Button disabled color='#575757' border='none' bg="white">...</Button>)
+        pagesList.push(
+          <Button disabled color='#575757' border='none' bg='white'>
+            ...
+          </Button>,
+        )
       }
     })
     return <Flex>{pagesList}</Flex>
@@ -99,7 +113,7 @@ const Table = ({ data, columns }: any) => {
                     {header.column.getCanFilter() ? (
                       <div>
                         <Filter setFilter={setFilter} column={header.column} table={table} />
-                      </div>////////////////////////////////////////////////////////////////
+                      </div> ////////////////////////////////////////////////////////////////
                     ) : null}
                   </Flex>
                 </Th>
@@ -120,11 +134,25 @@ const Table = ({ data, columns }: any) => {
         </Tbody>
       </T>
       <Flex>
-        <Button color='#604195' border='none' bg="white" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+        <Button
+          color='#604195'
+          border='none'
+          bg='white'
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
           Previous
         </Button>
-        <div>{getPagination(table.getPageCount(), table.getState().pagination.pageIndex + 1,table)}</div>
-        <Button color='#604195' border='none' bg="white" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+        <div>
+          {getPagination(table.getPageCount(), table.getState().pagination.pageIndex + 1, table)}
+        </div>
+        <Button
+          color='#604195'
+          border='none'
+          bg='white'
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
           Next
         </Button>
       </Flex>

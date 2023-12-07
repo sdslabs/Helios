@@ -77,39 +77,21 @@ export const useOAuth = (authType: string) => {
             })
           } else {
             const code = message?.data?.payload?.code
-            console.log(code)
-            // const params = new URLSearchParams({
-            //   client_id: clientId,
-            //   code,
-            //   redirect_uri: redirectUri,
-            // })
-            
-            // const { data, isLoading, isError } = useQuery({
-            //   queryKey: ['auth'],
-            //   queryFn: async () => {
-            //     try {
-            //       const res = await axiosInstance.post(`http://localhost:4000/${authType}/token?${params}`)
-            //       return res.data
-            //     } catch (err: any) {
-            //       return err.response.data
-            //     }
-            //   },
-            // })
-            const data:any = await axiosInstance.post(`http://localhost:4000/auth/${authType}/token?`,
-            {code},
-            {withCredentials:true}
+            const data: any = await axiosInstance.post(
+              `http://localhost:4000/auth/${authType}/token?`,
+              { code },
             )
             if (!data.ok) {
               setUI({
                 loading: false,
-                error: "failed",
+                error: 'failed',
               })
             } else {
               setUI({
                 loading: false,
                 error: null,
               })
-              if(data.data.status === 200){
+              if (data.data.status === 200) {
                 window.location.reload()
               }
             }
@@ -125,25 +107,26 @@ export const useOAuth = (authType: string) => {
         cleanup(intervalRef, popupRef, handleMessageListener)
       }
     }
-    window.addEventListener('message', handleMessageListener);
+    window.addEventListener('message', handleMessageListener)
 
-    intervalRef.current = setInterval(()=>{
-      const popupClosed = !popupRef.current || !popupRef.current.window || popupRef.current.window.closed;
-      if(popupClosed){
-        setUI((ui)=>({
+    intervalRef.current = setInterval(() => {
+      const popupClosed =
+        !popupRef.current || !popupRef.current.window || popupRef.current.window.closed
+      if (popupClosed) {
+        setUI((ui) => ({
           ...ui,
-          loading:false
-        }));
-        console.warn('warning:popup closed before authentication');
-        clearInterval(intervalRef.current);
-        removeState();
-        window.removeEventListener('message',handleMessageListener);
+          loading: false,
+        }))
+        console.warn('warning:popup closed before authentication')
+        clearInterval(intervalRef.current)
+        removeState()
+        window.removeEventListener('message', handleMessageListener)
       }
-    },250);
+    }, 250)
     return () => {
-      window.removeEventListener('message', handleMessageListener);
-      if(intervalRef.current) clearInterval(intervalRef.current);
+      window.removeEventListener('message', handleMessageListener)
+      if (intervalRef.current) clearInterval(intervalRef.current)
     }
   }, [])
-  return { loading, error,getAuth }
+  return { loading, error, getAuth }
 }

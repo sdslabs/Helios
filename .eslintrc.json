@@ -18,7 +18,7 @@
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    // "camelcase": "error",
+    "camelcase": "error",
     "no-duplicate-imports": "error",
     "react/prop-types": "off"
   },
