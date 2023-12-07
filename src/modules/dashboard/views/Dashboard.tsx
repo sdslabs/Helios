@@ -10,7 +10,6 @@ export const Dashboard = () => {
   const authStore = useAuthStore()
   const attemptedQuantity = 3
   const hostedQuantity = 10
-  console.log(authStore)
   return (
     <>
       <Navbar />

@@ -30,10 +30,9 @@ import { Select } from 'chakra-react-select'
 import useSocialHandlesStore from '@auth/store/SocialHandlesStore'
 import usePersonalDetailsStore from '@auth/store/PersonalDetailsStore'
 import useEducationalInfoStore from '@auth/store/EducationalInformationStore'
-import axios from 'axios'
 import useAuthStore from '@auth/store/authStore'
 import { useNavigate } from 'react-router-dom'
-import { useAuth, useOnboard } from '../api/useAuth'
+import { useOnboard } from '../api/useAuth'
 
 // Making the select
 interface SocialMediaOption {
@@ -75,8 +74,6 @@ const CustomOptionComponent: React.FC<any> = ({ innerProps, label, data }) => (
 const SocialMediaSelect: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<SocialMediaOption | null>()
   const { socialMediaHandles, updateHandle } = useSocialHandlesStore()
-  const { firstName, lastName, email, phone } = usePersonalDetailsStore()
-  const { country, city, org } = useEducationalInfoStore()
 
   return (
     <Grid templateColumns='1fr 1.8fr' gap={4} width='100%'>
@@ -141,7 +138,7 @@ interface FormProps {
 
 export const SocialHandlesForm = (props: FormProps) => {
   const setStep = useStepStore((state) => state.setStep)
-  const { socialMediaHandles, updateHandle } = useSocialHandlesStore()
+  const { socialMediaHandles } = useSocialHandlesStore()
   const { firstName, lastName, email, phone } = usePersonalDetailsStore()
   const { country, city, org } = useEducationalInfoStore()
   const { user, setOnboarded } = useAuthStore()
