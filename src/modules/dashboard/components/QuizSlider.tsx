@@ -1,39 +1,12 @@
 import { Flex } from '@chakra-ui/react'
+import { QuizDetails } from '../types'
 import QuizCard from './QuizCard'
 
-const QuizSlider: React.FC = () => {
-  const cards = [
-    {
-      title: 'Recruitment Test',
-      content:
-        'This quiz is for the recruitments of SDSLabs, PAG, DSG and InfoSec. And it is important do attend.',
-      time: '26 Jun, 2021 03:00PM',
-    },
-    {
-      title: 'Recruitment Test',
-      content:
-        'This quiz is for the recruitments of SDSLabs, PAG, DSG and InfoSec. And it is important do attend.',
-      time: '26 Jun, 2021 03:00PM',
-    },
-    {
-      title: 'Recruitment Test',
-      content:
-        'This quiz is for the recruitments of SDSLabs, PAG, DSG and InfoSec. And it is important do attend.',
-      time: '26 Jun, 2021 03:00PM',
-    },
-    {
-      title: 'Recruitment Test',
-      content:
-        'This quiz is for the recruitments of SDSLabs, PAG, DSG and InfoSec. And it is important do attend.',
-      time: '26 Jun, 2021 03:00PM',
-    },
-    {
-      title: 'Recruitment Test',
-      content:
-        'This quiz is for the recruitments of SDSLabs, PAG, DSG and InfoSec. And it is important do attend.',
-      time: '26 Jun, 2021 03:00PM',
-    },
-  ]
+type Props ={
+  data:QuizDetails[]
+}
+
+const QuizSlider: React.FC<Props> = ({data}:Props) => {
 
   return (
     <Flex zIndex='5'>
@@ -42,8 +15,8 @@ const QuizSlider: React.FC = () => {
         gap='1vh'
         backgroundImage='linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0),rgba(255, 255, 255, 0),rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8))'
       >
-        {cards.map((card, index) => (
-          <QuizCard title={card.title} key={index} content={card.content} time={card.time} />
+        {data.map((card:QuizDetails, index:number) => (
+          <QuizCard title={card.name} key={index} content={card.description} time={card.startDateTimestamp} />
         ))}
       </Flex>
     </Flex>

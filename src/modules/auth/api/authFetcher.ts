@@ -1,11 +1,15 @@
-import axiosInstance from '@auth/api/axiosInstance'
+import axios from 'axios'
+import axiosInstance from '../../../api/axiosInstance'
 
 export const checkAuth = async () => {
   try {
     const res = await axiosInstance.get('auth/user')
     return res.data
   } catch (e: any) {
-    return e.response.data
+    if (axios.isAxiosError(e)) {
+      return e.response?.data || e.message
+    }
+    throw e
   }
 }
 
@@ -24,6 +28,9 @@ export const onboard = async ({
     })
     return res.data
   } catch (e: any) {
-    return e.response.data
+    if (axios.isAxiosError(e)) {
+      return e.response?.data || e.message
+    }
+    throw e
   }
 }
