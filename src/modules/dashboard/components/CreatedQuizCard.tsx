@@ -4,10 +4,7 @@ const CreatedQuizCard: React.FC<any> = ({ image, name, tags, content, schedule, 
   return (
     <Card padding='1.6vh' height='20vh'>
       <Flex gap='1.6vh'>
-        <Image
-          width='7.5vw'
-          src='https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60'
-        />
+        <Image width='7.5vw' src={image} />
         <Box>
           <Flex flexDirection='column' gap='1vh'>
             <Flex gap='0.75vh' alignItems='center'>
@@ -36,7 +33,7 @@ const CreatedQuizCard: React.FC<any> = ({ image, name, tags, content, schedule, 
               </Flex>
             </Flex>
             <Button height='3.3vh' width='5.5vw' bgColor='#593C8F' color='#FFFFFF'>
-              {edit ? 'Edit Quiz' : 'Check Quiz'}
+              {edit ? 'Check Quiz' : 'Edit Quiz'}
             </Button>
           </Flex>
         </Box>

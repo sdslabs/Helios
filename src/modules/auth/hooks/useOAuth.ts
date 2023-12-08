@@ -1,11 +1,11 @@
-import axiosInstance from '@auth/api/axiosInstance'
+import axiosInstance from '../../../api/axiosInstance'
 import { useCallback, useRef, useState } from 'react'
 import { generateState } from '@auth/tools/generateState'
 
-const OAUTH_STATE_KEY = process.env.REACT_APP_OAUTH_STATE_KEY as string
+const OAUTH_STATE_KEY:string= process.env.REACT_APP_OAUTH_STATE_KEY || ''
 const POPUP_HEIGHT = 700
 const POPUP_WIDTH = 600
-const OAUTH_RESPONSE = process.env.REACT_APP_OAUTH_RESPONSE as string
+const OAUTH_RESPONSE :string= process.env.REACT_APP_OAUTH_RESPONSE || ''
 
 type UIState = {
   loading: boolean
@@ -13,7 +13,7 @@ type UIState = {
 }
 
 const saveState = (state: string): void => {
-  sessionStorage.setItem(OAUTH_STATE_KEY || '', state)
+  sessionStorage.setItem(OAUTH_STATE_KEY, state)
 }
 
 const removeState = () => {
@@ -35,7 +35,7 @@ const closePopup = (popupRef: React.RefObject<Window | undefined>) => {
 }
 
 const cleanup = (
-  intervalRef: any, //!
+  intervalRef: any,
   popupRef: React.RefObject<Window | undefined>,
   handleMessageListener: EventListener,
 ) => {
@@ -78,7 +78,7 @@ export const useOAuth = (authType: string) => {
           } else {
             const code = message?.data?.payload?.code
             const data: any = await axiosInstance.post(
-              `http://localhost:4000/auth/${authType}/token?`,
+              `/auth/${authType}/token?`,
               { code },
             )
             if (!data.ok) {
