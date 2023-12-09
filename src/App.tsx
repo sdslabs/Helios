@@ -7,9 +7,9 @@ import CreateQuiz from './modules/createQuiz/views/createQuiz'
 import GiveQuiz from './modules/giveQuiz/views/giveQuiz'
 import { Dashboard } from './modules/dashboard/views/Dashboard'
 import useAuthStore from '@auth/store/authStore'
-import { useAuth } from '@auth/api/useAuth' 
+import { useAuth } from '@auth/api/useAuth'
 import { useEffect, useState } from 'react'
-import OAuthPopup from "@auth/views/OAuthPopup"
+import OAuthPopup from '@auth/views/OAuthPopup'
 
 function App() {
   const authStore = useAuthStore()
@@ -36,22 +36,19 @@ function App() {
         <Routes>
           <Route path='/register' element={<Register />} />
           <Route path='/' element={<JoinUs />} />
+          <Route path='/callback' element={<OAuthPopup />} />
           <Route path='*' element={<Navigate to='/' />} />
-          <Route path='/create/:quizID' element={<CreateQuiz />} />
-          <Route path='/givequiz' element={<GiveQuiz />} />
-        <Route path='/callback' element={<OAuthPopup/>}/>
         </Routes>
       </ChakraProvider>
     )
   }
 
-  if (isLoggedIn && authStore.onboarded && !isLoading) {
+  if (isLoggedIn && !authStore.onboarded && !isLoading) {
     return (
       <ChakraProvider theme={theme}>
         <Routes>
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/' element={<Dashboard />} />
-          <Route path='*' element={<CreateQuiz />} />
+          <Route path='/' element={<Register />} />
+          <Route path='/register' element={<Register />} />
         </Routes>
       </ChakraProvider>
     )
@@ -60,13 +57,13 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <Routes>
-        <Route path='/' element={<Register />} />
-        <Route path='/register' element={<Register />} />
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/' element={<Dashboard />} />
+        <Route path='/create/:quizID' element={<CreateQuiz />} />
+        <Route path='/givequiz' element={<GiveQuiz />} />
       </Routes>
     </ChakraProvider>
   )
-
-  //! better way 
 }
 
 export default App
