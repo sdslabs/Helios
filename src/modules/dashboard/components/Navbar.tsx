@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Flex, Heading, Button, Avatar } from '@chakra-ui/react'
 import profilepic from '../views/profile.png'
+import { Link } from 'react-router-dom'
 
 const Navbar: React.FC = () => {
   return (
@@ -31,7 +32,9 @@ const Navbar: React.FC = () => {
           width='6.4vw'
           fontSize='1.2vh'
         >
+          <Link to={`/create/quizID`}> //TODO: replace quizID with unique ID
           + Host Quiz
+          </Link>
         </Button>
         <Avatar size='sm' name='User' marginLeft='1.6vh' src={profilepic} />
       </Box>
