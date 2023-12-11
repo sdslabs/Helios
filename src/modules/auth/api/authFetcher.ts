@@ -1,5 +1,5 @@
 import axios from 'axios'
-import axiosInstance from '../../../api/axiosInstance'
+import axiosInstance from './axiosInstance'
 
 export const checkAuth = async () => {
   try {

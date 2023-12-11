@@ -1,1 +1,2 @@
-export const baseURL = "http://localhost:4000/"
+const isProduction = false
+export const baseURL = isProduction?"":"http://localhost:4000/" 

@@ -8,7 +8,6 @@
             "@createQuiz/*":["./src/modules/createQuiz/*"],
             "@checkQuiz/*":["./src/modules/checkQuiz/*"],
             "@giveQuiz/*":["./src/modules/giveQuiz/*"],
-            "@api/*":["./src/api/*"]
         }
     }
 }

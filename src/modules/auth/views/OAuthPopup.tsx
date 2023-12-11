@@ -13,7 +13,7 @@ const querytoObject = (query: string) => {
 }
 
 const OAuthPopup = (props: any) => {
-  const { Component = <div style={{ margin: '12px' }}>Loading</div> } = props
+  const { Component = <div style={{ margin: '1.2vh' }}>Loading</div> } = props
   useEffect(() => {
     const payload = querytoObject(window.location.search.split('?')[1])
     if (!window.opener) {

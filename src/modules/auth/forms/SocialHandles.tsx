@@ -208,7 +208,6 @@ export const SocialHandlesForm = (props: FormProps) => {
               variant={'solid'}
               px={6}
               borderRadius={3}
-              //TODO: Define its logic based on backend.
               onClick={handleRegister}
             >
               Get Started

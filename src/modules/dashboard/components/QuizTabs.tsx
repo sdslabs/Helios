@@ -33,7 +33,7 @@ const QuizTabs: React.FC<TabsProps> = ({quizzes,createdQuizzes}:TabsProps) => {
                 bgColor='#EBE7F2'
                 textAlign='center'
                 color='#604195'
-                fontSize='14px'
+                fontSize='1.2vh'
                 fontWeight='600'
               >
                 Ongoing Quizzes
@@ -45,7 +45,7 @@ const QuizTabs: React.FC<TabsProps> = ({quizzes,createdQuizzes}:TabsProps) => {
                 bgColor='#EBE7F2'
                 textAlign='center'
                 color='#604195'
-                fontSize='14px'
+                fontSize='1.2vh'
                 fontWeight='600'
               >
                 Upcoming Quizzes

@@ -1,10 +1,9 @@
-import axiosInstance from '../../../api/axiosInstance'
+import axiosInstance from '../api/axiosInstance'
 import { useCallback, useRef, useState } from 'react'
 import { generateState } from '@auth/tools/generateState'
+import { POPUP_HEIGHT,POPUP_WIDTH } from '@auth/constants'
 
 const OAUTH_STATE_KEY:string= process.env.REACT_APP_OAUTH_STATE_KEY || ''
-const POPUP_HEIGHT = 700
-const POPUP_WIDTH = 600
 const OAUTH_RESPONSE :string= process.env.REACT_APP_OAUTH_RESPONSE || ''
 
 type UIState = {
