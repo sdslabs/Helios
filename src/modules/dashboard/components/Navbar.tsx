@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
       paddingRight='2.2vw'
     >
       <Flex align='center' justifyItems='center'>
-        <Heading as='h1' fontSize='20px' color='var(--V6, #604195)'>
+        <Heading as='h1' fontSize='2vh' color='var(--V6, #604195)'>
           Quizio
         </Heading>
       </Flex>
@@ -28,8 +28,8 @@ const Navbar: React.FC = () => {
           bg='var(--V6, #604195)'
           color='white'
           height='3.6vh'
-          width='6.3vw'
-          fontSize='14px'
+          width='6.4vw'
+          fontSize='1.2vh'
         >
           + Host Quiz
         </Button>

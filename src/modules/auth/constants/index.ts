@@ -4,3 +4,6 @@ export enum AUTH_TYPES {
 }
 
 export type REGISTRATION_STEPS = 1 | 2 | 3
+
+export const POPUP_HEIGHT = 700
+export const POPUP_WIDTH = 600

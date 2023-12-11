@@ -11,7 +11,7 @@ export enum UserRoles {
 }
 
 export interface UserData {
-  userId: any
+  userId: string
   emailAdd: string
   role: UserRoles
 }

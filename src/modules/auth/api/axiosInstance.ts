@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { baseURL } from '../config/config'
+import { baseURL } from '../../../config/config'
 
 const axiosInstance = axios.create({
   headers: {

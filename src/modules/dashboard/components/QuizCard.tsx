@@ -10,7 +10,7 @@ import {
   Flex,
 } from '@chakra-ui/react'
 
-const QuizCard: React.FC<any> = ({ title, content, time }) => {
+const QuizCard: React.FC<any> = ({ title, content, time,image }) => {
   return (
     <Flex zIndex='-1'>
       <Card
@@ -25,27 +25,27 @@ const QuizCard: React.FC<any> = ({ title, content, time }) => {
         <Image
           objectFit='cover'
           w='10vw'
-          src='https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60'
-          alt='Caffe Latte'
+          src={image}
+          alt='banner image'
         />
 
         <Stack>
           <CardBody>
-            <Heading fontSize='14px' fontWeight='600'>
+            <Heading fontSize='1.2vh' fontWeight='600'>
               {title}
             </Heading>
 
-            <Text color='#939393' marginBottom='16px' fontSize='14px'>
+            <Text color='#939393' marginBottom='1.6vh' fontSize='1.2vh'>
               {content}
             </Text>
-            <Text fontSize='14px'>Scheduled:{time}</Text>
+            <Text fontSize='1.2vh'>Scheduled:{time}</Text>
             <Button
               colorScheme='purple'
               color='white'
               bgColor='brand'
               height='3.2vh'
               width='5.2vw'
-              fontSize='12px'
+              fontSize='1.2vh'
               marginTop='1.6vh'
             >
               Start Quiz

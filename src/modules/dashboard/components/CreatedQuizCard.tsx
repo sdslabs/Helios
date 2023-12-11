@@ -7,8 +7,8 @@ const CreatedQuizCard: React.FC<any> = ({ image, name, tags, content, schedule, 
         <Image width='7.5vw' src={image} />
         <Box>
           <Flex flexDirection='column' gap='1vh'>
-            <Flex gap='0.75vh' alignItems='center'>
-              <Heading fontSize='14px'>{name}</Heading>
+            <Flex gap='0.76vh' alignItems='center'>
+              <Heading fontSize='1.2vh'>{name}</Heading>
               {tags.map((t: any, i: any) => (
                 <Tag
                   bgColor={
@@ -19,20 +19,20 @@ const CreatedQuizCard: React.FC<any> = ({ image, name, tags, content, schedule, 
                       : '#EBE7F2'
                   }
                   color={t === 'Completed' ? '#FF8900' : t === 'Live' ? '#27A624' : '#775BA4'}
-                  padding='4px, 1px'
+                  padding='0.4vh, 0.1vh'
                   key={i}
                 >
                   {t}
                 </Tag>
               ))}
             </Flex>
-            <Flex flexDirection='column' gap='8px'>
+            <Flex flexDirection='column' gap='0.8vh'>
               <Text color='#939393'>{content}</Text>
               <Flex color='#939393'>
                 Scheduled:<Text color='black'>{schedule}</Text>
               </Flex>
             </Flex>
-            <Button height='3.3vh' width='5.5vw' bgColor='#593C8F' color='#FFFFFF'>
+            <Button height='3.2vh' width='5.2vw' bgColor='#593C8F' color='#FFFFFF'>
               {edit ? 'Check Quiz' : 'Edit Quiz'}
             </Button>
           </Flex>
