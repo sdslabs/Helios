@@ -17,7 +17,7 @@ const Hero: React.FC<HeroProps> = ({
   return (
     <Flex gap='2.4vh' marginBottom='5vh'>
       <Banner />
-      <NumberCard type={NumberCardType.attempted} quantity={attemptedQuizzes}/>
+      <NumberCard type={NumberCardType.attempted} quantity={attemptedQuizzes} />
       {isAdmin ? <NumberCard type={NumberCardType.hosted} quantity={hostedQuizzes} /> : null}
     </Flex>
   )

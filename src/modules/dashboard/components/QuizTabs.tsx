@@ -47,7 +47,7 @@ const QuizTabs: React.FC<TabsProps> = ({ isAdmin = false, quizzes, createdQuizze
                 Ongoing Quizzes
               </Heading>
             </Flex>
-            <QuizSlider data={ongoingQuizzes} type={QuizType.ongoing}/>
+            <QuizSlider data={ongoingQuizzes} type={QuizType.ongoing} />
             <Flex bgColor='#EBE7F2' height='4vh' align='center' justify='center'>
               <Heading
                 bgColor='#EBE7F2'
@@ -59,40 +59,42 @@ const QuizTabs: React.FC<TabsProps> = ({ isAdmin = false, quizzes, createdQuizze
                 Upcoming Quizzes
               </Heading>
             </Flex>
-            <QuizSlider data={upcomingQuizzes} type={QuizType.upcoming}/>
+            <QuizSlider data={upcomingQuizzes} type={QuizType.upcoming} />
           </TabPanel>
           {isAdmin && (
             <TabPanel borderColor='#E7E7E7'>
               <Flex flexDirection='column' gap='2.4vh'>
-                {createdQuizzes.length != 0
-                  ? createdQuizzes.map((quiz: any, index: number) => {
-                      const date = new Date()
-                      const tags = []
-                      if (date > quiz.endDateTimestamp && quiz.isPublished) {
-                        tags.push('Completed')
-                      } else if (
-                        date > quiz?.quizMetadata?.startDateTimestamp &&
-                        date < quiz?.quizMetadata?.endDateTimestamp &&
-                        quiz.isPublished
-                      ) {
-                        tags.push('LIVE')
-                      }
-                      if (quiz.resultsPublished) {
-                        tags.push('Results Published')
-                      }
-                      return (
-                        <CreatedQuizCard
-                          key={index}
-                          image={quiz.quizMetadata.bannerImage}
-                          name={quiz.quizMetadata.name}
-                          tags={tags}
-                          content={quiz.quizMetadata.description}
-                          schedule={quiz.quizMetadata.startDateTimestamp}
-                          edit={quiz.isPublished}
-                        />
-                      )
-                    })
-                  : <NoQuizzesCard/>}
+                {createdQuizzes.length != 0 ? (
+                  createdQuizzes.map((quiz: any, index: number) => {
+                    const date = new Date()
+                    const tags = []
+                    if (date > quiz.endDateTimestamp && quiz.isPublished) {
+                      tags.push('Completed')
+                    } else if (
+                      date > quiz?.quizMetadata?.startDateTimestamp &&
+                      date < quiz?.quizMetadata?.endDateTimestamp &&
+                      quiz.isPublished
+                    ) {
+                      tags.push('LIVE')
+                    }
+                    if (quiz.resultsPublished) {
+                      tags.push('Results Published')
+                    }
+                    return (
+                      <CreatedQuizCard
+                        key={index}
+                        image={quiz.quizMetadata.bannerImage}
+                        name={quiz.quizMetadata.name}
+                        tags={tags}
+                        content={quiz.quizMetadata.description}
+                        schedule={quiz.quizMetadata.startDateTimestamp}
+                        edit={quiz.isPublished}
+                      />
+                    )
+                  })
+                ) : (
+                  <NoQuizzesCard />
+                )}
                 {}
               </Flex>
             </TabPanel>
