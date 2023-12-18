@@ -1,10 +1,10 @@
 import axiosInstance from '../api/axiosInstance'
 import { useCallback, useRef, useState } from 'react'
 import { generateState } from '@auth/tools/generateState'
-import { POPUP_HEIGHT,POPUP_WIDTH } from '@auth/constants'
+import { POPUP_HEIGHT, POPUP_WIDTH } from '@auth/constants'
 
-const OAUTH_STATE_KEY:string= process.env.REACT_APP_OAUTH_STATE_KEY || ''
-const OAUTH_RESPONSE :string= process.env.REACT_APP_OAUTH_RESPONSE || ''
+const OAUTH_STATE_KEY: string = process.env.REACT_APP_OAUTH_STATE_KEY || ''
+const OAUTH_RESPONSE: string = process.env.REACT_APP_OAUTH_RESPONSE || ''
 
 type UIState = {
   loading: boolean
@@ -76,10 +76,7 @@ export const useOAuth = (authType: string) => {
             })
           } else {
             const code = message?.data?.payload?.code
-            const data: any = await axiosInstance.post(
-              `/auth/${authType}/token?`,
-              { code },
-            )
+            const data: any = await axiosInstance.post(`/auth/${authType}/token?`, { code })
             if (!(data.status === 200)) {
               setUI({
                 loading: false,

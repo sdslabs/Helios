@@ -28,11 +28,12 @@ const TopNav = ({ isDashboard = false, isAdmin = false }: TopNavProps) => {
       <HStack spacing={4}>
         {isDashboard && isAdmin && (
           <Button colorScheme='purple' bgColor='brand' px={4}>
-          <Link to={`/create/quizID`}>{
-            //TODO:create a unique id in place of quizID
-          }
-          + Host Quiz
-          </Link>
+            <Link to={`/create/quizID`}>
+              {
+                //TODO:create a unique id in place of quizID
+              }
+              + Host Quiz
+            </Link>
           </Button>
         )}
         {isDashboard && (

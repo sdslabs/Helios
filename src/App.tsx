@@ -48,22 +48,22 @@ function App() {
       <Routes>
         {!isLoggedIn && !isLoading && data.user === null ? (
           <>
-            <Route path='/register' element={<Register />} />
             <Route path='/' element={<JoinUs />} />
             <Route path='/callback' element={<OAuthPopup />} />
             <Route path='*' element={<Navigate to='/' />} />
           </>
         ) : isLoggedIn && !authStore.onboarded && !isLoading ? (
           <>
-            <Route path='/' element={<Register />} />
-            <Route path='/register' element={<Register />} />
+            <Route path='/*' element={<Register />} />
           </>
         ) : (
           <>
             <Route path='/dashboard' element={<Dashboard />} />
-            <Route path='/' element={<Dashboard />} />
-            {data.role===UserRoles.admin && <Route path='/create/:quizID' element={<CreateQuiz />} />}
+            {data.role === UserRoles.admin && (
+              <Route path='/create/:quizID' element={<CreateQuiz />} />
+            )}
             <Route path='/givequiz' element={<GiveQuiz />} />
+            <Route path='/*' element={<Dashboard />} />
           </>
         )}
       </Routes>

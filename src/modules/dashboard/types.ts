@@ -5,7 +5,7 @@ export type QuizDetails = {
   instructions: string
   startDateTimestamp: Date
   endDateTimestamp: Date
-  bannerImage: string,
+  bannerImage: string
   isAcceptingAnswers: boolean
   registrationMetadata: object
   registered: boolean
@@ -13,11 +13,18 @@ export type QuizDetails = {
 }
 
 export enum NumberCardType {
-  hosted='hosted',
-  attempted='attempted'
+  hosted = 'hosted',
+  attempted = 'attempted',
 }
 
 export enum QuizType {
-  ongoing='ongoing',
-  upcoming='upcoming'
+  ongoing = 'ongoing',
+  upcoming = 'upcoming',
+}
+
+export enum ButtonType {
+  completed = 'Completed',
+  start = 'Start Quiz',
+  registered = 'Registered',
+  register = 'Register',
 }

@@ -1,24 +1,22 @@
 import React from 'react'
-import {
-  Card,
-  CardBody,
-  Image,
-  Stack,
-  Heading,
-  Text,
-  Button,
-  Flex,
-} from '@chakra-ui/react'
+import { Card, CardBody, Image, Stack, Heading, Text, Button, Flex } from '@chakra-ui/react'
+import { ButtonType } from '../../types'
 
 interface QuizCardProps {
-  title:string,
-  content:string,
-  time:Date,
-  image:string,
-  btnText:string,
+  title: string
+  content: string
+  time: Date
+  image: string
+  btnText: string
 }
 
-const QuizCard: React.FC<QuizCardProps> = ({ title, content, time,image,btnText }:QuizCardProps) => {
+const QuizCard: React.FC<QuizCardProps> = ({
+  title,
+  content,
+  time,
+  image,
+  btnText,
+}: QuizCardProps) => {
   const formattedTime = time.toLocaleString('en-US', {
     day: 'numeric',
     month: 'short',
@@ -26,7 +24,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ title, content, time,image,btnText 
     hour: '2-digit',
     minute: '2-digit',
     hour12: true,
-  });
+  })
   return (
     <Flex zIndex='-1'>
       <Card
@@ -38,12 +36,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ title, content, time,image,btnText 
         p='1.6vh'
         marginY='2.4vh'
       >
-        <Image
-          objectFit='cover'
-          w='10vw'
-          src={image}
-          alt='banner image'
-        />
+        <Image objectFit='cover' w='10vw' src={image} alt='banner image' />
 
         <Stack>
           <CardBody>
@@ -63,6 +56,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ title, content, time,image,btnText 
               width='5.2vw'
               fontSize='1.2vh'
               marginTop='1.6vh'
+              isDisabled={btnText === ButtonType.completed || btnText === ButtonType.registered}
             >
               {btnText}
             </Button>
