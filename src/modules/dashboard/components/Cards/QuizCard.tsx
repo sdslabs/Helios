@@ -10,7 +10,23 @@ import {
   Flex,
 } from '@chakra-ui/react'
 
-const QuizCard: React.FC<any> = ({ title, content, time,image }) => {
+interface QuizCardProps {
+  title:string,
+  content:string,
+  time:Date,
+  image:string,
+  btnText:string,
+}
+
+const QuizCard: React.FC<QuizCardProps> = ({ title, content, time,image,btnText }:QuizCardProps) => {
+  const formattedTime = time.toLocaleString('en-US', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
   return (
     <Flex zIndex='-1'>
       <Card
@@ -38,7 +54,7 @@ const QuizCard: React.FC<any> = ({ title, content, time,image }) => {
             <Text color='#939393' marginBottom='1.6vh' fontSize='1.2vh'>
               {content}
             </Text>
-            <Text fontSize='1.2vh'>Scheduled:{time}</Text>
+            <Text fontSize='1.2vh'>Scheduled:{formattedTime}</Text>
             <Button
               colorScheme='purple'
               color='white'
@@ -48,7 +64,7 @@ const QuizCard: React.FC<any> = ({ title, content, time,image }) => {
               fontSize='1.2vh'
               marginTop='1.6vh'
             >
-              Start Quiz
+              {btnText}
             </Button>
           </CardBody>
         </Stack>
