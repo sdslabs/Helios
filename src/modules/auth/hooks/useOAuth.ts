@@ -80,7 +80,7 @@ export const useOAuth = (authType: string) => {
               `/auth/${authType}/token?`,
               { code },
             )
-            if (!data.ok) {
+            if (!(data.status === 200)) {
               setUI({
                 loading: false,
                 error: 'failed',
@@ -90,9 +90,7 @@ export const useOAuth = (authType: string) => {
                 loading: false,
                 error: null,
               })
-              if (data.data.status === 200) {
-                window.location.reload()
-              }
+              window.location.reload()
             }
           }
         }

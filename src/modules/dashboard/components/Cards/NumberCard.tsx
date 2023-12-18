@@ -1,6 +1,11 @@
 import { Card, Heading } from '@chakra-ui/react'
+import { NumberCardType } from '../../types'
 
-const AttemptedQuizzesCard: React.FC<any> = ({ quantity }) => {
+interface NumberCardProps {
+  type: string
+  quantity: number
+}
+const NumberCard: React.FC<NumberCardProps> = ({ type, quantity }: NumberCardProps) => {
   return (
     <Card
       w='12vw'
@@ -14,10 +19,12 @@ const AttemptedQuizzesCard: React.FC<any> = ({ quantity }) => {
         {quantity}
       </Heading>
       <Heading fontSize='2vh' textAlign='center' fontWeight='400' color='#604195'>
-        Attempted <br /> Quizzes
+        {type === NumberCardType.hosted ? 'Hosted' : 'Attempted'}
+        <br />
+        Quizzes
       </Heading>
     </Card>
   )
 }
 
-export default AttemptedQuizzesCard
+export default NumberCard

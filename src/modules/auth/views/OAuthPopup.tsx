@@ -1,3 +1,4 @@
+import { Spinner } from '@chakra-ui/react'
 import { useEffect } from 'react'
 const OAUTH_STATE_KEY = process.env.REACT_APP_OAUTH_STATE_KEY as string
 const OAUTH_RESPONSE = process.env.REACT_APP_OAUTH_RESPONSE as string
@@ -13,7 +14,17 @@ const querytoObject = (query: string) => {
 }
 
 const OAuthPopup = (props: any) => {
-  const { Component = <div style={{ margin: '1.2vh' }}>Loading</div> } = props
+  const { Component = <div
+    style={{
+      width: '100vw',
+      height: '100vh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+  >
+    <Spinner size='xl' />
+  </div>} = props
   useEffect(() => {
     const payload = querytoObject(window.location.search.split('?')[1])
     if (!window.opener) {
