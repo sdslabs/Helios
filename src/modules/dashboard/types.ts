@@ -16,3 +16,8 @@ export enum NumberCardType {
   hosted='hosted',
   attempted='attempted'
 }
+
+export enum QuizType {
+  ongoing='ongoing',
+  upcoming='upcoming'
+}
