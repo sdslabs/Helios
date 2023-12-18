@@ -12,3 +12,7 @@ export type QuizDetails = {
   submitted: boolean
 }
 
+export enum NumberCardType {
+  hosted='hosted',
+  attempted='attempted'
+}

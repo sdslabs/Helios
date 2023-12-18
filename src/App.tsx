@@ -10,6 +10,7 @@ import useAuthStore from '@auth/store/authStore'
 import { useAuth } from '@auth/api/useAuth'
 import { useEffect, useState } from 'react'
 import OAuthPopup from '@auth/views/OAuthPopup'
+import { UserRoles } from './modules/types'
 
 function App() {
   const authStore = useAuthStore()
@@ -62,7 +63,7 @@ function App() {
           <>
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/' element={<Dashboard />} />
-            <Route path='/create/:quizID' element={<CreateQuiz />} />
+            {data.role===UserRoles.admin && <Route path='/create/:quizID' element={<CreateQuiz />} />}
             <Route path='/givequiz' element={<GiveQuiz />} />
           </>
         )}

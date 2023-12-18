@@ -1,6 +1,6 @@
 import { Card, Flex, Heading, Text } from '@chakra-ui/react'
 
-const QuizStartedBanner: React.FC = () => {
+const Banner: React.FC = () => {
   return (
     <Card w='60vw' h='12vw' backgroundColor='#EBE7F2' boxShadow='none' padding='6.4vh'>
       <Flex flexDirection='column' gap='0.8vh'>
@@ -15,4 +15,4 @@ const QuizStartedBanner: React.FC = () => {
   )
 }
 
-export default QuizStartedBanner
+export default Banner
