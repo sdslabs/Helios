@@ -4,4 +4,5 @@ export enum QuizCreationSteps {
   questions = 2,
   sectionDetails = 3,
   questionDetails = 4,
+  registrants = 5
 }

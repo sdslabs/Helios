@@ -1,4 +1,5 @@
 import { Button, Heading, HStack, Avatar } from '@chakra-ui/react'
+import { Link } from 'react-router-dom'
 
 interface TopNavProps {
   isDashboard?: boolean
@@ -27,7 +28,12 @@ const TopNav = ({ isDashboard = false, isAdmin = false }: TopNavProps) => {
       <HStack spacing={4}>
         {isDashboard && isAdmin && (
           <Button colorScheme='purple' bgColor='brand' px={4}>
-            Host Quiz
+            <Link to={`/create/quizID`}>
+              {
+                //TODO:create a unique id in place of quizID
+              }
+              + Host Quiz
+            </Link>
           </Button>
         )}
         {isDashboard && (
