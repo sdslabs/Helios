@@ -91,11 +91,11 @@ export const useOAuth = (authType: string) => {
             }
           }
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error(error)
         setUI({
           loading: false,
-          error: error.toString(),
+          error: "Error Occured",
         })
       } finally {
         cleanup(intervalRef, popupRef, handleMessageListener)

@@ -9,7 +9,7 @@ export const useDashboard = () => {
       try {
         const res = await axiosInstance.get('/auth')
         return res.data
-      } catch (e: any) {
+      } catch (e: unknown) {
         if (axios.isAxiosError(e)) {
           return e.response?.data || e.message
         }
