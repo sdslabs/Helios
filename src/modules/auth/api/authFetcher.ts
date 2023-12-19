@@ -5,7 +5,7 @@ export const checkAuth = async () => {
   try {
     const res = await axiosInstance.get('auth/user')
     return res.data
-  } catch (e: any) {
+  } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
       return e.response?.data || e.message
     }
@@ -27,7 +27,7 @@ export const onboard = async ({
       user,
     })
     return res.data
-  } catch (e: any) {
+  } catch (e: unknown) {
     if (axios.isAxiosError(e)) {
       return e.response?.data || e.message
     }
