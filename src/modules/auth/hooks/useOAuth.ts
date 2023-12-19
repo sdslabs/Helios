@@ -76,7 +76,7 @@ export const useOAuth = (authType: string) => {
             })
           } else {
             const code = message?.data?.payload?.code
-            const data: any = await axiosInstance.post(`/auth/${authType}/token?`, { code })
+            const data = await axiosInstance.post(`/auth/${authType}/token?`, { code })
             if (!(data.status === 200)) {
               setUI({
                 loading: false,
