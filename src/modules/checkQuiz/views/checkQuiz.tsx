@@ -2,7 +2,7 @@ import { useState } from 'react'
 import TopNav from '@common/components/TopNav'
 import { Box, Button, Flex } from '@chakra-ui/react'
 import DashboardHeader from '@checkQuiz/components/DashboardHeader'
-import TabView from '@checkQuiz/components/TabView'
+import TabViewDashboard from '@checkQuiz/components/TabViewDashboard'
 
 const CheckQuiz = () => {
   const [quizName, setQuizName] = useState('Maths Quiz')
@@ -30,7 +30,7 @@ const CheckQuiz = () => {
             quizTotalParticipants={quizTotalParticipants}
             quizTotalChecks={quizTotalChecks}
           />
-          <TabView />
+          <TabViewDashboard />
         </Flex>
       </Flex>
     </>

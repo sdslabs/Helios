@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator } from '@chakra-ui/react'
 import Filters from './Filters'
 
-const TabView = () => {
+const TabViewDashboard = () => {
   const tabStyle = {
     _selected: { color: 'brand' },
     color: '#939393',
@@ -31,4 +31,4 @@ const TabView = () => {
   )
 }
 
-export default TabView
+export default TabViewDashboard

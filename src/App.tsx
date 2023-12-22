@@ -13,6 +13,7 @@ import OAuthPopup from '@auth/views/OAuthPopup'
 import { UserRoles } from './modules/types'
 import GiveQuiz from './modules/giveQuiz/views/giveQuiz' 
 import CheckQuiz from '@checkQuiz/views/checkQuiz'
+import CreatedQuiz from '@checkQuiz/views/createdQuiz'
 
 function App() {
   const authStore = useAuthStore()
@@ -50,6 +51,7 @@ function App() {
           <Route path='/create/:quizID' element={<CreateQuiz />} />
           <Route path='/givequiz' element={<GiveQuiz />} />
           <Route path='/checkquiz' element={<CheckQuiz />} />
+          <Route path='/allQuizzes' element={<CreatedQuiz />} />
         </Routes>
       </ChakraProvider>
     )
