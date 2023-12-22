@@ -2,6 +2,8 @@ import { Box, Button, Flex, Text } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { GiveQuizSteps } from '../types'
 import { useQuiz } from '../api/UseQuiz';
+import useQuizStore from '../store/QuizStore';
+import { RegisterModal } from './Modals/RegistrationModal';
 
 
 interface SideNavContentProps {
@@ -13,6 +15,20 @@ interface QuizData {
     name: string;
     description: string;
     instructions: string;
+    sections: [
+      {
+        name: string;
+        description: string;
+        questions: [
+          {
+            question: string;
+            options: string[];
+            answer: string;
+            mark: number;
+          }
+        ]
+      }
+    ]
   };
  }
 
@@ -22,6 +38,10 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
   const [quizDescription, setQuizDescription] = useState('')
 
   const quizId = '64f03422df4af65f96380c43';
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen)
+  }
 
   const {
     data: quizData,
@@ -31,18 +51,35 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
   } = useQuiz(quizId as string) as { data: QuizData, isLoading: boolean, isSuccess: boolean, error: Error | null; };
 
   console.log(quizId);
+
+//TODO: remove this comment, commented for ease of testing
+  // useEffect(() => {
+  //   setIsModalOpen(true);
+  // },[]);
+
   useEffect(() => {
     if (isQuizDataSuccess) {
       setQuizName(quizData.quiz.name)
        setQuizDescription(quizData.quiz.description)
        setQuizInstructions(quizData.quiz.instructions)
+       const sectionData = quizData.quiz.sections.map(section => {
+        return {
+            name: section.name,
+            description: section.description,
+            questions: section.questions
+        };
+     });
+     useQuizStore.getState().setSections(sectionData);
+     
+     
+     console.log("*******",sectionData);
        console.log(quizId);
        console.log("*****",quizData);
        console.log(quizData.quiz.name);
 
     }
   }, [isQuizDataSuccess, quizData]);
-
+  
   if (isQuizDataLoading) {
     // Change later
     return <p>Loading...</p>;
@@ -87,6 +124,7 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
               }}
             >
               Continue
+              <RegisterModal open={isModalOpen} toggleIsOpen={toggleModal} />
             </Button>
           </Flex>
         </Flex>

@@ -5,8 +5,9 @@ export const submitQuiz = async (quizId : string) => {
         const res = await axiosInstance.post(`/giveQuiz/user/submit/${quizId}`);
 
         return res.data;
-    } catch (e : any) {
-        return e.response.data;
+    } catch (error) {
+        console.error('Error submitting quiz:', error);
+        return error;
     }
 };
 

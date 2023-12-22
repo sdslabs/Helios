@@ -1,8 +1,8 @@
 import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
-
 import { useState } from 'react'
+import { useAccessCode } from '@giveQuiz/api/UseAccessCode'
 
 interface StartModalProps {
   open: boolean
@@ -12,10 +12,23 @@ interface StartModalProps {
 export const StartModal = ({ open, toggleIsOpen }: StartModalProps) => {
   const [accessCode, setAccessCode] = useState('')
   const [isAccessCodeNeeded, setIsAccessCodeNeeded] = useState(true)
+  const quizId = '64f03422df4af65f96380c43';
 
-  const handleStartQuiz = () => {
-    // TODO: start quiz and route to quiz page
-  }
+  const { mutate } = useAccessCode();
+
+ 
+  async function handleStartQuiz() {
+    const body = {
+      accessCode: accessCode,
+    }
+     mutate({quizId, body},
+     {
+       onSuccess: () => {
+        toggleIsOpen(); 
+       },
+     },
+     );
+}
 
   return (
     <Modal isOpen={open} onClose={toggleIsOpen} isCentered>
