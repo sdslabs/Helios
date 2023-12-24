@@ -1,6 +1,14 @@
 import { Box, Button, Card, Flex, Heading, Image, Tag, Text } from '@chakra-ui/react'
+interface CreatedQuizCardProps {
+  image: string
+  name: string
+  tags: string[]
+  content: string
+  schedule: string
+  edit: boolean
+}
 
-const CreatedQuizCard: React.FC<any> = ({ image, name, tags, content, schedule, edit }) => {
+const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({ image, name, tags, content, schedule, edit }: CreatedQuizCardProps) => {
   return (
     <Card padding='1.6vh' height='20vh'>
       <Flex gap='1.6vh'>
