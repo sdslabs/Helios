@@ -1,4 +1,4 @@
-import useSectionStore from '../hooks/useSectionStore'
+import useSectionStore from '../store/useSectionStore'
 import {
   Box,
   Button,

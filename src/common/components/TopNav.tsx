@@ -1,6 +1,6 @@
 import { Button, Heading, HStack, Avatar } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
-import { useHostQuiz } from '@createQuiz/api/useQuizzes'
+import { useHostQuiz } from '@createQuiz/api/useQuiz'
 interface TopNavProps {
   isDashboard?: boolean
   isAdmin?: boolean

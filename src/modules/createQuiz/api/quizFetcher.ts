@@ -12,3 +12,29 @@ export const hostQuiz = async () => {
     throw e;
   }
 }
+
+export const getQuizDetails = async ({ queryKey }: { queryKey: [string, string] }) => {
+  try {
+    const res = await axiosInstance.get(`/createQuiz/quiz/${queryKey[1]}`);
+    return res.data;
+  } catch (e: unknown) {
+    if (axios.isAxiosError(e)) {
+      return e.response?.data || e.message;
+    }
+    throw e;
+  }
+};
+
+
+export const updateQuizDetails = async({quizId, body} : any) => {
+  try{
+    console.log(quizId, body, 'quizId, body')
+    const res = await axiosInstance.put(`/createQuiz/quiz/${quizId}`, body);
+    return res.data
+  } catch(e: unknown) {
+    if(axios.isAxiosError(e)){
+      return e.response?.data || e.message
+    }
+    throw e;
+  }
+}

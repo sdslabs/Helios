@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { AddQuestionIcon } from '@common/components/Icons'
-import useSectionStore from '../hooks/useSectionStore'
+import useSectionStore from '../store/useSectionStore'
 import { QuizCreationSteps } from '../types'
 
 interface QuestionsNavItemProps {

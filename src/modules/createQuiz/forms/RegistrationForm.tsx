@@ -12,8 +12,12 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import InputField from '@common/components/CustomInputWithLabel'
-
-const RegistrationForm = () => {
+import { IRegistrationForm } from '@giveQuiz/types'
+interface RegistrationFormProps {
+  form: IRegistrationForm
+  setForm: (details: IRegistrationForm) => void
+}
+const RegistrationForm = ({form, setForm} : RegistrationFormProps) => {
   return (
     <Box w='980px' mx='auto' my={14}>
       <Heading fontSize='3xl' color='accentBlack'>
