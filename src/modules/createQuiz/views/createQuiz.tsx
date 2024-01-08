@@ -8,47 +8,31 @@ import Registrants from '@createQuiz/forms/Registrants'
 import { useParams } from 'react-router-dom'
 import { useGetQuizDetails } from '@createQuiz/api/useQuiz'
 import { Spinner } from '@chakra-ui/react'
-import { IQuizDetails, IRegistrationForm } from '@giveQuiz/types'
+import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
+import useRegistrationFormStore from '@createQuiz/store/useRegistrationFormStore'
 
 const CreateQuiz = () => {
   const [quizStage, setQuizStage] = useState<QuizCreationSteps>(0)
   const { quizId } = useParams() as { quizId: string };
   const { data, isLoading } = useGetQuizDetails(quizId)
-  const [quizDetails, setQuizDetails] = useState<IQuizDetails>({
-    name: '',
-    managers: [],
-    description: '',
-    instructions: '',
-    startDate: '',
-    startTime: '',
-    endDate: '',
-    endTime: '',
-    duration: '',
-    accessCode: '',
-    bannerImage: '',
-  })
-  const [registrationForm, setRegistrationForm] = useState<IRegistrationForm>({
-    customFields: [],
-  })
+  const setQuizDetails = useQuizDetailsStore((state) => state.setDetails)
+  const setRegistrationForm = useRegistrationFormStore((state) => state.setRegistrationForm)
   useEffect(() => {
     if (data) {
       console.log(data);
       setQuizDetails({...data.quizDetails})
       setRegistrationForm({
-        customFields: data.registrationForm.customFields ?? [],
+        customFields: data?.registrationForm?.customFields ?? [],
       })
     }
   }, [data])
-  useEffect(() => {
-    console.log('Updated quizDetails:', quizDetails);
-  }, [quizDetails]);
 
   const renderQuizForm = () => {
     switch (quizStage) {
       case QuizCreationSteps.info:
-        return <QuizDetails details={quizDetails} setDetails={setQuizDetails} quizId={quizId}/>
+        return <QuizDetails quizId={quizId}/>
       case QuizCreationSteps.registrationForm:
-        return <RegistrationForm form={registrationForm} setForm={setRegistrationForm}/>
+        return <RegistrationForm quizId={quizId}/>
       case QuizCreationSteps.questions:
       case QuizCreationSteps.sectionDetails:
         return <SectionDetails />

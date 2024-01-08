@@ -12,31 +12,36 @@ import {
 import InputField from '@common/components/CustomInputWithLabel'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import ImageUpload from './ImageUpload'
-import { IQuizDetails } from '@giveQuiz/types'
-import useUpdateDetails from '@createQuiz/hooks/useUpateDetails'
 import { useUpdateQuizDetails } from "@createQuiz/api/useQuiz";
+import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore';
 
 interface QuizDetailsProps {
-  details: IQuizDetails
-  setDetails: (details: IQuizDetails) => void
   quizId: string  
 }
 
-const QuizDetails = ({details, setDetails, quizId} : QuizDetailsProps) => {
+const QuizDetails = ({ quizId} : QuizDetailsProps) => {
+  const { details, setKey } = useQuizDetailsStore((state) => state)
   const { mutate } = useUpdateQuizDetails()
   const handleChange = (key : string, value : string) => {
-    setDetails({...details, [key]: value})
+    setKey(key, value)
   }
   const handleChangeQuizInstructions = (value? : string) => {
-    setDetails({...details, instructions: value})
+    setKey('instructions', value ?? '');
   }
   const handleSaveQuizDetails = () => {
-    const { managers, ...rest } = details
+    const { managers, ...rest }  = details;
+    const  { startTime, endTime, startDate, endDate, duration, ...metadata } = rest;
+    const updatedMetadata = {
+      ...metadata,
+      startDateTimestamp: new Date(`${startDate} ${startTime}`).getTime(),
+      endDateTimestamp: new Date(`${endDate} ${endTime}`).getTime(),
+      duration: duration? parseInt(duration.split(':')[0], 10) * 60 + parseInt(duration.split(':')[1], 10) : 0,
+    }
     const updatedDetails = {
-      quizMetadata: rest,
+      quizMetadata: updatedMetadata,
       managers: managers
     }
-    mutate({quizId, body: updatedDetails })
+    mutate({ quizId, body: updatedDetails });
   }
   return (
     <Box w='930px' mx='auto' my={14}>
@@ -103,7 +108,7 @@ const QuizDetails = ({details, setDetails, quizId} : QuizDetailsProps) => {
             label='Quiz Duration'
             inputProps={{
               placeholder: 'HH:MM',
-              value: details?.duration,
+              defaultValue: details?.duration,
               onChange: (e) => handleChange('duration', e.target.value),
             }}
           />

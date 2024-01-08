@@ -12,12 +12,14 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import InputField from '@common/components/CustomInputWithLabel'
-import { IRegistrationForm } from '@giveQuiz/types'
+import { useUpdateQuizDetails } from '@createQuiz/api/useQuiz'
+import useRegistrationFormStore from '@createQuiz/store/useRegistrationFormStore'
 interface RegistrationFormProps {
-  form: IRegistrationForm
-  setForm: (details: IRegistrationForm) => void
+  quizId: string
 }
-const RegistrationForm = ({form, setForm} : RegistrationFormProps) => {
+const RegistrationForm = ({ quizId } : RegistrationFormProps) => {
+  const { mutate } = useUpdateQuizDetails()
+  const { registrationForm, setRegistrationForm } = useRegistrationFormStore((state) => state)
   return (
     <Box w='980px' mx='auto' my={14}>
       <Heading fontSize='3xl' color='accentBlack'>
