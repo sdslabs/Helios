@@ -30,9 +30,9 @@ const CreateQuiz = () => {
   const renderQuizForm = () => {
     switch (quizStage) {
       case QuizCreationSteps.info:
-        return <QuizDetails quizId={quizId}/>
+        return <QuizDetails quizId={quizId} setQuizStage={setQuizStage}/>
       case QuizCreationSteps.registrationForm:
-        return <RegistrationForm quizId={quizId}/>
+        return <RegistrationForm quizId={quizId} setQuizStage={setQuizStage}/>
       case QuizCreationSteps.questions:
       case QuizCreationSteps.sectionDetails:
         return <SectionDetails />

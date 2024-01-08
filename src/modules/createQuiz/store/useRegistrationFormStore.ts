@@ -1,11 +1,13 @@
 import { create } from "zustand";
 
+export interface CustomFields {
+  name: string
+  label: string
+  isRequired: boolean
+
+}
 export interface RegistrationForm {
-  customFields: {
-    name: string
-    label: string
-    isRequired: boolean
-  }[]
+  customFields: CustomFields[]
 }
 
 export interface RegistrationFormStore {

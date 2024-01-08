@@ -17,9 +17,10 @@ import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore';
 
 interface QuizDetailsProps {
   quizId: string  
+  setQuizStage: (stage: number) => void
 }
 
-const QuizDetails = ({ quizId} : QuizDetailsProps) => {
+const QuizDetails = ({ quizId, setQuizStage} : QuizDetailsProps) => {
   const { details, setKey } = useQuizDetailsStore((state) => state)
   const { mutate } = useUpdateQuizDetails()
   const handleChange = (key : string, value : string) => {
@@ -42,6 +43,7 @@ const QuizDetails = ({ quizId} : QuizDetailsProps) => {
       managers: managers
     }
     mutate({ quizId, body: updatedDetails });
+    setQuizStage(1);
   }
   return (
     <Box w='930px' mx='auto' my={14}>
