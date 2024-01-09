@@ -16,12 +16,11 @@ import { useUpdateQuizDetails } from "@createQuiz/api/useQuiz";
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore';
 
 interface QuizDetailsProps {
-  quizId: string  
   setQuizStage: (stage: number) => void
 }
 
-const QuizDetails = ({ quizId, setQuizStage} : QuizDetailsProps) => {
-  const { details, setKey } = useQuizDetailsStore((state) => state)
+const QuizDetails = ({ setQuizStage} : QuizDetailsProps) => {
+  const { quizId, details, setKey } = useQuizDetailsStore((state) => state)
   const { mutate } = useUpdateQuizDetails()
   const handleChange = (key : string, value : string) => {
     setKey(key, value)

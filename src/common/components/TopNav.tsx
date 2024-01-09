@@ -13,7 +13,6 @@ const TopNav = ({ isDashboard = false, isAdmin = false }: TopNavProps) => {
     navigate('/dashboard')
   }
   const handleHostQuiz = () => {
-    console.log('hosting quiz')
     mutate(void 0, {
       onSuccess: (data) => {
         navigate(`/create-quiz/${data.quizId}`)

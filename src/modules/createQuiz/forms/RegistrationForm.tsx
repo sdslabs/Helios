@@ -14,14 +14,15 @@ import {
 import InputField from '@common/components/CustomInputWithLabel'
 import { useUpdateQuizDetails } from '@createQuiz/api/useQuiz'
 import useRegistrationFormStore, { CustomFields } from '@createQuiz/store/useRegistrationFormStore'
+import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 interface RegistrationFormProps {
-  quizId: string
   setQuizStage: (stage: number) => void
 }
 
-const RegistrationForm = ({ quizId, setQuizStage } : RegistrationFormProps) => {
+const RegistrationForm = ({ setQuizStage } : RegistrationFormProps) => {
   const { mutate } = useUpdateQuizDetails()
   const { registrationForm, setRegistrationForm } = useRegistrationFormStore((state) => state)
+  const quizId = useQuizDetailsStore((state) => state.quizId)
 
   const handleChange = (key: keyof CustomFields, value: string | boolean, index: number) => {
     const updatedCustomFields = [...registrationForm.customFields]
@@ -122,7 +123,7 @@ const RegistrationForm = ({ quizId, setQuizStage } : RegistrationFormProps) => {
               id={`cf-${index + 1}`}
               colorScheme='purple'
               disabled={registrationForm.customFields.length <= index}
-              checked={registrationForm.customFields[index]?.isRequired || false}
+              isChecked={registrationForm.customFields[index]?.isRequired}
               onChange={(e) => handleChange('isRequired', e.target.checked, index)}
             />
           </FormControl>

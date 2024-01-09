@@ -10,29 +10,32 @@ import { useGetQuizDetails } from '@createQuiz/api/useQuiz'
 import { Spinner } from '@chakra-ui/react'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import useRegistrationFormStore from '@createQuiz/store/useRegistrationFormStore'
+import useSectionStore from '@createQuiz/store/useSectionStore'
 
 const CreateQuiz = () => {
   const [quizStage, setQuizStage] = useState<QuizCreationSteps>(0)
   const { quizId } = useParams() as { quizId: string };
   const { data, isLoading } = useGetQuizDetails(quizId)
-  const setQuizDetails = useQuizDetailsStore((state) => state.setDetails)
+  const { setDetails, setQuizId } = useQuizDetailsStore((state) => state)
   const setRegistrationForm = useRegistrationFormStore((state) => state.setRegistrationForm)
+  const setSections = useSectionStore((state) => state.setSections)
   useEffect(() => {
     if (data) {
-      console.log(data);
-      setQuizDetails({...data.quizDetails})
+      setDetails({...data.quizDetails})
       setRegistrationForm({
         customFields: data?.registrationForm?.customFields ?? [],
       })
+      setQuizId(quizId)
+      setSections(data?.sectionsDetails ?? [])
     }
   }, [data])
 
   const renderQuizForm = () => {
     switch (quizStage) {
       case QuizCreationSteps.info:
-        return <QuizDetails quizId={quizId} setQuizStage={setQuizStage}/>
+        return <QuizDetails setQuizStage={setQuizStage}/>
       case QuizCreationSteps.registrationForm:
-        return <RegistrationForm quizId={quizId} setQuizStage={setQuizStage}/>
+        return <RegistrationForm setQuizStage={setQuizStage}/>
       case QuizCreationSteps.questions:
       case QuizCreationSteps.sectionDetails:
         return <SectionDetails />

@@ -17,14 +17,18 @@ export interface QuizDetails {
 
 export interface QuizDetailsStore {
   details: QuizDetails
+  quizId : string
   setDetails: (quizDetails: QuizDetails) => void
   setKey: (key: string, value: string) => void
+  setQuizId: (quizId: string) => void
 }
 
 const useQuizDetailsStore = create<QuizDetailsStore>((set) => ({
   details: {},
+  quizId: '',
   setDetails: ( details) => set({ details }),
-  setKey: (key, value) => set((state) => ({ details: { ...state.details, [key]: value } }))
+  setKey: (key, value) => set((state) => ({ details: { ...state.details, [key]: value } })),
+  setQuizId: (quizId) => set({ quizId })
 }))
 
 export default useQuizDetailsStore

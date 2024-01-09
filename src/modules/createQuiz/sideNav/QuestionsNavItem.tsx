@@ -14,12 +14,16 @@ import { useState } from 'react'
 import { AddQuestionIcon } from '@common/components/Icons'
 import useSectionStore from '../store/useSectionStore'
 import { QuizCreationSteps } from '../types'
+import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
+import { useCreateSection } from '@createQuiz/api/useSection'
 
 interface QuestionsNavItemProps {
   setStage: (stage: QuizCreationSteps) => void
 }
 
 const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
+  const quizId  = useQuizDetailsStore((state) => state.quizId)
+  const { mutate } = useCreateSection()
   const { addSection, sections, setCurrentSectionIdx } = useSectionStore()
   const [ques, setQues] = useState<number[]>([])
 
@@ -57,7 +61,7 @@ const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
               borderRadius={4}
             >
               <Text flexGrow={1} textAlign='left' pl={2} fontWeight='600'>
-                {section.title ?? `Section ${section.id}`}
+                {section.name ?? `Section ${section.id}`}
               </Text>
               <AccordionIcon />
             </AccordionButton>
@@ -94,7 +98,10 @@ const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
         </AccordionButton>
         <AccordionPanel borderLeft='2px solid' borderColor='v1'>
           <Accordion allowToggle>{renderSections()}</Accordion>
-          <Button bgColor='v1' color='brand' w='100%' onClick={addSection}>
+          <Button bgColor='v1' color='brand' w='100%' onClick={() => {
+            addSection()
+            mutate({ quizId })
+          }}>
             + Add Section
           </Button>
         </AccordionPanel>

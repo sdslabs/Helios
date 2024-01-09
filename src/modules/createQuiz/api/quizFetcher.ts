@@ -28,7 +28,6 @@ export const getQuizDetails = async ({ queryKey }: { queryKey: [string, string] 
 
 export const updateQuizDetails = async({quizId, body} : any) => {
   try{
-    console.log(quizId, body, 'quizId, body')
     const res = await axiosInstance.put(`/createQuiz/quiz/${quizId}`, body);
     return res.data
   } catch(e: unknown) {
