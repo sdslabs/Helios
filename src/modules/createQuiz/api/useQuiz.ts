@@ -22,3 +22,10 @@ export const useGetQuizDetails = (quizId : string) => {
   })
   return query;
 }
+
+export const usePublishQuiz = () => {
+  const mutation = useMutation({
+    mutationFn: fetchers.publishQuiz,
+  })
+  return mutation;
+}
