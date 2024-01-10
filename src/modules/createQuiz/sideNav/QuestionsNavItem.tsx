@@ -25,7 +25,7 @@ const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
   const quizId  = useQuizDetailsStore((state) => state.quizId)
   const { mutate: mutateSection } = useCreateSection()
   const { mutate: mutateQuestion } = useCreateQuestion()
-  const { addSection, sections, setCurrentSectionIdx, addQuestion } = useSectionStore()
+  const { addSection, sections, setCurrentSectionIdx, addQuestion, setCurrentQuestionIdx } = useSectionStore()
 
   const renderQuestions = (idx : number) => {
     return sections[idx]?.questions?.map((q, i) => (
@@ -35,7 +35,10 @@ const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
         colorScheme='purple'
         rounded='full'
         width='1'
-        onClick={() => setStage(4)}
+        onClick={() => {
+          setCurrentQuestionIdx(i)
+          setStage(4)
+        }}
       >
         {i + 1}
       </Button>
@@ -77,6 +80,7 @@ const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
                   onClick={() => {
                     mutateQuestion({ quizId, sectionIdx: idx },{
                       onSuccess: (data) => {
+                        console.log(data)
                         addQuestion(idx, data.questionId)
                       },
                       onError: (err) => {

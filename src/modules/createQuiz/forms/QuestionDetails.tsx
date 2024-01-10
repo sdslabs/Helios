@@ -94,9 +94,9 @@ const QuestionDetails = () => {
     if (isFetched && !isLoading && !data) {
       refetch()
     } else if (isFetched && !isLoading && data) {
-      setDescription(data.question.description)
-      setType(data.question.type)
-      setMarks(data.question.maxMarks)
+      setDescription(data.question?.description)
+      setType(data.question?.type)
+      setMarks(data.question?.maxMarks)
       setAutoCheck(data.question?.autoCheck)
       setOptions(data.question?.options)
       setNotes(data.question?.checkerNotes)
@@ -110,7 +110,7 @@ const QuestionDetails = () => {
     return (
       <>
         <List spacing={3}>
-          {options.map((option) => (
+          {options?.map((option) => (
             <ListItem key={option.id} as={HStack}>
               <ListIcon as={CircleIconOutlined} opacity={0.5} />
               <Editable
@@ -210,7 +210,7 @@ const QuestionDetails = () => {
                 Answer:
               </Text>
               <Select w={48} value={answer} onChange={(e) => setAnswer(e.target.value)}>
-                {options.map((option) => (
+                {options?.map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.id}
                   </option>

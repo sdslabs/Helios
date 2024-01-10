@@ -12,6 +12,7 @@ export interface SectionStore {
   currentSectionIdx: number | null
   currentQuestionIdx: number | null
   setCurrentSectionIdx: (idx: number) => void
+  setCurrentQuestionIdx: (idx: number) => void
   addSection: () => void
   setSections: (sections: Section[]) => void
   setSectionMetadata: ( sectionIdx: number, key: string, value: string) => void
@@ -24,6 +25,7 @@ const useSectionStore = create<SectionStore>((set) => ({
   currentQuestionIdx: null,
   setSections: (sections: Section[]) => set({ sections }),
   setCurrentSectionIdx: (idx) => set({ currentSectionIdx: idx }),
+  setCurrentQuestionIdx: (idx) => set({ currentQuestionIdx: idx }),
   addSection: () =>{
     set((state) => ({
       currentSectionIdx: state.sections.length,
