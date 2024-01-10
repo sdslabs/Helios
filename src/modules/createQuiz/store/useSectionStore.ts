@@ -4,12 +4,13 @@ export interface Section {
   id: string
   name?: string
   instructions?: string
-  questions?: string[]
+  questions: string[]
 }
 
 export interface SectionStore {
   sections: Section[]
   currentSectionIdx: number | null
+  currentQuestionIdx: number | null
   setCurrentSectionIdx: (idx: number) => void
   addSection: () => void
   setSections: (sections: Section[]) => void
@@ -20,6 +21,7 @@ export interface SectionStore {
 const useSectionStore = create<SectionStore>((set) => ({
   sections: [],
   currentSectionIdx: null,
+  currentQuestionIdx: null,
   setSections: (sections: Section[]) => set({ sections }),
   setCurrentSectionIdx: (idx) => set({ currentSectionIdx: idx }),
   addSection: () =>{
