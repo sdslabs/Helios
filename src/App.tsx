@@ -11,75 +11,64 @@ import { useAuth } from '@auth/api/useAuth'
 import { useEffect, useState } from 'react'
 import OAuthPopup from '@auth/views/OAuthPopup'
 import { UserRoles } from './modules/types'
-import GiveQuiz from './modules/giveQuiz/views/giveQuiz' 
 import CheckQuiz from '@checkQuiz/views/checkQuiz'
-import CreatedQuiz from '@checkQuiz/views/createdQuiz'
+import CheckQuestionView from '@checkQuiz/components/giveQuiz/CheckQuestionView'
 
 function App() {
   const authStore = useAuthStore()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const { data, isLoading, isFetched, refetch } = useAuth()
+  // const { data, isLoading, isFetched, refetch } = useAuth()
 
-  useEffect(() => {
-    if (isFetched && !isLoading && !data) {
-      refetch()
-    } else if (isFetched && !isLoading && data.user !== null) {
-      authStore.setUser(data.user)
-      authStore.setOnboarded(data.onboarded)
-      setIsLoggedIn(true)
-    }
-  }, [isFetched, isLoading, data])
+  // useEffect(() => {
+  //   if (isFetched && !isLoading && !data) {
+  //     refetch()
+  //   } else if (isFetched && !isLoading && data.user !== null) {
+  //     authStore.setUser(data.user)
+  //     authStore.setOnboarded(data.onboarded)
+  //     setIsLoggedIn(true)
+  //   }
+  // }, [isFetched, isLoading, data])
 
-  if (isLoading) {
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Spinner size='xl' />
-      </div>
-      <ChakraProvider theme={theme}>
-        <Routes>
-          <Route path='/register' element={<Register />} />
-          <Route path='/' element={<JoinUs />} />
-          <Route path='*' element={<Navigate to='/' />} />
-          <Route path='/create/:quizID' element={<CreateQuiz />} />
-          <Route path='/givequiz' element={<GiveQuiz />} />
-          <Route path='/checkquiz' element={<CheckQuiz />} />
-          <Route path='/allQuizzes' element={<CreatedQuiz />} />
-        </Routes>
-      </ChakraProvider>
-    )
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div
+  //       style={{
+  //         width: '100vw',
+  //         height: '100vh',
+  //         display: 'flex',
+  //         justifyContent: 'center',
+  //         alignItems: 'center',
+  //       }}
+  //     >
+  //       <Spinner size='xl' />
+  //     </div>
+  //   )
+  // }
 
   return (
     <ChakraProvider theme={theme}>
       <Routes>
-        {!isLoggedIn && !isLoading && data.user === null ? (
+        {/* {!isLoggedIn && !isLoading && data.user === null ? (
           <>
             <Route path='/' element={<JoinUs />} />
             <Route path='/callback' element={<OAuthPopup />} />
             <Route path='*' element={<Navigate to='/' />} />
           </>
-        ) : isLoggedIn && !authStore.onboarded && !isLoading ? (
+        ) : isLoggedIn && !authStore.onboarded && !isLoading ? ( */}
           <>
             <Route path='/*' element={<Register />} />
           </>
-        ) : (
+        {/* ) : ( */}
           <>
             <Route path='/dashboard' element={<Dashboard />} />
-            {data.role === UserRoles.admin && (
+            {/* {data.role === UserRoles.admin && (
               <Route path='/create/:quizID' element={<CreateQuiz />} />
-            )}
-            <Route path='/givequiz' element={<GiveQuiz />} />
+            )} */}
+            <Route path='/checkQuiz/:quizID/:questionID' element={<CheckQuestionView />} />
+            <Route path='/checkQuiz/:quizID' element={<CheckQuiz />} />
             <Route path='/*' element={<Dashboard />} />
           </>
-        )}
+        {/* )} */}
       </Routes>
     </ChakraProvider>
   )

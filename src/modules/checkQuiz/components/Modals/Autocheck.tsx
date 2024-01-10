@@ -2,17 +2,18 @@ import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
+import { useAutocheck } from '@checkQuiz/api/useAutocheck'
 
 interface AutocheckModalProps {
   open: boolean
   toggleIsOpen: () => void
+  totalMCQs: number
 }
 
-const AutocheckModal = ({ open, toggleIsOpen }: AutocheckModalProps) => {
-  const [TotalQuestions, setTotalQuestions] = useState<number>(60)
+const AutocheckModal = ({ open, toggleIsOpen, totalMCQs }: AutocheckModalProps) => {
 
   const handleAutocheck = () => {
-    // TODO: Autochek and route to result page
+    // const {} = useAutocheck()
   }
 
   return (
@@ -34,7 +35,7 @@ const AutocheckModal = ({ open, toggleIsOpen }: AutocheckModalProps) => {
         <Text fontSize='1rem' fontWeight='400' mb={4}>
           Are you sure you want to autocheck{' '}
           <Text as='span' fontWeight='bold'>
-            {TotalQuestions}
+            {totalMCQs}
           </Text>{' '}
           questions ?
         </Text>

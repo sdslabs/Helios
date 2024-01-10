@@ -6,9 +6,10 @@ import AutocheckModal from './Modals/Autocheck'
 interface FiltersProps {
   SearchBox?: boolean
   SelectFilter?: boolean
+  totalMCQs: number
 }
 
-const Filters: React.FC<FiltersProps> = ({ SearchBox = false, SelectFilter = false }) => {
+const Filters: React.FC<FiltersProps> = ({ SearchBox = false, SelectFilter = false, totalMCQs}) => {
   const [assignees, setAssignees] = useState<any>([])
   const [sortStatus, setSortStatus] = useState<string>('ascending')
   const [isAutocheckModalOpen, setIsAutocheckModalOpen] = useState<boolean>(false)
@@ -97,7 +98,7 @@ const Filters: React.FC<FiltersProps> = ({ SearchBox = false, SelectFilter = fal
           Autocheck
         </Button>
       </HStack>
-      <AutocheckModal open={isAutocheckModalOpen} toggleIsOpen={() => setIsAutocheckModalOpen(!isAutocheckModalOpen)} />
+      <AutocheckModal open={isAutocheckModalOpen} toggleIsOpen={() => setIsAutocheckModalOpen(!isAutocheckModalOpen)} totalMCQs={totalMCQs}/>
     </>
   )
 }

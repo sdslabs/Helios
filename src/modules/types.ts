@@ -1,5 +1,5 @@
 export enum QuestionType {
-  MCQ = 'Multiple Choice',
+  MCQ = "mcq",
   SUB = 'Subjective',
 }
 
