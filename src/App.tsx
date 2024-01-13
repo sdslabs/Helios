@@ -65,7 +65,7 @@ function App() {
               <Route path='/create/:quizID' element={<CreateQuiz />} />
             )}
             <Route path='/givequiz' element={<GiveQuiz />} />
-            <Route path='/*' element={<Dashboard />} />
+            <Route path='/*' element={<Navigate to='/dashboard' />} />
           </>
         )}
       </Routes>
