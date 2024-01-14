@@ -1,22 +1,54 @@
 import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
 import { TimeIcon, CloseIcon } from '@chakra-ui/icons'
 import { QuizSummaryModal } from './QuizSummaryModal'
 import QuizSummaryPie from '../QuizSummaryPie'
+import * as io from "socket.io-client";
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSubmitQuiz } from '../../api/UseSubmitQuiz';
+import useQuizStore from '@giveQuiz/store/QuizStore';
 
 interface SubmitQuizModalProps {
   open: boolean
   toggleIsOpen: () => void
 }
 
+const socket = io.connect('http://localhost:4000');
+
 export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) => {
+
   const [timeLeft, setTimeLeft] = useState('00 : 00 : 00')
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
-
-  const handleQuizSubmit = () => {
-    setIsQuizSubmitted(true)
-    // TODO: submit quiz and route to quiz summary modal
+  const navigate = useNavigate();
+  const timer = useQuizStore((state) => state.timer)
+  const { quizId } = useParams()
+  const { mutate } = useSubmitQuiz()
+  const handleQuizSubmit = async () => {
+    socket.disconnect()
+    if (quizId) {
+      mutate(quizId, {
+        onSuccess: () => {
+          setIsQuizSubmitted(true)
+          navigate('/')
+        },
+      })
+    }
   }
+
+  function convertMillisecondsToTime(milliseconds: number): string {
+    const totalSeconds = Math.floor(milliseconds / 1000)
+    const seconds = String(totalSeconds % 60).padStart(2, '0')
+    const totalMinutes = Math.floor(totalSeconds / 60)
+    const minutes = String(totalMinutes % 60).padStart(2, '0')
+    const totalHours = Math.floor(totalMinutes / 60)
+    const hours = String(totalHours % 24).padStart(2, '0')
+
+    return `${hours}:${minutes}:${seconds}`
+  }
+
+  useEffect(() => {
+    setTimeLeft(convertMillisecondsToTime(timer))
+  }, [timer])
 
   return (
     <Modal isOpen={open} onClose={toggleIsOpen} isCentered size='3xl'>
@@ -88,4 +120,4 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
       </ModalContent>
     </Modal>
   )
-}
+  }

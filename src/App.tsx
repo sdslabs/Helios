@@ -45,6 +45,7 @@ function App() {
   }
 
   return (
+    
     <ChakraProvider theme={theme}>
       <Routes>
         {!isLoggedIn && !isLoading && data.user === null ? (
@@ -64,12 +65,13 @@ function App() {
             {data.user.role === UserRoles.admin && (
               <Route path='/create-quiz/:quizId' element={<CreateQuiz />} />
             )}
-            <Route path='/give-quiz' element={<GiveQuiz />} />
+            <Route path='/givequiz/:quizId' element={<GiveQuiz />} />
             <Route path='/*' element={<Navigate to='/dashboard' />} />
           </>
         )}
       </Routes>
     </ChakraProvider>
+    
   )
 }
 

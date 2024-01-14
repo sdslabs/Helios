@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { Card, CardBody, Image, Stack, Heading, Text, Button, Flex } from '@chakra-ui/react'
 import { ButtonType } from '../../types'
+import { StartModal } from '@giveQuiz/components/Modals/StartQuizModal'
+import { RegisterModal } from '@giveQuiz/components/Modals/RegistrationModal'
+import useQuizStore from '@giveQuiz/store/QuizStore';
+import { useNavigate } from 'react-router-dom';
 
 interface QuizCardProps {
   title: string
+  registered: boolean
   content: string
   time: Date
   image: string
   btnText: string
+  quizId?: any
 }
 
 const QuizCard: React.FC<QuizCardProps> = ({
@@ -16,6 +22,8 @@ const QuizCard: React.FC<QuizCardProps> = ({
   time,
   image,
   btnText,
+  quizId,
+
 }: QuizCardProps) => {
   const formattedTime = time.toLocaleString('en-US', {
     day: 'numeric',
@@ -25,8 +33,33 @@ const QuizCard: React.FC<QuizCardProps> = ({
     minute: '2-digit',
     hour12: true,
   })
+
+  const [isStartModalOpen, setIsStartModalOpen] = useState(false);
+  const toggleStartModal = () => {
+    setIsStartModalOpen(!isStartModalOpen)
+  }
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const toggleRegisterModal = () => {
+    setIsRegisterModalOpen(!isRegisterModalOpen)
+  }
+  const navigate = useNavigate();
+
+  const {setIsStarted} = useQuizStore();
+
+  const handleClick = () => {
+    if (btnText === ButtonType.start){
+      setIsStarted(true);
+      navigate(`/giveQuiz/${quizId}`)
+
+    }
+    if (btnText === ButtonType.register){
+      setIsRegisterModalOpen(true);
+    }
+    
+  };
+   
   return (
-    <Flex zIndex='-1'>
+    
       <Card
         direction={{ base: 'column', sm: 'row' }}
         overflow='hidden'
@@ -57,13 +90,15 @@ const QuizCard: React.FC<QuizCardProps> = ({
               fontSize='1.2vh'
               marginTop='1.6vh'
               isDisabled={btnText === ButtonType.completed || btnText === ButtonType.registered}
+              onClick={handleClick}
             >
               {btnText}
-            </Button>
-          </CardBody>
-        </Stack>
-      </Card>
-    </Flex>
+              <StartModal open={isStartModalOpen} toggleIsOpen={toggleStartModal} quizId={quizId} />
+              <RegisterModal open={isRegisterModalOpen} toggleIsOpen={toggleRegisterModal} quizId={quizId} />
+            </Button>       
+          </CardBody>  
+        </Stack>    
+      </Card>  
   )
 }
 

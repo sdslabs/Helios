@@ -20,20 +20,22 @@ const QuizSlider: React.FC<QuizSliderProps> = ({ data, type }: QuizSliderProps) 
           data.map((card: QuizDetails, index: number) => (
             <QuizCard
               title={card.name}
+              quizId={card._id}
+              registered = {card.registered}
               key={index}
               content={card.description}
               time={card.startDateTimestamp}
               image={card.bannerImage}
               btnText={
                 type == QuizType.ongoing
-                  ? card.submitted
+                  ? card.submitted 
                     ? ButtonType.completed
                     : ButtonType.start
                   : card.registered
                   ? ButtonType.registered
                   : ButtonType.register
               }
-            />
+              />
           ))
         ) : (
           <NoQuizzesCard />

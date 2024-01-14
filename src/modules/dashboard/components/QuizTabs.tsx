@@ -13,12 +13,16 @@ interface TabsProps {
 
 const QuizTabs: React.FC<TabsProps> = ({ isAdmin = false, quizzes, createdQuizzes }: TabsProps) => {
   const date = new Date()
-
+  
   const ongoingQuizzes = quizzes?.filter((q: QuizDetails) => {
-    q.endDateTimestamp > date && q.startDateTimestamp < date
-  })
+    const quizendTimeStamp = new Date(q.endDateTimestamp.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
+    const quizstartTimeStamp = new Date(q.startDateTimestamp.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
+    return quizendTimeStamp > date && quizstartTimeStamp < date;
+   });
+   
   const upcomingQuizzes = quizzes?.filter((q: QuizDetails) => {
-    q.startDateTimestamp > date
+    const quizstartTimeStamp = new Date(q.startDateTimestamp.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
+    return quizstartTimeStamp > date
   })
   return (
     <>
