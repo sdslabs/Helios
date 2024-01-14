@@ -10,30 +10,37 @@ import {
   Text,
   Wrap,
 } from '@chakra-ui/react'
-import { useState } from 'react'
 import { AddQuestionIcon } from '@common/components/Icons'
-import useSectionStore from '../hooks/useSectionStore'
+import useSectionStore from '../store/useSectionStore'
 import { QuizCreationSteps } from '../types'
+import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
+import { useCreateSection } from '@createQuiz/api/useSection'
+import { useCreateQuestion } from '@createQuiz/api/useQuestion'
 
 interface QuestionsNavItemProps {
   setStage: (stage: QuizCreationSteps) => void
 }
 
 const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
-  const { addSection, sections, setCurrentSectionIdx } = useSectionStore()
-  const [ques, setQues] = useState<number[]>([])
+  const quizId  = useQuizDetailsStore((state) => state.quizId)
+  const { mutate: mutateSection } = useCreateSection()
+  const { mutate: mutateQuestion } = useCreateQuestion()
+  const { addSection, sections, setCurrentSectionIdx, addQuestion, setCurrentQuestionIdx } = useSectionStore()
 
-  const renderQuestions = () => {
-    return ques.map((q, i) => (
+  const renderQuestions = (idx : number) => {
+    return sections[idx]?.questions?.map((q, i) => (
       <Button
         key={i}
-        variant='outline'
+        variant='outline' 
         colorScheme='purple'
         rounded='full'
         width='1'
-        onClick={() => setStage(4)}
+        onClick={() => {
+          setCurrentQuestionIdx(i)
+          setStage(4)
+        }}
       >
-        {i}
+        {i + 1}
       </Button>
     ))
   }
@@ -57,13 +64,13 @@ const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
               borderRadius={4}
             >
               <Text flexGrow={1} textAlign='left' pl={2} fontWeight='600'>
-                {section.title ?? `Section ${section.id}`}
+                {section.name ?? `Section ${section.id}`}
               </Text>
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel>
               <Wrap pt={3}>
-                {renderQuestions()}
+                {renderQuestions(idx)}
                 <IconButton
                   icon={<AddIcon w={3} h={3} />}
                   variant='outline'
@@ -71,7 +78,16 @@ const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
                   aria-label=''
                   rounded='full'
                   onClick={() => {
-                    setQues((prev) => [...prev, idx])
+                    mutateQuestion({ quizId, sectionIdx: idx },{
+                      onSuccess: (data) => {
+                        console.log(data)
+                        addQuestion(idx, data.questionId)
+                      },
+                      onError: (err) => {
+                        // TODO: handle error using toast or something else
+                        console.log(err)
+                      }
+                    })
                   }}
                 />
               </Wrap>
@@ -94,7 +110,10 @@ const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
         </AccordionButton>
         <AccordionPanel borderLeft='2px solid' borderColor='v1'>
           <Accordion allowToggle>{renderSections()}</Accordion>
-          <Button bgColor='v1' color='brand' w='100%' onClick={addSection}>
+          <Button bgColor='v1' color='brand' w='100%' onClick={() => {
+            addSection()
+            mutateSection({ quizId })
+          }}>
             + Add Section
           </Button>
         </AccordionPanel>

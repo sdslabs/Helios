@@ -61,10 +61,10 @@ function App() {
         ) : (
           <>
             <Route path='/dashboard' element={<Dashboard />} />
-            {data.role === UserRoles.admin && (
-              <Route path='/create/:quizID' element={<CreateQuiz />} />
+            {data.user.role === UserRoles.admin && (
+              <Route path='/create-quiz/:quizId' element={<CreateQuiz />} />
             )}
-            <Route path='/givequiz' element={<GiveQuiz />} />
+            <Route path='/give-quiz' element={<GiveQuiz />} />
             <Route path='/*' element={<Navigate to='/dashboard' />} />
           </>
         )}

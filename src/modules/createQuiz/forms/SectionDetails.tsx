@@ -1,4 +1,4 @@
-import useSectionStore from '../hooks/useSectionStore'
+import useSectionStore, { Section } from '../store/useSectionStore'
 import {
   Box,
   Button,
@@ -13,18 +13,34 @@ import {
 import useGetTopNavHeight from '@common/hooks/useGetTopNavHeight'
 import InputField from '@common/components/CustomInputWithLabel'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
-import { useState } from 'react'
+import { useUpdateSection } from '@createQuiz/api/useSection'
+import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 
 const SectionDetails = () => {
-  const sections = useSectionStore((state) => state.sections)
-  const currentSectionIdx = useSectionStore((state) => state.currentSectionIdx)
+  const { sections, setSections, currentSectionIdx, setSectionMetadata } = useSectionStore((state) => state)
+  const quizId = useQuizDetailsStore((state) => state.quizId)
   const activeSection = currentSectionIdx !== null ? sections[currentSectionIdx] : null
-
   const topNavHeight = useGetTopNavHeight()
+  const { mutate } = useUpdateSection()
 
-  const [sectionInstructions, setSectionInstructions] = useState<string>('')
+
   const handleChangeSectionInstructions = (value?: string) => {
-    setSectionInstructions(value ?? '')
+    setSectionMetadata(currentSectionIdx ?? 0, 'instructions', value ?? '')
+  }
+  const handleResetSection = () => {
+    setSectionMetadata(currentSectionIdx ?? 0, 'instructions', '')
+    setSectionMetadata(currentSectionIdx ?? 0, 'name', 'Section ' + ((currentSectionIdx ?? 0) + 1))
+    mutate({ quizId, sectionIdx: currentSectionIdx, body: { name: 'Section ' + ((currentSectionIdx ?? 0) + 1), instructions: '' } })
+  }
+
+  const handleSectionSave = () => {
+    if (activeSection && currentSectionIdx !== null ) {
+      const updatedSection = { ...activeSection, name: activeSection.name, instructions: activeSection.instructions }
+      const updatedSections = [...sections]
+      updatedSections[currentSectionIdx] = updatedSection
+      setSections(updatedSections)
+      mutate({ quizId, sectionIdx: currentSectionIdx, body: updatedSection })
+    }
   }
 
   if (!activeSection) {
@@ -46,6 +62,8 @@ const SectionDetails = () => {
           label='Section Name'
           inputProps={{
             placeholder: 'Enter section name',
+            value: activeSection.name,
+            onChange: (e) => setSectionMetadata(currentSectionIdx ?? 0, 'name', e.target.value),
           }}
           subtext='0/15 characters'
         />
@@ -54,15 +72,15 @@ const SectionDetails = () => {
             Section Instructions
           </FormLabel>
           <CustomRichTextEditor
-            value={sectionInstructions}
+            value={activeSection.instructions ?? ''}
             onChange={handleChangeSectionInstructions}
           />
         </FormControl>
         <HStack justifyContent='end' my={12} gap={3}>
-          <Button color='brand' colorScheme='purple' fontWeight='400' variant='outline'>
+          <Button color='brand' colorScheme='purple' fontWeight='400' variant='outline' onClick={handleResetSection}>
             Reset
           </Button>
-          <Button color='white' colorScheme='purple' bgColor='brand' fontWeight='400'>
+          <Button color='white' colorScheme='purple' bgColor='brand' fontWeight='400' onClick={handleSectionSave}>
             Save & Continue
           </Button>
         </HStack>

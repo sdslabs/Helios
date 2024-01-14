@@ -1,14 +1,25 @@
 import { Button, Heading, HStack, Avatar } from '@chakra-ui/react'
-import { Link } from 'react-router-dom'
-
+import { useNavigate } from 'react-router-dom'
+import { useHostQuiz } from '@createQuiz/api/useQuiz'
 interface TopNavProps {
   isDashboard?: boolean
   isAdmin?: boolean
 }
 
 const TopNav = ({ isDashboard = false, isAdmin = false }: TopNavProps) => {
-  //add onclicks for the quizio button and the host quiz button
-  //create a new quiz request to backend and then redirect to the quiz creation page
+  const navigate = useNavigate()
+  const { mutate } = useHostQuiz()
+  const handleHomeClick = () => {
+    navigate('/dashboard')
+  }
+  const handleHostQuiz = () => {
+    mutate(void 0, {
+      onSuccess: (data) => {
+        navigate(`/create-quiz/${data.quizId}`)
+      }
+    });
+  
+  }
   return (
     <HStack
       px={12}
@@ -22,18 +33,13 @@ const TopNav = ({ isDashboard = false, isAdmin = false }: TopNavProps) => {
       bg='white'
       justifyContent='space-between'
     >
-      <Heading color='brand' fontSize='xl' fontWeight='700'>
+      <Heading color='brand' fontSize='xl' fontWeight='700' onClick={handleHomeClick}>
         Quizio
       </Heading>
       <HStack spacing={4}>
         {isDashboard && isAdmin && (
-          <Button colorScheme='purple' bgColor='brand' px={4}>
-            <Link to={`/create/quizID`}>
-              {
-                //TODO:create a unique id in place of quizID
-              }
+          <Button colorScheme='purple' bgColor='brand' px={4} onClick={handleHostQuiz}>
               + Host Quiz
-            </Link>
           </Button>
         )}
         {isDashboard && (
