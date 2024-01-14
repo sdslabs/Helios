@@ -28,7 +28,7 @@ import { CircleIconOutlined } from '@common/components/Icons'
 const QuestionDetails = () => {
   const [val1, setVal1] = useState<string>('')
   const [val2, setVal2] = useState<string>('')
-  const [type, setType] = useState<QuestionType>(QuestionType.SUB)
+  const [type, setType] = useState('')
 
   const handleChangeVal1 = (value?: string) => {
     setVal1(value ?? '')
@@ -41,7 +41,7 @@ const QuestionDetails = () => {
   }
 
   const renderChoiceBuilder = () => {
-    if (type === QuestionType.SUB) return null
+    if (type === 'subjective') return null
 
     return (
       <>
@@ -87,8 +87,8 @@ const QuestionDetails = () => {
             Question (number)
           </Text>
           <Select value={type} onChange={handleChangeType} w={48}>
-            <option value={QuestionType.SUB}>{QuestionType.SUB}</option>
-            <option value={QuestionType.MCQ}>{QuestionType.MCQ}</option>
+            <option value={'subjective'}>{'subjective'}</option>
+            <option value={'mcq'}>{'mcq'}</option>
           </Select>
         </HStack>
         <FormControl>
@@ -107,7 +107,7 @@ const QuestionDetails = () => {
           </Text>
           <Input type='number' w={20} />
         </HStack>
-        {type === QuestionType.MCQ && (
+        {type === 'mcq' && (
           <>
             <HStack>
               <Text color='accentBlack' fontSize='sm'>
@@ -127,7 +127,7 @@ const QuestionDetails = () => {
           </>
         )}
       </HStack>
-      {type === QuestionType.SUB && (
+      {type === 'subjective' && (
         <FormControl>
           <FormLabel fontWeight='400' fontSize='sm' color='gray.500'>
             Checker&#39;s notes

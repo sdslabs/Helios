@@ -4,6 +4,7 @@ import SideNavContent from '../sideNav'
 import { QuizCreationSteps } from '../types'
 import { QuestionDetails, QuizDetails, RegistrationForm, SectionDetails } from '../forms'
 import TopNav from '@common/components/TopNav'
+import Registrants from '@createQuiz/forms/Registrants'
 
 const CreateQuiz = () => {
   const [quizStage, setQuizStage] = useState<QuizCreationSteps>(0)
@@ -19,6 +20,8 @@ const CreateQuiz = () => {
         return <SectionDetails />
       case QuizCreationSteps.questionDetails:
         return <QuestionDetails />
+      case QuizCreationSteps.registrants:
+        return <Registrants />
       default:
         return null
     }

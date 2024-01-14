@@ -1,42 +1,73 @@
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, Spinner } from '@chakra-ui/react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import theme from '@common/theme'
 import JoinUs from './modules/auth/views/joinUs'
 import { Register } from './modules/auth/views/register'
 import CreateQuiz from './modules/createQuiz/views/createQuiz'
-import GiveQuiz from './modules/giveQuiz/views/giveQuiz' 
-import { QueryClientProvider,QueryClient } from '@tanstack/react-query'
-
-const queryClient = new QueryClient;
+import GiveQuiz from './modules/giveQuiz/views/giveQuiz'
+import Dashboard from './modules/dashboard/views/Dashboard'
+import useAuthStore from '@auth/store/authStore'
+import { useAuth } from '@auth/api/useAuth'
+import { useEffect, useState } from 'react'
+import OAuthPopup from '@auth/views/OAuthPopup'
+import { UserRoles } from './modules/types'
 
 function App() {
-  const isLoggedIn = false // TODO: add logged in user logic
-  
-  if (!isLoggedIn) {
+  const authStore = useAuthStore()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { data, isLoading, isFetched, refetch } = useAuth()
+
+  useEffect(() => {
+    if (isFetched && !isLoading && !data) {
+      refetch()
+    } else if (isFetched && !isLoading && data.user !== null) {
+      authStore.setUser(data.user)
+      authStore.setOnboarded(data.onboarded)
+      setIsLoggedIn(true)
+    }
+  }, [isFetched, isLoading, data])
+
+  if (isLoading) {
     return (
-      
-      <ChakraProvider theme={theme}>
-        <QueryClientProvider client={queryClient}>
-        <Routes>
-          <Route path='/register' element={<Register />} />
-          <Route path='/' element={<JoinUs />} />
-          <Route path='*' element={<Navigate to='/' />} />
-          <Route path='/create/:quizID' element={<CreateQuiz />} />
-          <Route path='/givequiz' element={<GiveQuiz />} /> 
-        </Routes>
-        </QueryClientProvider>
-        
-      </ChakraProvider>
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Spinner size='xl' />
+      </div>
     )
   }
 
   return (
     
     <ChakraProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
       <Routes>
+        {!isLoggedIn && !isLoading && data.user === null ? (
+          <>
+            <Route path='/' element={<JoinUs />} />
+            <Route path='/callback/google' element={<OAuthPopup />} />
+            <Route path='*' element={<Navigate to='/' />} />
+          </>
+        ) : isLoggedIn && !authStore.onboarded && !isLoading ? (
+          <>
+            <Route path='/*' element={<Register />} />
+          </>
+        ) : (
+          <>
+            <Route path='/dashboard' element={<Dashboard />} />
+            {data.role === UserRoles.admin && (
+              <Route path='/create/:quizID' element={<CreateQuiz />} />
+            )}
+            <Route path='/givequiz/:quizId' element={<GiveQuiz />} />
+            <Route path='/*' element={<Dashboard />} />
+          </>
+        )}
       </Routes>
-      </QueryClientProvider>
     </ChakraProvider>
     
   )

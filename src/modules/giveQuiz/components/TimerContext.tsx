@@ -16,13 +16,9 @@ export const TimerProvider: React.FC<TimerProviderProps> = ({ children }) => {
 
   const setTimer = (value: number | null) => {
     setTimerValue(value);
-  };
+  }
 
-  return (
-    <TimerContext.Provider value={{ timerValue, setTimer }}>
-      {children}
-    </TimerContext.Provider>
-  );
+  return <TimerContext.Provider value={{ timerValue, setTimer }}>{children}</TimerContext.Provider>
 };
 
 export const useTimer = () => {

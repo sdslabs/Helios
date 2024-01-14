@@ -7,7 +7,7 @@ import SideNavContent from '@giveQuiz/sideNav'
 import SectionTopBar from '@giveQuiz/components/SectionTopBar'
 import SectionInstructions from '@giveQuiz/components/SectionInstructions'
 import QuestionView from '@giveQuiz/components/QuestionView'
-import { TimerProvider } from '@giveQuiz/components/TimerContext';
+import { TimerProvider } from '@giveQuiz/components/TimerContext'
 
 const giveQuiz = () => {
   const [quizStage, setQuizStage] = useState<GiveQuizSteps>(0)
@@ -27,15 +27,15 @@ const giveQuiz = () => {
 
   return (
     <>
-    <TimerProvider>
-      <TopNav />
-      <WithSidebarWrapper
-        sidebarContent={<SideNavContent stage={quizStage} setStage={setQuizStage} />}
-      >
-        <SectionTopBar />
-        {renderQuiz()}
-      </WithSidebarWrapper>
-       </TimerProvider> 
+      <TimerProvider>
+        <TopNav />
+        <WithSidebarWrapper
+          sidebarContent={<SideNavContent stage={quizStage} setStage={setQuizStage} />}
+        >
+          <SectionTopBar />
+          {renderQuiz()}
+        </WithSidebarWrapper>
+      </TimerProvider>
     </>
   )
 }

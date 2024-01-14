@@ -28,6 +28,11 @@ import {
 
 import { Select } from 'chakra-react-select'
 import useSocialHandlesStore from '@auth/store/SocialHandlesStore'
+import usePersonalDetailsStore from '@auth/store/PersonalDetailsStore'
+import useEducationalInfoStore from '@auth/store/EducationalInformationStore'
+import useAuthStore from '@auth/store/authStore'
+import { useNavigate } from 'react-router-dom'
+import { useOnboard } from '../api/useAuth'
 
 // Making the select
 interface SocialMediaOption {
@@ -133,6 +138,41 @@ interface FormProps {
 
 export const SocialHandlesForm = (props: FormProps) => {
   const setStep = useStepStore((state) => state.setStep)
+  const { socialMediaHandles } = useSocialHandlesStore()
+  const { firstName, lastName, email, phone } = usePersonalDetailsStore()
+  const { country, city, org } = useEducationalInfoStore()
+  const { user, setOnboarded } = useAuthStore()
+  const navigate = useNavigate()
+
+  const personalDetails = {
+    name: firstName + lastName,
+    emailAdd: email,
+    phoneNo: phone,
+  }
+
+  const educationalDetails = {
+    instituteName: org,
+    country: country,
+    city: city,
+  }
+  const { mutate } = useOnboard()
+  async function handleRegister() {
+    mutate(
+      {
+        personalDetails,
+        educationalDetails,
+        socialMediaHandles,
+        user,
+      },
+      {
+        onSuccess: () => {
+          setOnboarded(true)
+          navigate('/dashboard')
+        },
+      },
+    )
+  }
+
   return (
     <>
       <Box sx={{ borderRadius: 'md', my: 8, boxSize: '26rem', minW: 'xl' }}>
@@ -168,7 +208,7 @@ export const SocialHandlesForm = (props: FormProps) => {
               variant={'solid'}
               px={6}
               borderRadius={3}
-              //TODO: Define its logic based on backend.
+              onClick={handleRegister}
             >
               Get Started
             </Button>

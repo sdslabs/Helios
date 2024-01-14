@@ -2,13 +2,16 @@ import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 import { useState } from 'react'
 import { Modal, ModalContent, ModalOverlay, Button, Text, Flex } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
+import { useRegisterUser } from '../../api/UseRegister'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface RegisterModalProps {
   open: boolean
   toggleIsOpen: () => void
+  quizId: string
 }
 
-export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
+export const RegisterModal = ({ open, toggleIsOpen, quizId }: RegisterModalProps) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
@@ -19,9 +22,33 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
     { label: 'Additional Detail2', placeholder: 'Label 2', isRequired: false },
     { label: 'Additional Detail3', placeholder: 'Label 3', isRequired: false },
   ])
+  const { mutate } = useRegisterUser()
+  const queryClient = useQueryClient()
 
-  const handleSubmit = () => {
-    // TODO: submit registration form and open access code modal
+  async function handleRegister() {
+    const body = {
+      customFields: [
+        { name: 'firstName', value: firstName },
+        { name: 'lastName', value: lastName },
+        { name: 'email', value: email },
+        { name: 'contactNo', value: contactNo },
+        { name: 'organisationName', value: organisationName },
+        ...additionalDetails.map((detail, index) => ({
+          name: detail.label,
+          value: detail.placeholder,
+        })),
+      ],
+    }
+    mutate(
+      { quizId, body },
+      {
+        onSuccess: () => {
+          toggleIsOpen()
+          queryClient.invalidateQueries({ exact: true, queryKey: ['dashboard'] });
+
+        },
+      },
+    )
   }
 
   return (
@@ -83,7 +110,14 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
             />
           ))}
         </Flex>
-        <Button colorScheme='purple' bgColor='brand' px={6} alignSelf='flex-end' mt={10} onClick={handleSubmit}>
+        <Button
+          colorScheme='purple'
+          bgColor='brand'
+          px={6}
+          alignSelf='flex-end'
+          mt={10}
+          onClick={handleRegister}
+        >
           Register
         </Button>
       </ModalContent>

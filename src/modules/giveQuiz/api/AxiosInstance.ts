@@ -1,20 +1,21 @@
 import axios from "axios";
-import Cookies from 'js-cookie';
 import { baseURL } from "../../../config/config";
+import Cookies from 'js-cookie'
 
 const axiosInstance = axios.create({
-    headers:{
-        'Content-Type':'application/json',
-        Accept: 'application/json',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
     },
-    baseURL
-});
+    baseURL,
+    withCredentials: true,
+  })
+  
+  axiosInstance.interceptors.request.use((config) => {
+    const { jwtToken } = Cookies.get()
+    config.headers.Authorization = `Bearer ${jwtToken}`
+    return config
+  })
 
-axiosInstance.interceptors.request.use((config) => {
-	const config2 = config;
-	const { jwtToken } = Cookies.get();
-	config2.headers.Authorization = `Bearer ${jwtToken}`;
-	return config2;
-});
 
 export default axiosInstance;

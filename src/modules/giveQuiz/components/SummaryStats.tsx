@@ -1,4 +1,5 @@
 import { Flex, Box, Text } from '@chakra-ui/react'
+import useQuizStore from '@giveQuiz/store/QuizStore'
 
 interface SummaryStatsProps {
   TotalQuestions: number
@@ -7,6 +8,12 @@ interface SummaryStatsProps {
 }
 
 const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProps) => {
+  const answeredQuestions = useQuizStore((state) => state.answeredQuestions)
+  const markedAnsweredQuestions = useQuizStore((state) => state.markedAnsweredQuestions)
+  const markedQuestions = useQuizStore((state) => state.markedQuestions)
+  const totalQuestion = useQuizStore((state) => state.totalQuestion)
+  const notVisitedQuestions = totalQuestion - answeredQuestions.length
+
   return (
     <Flex flexDirection='column' alignItems='flex-start' justifyContent='center'>
       <Flex flexDirection='row' alignItems='center' justifyContent='center' mb={5}>
@@ -14,7 +21,7 @@ const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProp
           Total number of Questions:&nbsp;
         </Text>
         <Text fontSize='1.25rem' fontWeight='600' color='accentBlack'>
-          {TotalQuestions}
+          {totalQuestion}
         </Text>
       </Flex>
       <Flex flexDirection='row' alignItems='center' justifyContent='center' mb={3}>
@@ -23,7 +30,7 @@ const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProp
           Not visited:&nbsp;
         </Text>
         <Text fontSize='0.875rem' fontWeight='600' color='accentBlack'>
-          {SummaryData[0]}
+          {notVisitedQuestions}
         </Text>
       </Flex>
       <Flex flexDirection='row' alignItems='center' justifyContent='center' mb={3}>
@@ -32,7 +39,7 @@ const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProp
           Answered questions:&nbsp;
         </Text>
         <Text fontSize='0.875rem' fontWeight='600' color='accentBlack'>
-          {SummaryData[1]}
+          {answeredQuestions.length}
         </Text>
       </Flex>
       <Flex flexDirection='row' alignItems='center' justifyContent='center' mb={3}>
@@ -41,7 +48,7 @@ const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProp
           Marked for review:&nbsp;
         </Text>
         <Text fontSize='0.875rem' fontWeight='600' color='accentBlack'>
-          {SummaryData[2]}
+          {markedQuestions.length}
         </Text>
       </Flex>
       <Flex flexDirection='row' alignItems='center' justifyContent='center' mb={3}>
@@ -50,7 +57,7 @@ const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProp
           Answered and marked for review:&nbsp;
         </Text>
         <Text fontSize='0.875rem' fontWeight='600' color='accentBlack'>
-          {SummaryData[3]}
+          {markedAnsweredQuestions.length}
         </Text>
       </Flex>
     </Flex>

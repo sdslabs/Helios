@@ -1,8 +1,7 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { GiveQuizSteps } from '../types'
-import * as io from "socket.io-client";
-import { useTimer } from './TimerContext';
+import useQuizStore from '@giveQuiz/store/QuizStore'
 
 interface SideNavContentProps {
   stage: GiveQuizSteps
@@ -13,18 +12,21 @@ interface SideNavContentProps {
 const SectionInstructions = ({ stage, setStage }: SideNavContentProps) => {
   const [sectionInstructions, setSectionInstructions] = useState('')
   const [sectionNumber, setSectionNumber] = useState(1)
-  const { setTimer } = useTimer();
-    // Function to handle the button click and emit the socket event
-    const handleButtonClick = () => {
-      const socket = io.connect("http://localhost:4000");
-      socket.emit('join_quiz', { quizId: "64f03422df4af65f96380c43", userId: "64f03422df4af65f96380c3e" });
-      socket.on('sendTime', (timeLeft) => {
-        setTimer(timeLeft);
-        console.log(timeLeft)
-      })
-  
-  };
+  const currentSection = useQuizStore((state) => state.currentSection)
+  const currentSectionIndex = useQuizStore((state) => state.currentSectionIndex)
+  const setCurrentQuestion = useQuizStore((state) => state.setCurrentQuestion)
+  const setCurrentQuestionIndex = useQuizStore((state) => state.setCurrentQuestionIndex)
 
+  async function handleButtonClick() {
+    setCurrentQuestion(currentSection.questions[0])
+    setCurrentQuestionIndex(1)
+  }
+  useEffect(() => {
+    setSectionInstructions(currentSection?.description)
+    setSectionNumber(currentSectionIndex)
+    setCurrentQuestion(currentSection.questions[0])
+    setCurrentQuestionIndex(1)
+  }, [currentSection, currentSectionIndex])
 
   return (
     <>
@@ -42,7 +44,14 @@ const SectionInstructions = ({ stage, setStage }: SideNavContentProps) => {
             <Text fontSize='1.5rem' fontWeight='600' mb={4} alignSelf='self-start'>
               Section Instructions
             </Text>
-            <Text fontSize='1rem' fontWeight='400' mb={4} w='58.5rem' color='GrayText'>
+            <Text
+              fontSize='1rem'
+              fontWeight='400'
+              mb={4}
+              w='58.5rem'
+              color='GrayText'
+              style={{ whiteSpace: 'pre-wrap' }}
+            >
               {sectionInstructions}
             </Text>
             <Button
@@ -51,7 +60,7 @@ const SectionInstructions = ({ stage, setStage }: SideNavContentProps) => {
               alignSelf='flex-end'
               mt={12}
               onClick={() => {
-                handleButtonClick();
+                handleButtonClick()
                 setStage(2)
               }}
             >
