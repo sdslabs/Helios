@@ -44,14 +44,12 @@ function App() {
   }
 
   return (
-    
     <ChakraProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
       <Routes>
         {!isLoggedIn && !isLoading && data.user === null ? (
           <>
             <Route path='/' element={<JoinUs />} />
-            <Route path='/callback' element={<OAuthPopup />} />
+            <Route path='/callback/google' element={<OAuthPopup />} />
             <Route path='*' element={<Navigate to='/' />} />
           </>
         ) : isLoggedIn && !authStore.onboarded && !isLoading ? (
@@ -64,14 +62,12 @@ function App() {
             {data.role === UserRoles.admin && (
               <Route path='/create/:quizID' element={<CreateQuiz />} />
             )}
-            <Route path='/givequiz' element={<GiveQuiz />} />
+            <Route path='/givequiz/:quizId' element={<GiveQuiz />} />
             <Route path='/*' element={<Dashboard />} />
           </>
         )}
       </Routes>
-      </QueryClientProvider>
     </ChakraProvider>
-    
   )
 }
 

@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
-import { GiveQuizSteps } from '../types'
+import { useState, useEffect } from 'react';
+import { GiveQuizSteps } from '../types';
 import { useQuiz } from '../api/UseQuiz';
 import useQuizStore from '../store/QuizStore';
-import { RegisterModal } from './Modals/RegistrationModal';
-
+import { useParams } from 'react-router-dom';
+import { StartModal } from './Modals/StartQuizModal';
 
 interface SideNavContentProps {
   stage: GiveQuizSteps
@@ -25,74 +25,92 @@ interface QuizData {
             options: string[];
             answer: string;
             mark: number;
-          }
+          },
         ]
-      }
+      },
     ]
-  };
- }
+  }
+  answeredQuestionIds: string[]
+  markedAnsweredQuestionIds: string[]
+  markedQuestionIds: string[]
+}
 
 const Instructions = ({ stage, setStage }: SideNavContentProps) => {
   const [quizInstructions, setQuizInstructions] = useState('')
   const [quizName, setQuizName] = useState('')
   const [quizDescription, setQuizDescription] = useState('')
-
-  const quizId = '64f03422df4af65f96380c43';
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen)
-  }
-
+  const setCurrentSection = useQuizStore((state) => state.setCurrentSection)
+  const setCurrentSectionIndex = useQuizStore((state) => state.setCurrentSectionIndex)
+  const sections = useQuizStore((state) => state.sections)
+  const isStarted = useQuizStore((state) => state.isStarted)
+  const { setAnsweredQuestions, setMarkedQuestions, setMarkedAnsweredQuestions, setIsStarted } =
+    useQuizStore()
+  const { quizId } = useParams()
   const {
     data: quizData,
     isLoading: isQuizDataLoading,
     isSuccess: isQuizDataSuccess,
     error: quizError,
-  } = useQuiz(quizId as string) as { data: QuizData, isLoading: boolean, isSuccess: boolean, error: Error | null; };
+  } = useQuiz(quizId as string) as {
+    data: QuizData
+    isLoading: boolean
+    isSuccess: boolean
+    error: Error | null
+  }
+  const [isStartModalOpen, setIsStartModalOpen] = useState(false)
+  const toggleStartModal = () => {
+    setIsStartModalOpen(!isStartModalOpen)
+  }
 
-  console.log(quizId);
-
-//TODO: remove this comment, commented for ease of testing
-  // useEffect(() => {
-  //   setIsModalOpen(true);
-  // },[]);
+  useEffect(() => {
+    if (isStarted) {
+      setIsStartModalOpen(true)
+      setIsStarted(false)
+    }
+  }, [])
 
   useEffect(() => {
     if (isQuizDataSuccess) {
       setQuizName(quizData.quiz.name)
-       setQuizDescription(quizData.quiz.description)
-       setQuizInstructions(quizData.quiz.instructions)
-       const sectionData = quizData.quiz.sections.map(section => {
+      setQuizDescription(quizData.quiz.description)
+      setQuizInstructions(quizData.quiz.instructions)
+      setAnsweredQuestions(quizData.answeredQuestionIds)
+      setMarkedQuestions(quizData.markedQuestionIds)
+      setMarkedAnsweredQuestions(quizData.markedAnsweredQuestionIds)
+      const sectionData = quizData.quiz.sections.map((section) => {
         return {
-            name: section.name,
-            description: section.description,
-            questions: section.questions
-        };
-     });
-     useQuizStore.getState().setSections(sectionData);
-     
-     
-     console.log("*******",sectionData);
-       console.log(quizId);
-       console.log("*****",quizData);
-       console.log(quizData.quiz.name);
-
+          name: section.name,
+          description: section.description,
+          questions: section.questions,
+        }
+      })
+      useQuizStore.getState().setSections(sectionData)
+      const totalQuestions = sectionData.reduce(
+        (total, section) => total + section.questions.length,
+        0,
+      )
+      useQuizStore.getState().setTotalQuestion(totalQuestions)
     }
-  }, [isQuizDataSuccess, quizData]);
-  
+  }, [isQuizDataSuccess, quizData])
+
   if (isQuizDataLoading) {
     // Change later
-    return <p>Loading...</p>;
+    return <p>Loading...</p>
   }
-  
+
   if (!isQuizDataSuccess) {
     // Change later
-    console.error('Error loading quiz data:', quizError);
-    return <p>Error loading quiz data</p>;
+    console.error('Error loading quiz data:', quizError)
+    return <p>Error loading quiz data</p>
+  }
+
+  async function handleContinueClick() {
+    setStage(1)
+    setCurrentSectionIndex(1)
+    setCurrentSection(sections[0])
   }
 
   return (
-
     <>
       <Box as='main' display='flex' mt={12}>
         <Flex flexDirection='column' alignItems='center' justifyContent='center' w={'full'}>
@@ -105,13 +123,27 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
             <Text fontSize='2rem' fontWeight='700' mb={4} alignSelf='start'>
               {quizName}
             </Text>
-            <Text fontSize='1rem' fontWeight='400' mb={4} w='58.5rem' color='GrayText' style={{ whiteSpace: 'pre-wrap' }}>
+            <Text
+              fontSize='1rem'
+              fontWeight='400'
+              mb={4}
+              w='58.5rem'
+              color='GrayText'
+              style={{ whiteSpace: 'pre-wrap' }}
+            >
               {quizDescription}
             </Text>
             <Text fontSize='1.5rem' fontWeight='600' mb={4} alignSelf='self-start'>
               Instructions
             </Text>
-            <Text fontSize='1rem' fontWeight='400' mb={4} w='58.5rem' color='GrayText' style={{ whiteSpace: 'pre-wrap' }}>
+            <Text
+              fontSize='1rem'
+              fontWeight='400'
+              mb={4}
+              w='58.5rem'
+              color='GrayText'
+              style={{ whiteSpace: 'pre-wrap' }}
+            >
               {quizInstructions}
             </Text>
             <Button
@@ -120,16 +152,15 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
               alignSelf='flex-end'
               mt={4}
               onClick={() => {
-                setStage(1)
+                handleContinueClick()
               }}
             >
               Continue
-              <RegisterModal open={isModalOpen} toggleIsOpen={toggleModal} />
+              <StartModal open={isStartModalOpen} toggleIsOpen={toggleStartModal} quizId={quizId} />
             </Button>
           </Flex>
         </Flex>
       </Box>
-      
     </>
   )
 }

@@ -2,15 +2,16 @@ import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 import { useState } from 'react'
 import { Modal, ModalContent, ModalOverlay, Button, Text, Flex } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
-import { StartModal } from './StartQuizModal';
-import { useRegisterUser } from '../../api/UseRegister';
+import { useRegisterUser } from '../../api/UseRegister'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface RegisterModalProps {
   open: boolean
   toggleIsOpen: () => void
+  quizId: string
 }
 
-export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
+export const RegisterModal = ({ open, toggleIsOpen, quizId }: RegisterModalProps) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
@@ -21,36 +22,34 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
     { label: 'Additional Detail2', placeholder: 'Label 2', isRequired: false },
     { label: 'Additional Detail3', placeholder: 'Label 3', isRequired: false },
   ])
-
-  const quizId = '64f03422df4af65f96380c43';
-
-  const { mutate } = useRegisterUser();
+  const { mutate } = useRegisterUser()
+  const queryClient = useQueryClient()
 
   async function handleRegister() {
-    
-     const body = {
-        customFields: [
-          { name: 'firstName', value: firstName },
-          { name: 'lastName', value: lastName },
-          { name: 'email', value: email },
-          { name: 'contactNo', value: contactNo },
-          { name: 'organisationName', value: organisationName },
-          ...additionalDetails.map((detail, index) => ({
-            name: detail.label,
-            value: detail.placeholder,
-          })),
-        ],
-      }
-      mutate({quizId, body},
+    const body = {
+      customFields: [
+        { name: 'firstName', value: firstName },
+        { name: 'lastName', value: lastName },
+        { name: 'email', value: email },
+        { name: 'contactNo', value: contactNo },
+        { name: 'organisationName', value: organisationName },
+        ...additionalDetails.map((detail, index) => ({
+          name: detail.label,
+          value: detail.placeholder,
+        })),
+      ],
+    }
+    mutate(
+      { quizId, body },
       {
         onSuccess: () => {
-          toggleIsOpen();
-          
+          toggleIsOpen()
+          queryClient.invalidateQueries({ exact: true, queryKey: ['dashboard'] });
+
         },
       },
-      );
+    )
   }
-
 
   return (
     <Modal isOpen={open} onClose={toggleIsOpen} isCentered size='6xl'>
@@ -111,7 +110,14 @@ export const RegisterModal = ({ open, toggleIsOpen }: RegisterModalProps) => {
             />
           ))}
         </Flex>
-        <Button colorScheme='purple' bgColor='brand' px={6} alignSelf='flex-end' mt={10} onClick={handleRegister}>
+        <Button
+          colorScheme='purple'
+          bgColor='brand'
+          px={6}
+          alignSelf='flex-end'
+          mt={10}
+          onClick={handleRegister}
+        >
           Register
         </Button>
       </ModalContent>

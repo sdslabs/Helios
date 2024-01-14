@@ -15,14 +15,14 @@ export const fetchGetResponse = async (quizId : string, questionId : string) => 
     responseData
   }: any) => {
     try {
-        const res =await axiosInstance.post(`/giveQuiz/response/createResponse/${quizId}/${questionId}/`, responseData.answer)
+        const res =await axiosInstance.post(`/giveQuiz/response/createResponse/${quizId}/${questionId}/`, responseData)
       return res.data
     } catch (error) {
      console.error('Error creating/updating response:', error);
     }
   }
 
-   export const fetchDeleteResponse = async (quizId : string, questionId : string) => {
+   export const fetchDeleteResponse = async ({quizId, questionId} : any) => {
     try {
       const response = await axiosInstance.delete(`/giveQuiz/response/deleteResponse/${quizId}/${questionId}/`);
       return response.data;

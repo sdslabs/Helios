@@ -16,9 +16,9 @@ export const useCreateUpdateResponse = ()=>{
     return mutation;
 }
 
-export const useDeleteResponse = (quizId: string, questionId: string)=>{
+export const useDeleteResponse = ()=>{
     const mutation = useMutation({
-        mutationFn: () => fetchers.fetchDeleteResponse(quizId, questionId),
+        mutationFn: fetchers.fetchDeleteResponse,
     });
     return mutation;
 }

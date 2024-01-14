@@ -27,15 +27,15 @@ const giveQuiz = () => {
 
   return (
     <>
-    <TimerProvider>
-      <TopNav />
-      <WithSidebarWrapper
-        sidebarContent={<SideNavContent stage={quizStage} setStage={setQuizStage} />}
-      >
-        <SectionTopBar />
-        {renderQuiz()}
-      </WithSidebarWrapper>
-       </TimerProvider> 
+      <TimerProvider>
+        <TopNav />
+        <WithSidebarWrapper
+          sidebarContent={<SideNavContent stage={quizStage} setStage={setQuizStage} />}
+        >
+          <SectionTopBar />
+          {renderQuiz()}
+        </WithSidebarWrapper>
+      </TimerProvider>
     </>
   )
 }
