@@ -9,7 +9,8 @@ import Dashboard from './modules/dashboard/views/Dashboard'
 import useAuthStore from '@auth/store/authStore'
 import { useAuth } from '@auth/api/useAuth'
 import { useEffect, useState } from 'react'
-import OAuthPopup from '@auth/views/OAuthPopup'
+import GoogleCallback from '@auth/views/googleCallback'
+import GithubCallback from '@auth/views/githubCallback'
 import { UserRoles } from './modules/types'
 
 function App() {
@@ -50,7 +51,8 @@ function App() {
         {!isLoggedIn && !isLoading && data.user === null ? (
           <>
             <Route path='/' element={<JoinUs />} />
-            <Route path='/callback/google' element={<OAuthPopup />} />
+            <Route path='/callback/google' element={<GoogleCallback />} />
+            <Route path='/callback/github' element={<GithubCallback />} />
             <Route path='*' element={<Navigate to='/' />} />
           </>
         ) : isLoggedIn && !authStore.onboarded && !isLoading ? (
@@ -60,11 +62,11 @@ function App() {
         ) : (
           <>
             <Route path='/dashboard' element={<Dashboard />} />
-            {data.role === UserRoles.admin && (
-              <Route path='/create/:quizID' element={<CreateQuiz />} />
+            {data.user.role === UserRoles.admin && (
+              <Route path='/create-quiz/:quizId' element={<CreateQuiz />} />
             )}
             <Route path='/givequiz/:quizId' element={<GiveQuiz />} />
-            <Route path='/*' element={<Dashboard />} />
+            <Route path='/*' element={<Navigate to='/dashboard' />} />
           </>
         )}
       </Routes>
