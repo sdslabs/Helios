@@ -8,7 +8,7 @@ interface AuthButtonProps extends ButtonProps {
 }
 
 export const AuthButton = ({ authType, ...props }: AuthButtonProps) => {
-  const { loading, error, getAuth } = useOAuth(authType)
+  const { getAuth } = useOAuth(authType)
 
   const handleClick = () => {
     getAuth()
