@@ -16,6 +16,7 @@ interface SubmitQuizModalProps {
 const socket = io.connect('http://localhost:4000');
 
 export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) => {
+
   const [timeLeft, setTimeLeft] = useState('00 : 00 : 00')
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
   const navigate = useNavigate();
@@ -119,4 +120,4 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
       </ModalContent>
     </Modal>
   )
-}
+  }
