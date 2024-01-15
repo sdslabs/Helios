@@ -21,7 +21,7 @@ export const getAllResponse = async ({
   questionID: string
 }) => {
   try {
-    const res = await axiosInstance.get(`checkQuiz/response/reponses/${quizID}/${questionID}`)
+    const res = await axiosInstance.get(`checkQuiz/response/responses/${quizID}/${questionID}`)
     return res.data
   } catch (e: any) {
     if (axios.isAxiosError(e)) {

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator } from '@chakra-ui/react'
-import Filters from './Filters'
+import Filters from './filters'
 import QuizCard from './QuizCard'
 
 const TabViewAllQuiz = () => {

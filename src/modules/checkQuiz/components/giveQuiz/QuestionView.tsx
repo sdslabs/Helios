@@ -107,24 +107,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
     }
   }, [allResponsesIsFetched])
 
-  // const {
-  //   mutate: checkResponse,
-  // } = useCheckResponse()
-
-  // checkResponse({
-  //   quizID,
-  //   responseID: allResponsesID[currentResponseIndex],
-  //   body: {
-  //     marksAwarded: response.marksAwarded,
-  //   },
-  // }, {
-  //   onSuccess: () => {
-  //     setCurrentResponseIndex(currentResponseIndex + 1)
-  //   }
-  // })
-
-  // }
-
+  const { mutate: mutateResponse } = useCheckResponse(allResponsesID[currentResponseIndex])
 
   const {
     data: responseData,
@@ -143,11 +126,21 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
   }, [responseIsFetched, responseData])
 
   const handleNextResponse = () => {
-    if (currentResponseIndex < allResponsesID.length - 1) {
-      setCurrentResponseIndex(currentResponseIndex + 1)
-    } else {
-      setIsQuestionCheckModalOpen(true)
-    }
+    mutateResponse({
+      quizId: quizID,
+      responseId: allResponsesID[currentResponseIndex],
+      body: {
+        marksAwarded: response.marksAwarded,
+      },
+    },{
+      onSuccess: () => {
+        if (currentResponseIndex < allResponsesID.length - 1) {
+          setCurrentResponseIndex(currentResponseIndex + 1)
+        } else {
+          setIsQuestionCheckModalOpen(true)
+        }
+      }
+    })
   }
 
   const toggleQuestionCheckModal = () => {

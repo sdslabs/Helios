@@ -1,11 +1,11 @@
 import axios from 'axios'
 import axiosInstance from './axiosInstance'
 
-export const FetchCheckResponse = async (quizId: string, responseId: string) => {
+export const FetchCheckResponse = async ({ quizId, responseId, body }: { quizId: string, responseId: string, body: any }) => {
   try {
-    const res = await axiosInstance.post(`/checkQuiz/response/check/${quizId}/${responseId}`)
+    const res = await axiosInstance.patch(`/checkQuiz/response/check/${quizId}/${responseId}`, body)
     return res.data
-  } catch(e: any) {
+  } catch(e: unknown) {
     if(axios.isAxiosError(e)){
       return e.response?.data || e.message
     }
