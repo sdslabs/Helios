@@ -11,7 +11,7 @@ export const useCreateSection = () => {
 export const useGetSection = (quizId: string, sectionIdx: number) => {
   const query = useQuery({
     queryKey: ['section', quizId, sectionIdx],
-    queryFn: fetchers.getSection,
+    queryFn: () => fetchers.getSection(quizId, sectionIdx)
   })
   return query;
 }

@@ -18,7 +18,7 @@ export const useUpdateQuizDetails = () => {
 export const useGetQuizDetails = (quizId : string) => {
   const query = useQuery({
     queryKey: ['quizDetails', quizId],
-    queryFn: fetchers.getQuizDetails,
+    queryFn: () => fetchers.getQuizDetails(quizId),
   })
   return query;
 }

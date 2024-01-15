@@ -18,7 +18,7 @@ export const useUpdateQuestion = () => {
 export const useGetQuestion = (questionId : string) => {
   const query = useQuery({
     queryKey: ['question', questionId],
-    queryFn: fetchers.getQuestion,
+    queryFn: () => fetchers.getQuestion(questionId),
   })
   return query;
 }

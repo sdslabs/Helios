@@ -13,9 +13,9 @@ export const hostQuiz = async () => {
   }
 }
 
-export const getQuizDetails = async ({ queryKey }: { queryKey: [string, string] }) => {
+export const getQuizDetails = async (quizId: string) => {
   try {
-    const res = await axiosInstance.get(`/createQuiz/quiz/${queryKey[1]}`);
+    const res = await axiosInstance.get(`/createQuiz/quiz/${quizId}`);
     return res.data;
   } catch (e: unknown) {
     if (isAxiosError(e)) {

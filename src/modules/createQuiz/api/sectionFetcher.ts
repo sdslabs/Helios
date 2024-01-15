@@ -13,13 +13,9 @@ export const createSection = async ({ quizId } : { quizId: string }) => {
   }
 }
 
-export const  getSection = async ({ queryKey }: {queryKey: [string, string, number]}) => {
+export const  getSection = async (quizId: string, sectionIdx: number) => {
   try {
-    const res = await axiosInstance.get(`/createQuiz/section/${queryKey[1]}/`, {
-      data: {
-        sectionIdx: queryKey[2]
-      }
-    });
+    const res = await axiosInstance.get(`/createQuiz/section/${quizId}/${sectionIdx}`);
     return res.data;
   } catch (e: unknown) {
     if (isAxiosError(e)) {
@@ -46,11 +42,7 @@ export const updateSection = async ({ quizId, sectionIdx, body } : any) => {
 
 export const deleteSection = async ({ quizId, sectionIdx } : any) => {
   try {
-    const res = await axiosInstance.delete(`/createQuiz/section/${quizId}`, {
-      data: {
-        sectionIndex: sectionIdx
-      }
-    });
+    const res = await axiosInstance.delete(`/createQuiz/section/${quizId}/${sectionIdx}`);
     return res.data;
   } catch (e: unknown) {
     if (isAxiosError(e)) {
