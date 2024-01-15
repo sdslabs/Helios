@@ -2,15 +2,16 @@ import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-u
 import { TimeIcon, CloseIcon } from '@chakra-ui/icons'
 import QuizSummaryPie from '../QuizSummaryPie'
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSubmitQuiz } from '../../api/UseSubmitQuiz';
+import { useSubmitQuiz } from '../../api/useUser';
 import * as io from 'socket.io-client';
+import { baseURL } from '../../../../config/config';
 
 interface QuizSummaryModalProps {
   open: boolean
   toggleIsOpen: () => void
 }
 
-const socket = io.connect('http://localhost:4000');
+const socket = io.connect(`${baseURL}`);
 
 export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) => {
   const labelColor = '#27A624'

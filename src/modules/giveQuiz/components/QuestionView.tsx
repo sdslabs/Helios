@@ -2,12 +2,12 @@ import { Flex, Button, Text, Box, RadioGroup, Radio } from '@chakra-ui/react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { useState, useEffect } from 'react'
 import useQuizStore from '../store/QuizStore'
-import { useQuestion } from '../api/UseQuestion'
+import { useGetQuestion } from '../api/useQuiz'
 import {
   useCreateUpdateResponse,
   useDeleteResponse,
   useGetResponse,
-} from '@giveQuiz/api/UseResponse'
+} from '@giveQuiz/api/useResponse'
 import { SubmitQuizModal } from './Modals/SubmitQuizModal'
 import { useParams } from 'react-router-dom'
 import useAuthStore from '@auth/store/authStore'
@@ -58,14 +58,14 @@ const QuestionView = () => {
   const markedQuestions = useQuizStore((state) => state.markedQuestions)
   const markedAnsweredQuestions = useQuizStore((state) => state.markedAnsweredQuestions)
   const user = useAuthStore((state) => state.user)
-  const { quizId } = useParams()
+  const { quizId } = useParams() as { quizId: string }
   const { mutate } = useCreateUpdateResponse()
   const {
     data: questionData,
     isLoading: isQuestionDataLoading,
     isSuccess: isQuestionDataSuccess,
     error: questionError,
-  } = useQuestion(currentQuestion as string)
+  } = useGetQuestion(currentQuestion as string)
   const { setAnsweredQuestions, setMarkedQuestions, setMarkedAnsweredQuestions } = useQuizStore()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const toggleModal = () => {
@@ -198,9 +198,7 @@ const QuestionView = () => {
         status: status,
       }
 
-      mutate(
-        { quizId, questionId, responseData },
-        {
+      mutate({ quizId, questionId, responseData },{
           onSuccess: () => {
             nextQuestion()
             setAnswer('')
@@ -209,8 +207,7 @@ const QuestionView = () => {
               toggleModal()
             }
           },
-        },
-      )
+        })
     }
   }
 

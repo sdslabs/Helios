@@ -22,6 +22,7 @@ export const PersonalDetailsForm = (props: FormProps) => {
   const personalDetails = usePersonalDetailsStore()
   const authDetails = useAuthStore()
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    personalDetails.updateEmail(authDetails.user.emailAdd)
     e.preventDefault()
     props.nextStep()
     setStep(2)

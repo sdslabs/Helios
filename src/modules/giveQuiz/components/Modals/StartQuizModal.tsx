@@ -2,39 +2,37 @@ import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
-import { useAccessCode } from '@giveQuiz/api/UseAccessCode'
+import { useStartQuiz } from '@giveQuiz/api/useUser'
 import * as io from 'socket.io-client'
 import { useTimer } from '../TimerContext'
 import { useNavigate } from 'react-router-dom'
 import useAuthStore from '@auth/store/authStore'
+import { baseURL } from '../../../../config/config'
 
 interface StartModalProps {
   open: boolean
   toggleIsOpen: () => void
-  quizId: any
+  quizId: string
 }
 
 export const StartModal = ({ open, toggleIsOpen, quizId }: StartModalProps) => {
   const [accessCode, setAccessCode] = useState('')
   const [isAccessCodeNeeded, setIsAccessCodeNeeded] = useState(true)
   const [canClose, setCanClose] = useState(false)
-  const { mutate } = useAccessCode()
+  const { mutate } = useStartQuiz()
   const navigate = useNavigate()
   const { setTimer } = useTimer()
   const user = useAuthStore((state) => state.user)
 
   async function handleStartQuiz() {
-    const body = {
-      accessCode: accessCode,
-    }
     mutate(
-      { quizId, body },
+      { quizId, accessCode },
       {
         onSuccess: (data) => {
           if (data) {
             setCanClose(true)
             navigate(`/giveQuiz/${quizId}`)
-            const socket = io.connect('http://localhost:4000')
+            const socket = io.connect(`${baseURL}`)
             socket.emit('join_quiz', { quizId: quizId, userId: user.userId })
             socket.on('sendTime', (timeLeft) => {
               setTimer(timeLeft)

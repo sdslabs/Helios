@@ -59,16 +59,17 @@ function App() {
           <>
             <Route path='/*' element={<Register />} />
           </>
-        ) : (
+        ) : isLoggedIn && authStore.onboarded && !isLoading ?(
           <>
             <Route path='/dashboard' element={<Dashboard />} />
             {data.user.role === UserRoles.admin && (
               <Route path='/create-quiz/:quizId' element={<CreateQuiz />} />
             )}
-            <Route path='/givequiz/:quizId' element={<GiveQuiz />} />
+            <Route path='/give-quiz/:quizId' element={<GiveQuiz />} />
             <Route path='/*' element={<Navigate to='/dashboard' />} />
           </>
-        )}
+        ): null}
+        {/* TODO: something better than using null and make this conditional routing more elegant */}
       </Routes>
     </ChakraProvider>
     

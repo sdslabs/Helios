@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react'
 import { useState, useEffect } from 'react';
 import { GiveQuizSteps } from '../types';
-import { useQuiz } from '../api/UseQuiz';
+import { useGetQuiz } from '../api/useQuiz';
 import useQuizStore from '../store/QuizStore';
 import { useParams } from 'react-router-dom';
 import { StartModal } from './Modals/StartQuizModal';
@@ -45,13 +45,13 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
   const isStarted = useQuizStore((state) => state.isStarted)
   const { setAnsweredQuestions, setMarkedQuestions, setMarkedAnsweredQuestions, setIsStarted } =
     useQuizStore()
-  const { quizId } = useParams()
+  const { quizId } = useParams() as { quizId: string }
   const {
     data: quizData,
     isLoading: isQuizDataLoading,
     isSuccess: isQuizDataSuccess,
     error: quizError,
-  } = useQuiz(quizId as string) as {
+  } = useGetQuiz(quizId as string) as {
     data: QuizData
     isLoading: boolean
     isSuccess: boolean

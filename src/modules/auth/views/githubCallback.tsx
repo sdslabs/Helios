@@ -19,7 +19,7 @@ const GithubCallback = () => {
         alert("Login failed")
         navigate("/")
       } else {
-        window.location.assign("http://localhost:3000/dashboard")//TODO
+        window.location.assign(`${process.env.REACT_APP_URL}/dashboard`)//TODO
       }
     })()
   }, [])
