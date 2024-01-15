@@ -64,7 +64,7 @@ function App() {
             {/* {data.role === UserRoles.admin && (
               <Route path='/create/:quizID' element={<CreateQuiz />} />
             )} */}
-            <Route path='/checkQuiz/:quizID/:questionID' element={<CheckQuestionView />} />
+            <Route path='/checkQuiz/:quizID/:questionIDParam' element={<CheckQuestionView />} />
             <Route path='/checkQuiz/:quizID' element={<CheckQuiz />} />
             <Route path='/*' element={<Dashboard />} />
           </>

@@ -14,12 +14,21 @@ import { useState, useEffect } from 'react'
 import { QuestionType } from '../../../types'
 import { QuestionsCheckModal } from '../Modals/QuestionCheckModal'
 import { useQuestion } from '@checkQuiz/api/useQuestion'
-import { useResponse } from '@checkQuiz/api/useResponse'
-import { set } from 'lodash'
+import { useResponse, useAllResponse } from '@checkQuiz/api/useResponse'
+import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
+import useCheckResponse from '@checkQuiz/api/useCheckResponse'
 
 interface QuestionViewProps {
   quizID: string
   questionID: string
+}
+
+export enum ResponseStatus {
+  unanswered = 'unanswered',
+  answered = 'answered',
+  checked = 'checked',
+  markedanswer = 'marked-answered',
+  marked = 'marked',
 }
 
 interface Option {
@@ -29,6 +38,7 @@ interface Option {
 }
 
 const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
+  console.log('questionID', questionID)
   const {
     data: questionData,
     isLoading: questionIsLoading,
@@ -36,46 +46,108 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
     refetch: questionRefetch,
     error: questionError,
   } = useQuestion(questionID)
+
+  const [question, setQuestion] = useState({
+    description: '',
+    options: [],
+    type: QuestionType.MCQ,
+    maxMarks: 0,
+  })
+
+  const [response, setResponse] = useState({
+    user: '',
+    selectedOptionId: '',
+    subjectiveAnswer: '',
+    marksAwarded: 0,
+    status: ResponseStatus.unanswered,
+    checkedBy: '',
+  })
+
+
+  const [currentQuestionIndex] = useCheckQuizStore((state) => [state.currentQuestionIndex])
+
+  const [isQuestionCheckModalOpen, setIsQuestionCheckModalOpen] = useState(false)
+  const [currentSectionIndex] = useCheckQuizStore((state) => [state.currentSectionIndex])
+
+  const [currentResponseIndex, setCurrentResponseIndex] = useCheckQuizStore((state) => [
+    state.currentResponseIndex,
+    state.setcurrentResponseIndex,
+  ])
+
+  const [allResponsesID, setAllResponsesID] = useCheckQuizStore((state) => [
+    state.allResponsesID,
+    state.setallResponsesID,
+  ])
+
+  const {
+    data: allResponses,
+    isLoading: allResponsesIsLoading,
+    isFetched: allResponsesIsFetched,
+    refetch: allResponsesRefetch,
+    error: allResponsesError,
+  } = useAllResponse({ quizID, questionID })
+
+  useEffect(() => {
+    if (questionIsFetched && questionData) {
+      setQuestion(questionData.question)
+    }
+  }, [questionIsFetched, questionData])
+
+  useEffect(() => {
+    setCurrentResponseIndex(0)
+    if (allResponsesIsFetched && allResponses && Array.isArray(allResponses.responses)) {
+      if(allResponses.questionId !== questionID) {
+        console.log(allResponses.questionId, questionID)
+        console.log('working')
+        window.location.reload()
+      }
+      setAllResponsesID(allResponses.responses.map((response: any) => response.responseId))
+
+      console.log('allResponses', allResponses)
+    }
+  }, [allResponsesIsFetched])
+
+  // const {
+  //   mutate: checkResponse,
+  // } = useCheckResponse()
+
+  // checkResponse({
+  //   quizID,
+  //   responseID: allResponsesID[currentResponseIndex],
+  //   body: {
+  //     marksAwarded: response.marksAwarded,
+  //   },
+  // }, {
+  //   onSuccess: () => {
+  //     setCurrentResponseIndex(currentResponseIndex + 1)
+  //   }
+  // })
+
+  // }
+
+
   const {
     data: responseData,
     isLoading: responseIsLoading,
     isFetched: responseIsFetched,
     refetch: responseRefetch,
     error: responseError,
-  } = useResponse('659c272eb623f7a2cf558fbf')
-  const [questionType, setQuestionType] = useState(QuestionType.MCQ)
-  const [participantName, setParticipantName] = useState('Lakshya Shishir')
-  const [sectionNumber, setSectionNumber] = useState(1)
-  const [questionNumber, setQuestionNumber] = useState(1)
-  const [question, setQuestion] = useState('')
-  const [options, setOptions] = useState<Option[]>([])
-  const [answer, setAnswer] = useState<string>('')
-  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null)
-  const [mark, setMark] = useState(4)
-  const [chekcedBy, setCheckedBy] = useState('Lakshya')
-  const [isChecked, setIsChecked] = useState(true)
-  const [isQuestionCheckModalOpen, setIsQuestionCheckModalOpen] = useState(false)
+  } = useResponse(allResponsesID[currentResponseIndex])
 
-  useEffect(() => {
-    if (questionIsFetched && questionData) {
-      setQuestionType(questionData.question.type)
-      setQuestion(questionData.question.description)
-      setOptions(questionData.question.options)
-      setMark(questionData.question.mark)
-    }
-  }, [questionIsFetched, questionData])
 
   useEffect(() => {
     if (responseIsFetched && responseData) {
-      setAnswer(responseData.response.answer)
-      setSelectedOptionId(responseData.response.selectedOptionId)
-      setCheckedBy(responseData.response.checkedBy)
-      setIsChecked(responseData.response.isChecked)
+      setResponse(responseData.response)
+      console.log('responseData', responseData)
     }
   }, [responseIsFetched, responseData])
 
-  const handleClearResponse = () => {
-    setAnswer('')
+  const handleNextResponse = () => {
+    if (currentResponseIndex < allResponsesID.length - 1) {
+      setCurrentResponseIndex(currentResponseIndex + 1)
+    } else {
+      setIsQuestionCheckModalOpen(true)
+    }
   }
 
   const toggleQuestionCheckModal = () => {
@@ -91,9 +163,9 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
           alignItems='center'
           justifyContent='center'
         >
-          <Text fontSize='2rem' fontWeight='700' mb={6} alignSelf='start'>
+          {/* <Text fontSize='2rem' fontWeight='700' mb={6} alignSelf='start'>
             {participantName}
-          </Text>
+          </Text> */}
           <Flex flexDirection='row' w='full' justifyContent='space-between'>
             <Text
               fontSize='1rem'
@@ -103,11 +175,11 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
               color={'accentBlack'}
             >
               <Text as={'span'} fontWeight={700}>
-                Section {sectionNumber}-
+                Section {currentSectionIndex}-
               </Text>{' '}
-              Question {questionNumber}
+              Question {currentQuestionIndex}
             </Text>
-            {isChecked ? (
+            {response.status === ResponseStatus.checked ? (
               <Badge
                 colorScheme='whatsapp'
                 py='0.25rem'
@@ -132,48 +204,37 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
             )}
           </Flex>
           <Text fontSize='1rem' fontWeight='400' mb={6} w='58.5rem' p={4} bgColor='v1'>
-            {question}
+            {question.description}
           </Text>
-          {questionType === QuestionType.MCQ ? (
+          {question.type === QuestionType.MCQ ? (
             <Flex flexDirection='column' w={'full'} mb={4}>
               <RadioGroup
                 name='form-name'
                 display={'flex'}
                 flexDirection={'column'}
-                value={selectedOptionId?.toString() || ''}
-                onChange={(value) => {
-                  if (isChecked) {
-                    setSelectedOptionId(value)
-                  }
-                }}
+                value={response.selectedOptionId?.toString() || ''}
               >
-                {options.map((option) => (
+                {question.options.map((option: Option) => (
                   <Radio
                     key={option._id}
                     value={option.label}
                     mb={4}
-                    isDisabled={!isChecked}
-                    isChecked={selectedOptionId === option.label}
+                    isDisabled
+                    isChecked={response.selectedOptionId === option.label}
                   >
                     {option.label}
                   </Radio>
                 ))}
               </RadioGroup>
-
-              <Button
-                alignSelf='flex-end'
-                bg='none'
-                width='min-content'
-                onClick={handleClearResponse}
-              >
-                <Text fontSize='1rem' color='accentBlack' fontWeight='400'>
-                  Clear Response
-                </Text>
-              </Button>
             </Flex>
           ) : (
             <Box w='full' height='max-content' mb={4}>
-              <Textarea value={answer} readOnly color={'N6'} height={'max-content'} />
+              <Textarea
+                value={response.subjectiveAnswer}
+                readOnly
+                color={'N6'}
+                height={'max-content'}
+              />
             </Box>
           )}
           <Flex
@@ -185,14 +246,21 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
           >
             <Flex alignItems={'center'}>
               <Text colorScheme='accentBlack' fontSize={'0.875rem'}>
-                Marks (out of {mark}) :
+                Marks (out of {question.maxMarks}) :
               </Text>
-              <Input width={'2.5rem'} ml={3} colorScheme='N6'></Input>
+              <Input
+                colorScheme='accentBlack'
+                fontSize={'0.875rem'}
+                w={'4rem'}
+                ml={2}
+                value={response.marksAwarded}
+                readOnly={response.status == ResponseStatus.checked}
+              />
             </Flex>
             <Text colorScheme='accentBlack' fontSize={'0.875rem'}>
               Checked by :{' '}
               <Text as='span' color={'v6'}>
-                {chekcedBy}
+                {response.checkedBy}
               </Text>
             </Text>
           </Flex>
@@ -202,7 +270,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
               bgColor='brand'
               alignSelf='flex-end'
               mb={6}
-              onClick={toggleQuestionCheckModal}
+              onClick={handleNextResponse}
             >
               Save & Next
             </Button>

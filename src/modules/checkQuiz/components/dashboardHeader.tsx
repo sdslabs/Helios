@@ -2,26 +2,9 @@ import React, { useState } from 'react'
 import { Box, Button, Flex, Text, HStack } from '@chakra-ui/react'
 import HighlightCard from './HighlightCard'
 import { PublishResultModal } from './Modals/PublishQuizModal'
+import useCheckQuizStore from '../store/checkQuizStore'
 
-interface DashboardHeaderProps {
-  quizName: string | undefined
-  quizStartTime: string | undefined
-  quizAdmin: string | undefined
-  quizTotalParticipants: number
-  quizTotalChecks: number
-  totalAttempts: number
-  checksCompleted: number
-}
-
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({
-  quizName,
-  quizStartTime,
-  quizAdmin,
-  quizTotalParticipants,
-  quizTotalChecks,
-  totalAttempts,
-  checksCompleted,
-}) => {
+const DashboardHeader = () => {
   const [isPublishModalOpen, setIsPublishModalOpen] = useState(false)
 
   const formatDate = (date: string) => {
@@ -36,6 +19,22 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
 
     return formattedDate.replace(' at', ',')
   }
+
+  const [
+    quizName,
+    quizAdmin,
+    quizStartTime,
+    quizTotalParticipants,
+    quizTotalChecks,
+    totalAttempts,
+  ] = useCheckQuizStore((state) => [
+    state.quizName,
+    state.admin,
+    state.scheduled,
+    state.totalParticipants,
+    state.checksCompleted,
+    state.totalAttempts,
+  ])
 
   const togglePublishModal = () => {
     setIsPublishModalOpen(!isPublishModalOpen)
@@ -72,7 +71,12 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           </Button>
         </Flex>
       </Box>
-      <PublishResultModal open={isPublishModalOpen} toggleIsOpen={togglePublishModal} totalAttempts={totalAttempts} checkedQuestions={checksCompleted}/>
+      <PublishResultModal
+        open={isPublishModalOpen}
+        toggleIsOpen={togglePublishModal}
+        totalAttempts={totalAttempts}
+        checkedQuestions={quizTotalChecks}
+      />
       {['Total Participating', 'Total Checks'].map((title, index) => (
         <HighlightCard
           key={index}

@@ -5,17 +5,43 @@ import QuestionCounter from './QuestionCounter'
 import AssignView from './Assign'
 import { Question as QuestionType, Section } from '@checkQuiz/types'
 import { useNavigate } from 'react-router-dom'
+import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 
 const columnHelper = createColumnHelper<QuestionType>()
 
 interface QuestionsBoardProps {
-  quizID: string,
-  Sections: Section[]
+  quizID: string
 }
 
-const QuestionsBoard: React.FC<QuestionsBoardProps> = ({ quizID, Sections }) => {
+const QuestionsBoard: React.FC<QuestionsBoardProps> = ({ quizID }) => {
   const Navigate = useNavigate()
+  const [sections] = useCheckQuizStore((state) => [state.sections])
+  const [
+    currentSection,
+    setCurrentSection,
+    currentSectionIndex,
+    setCurrentSectionIndex,
+    setCurrentQuestionIndex,
+  ] = useCheckQuizStore((state) => [
+    state.currentSection,
+    state.setCurrentSection,
+    state.currentSectionIndex,
+    state.setCurrentSectionIndex,
+    state.setCurrentQuestionIndex,
+  ])
 
+  const handleQuestionClick = (info: any) => {
+    sections.forEach((section: Section, index: number) => {
+      section.questions.forEach((question: QuestionType, questionIndex: number) => {
+        if (question._id === info._id) {
+          setCurrentSectionIndex(index + 1)
+          setCurrentQuestionIndex(questionIndex + 1)
+          setCurrentSection(sections[index])
+          Navigate(`/checkQuiz/${quizID}/${info._id}`)
+        }
+      })
+    })
+  }
   const columns = [
     columnHelper.accessor('description', {
       cell: (info: any) => info.row.original.description,
@@ -31,7 +57,7 @@ const QuestionsBoard: React.FC<QuestionsBoardProps> = ({ quizID, Sections }) => 
       cell: (info: any) => (
         <div
           style={{ cursor: 'pointer', textDecoration: 'underline' }}
-          onClick={() => Navigate(`/checkQuiz/${quizID}/${info.row.original._id}`)}
+          onClick={() => handleQuestionClick(info.row.original)}
         >
           <QuestionCounter
             totalQuestions={info.row.original.totalAttempts}
@@ -40,13 +66,13 @@ const QuestionsBoard: React.FC<QuestionsBoardProps> = ({ quizID, Sections }) => 
         </div>
       ),
       header: 'Questions Checked',
-      enableColumnFilter: false,
+      enableColumnFilter: true,
     }),
   ]
 
   return (
     <>
-      {Sections.map((section) => (
+      {sections.map((section: Section) => (
         <Box key={section.name}>
           <Text color={'v6'} fontWeight={600} mt={8}>
             {section.name}

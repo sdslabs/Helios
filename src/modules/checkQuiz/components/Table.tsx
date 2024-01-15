@@ -7,58 +7,45 @@ import {
   getFilteredRowModel,
   getFacetedUniqueValues,
 } from '@tanstack/react-table'
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePaginationRange } from '@createQuiz/hooks/usePaginationRange'
-
-const Filter = ({ column, table, }: any) => {
-  const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id)
-
-  const sortedUniqueValues = useMemo(
-    () =>
-      typeof firstValue === 'number'
-        ? []
-        : Array.from(column.getFacetedUniqueValues().keys()).sort(),
-    [column.getFacetedUniqueValues()],
-  )
-
-  return (
-    <>
-      <select
-        value={column.filterValue}
-        onChange={(e) => {
-          if (e.target.value !== 'none') {
-            column.setFilterValue(e.target.value)
-          } else {
-            column.setFilterValue(null)
-          }
-        }}
-      >
-        <option value='none'>none</option>
-        {sortedUniqueValues.map((value: any) => (
-          <option value={value} key={value}>
-            {value}
-          </option>
-        ))}
-      </select>
-    </>
-  )
-}
+import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
+import { tab } from '@testing-library/user-event/dist/tab'
 
 const Table = ({ data, columns, showPagination = true }: any) => {
   const [columnFilters, setColumnFilters] = useState()
+  const [sortStatus, setSortStatus] = useCheckQuizStore((state) => [
+    state.sortStatus,
+    state.setSortStatus,
+  ])
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    state: {
-      columnFilters,
+    sortingFns: {
+      string: (a: any, b: any) => a.localeCompare(b),
+      number: (a: any, b: any) => a - b,
     },
     onColumnFiltersChange: setColumnFilters as any,
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
+
+  const filter = (column: any, table: any) => {
+    if (sortStatus === 'ascending') {
+      table.setSortBy([{ id: column.id, desc: false }])
+    } else {
+      table.setSortBy([{ id: column.id, desc: true }])
+    }
+  }
+  
+
+  useEffect(() => {
+    if (columnFilters) {
+      filter(columnFilters, table)
+    }
+  }, [sortStatus, columnFilters])
 
   const changePage = (pageNumber: any, table: any) => {
     table.setPageIndex(pageNumber - 1)
@@ -72,6 +59,7 @@ const Table = ({ data, columns, showPagination = true }: any) => {
       if (num != '...') {
         pagesList.push(
           <Button
+            key={num}
             color={num === current ? '#191919' : '#575757'}
             border='none'
             bg='white'
@@ -82,7 +70,7 @@ const Table = ({ data, columns, showPagination = true }: any) => {
         )
       } else {
         pagesList.push(
-          <Button disabled color='#575757' border='none' bg='white'>
+          <Button key={num} disabled color='#575757' border='none' bg='white'>
             ...
           </Button>,
         )
@@ -103,11 +91,6 @@ const Table = ({ data, columns, showPagination = true }: any) => {
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
-                    {header.column.getCanFilter() ? (
-                      <div>
-                        <Filter column={header.column} table={table} />
-                      </div> 
-                    ) : null}
                   </Flex>
                 </Th>
               ))}
@@ -126,29 +109,31 @@ const Table = ({ data, columns, showPagination = true }: any) => {
           ))}
         </Tbody>
       </T>
-{    showPagination ?  <Flex>
-        <Button
-          color='#604195'
-          border='none'
-          bg='white'
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <div>
-          {getPagination(table.getPageCount(), table.getState().pagination.pageIndex + 1, table)}
-        </div>
-        <Button
-          color='#604195'
-          border='none'
-          bg='white'
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </Flex> : null}
+      {showPagination ? (
+        <Flex>
+          <Button
+            color='#604195'
+            border='none'
+            bg='white'
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <div>
+            {getPagination(table.getPageCount(), table.getState().pagination.pageIndex + 1, table)}
+          </div>
+          <Button
+            color='#604195'
+            border='none'
+            bg='white'
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </Flex>
+      ) : null}
     </>
   )
 }

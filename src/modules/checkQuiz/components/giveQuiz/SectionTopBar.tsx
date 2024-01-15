@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import { HStack, Box } from '@chakra-ui/react'
-import Countdown from './Countdown'
 import Bubble from './Bubble'
 
 const SectionTopBar = () => {
-  const [notVisitedQuestions, setNotVisitedQuestions] = useState(0)
   const [markedForReviewQuestions, setMarkedForReviewQuestions] = useState(0)
   const [answeredQuestions, setAnsweredQuestions] = useState(0)
-  const [answeredAndMarkedForReviewQuestions, setAnsweredAndMarkedForReviewQuestions] = useState(0)
 
   return (
     <HStack

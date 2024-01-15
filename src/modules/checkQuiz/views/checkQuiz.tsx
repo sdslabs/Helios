@@ -7,29 +7,51 @@ import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
 import axios from 'axios'
 import giveQuiz from '@checkQuiz/components/giveQuiz/CheckQuestionView'
 import { useParams } from 'react-router-dom'
+import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
+import { set } from 'lodash'
 
 const CheckQuiz = () => {
   const { quizID } = useParams() as { quizID: string }
   const { data, isLoading, isFetched, refetch, error } = useFetchDashboard(quizID)
-  console.log('data all ', data, isLoading, isFetched, error, quizID, refetch)
-  const [quizDetails, setQuizDetails] = useState({
-    admin: '',
-    scheduled: '',
-    sections: [],
-    participants: 0,
-    checksCompleted: 0,
-    leaderboard: [],
-    name: '',
-    totalAttempts: 0,
-  })
+  const [leaderboard, setLeaderboard] = useCheckQuizStore((state) => [
+    state.leaderboard,
+    state.setLeaderboard,
+  ])
+  const [sections, setSections] = useCheckQuizStore((state) => [state.sections, state.setSections])
+  const [totalParticipants, setTotalParticipants] = useCheckQuizStore((state) => [
+    state.totalParticipants,
+    state.setParticipants,
+  ])
+  const [checksCompleted, setChecksCompleted] = useCheckQuizStore((state) => [
+    state.checksCompleted,
+    state.setChecksCompleted,
+  ])
+  const [totalAttempts, setTotalAttempts] = useCheckQuizStore((state) => [
+    state.totalAttempts,
+    state.setTotalAttempts,
+  ])
+  const [admin, setAdmin] = useCheckQuizStore((state) => [state.admin, state.setAdmin])
+  const [quizName, setQuizName] = useCheckQuizStore((state) => [state.quizName, state.setQuizName])
+  const [scheduled, setScheduled] = useCheckQuizStore((state) => [
+    state.scheduled,
+    state.setScheduled,
+  ])
+  const [setQuizID] = useCheckQuizStore((state) => [state.setQuizID])
+
 
   useEffect(() => {
-    setQuizDetails(data)
-  }, [data])
-
-  useEffect(() => {
-    console.log('Updated quizDetails:', quizDetails)
-  }, [quizDetails])
+    if (isFetched && data) {
+      setLeaderboard(data.leaderboard)
+      setSections(data.sections)
+      setTotalParticipants(data.participants)
+      setChecksCompleted(data.checksCompleted)
+      setTotalAttempts(data.totalAttempts)
+      setAdmin(data.admin)
+      setQuizName(data.name)
+      setScheduled(data.scheduled)
+      setQuizID(quizID)
+    }
+  }, [isFetched, data])
 
   return (
     <>
@@ -43,21 +65,8 @@ const CheckQuiz = () => {
           alignItems={'center'}
           marginY={'20'}
         >
-          <DashboardHeader
-            quizName={quizDetails && quizDetails.name}
-            quizStartTime={quizDetails && quizDetails.scheduled}
-            quizAdmin={quizDetails && quizDetails.admin}
-            quizTotalParticipants={quizDetails && quizDetails.participants}
-            quizTotalChecks={quizDetails && quizDetails.checksCompleted}
-            totalAttempts={quizDetails && quizDetails.totalAttempts}
-            checksCompleted={quizDetails && quizDetails.checksCompleted}
-          />
-
-          <TabViewDashboard
-            quizID={quizID}
-            leaderboard={quizDetails && quizDetails.leaderboard}
-            sections={quizDetails && quizDetails.sections}
-          />
+          <DashboardHeader />
+          <TabViewDashboard />
         </Flex>
       </Flex>
     </>

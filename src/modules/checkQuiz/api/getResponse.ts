@@ -14,14 +14,14 @@ export const getResponse = async (responseId: string) => {
 }
 
 export const getAllResponse = async ({
-  quizId,
+  quizID,
   questionID,
 }: {
-  quizId: string
+  quizID: string
   questionID: string
 }) => {
   try {
-    const res = await axiosInstance.get(`checkQuiz/response/reponses/${quizId}/${questionID}`)
+    const res = await axiosInstance.get(`checkQuiz/response/reponses/${quizID}/${questionID}`)
     return res.data
   } catch (e: any) {
     if (axios.isAxiosError(e)) {

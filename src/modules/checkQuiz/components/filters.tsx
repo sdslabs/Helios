@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Select } from 'chakra-react-select'
 import { Button, HStack, Input, Select as SelectChakra, Text } from '@chakra-ui/react'
 import AutocheckModal from './Modals/Autocheck'
+import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 
 interface FiltersProps {
   SearchBox?: boolean
@@ -11,7 +12,7 @@ interface FiltersProps {
 
 const Filters: React.FC<FiltersProps> = ({ SearchBox = false, SelectFilter = false, totalMCQs}) => {
   const [assignees, setAssignees] = useState<any>([])
-  const [sortStatus, setSortStatus] = useState<string>('ascending')
+  const [sortStatus, setSortStatus] = useCheckQuizStore((state) => [state.sortStatus, state.setSortStatus])
   const [isAutocheckModalOpen, setIsAutocheckModalOpen] = useState<boolean>(false)
 
   // TODO: fetch assignees from athena
@@ -78,10 +79,10 @@ const Filters: React.FC<FiltersProps> = ({ SearchBox = false, SelectFilter = fal
             color='#939393'
           >
             <option value='ascending' color='#939393'>
-              Progress (100-0%)
+            Progress (0-100%)
             </option>
             <option value='descending' color='#939393'>
-              Progress (0-100%)
+            Progress (100-0%)
             </option>
           </SelectChakra>
         </HStack>

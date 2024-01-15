@@ -6,26 +6,27 @@ import QuestionsBoard from './QuestionsBoard'
 import { Section } from '@checkQuiz/types'
 import { PublishResultModal } from './Modals/PublishQuizModal'
 import { QuestionType } from '../../types'
+import checkQuizStore from '@checkQuiz/store/checkQuizStore'
 
-interface TabViewDashboardProps {
-  quizID: string
-  leaderboard: any
-  sections: Section[]
-}
-
-const TabViewDashboard: React.FC<TabViewDashboardProps> = ({ quizID, leaderboard, sections }) => {
+const TabViewDashboard = () => {
   const tabStyle = {
     _selected: { color: 'brand' },
     color: '#939393',
     fontSize: '0.875rem',
     fontWeight: '600',
   }
+  const [sections, leaderboard, quizID] = checkQuizStore((state) => [
+    state.sections,
+    state.leaderboard,
+    state.quizID,
+  ])
+
   const [totalMCQs, setTotalMCQs] = useState<number>(0)
   useEffect(() => {
     if (sections) {
       let totalMCQsCount = 0
-      sections.forEach((section) => {
-        section.questions.forEach((question) => {
+      sections.forEach((section: Section) => {
+        section.questions.forEach((question: any) => {
           if (question.type === QuestionType.MCQ) {
             totalMCQsCount++
           }
@@ -46,7 +47,7 @@ const TabViewDashboard: React.FC<TabViewDashboardProps> = ({ quizID, leaderboard
         <TabPanels>
           <TabPanel>
             <Filters SelectFilter totalMCQs={totalMCQs} />
-            {sections && <QuestionsBoard Sections={sections} quizID={quizID} />}
+            {sections && <QuestionsBoard quizID={quizID} />}
           </TabPanel>
           <TabPanel>
             <Filters SearchBox totalMCQs={totalMCQs} />
