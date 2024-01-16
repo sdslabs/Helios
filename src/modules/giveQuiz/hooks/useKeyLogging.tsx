@@ -2,8 +2,15 @@ import { useEffect } from "react";
 import { tinykeys } from "tinykeys";
 import { toast } from "react-toastify";
 import { FullScreenHandle } from "react-full-screen";
+import useLog from "@giveQuiz/api/useLog";
+import useQuizStore from "@giveQuiz/store/QuizStore";
 
 const useKeyLogging = ({ handle, setIsOnFS }: { handle: FullScreenHandle, setIsOnFS: (to: boolean) => void }) => {
+  const { mutate: log } = useLog();
+  const { currentQuestion, quizId } = useQuizStore((state) => ({
+    currentQuestion: state.currentQuestion,
+    quizId: state.quizId
+  }));
   const handleSusAction = (logType : string) => {
     toast.warn(
 			`Action logged (${logType}), avoid using suspicious key presses during quiz.`,
@@ -17,7 +24,11 @@ const useKeyLogging = ({ handle, setIsOnFS }: { handle: FullScreenHandle, setIsO
 				progress: undefined,
 			},
 		);
-    // TODO: update logs in the database  
+    log({
+      questionId: currentQuestion,
+      logType: 'susKey',
+      quizId: quizId
+    })
   }
   const handleContextMenu = (e : MouseEvent) => {
     e.preventDefault();
@@ -33,7 +44,11 @@ const useKeyLogging = ({ handle, setIsOnFS }: { handle: FullScreenHandle, setIsO
 				progress: undefined,
 			},
 		);
-    // TODO: update logs in the database
+    log({
+      questionId: currentQuestion,
+      logType: 'rightClick',
+      quizId: quizId
+    })
   };
 
   useEffect(() => {

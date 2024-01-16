@@ -7,6 +7,7 @@ interface Section {
    }
 
 interface QuizStore {
+  quizId: string;
   currentQuestion: string;
   timer: number;
   sections: Section[];
@@ -20,6 +21,7 @@ interface QuizStore {
   isStarted: boolean;
   isCurrentQuestionMarked: boolean;
 
+  setQuizId: (to: string) => void;
   setCurrentQuestion: (to: string) => void;
   setTimer: (to: number) => void;
   setSections: (to: Section[]) => void;
@@ -42,6 +44,7 @@ interface QuizStore {
 }
 
 const useQuizStore = create<QuizStore>((set) => ({
+  quizId: '',
   sections: [],
   currentQuestion: '',
   currentQuestionIndex: 1,
@@ -55,6 +58,7 @@ const useQuizStore = create<QuizStore>((set) => ({
   isStarted: false,
   isCurrentQuestionMarked: false,
  
+  setQuizId: (to: string) => set({ quizId: to }),
   setCurrentQuestion: (to: string) => set({ currentQuestion: to }),
   setTimer: (to: number) => set({ timer: to }),
   setSections: (to: Section[]) => set({ sections: to }),

@@ -11,12 +11,21 @@ import { TimerProvider } from '@giveQuiz/components/TimerContext'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
 import useLocationAccess from '@giveQuiz/hooks/useLocationAccess'
 import useKeyLogging from '@giveQuiz/hooks/useKeyLogging'
-import useWindowFocus from '@giveQuiz/hooks/useWindowFocus'
 import MediaAccess from '@giveQuiz/components/MediaAccess'
 import { ToastContainer, toast } from 'react-toastify'
-import { Button } from '@chakra-ui/react'
+import { useParams } from 'react-router-dom';
+import useQuizStore from '@giveQuiz/store/QuizStore'
+import 'react-toastify/dist/ReactToastify.css';
+import useLog from '@giveQuiz/api/useLog'
 
 const   giveQuiz = () => {
+  const { quizId } = useParams() as { quizId: string }
+  const { setQuizId, currentQuestion } = useQuizStore((state) => ({
+    setQuizId: state.setQuizId,
+    currentQuestion: state.currentQuestion
+  }))
+  const { mutate: log } = useLog()
+  setQuizId(quizId)
   const [quizStage, setQuizStage] = useState<GiveQuizSteps>(0)
   const fullScreenHandle = useFullScreenHandle()
   const [isOnFS, setIsOnFS] = useState<boolean>(false);
@@ -35,7 +44,11 @@ const   giveQuiz = () => {
         progress: undefined,
       },
     );
-    //TODO: update logs in the database
+    log({
+      questionId: currentQuestion,
+      logType: 'tabChange',
+      quizId: quizId
+    })
   }
   const reportChange = useCallback(
     (state: boolean) => {
@@ -60,8 +73,7 @@ const   giveQuiz = () => {
     [fullScreenHandle],
   );
 
-  useKeyLogging({ handle: fullScreenHandle, setIsOnFS});
-  useWindowFocus(handleBlur);
+  useKeyLogging({ handle: fullScreenHandle, setIsOnFS });
   const renderQuiz = () => {
     switch (quizStage) {
     case GiveQuizSteps.Instructions:
@@ -121,12 +133,11 @@ const   giveQuiz = () => {
     return (
       <>
         <ToastContainer />
-        <FullScreen handle={fullScreenHandle} onChange={reportChange}>
-          <Button onClick={fullScreenHandle.enter}>Enter fullscreen</Button>
-          <MediaAccess
-            setIsMediaPermission={setIsMediaPermission}
-            hidden={false}
-          />
+        <MediaAccess
+          setIsMediaPermission={setIsMediaPermission}
+          hidden={false}
+        />
+        <FullScreen handle={fullScreenHandle} onChange={reportChange}> 
         </FullScreen>
       </>
     );
@@ -157,10 +168,10 @@ const   giveQuiz = () => {
   }
   return (
     <>
-      <TimerProvider>
+      <TimerProvider handleBlur={handleBlur}>
         <ToastContainer />
         <MediaAccess setIsMediaPermission={setIsMediaPermission} hidden={true} />
-        <FullScreen handle={fullScreenHandle} onChange={reportChange} className="bg-white">
+        <FullScreen handle={fullScreenHandle} onChange={reportChange}>
           <TopNav />
           <WithSidebarWrapper
             sidebarContent={<SideNavContent stage={quizStage} setStage={setQuizStage} />}

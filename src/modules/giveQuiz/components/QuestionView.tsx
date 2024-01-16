@@ -133,7 +133,7 @@ const QuestionView = () => {
 
   useEffect(() => {
     if (isGetResponseSuccess) {
-      if (isGetResponseSuccess && getResponseData.response.length > 0) {
+      if (isGetResponseSuccess && getResponseData?.response?.length > 0) {
         const firstItem = getResponseData.response[0]
         if (firstItem.selectedOptionId) {
           setAnswer(firstItem.selectedOptionId)

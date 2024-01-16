@@ -15,7 +15,7 @@ export const getQuestion = async (questionId : string) => {
 
 export const getQuiz = async (quizId : string) => {
   try {
-    const res = await axiosInstance.get(`/giveQuiz/quiz/quiz/${quizId}`);
+    const res = await axiosInstance.get(`/giveQuiz/quiz/${quizId}`);
     return res.data;
   } catch (e: unknown) {
     if (e instanceof AxiosError) {
