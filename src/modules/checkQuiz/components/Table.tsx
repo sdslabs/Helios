@@ -14,10 +14,6 @@ import { tab } from '@testing-library/user-event/dist/tab'
 
 const Table = ({ data, columns, showPagination = true }: any) => {
   const [columnFilters, setColumnFilters] = useState()
-  const [sortStatus, setSortStatus] = useCheckQuizStore((state) => [
-    state.sortStatus,
-    state.setSortStatus,
-  ])
 
   const table = useReactTable({
     data,
@@ -31,21 +27,6 @@ const Table = ({ data, columns, showPagination = true }: any) => {
     onColumnFiltersChange: setColumnFilters as any,
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
-
-  const filter = (column: any, table: any) => {
-    if (sortStatus === 'ascending') {
-      table.setSortBy([{ id: column.id, desc: false }])
-    } else {
-      table.setSortBy([{ id: column.id, desc: true }])
-    }
-  }
-  
-
-  useEffect(() => {
-    if (columnFilters) {
-      filter(columnFilters, table)
-    }
-  }, [sortStatus, columnFilters])
 
   const changePage = (pageNumber: any, table: any) => {
     table.setPageIndex(pageNumber - 1)

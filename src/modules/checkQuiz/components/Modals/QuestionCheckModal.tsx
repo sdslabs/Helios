@@ -1,7 +1,9 @@
 import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TimeIcon, CloseIcon } from '@chakra-ui/icons'
 import QuizSummaryPie from '../QuizSummaryPie'
+import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
+import { useNavigate } from 'react-router-dom'
 
 interface QuestionsCheckModalProps {
   open: boolean
@@ -9,12 +11,23 @@ interface QuestionsCheckModalProps {
 }
 
 export const QuestionsCheckModal = ({ open, toggleIsOpen }: QuestionsCheckModalProps) => {
-  const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
-  const [summaryData, setSummaryData] = useState([20, 10, 5, 5])
+  const [quizID, allResponsesID] = useCheckQuizStore((state) => [
+    state.quizID,
+    state.allResponsesID,
+  ])
+
+  const [summaryData, setSummaryData] = useState([0, 0, 0, 0])
+  
+  useEffect(() => {
+    if (allResponsesID.length > 0) {
+      setSummaryData([allResponsesID.length, 0, 0, 20])
+    }
+  }, [allResponsesID])
+
+  const Navigate = useNavigate()
 
   const handleQuizSubmit = () => {
-    setIsQuizSubmitted(true)
-    // TODO: submit quiz and route to quiz summary modal
+    Navigate(`/checkQuiz/${quizID}`)
   }
 
   return (

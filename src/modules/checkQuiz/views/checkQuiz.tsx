@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 import TopNav from '@common/components/TopNav'
 import { Box, Button, Flex } from '@chakra-ui/react'
-import DashboardHeader from '@checkQuiz/components/dashboardHeader'
+import DashboardHeader from '@checkQuiz/components/DashboardHeader'
 import TabViewDashboard from '@checkQuiz/components/TabViewDashboard'
 import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
 import axios from 'axios'
 import giveQuiz from '@checkQuiz/components/giveQuiz/CheckQuestionView'
 import { useParams } from 'react-router-dom'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
-import { set } from 'lodash'
 
 const CheckQuiz = () => {
   const { quizID } = useParams() as { quizID: string }
@@ -20,7 +19,7 @@ const CheckQuiz = () => {
   const [sections, setSections] = useCheckQuizStore((state) => [state.sections, state.setSections])
   const [totalParticipants, setTotalParticipants] = useCheckQuizStore((state) => [
     state.totalParticipants,
-    state.setParticipants,
+    state.setTotalParticipants,
   ])
   const [checksCompleted, setChecksCompleted] = useCheckQuizStore((state) => [
     state.checksCompleted,

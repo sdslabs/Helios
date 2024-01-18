@@ -31,6 +31,8 @@ const QuizSummaryPie: React.FC<QuizSummaryPieProps> = ({ summaryData }) => {
     ],
   }
 
+  console.log('summaryData', summaryData)
+
   return (
     <Flex flexDirection='row' alignItems='center' justifyContent='center' gap='4.5rem'>
       <Box w='10rem' h='10rem'>

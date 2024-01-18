@@ -63,7 +63,6 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
     checkedBy: '',
   })
 
-
   const [currentQuestionIndex] = useCheckQuizStore((state) => [state.currentQuestionIndex])
 
   const [isQuestionCheckModalOpen, setIsQuestionCheckModalOpen] = useState(false)
@@ -96,7 +95,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
   useEffect(() => {
     setCurrentResponseIndex(0)
     if (allResponsesIsFetched && allResponses && Array.isArray(allResponses.responses)) {
-      if(allResponses.questionId !== questionID) {
+      if (allResponses.questionId !== questionID) {
         console.log(allResponses.questionId, questionID)
         console.log('working')
         window.location.reload()
@@ -117,7 +116,6 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
     error: responseError,
   } = useResponse(allResponsesID[currentResponseIndex])
 
-
   useEffect(() => {
     if (responseIsFetched && responseData) {
       setResponse(responseData.response)
@@ -126,21 +124,24 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
   }, [responseIsFetched, responseData])
 
   const handleNextResponse = () => {
-    mutateResponse({
-      quizId: quizID,
-      responseId: allResponsesID[currentResponseIndex],
-      body: {
-        marksAwarded: response.marksAwarded,
+    mutateResponse(
+      {
+        quizId: quizID,
+        responseId: allResponsesID[currentResponseIndex],
+        body: {
+          marksAwarded: response.marksAwarded,
+        },
       },
-    },{
-      onSuccess: () => {
-        if (currentResponseIndex < allResponsesID.length - 1) {
-          setCurrentResponseIndex(currentResponseIndex + 1)
-        } else {
-          setIsQuestionCheckModalOpen(true)
-        }
-      }
-    })
+      {
+        onSuccess: () => {
+          if (currentResponseIndex < allResponsesID.length - 1) {
+            setCurrentResponseIndex(currentResponseIndex + 1)
+          } else {
+            setIsQuestionCheckModalOpen(true)
+          }
+        },
+      },
+    )
   }
 
   const toggleQuestionCheckModal = () => {
@@ -247,7 +248,12 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
                 w={'4rem'}
                 ml={2}
                 value={response.marksAwarded}
-                readOnly={response.status == ResponseStatus.checked}
+                onChange={(e) => {
+                  setResponse({
+                    ...response,
+                    marksAwarded: parseInt(e.target.value),
+                  })
+                }}
               />
             </Flex>
             <Text colorScheme='accentBlack' fontSize={'0.875rem'}>

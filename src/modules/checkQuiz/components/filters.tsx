@@ -12,7 +12,6 @@ interface FiltersProps {
 
 const Filters: React.FC<FiltersProps> = ({ SearchBox = false, SelectFilter = false, totalMCQs}) => {
   const [assignees, setAssignees] = useState<any>([])
-  const [sortStatus, setSortStatus] = useCheckQuizStore((state) => [state.sortStatus, state.setSortStatus])
   const [isAutocheckModalOpen, setIsAutocheckModalOpen] = useState<boolean>(false)
 
   // TODO: fetch assignees from athena
@@ -73,8 +72,6 @@ const Filters: React.FC<FiltersProps> = ({ SearchBox = false, SelectFilter = fal
 
           <SelectChakra
             width='12rem'
-            value={sortStatus}
-            onChange={(e) => setSortStatus(e.target.value)}
             placeholder='Sort by'
             color='#939393'
           >
