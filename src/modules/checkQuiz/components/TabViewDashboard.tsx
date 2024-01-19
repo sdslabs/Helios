@@ -15,9 +15,8 @@ const TabViewDashboard = () => {
     fontSize: '0.875rem',
     fontWeight: '600',
   }
-  const [sections, leaderboard, quizID] = checkQuizStore((state) => [
+  const [sections, quizID] = checkQuizStore((state) => [
     state.sections,
-    state.leaderboard,
     state.quizID,
   ])
 
@@ -51,7 +50,7 @@ const TabViewDashboard = () => {
           </TabPanel>
           <TabPanel>
             <Filters SearchBox totalMCQs={totalMCQs} />
-            <Leaderboard leaderboard={leaderboard} />
+            <Leaderboard />
           </TabPanel>
         </TabPanels>
       </Tabs>

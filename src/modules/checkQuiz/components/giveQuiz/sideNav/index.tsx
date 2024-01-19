@@ -12,14 +12,14 @@ import {
   Checkbox,
   Box,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import BasicNavButton from '@common/components/BasicNavButton'
 import { GiveQuizSteps } from '@giveQuiz/types'
 import AssignView from '@checkQuiz/components/Assign'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import { useNavigate } from 'react-router-dom'
-import { set } from 'lodash'
+import { ResponseStatus } from '../QuestionView'
 
 const SideNavContent = () => {
   const [
@@ -34,6 +34,8 @@ const SideNavContent = () => {
     totalAttempts,
     allResponsesID,
     currentResponseIndex,
+    allResponsesStatus,
+    setChecksCompleted,
     setcurrentResponseIndex,
     setCurrentQuestionIndex,
     setCurrentSectionIndex,
@@ -50,6 +52,8 @@ const SideNavContent = () => {
     state.totalAttempts,
     state.allResponsesID,
     state.currentResponseIndex,
+    state.allResponsesStatus,
+    state.setChecksCompleted,
     state.setcurrentResponseIndex,
     state.setCurrentQuestionIndex,
     state.setCurrentSectionIndex,
@@ -90,6 +94,15 @@ const SideNavContent = () => {
     }
     Navigate(`/checkQuiz/${quizID}/${currentSection.questions[currentQuestionIndex - 1]._id}`)
   }
+
+  useEffect(() => {
+    if (allResponsesStatus.length > 0) {
+      const checkedResponses = allResponsesStatus.filter(
+        (status) => status === ResponseStatus.checked,
+      )
+      setChecksCompleted(checkedResponses.length)
+    }
+  }, [allResponsesStatus])
 
   return (
     <>
@@ -138,7 +151,7 @@ const SideNavContent = () => {
             <Text fontSize={'0.75rem'} color={'accentBlack'}>
               Unchecked:{' '}
               <Text as={'span'} color={'v6'} fontWeight={600}>
-                {totalAttempts - checksCompleted}
+                {allResponsesID.length - checksCompleted}
               </Text>
             </Text>
           </Flex>
@@ -182,11 +195,13 @@ const SideNavContent = () => {
               }}
             >
               <Button
-                bgColor={'yellowMarkedForReview'}
+                bgColor={allResponsesStatus[index] ? 'green' : 'yellowMarkedForReview'}
                 rounded={'full'}
                 variant='outline'
                 size={'sm'}
-                borderColor={'markedForReviewBubbleBorder'}
+                borderColor={
+                  allResponsesStatus[index] ? 'answeredBubbleBorder' : 'markedForReviewBubbleBorder'
+                }
                 _hover={{}}
                 _focus={{}}
               />

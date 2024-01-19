@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import { HStack, Box } from '@chakra-ui/react'
 import Bubble from './Bubble'
+import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 
 const SectionTopBar = () => {
-  const [markedForReviewQuestions, setMarkedForReviewQuestions] = useState(0)
-  const [answeredQuestions, setAnsweredQuestions] = useState(0)
+  const [checksCompleted, allResponsesID] = useCheckQuizStore((state) => [
+    state.checksCompleted,
+    state.allResponsesID,
+  ])
 
   return (
     <HStack
@@ -20,20 +23,20 @@ const SectionTopBar = () => {
       zIndex={1}
       py={2}
     >
-        <Bubble
-          Label='Unchecked'
-          Value={markedForReviewQuestions}
-          BgColor='yellowMarkedForReview'
-          BorderColor='markedForReviewBubbleBorder'
-          FontColor='white'
-        />
-        <Bubble
-          Label='Checked'
-          Value={answeredQuestions}
-          BgColor='green'
-          BorderColor='answeredBubbleBorder'
-          FontColor='white'
-        />
+      <Bubble
+        Label='Unchecked'
+        Value={allResponsesID.length - checksCompleted}
+        BgColor='yellowMarkedForReview'
+        BorderColor='markedForReviewBubbleBorder'
+        FontColor='white'
+      />
+      <Bubble
+        Label='Checked'
+        Value={checksCompleted}
+        BgColor='green'
+        BorderColor='answeredBubbleBorder'
+        FontColor='white'
+      />
     </HStack>
   )
 }

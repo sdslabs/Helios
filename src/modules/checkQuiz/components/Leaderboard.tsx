@@ -1,15 +1,16 @@
 import { Box, Grid, Heading, Text } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import Table from '@checkQuiz/components/Table'
-import data from '../../createQuiz/forms/MOCK_DATA.json'
 import QuestionCounter from './QuestionCounter'
+import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 
 type Leaderboard = {
   Sr: number
-  Name: string
-  Rank: string
-  Marks: string
-  Checked: string
+  userId: string
+  rank: number
+  marks: string
+  questionsAttempted: number
+  questionsChecked: number
 }
 
 const columnHelper = createColumnHelper<Leaderboard>()
@@ -20,30 +21,25 @@ const columns = [
     header: 'Sr.',
     enableColumnFilter: true,
   }),
-  columnHelper.accessor('Name', {
-    cell: (info) => info.row.original.Name,
+  columnHelper.accessor('userId', {
+    cell: (info) => info.row.original.userId,
     header: 'Name',
     enableColumnFilter: false,
   }),
-  columnHelper.accessor('Rank', {
-    cell: (info) => info.row.original.Rank,
+  columnHelper.accessor('rank', {
+    cell: (info) => info.row.original.rank,
     header: 'Current rank',
     enableColumnFilter: false,
   }),
-  columnHelper.accessor('Marks', {
-    cell: (info) => info.row.original.Marks,
+  columnHelper.accessor('marks', {
+    cell: (info) => info.row.original.marks,
     header: 'Current marks',
     enableColumnFilter: false,
   }),
-  columnHelper.accessor('Checked', {
+  columnHelper.accessor('questionsAttempted', {
     cell: (info: any) => (
-      <div
-        style={{ cursor: 'pointer', textDecoration: 'underline' }}
-      >
-        <QuestionCounter
-          totalQuestions={info.row.index + 2}
-          checkedQuestion={info.row.index}
-        />
+      <div style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+        <QuestionCounter totalQuestions={info.row.original.questionsAttempted} checkedQuestion={info.row.original.questionsChecked} />
       </div>
     ),
     header: 'Questions Checked',
@@ -51,10 +47,11 @@ const columns = [
   }),
 ]
 
-const Leaderboard = (leaderboard: any) => {
+const Leaderboard = () => {
+  const [leaderboard] = useCheckQuizStore((state) => [state.leaderboard])
   return (
     <Box mx='auto' my='8vh'>
-      <Table data={data} columns={columns}/>
+      <Table data={leaderboard} columns={columns} />
     </Box>
   )
 }

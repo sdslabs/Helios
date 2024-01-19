@@ -37,7 +37,6 @@ const CheckQuiz = () => {
   ])
   const [setQuizID] = useCheckQuizStore((state) => [state.setQuizID])
 
-
   useEffect(() => {
     if (isFetched && data) {
       setLeaderboard(data.leaderboard)

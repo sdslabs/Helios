@@ -73,9 +73,17 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
     state.setcurrentResponseIndex,
   ])
 
-  const [allResponsesID, setAllResponsesID] = useCheckQuizStore((state) => [
-    state.allResponsesID,
-    state.setallResponsesID,
+  const [allResponsesID, allResponsesStatus, setAllResponsesID, setAllResponesesStatus] =
+    useCheckQuizStore((state) => [
+      state.allResponsesID,
+      state.allResponsesStatus,
+      state.setallResponsesID,
+      state.setallResponsesStatus,
+    ])
+
+  const [checksCompleted, setChecksCompleted] = useCheckQuizStore((state) => [
+    state.checksCompleted,
+    state.setChecksCompleted,
   ])
 
   const {
@@ -96,13 +104,10 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
     setCurrentResponseIndex(0)
     if (allResponsesIsFetched && allResponses && Array.isArray(allResponses.responses)) {
       if (allResponses.questionId !== questionID) {
-        console.log(allResponses.questionId, questionID)
-        console.log('working')
         window.location.reload()
       }
       setAllResponsesID(allResponses.responses.map((response: any) => response.responseId))
-
-      console.log('allResponses', allResponses)
+      setAllResponesesStatus(allResponses.responses.map((response: any) => response.status))
     }
   }, [allResponsesIsFetched])
 
@@ -135,6 +140,9 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
       {
         onSuccess: () => {
           if (currentResponseIndex < allResponsesID.length - 1) {
+            if (allResponsesStatus[currentResponseIndex] === ResponseStatus.answered) {
+              setChecksCompleted(checksCompleted + 1)
+            }
             setCurrentResponseIndex(currentResponseIndex + 1)
           } else {
             setIsQuestionCheckModalOpen(true)
@@ -249,10 +257,12 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
                 ml={2}
                 value={response.marksAwarded}
                 onChange={(e) => {
-                  setResponse({
-                    ...response,
-                    marksAwarded: parseInt(e.target.value),
-                  })
+                  const marks = parseInt(e.target.value)
+                  if (!isNaN(marks) && marks <= question.maxMarks) {
+                    setResponse({ ...response, marksAwarded: marks })
+                  } else {
+                    setResponse({ ...response, marksAwarded: 0 })
+                  }
                 }}
               />
             </Flex>

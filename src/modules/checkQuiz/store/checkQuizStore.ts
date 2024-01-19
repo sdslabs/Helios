@@ -21,6 +21,7 @@ interface CheckQuizStore {
   currentResponse: string;
   currentResponseIndex: number;
   allResponsesID: string[];
+  allResponsesStatus: string[];
 
   setSections: (to: Section[]) => void;
   setCurrentQuestionIndex: (to: number) => void;
@@ -40,6 +41,7 @@ interface CheckQuizStore {
   setcurrentResponse: (to: string) => void;
   setcurrentResponseIndex: (to: number) => void;
   setallResponsesID: (to: string[]) => void;
+  setallResponsesStatus: (to: string[]) => void;
 }
 
 const useCheckQuizStore = create<CheckQuizStore>((set: SetState<CheckQuizStore>) => {
@@ -50,7 +52,7 @@ const useCheckQuizStore = create<CheckQuizStore>((set: SetState<CheckQuizStore>)
     currentSectionIndex: 1,
     totalQuestion: 0,
     checkedAnsweredQuestions: [],
-    isCurrentQuestionchecked: 'unchecked',
+    isCurrentQuestionchecked: 'answered',
     leaderboard: [],
     admin: '',
     quizName: '',
@@ -62,6 +64,7 @@ const useCheckQuizStore = create<CheckQuizStore>((set: SetState<CheckQuizStore>)
     currentResponse: '',
     currentResponseIndex: 0,
     allResponsesID: [],
+    allResponsesStatus: [],
 
     setSections: (to: Section[]) => set({ sections: to }),
     setCurrentQuestionIndex: (to: number) => set({ currentQuestionIndex: to }),
@@ -81,6 +84,7 @@ const useCheckQuizStore = create<CheckQuizStore>((set: SetState<CheckQuizStore>)
     setcurrentResponse: (to: string) => set({ currentResponse: to }),
     setcurrentResponseIndex: (to: number) => set({ currentResponseIndex: to }),
     setallResponsesID: (to: string[]) => set({ allResponsesID: to }),
+    setallResponsesStatus: (to: string[]) => set({ allResponsesStatus: to }),
   };
 
   return initialState;
