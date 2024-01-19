@@ -27,7 +27,7 @@ const columns = [
     enableColumnFilter: false,
   }),
   columnHelper.accessor('rank', {
-    cell: (info) => info.row.original.rank,
+    cell: (info) => info.row.index + 1,
     header: 'Current rank',
     enableColumnFilter: false,
   }),

@@ -124,7 +124,9 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
   useEffect(() => {
     if (responseIsFetched && responseData) {
       setResponse(responseData.response)
-      console.log('responseData', responseData)
+      if (responseData.response.status === ResponseStatus.answered) {
+        setQuestion({ ...question, maxMarks: 0 })
+      }
     }
   }, [responseIsFetched, responseData])
 

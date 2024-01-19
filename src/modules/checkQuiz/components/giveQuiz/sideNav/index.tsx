@@ -163,7 +163,7 @@ const SideNavContent = () => {
           <AssignView AssignedTo={['Lakshya', 'Nova']} />
         </Flex> */}
         <Flex mb={4}>
-          <Checkbox w={6} h={6} colorScheme='purple' />
+          <Checkbox w={6} h={6} colorScheme='purple'  />
           <Text fontSize={'0.875rem'} color={'accentBlack'}>
             Show only unchecked questions
           </Text>
@@ -195,12 +195,12 @@ const SideNavContent = () => {
               }}
             >
               <Button
-                bgColor={allResponsesStatus[index] ? 'green' : 'yellowMarkedForReview'}
+                bgColor={allResponsesStatus[index]==ResponseStatus.checked ? 'green' : 'yellowMarkedForReview'}
                 rounded={'full'}
                 variant='outline'
                 size={'sm'}
                 borderColor={
-                  allResponsesStatus[index] ? 'answeredBubbleBorder' : 'markedForReviewBubbleBorder'
+                  allResponsesStatus[index]==ResponseStatus.checked ? 'answeredBubbleBorder' : 'markedForReviewBubbleBorder'
                 }
                 _hover={{}}
                 _focus={{}}
