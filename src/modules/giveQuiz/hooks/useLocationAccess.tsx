@@ -1,22 +1,26 @@
+import useLog from "@giveQuiz/api/useLog";
+import { LogType } from "@giveQuiz/types";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-interface Location {
-  latitude: number;
-  longitude: number;
-}
+
 const useLocationAccess = () => {
   const [hasLocationAccess, setHasLocationAccess] = useState(false);
-  const [location, setLocation] = useState<Location | null>(null);
+  const { mutate: log } = useLog();
+  const { quizId } = useParams() as { quizId: string };
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
           setHasLocationAccess(true);
-          // TODO: update logs in the database
+          log({
+            logType: LogType.Location,
+            quizId: quizId,
+            location: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            },
+          });
         },
         (error) => {
           console.error(error);

@@ -13,11 +13,6 @@ const MediaAccess = ({ setIsMediaPermission, hidden = true }: MediaAccessProps) 
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
-        console.log('audio and video are available', {
-          stream,
-          audio: stream.getAudioTracks(),
-          video: stream.getVideoTracks(),
-        })
         const video = videoRef.current
         if(video){
           video.srcObject = stream

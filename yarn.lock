@@ -9702,11 +9702,6 @@ react-markdown@~8.0.0:
     unist-util-visit "^4.0.0"
     vfile "^5.0.0"
 
-react-public-ip@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/react-public-ip/-/react-public-ip-1.0.0.tgz#5c5909f5ca9020da4992e9748ee1dd4ab4c02562"
-  integrity sha512-ne3UUnkYa8xLppXeNSFDFLkw0BklHh0di1ednz6RgHbDd/iwwzi1p/hFFOxOT+b67R4sffzyTQhOeH3WgkwQsg==
-
 react-refresh@^0.11.0:
   version "0.11.0"
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.11.0.tgz"

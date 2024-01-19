@@ -4,14 +4,15 @@ import { toast } from "react-toastify";
 import { FullScreenHandle } from "react-full-screen";
 import useLog from "@giveQuiz/api/useLog";
 import useQuizStore from "@giveQuiz/store/QuizStore";
+import { LogType } from "@giveQuiz/types";
 
-const useKeyLogging = ({ handle, setIsOnFS }: { handle: FullScreenHandle, setIsOnFS: (to: boolean) => void }) => {
+const useKeyLogging = ({ handle }: { handle: FullScreenHandle }) => {
   const { mutate: log } = useLog();
   const { currentQuestion, quizId } = useQuizStore((state) => ({
     currentQuestion: state.currentQuestion,
     quizId: state.quizId
   }));
-  const handleSusAction = (logType : string) => {
+  const handleSusAction = (logType : string, key: string) => {
     toast.warn(
 			`Action logged (${logType}), avoid using suspicious key presses during quiz.`,
 			{
@@ -26,8 +27,9 @@ const useKeyLogging = ({ handle, setIsOnFS }: { handle: FullScreenHandle, setIsO
 		);
     log({
       questionId: currentQuestion,
-      logType: 'susKey',
-      quizId: quizId
+      logType: LogType.SusKey,
+      quizId: quizId,
+      key: key
     })
   }
   const handleContextMenu = (e : MouseEvent) => {
@@ -46,30 +48,39 @@ const useKeyLogging = ({ handle, setIsOnFS }: { handle: FullScreenHandle, setIsO
 		);
     log({
       questionId: currentQuestion,
-      logType: 'rightClick',
+      logType: LogType.RightClick,
       quizId: quizId
     })
   };
 
   useEffect(() => {
     const unsubscribe = tinykeys(window, {
-      'Control+KeyF': async (event) => {
+      '$mod+KeyF': async (event) => {
         event.preventDefault();
         if (!handle.active) {
         	await handle.enter();
-        	setIsOnFS(true);
         }
+
       },
       '$mod+KeyC': () => {
-        handleSusAction('COPY');
+        handleSusAction('COPY', '$mod+KeyC');
       },
       '$mod+KeyV': () => {
-        handleSusAction('PASTE');
+        handleSusAction('PASTE', '$mod+KeyV');
       },
-      'Control+Shift+KeyI': () => {
-        handleSusAction('INSPECT');
+      '$mod+Shift+KeyI': (event) => {
+        event.preventDefault();
+        handleSusAction('DEVTOOLS', 'Control+Shift+KeyI');
       },
-      '$mod+KeyF': async (event) => event.preventDefault(),
+      '$mod+Shift+KeyJ': (event) => {
+        event.preventDefault();
+        handleSusAction('DEVTOOLS', 'Control+Shift+KeyJ');
+      },
+      'Alt+Tab': (event) => {
+        console.log('ALT+TAB');
+        event.preventDefault();
+        handleSusAction('ALT+TAB', 'Alt+Tab');
+      },
 
       F1: async (event) => event.preventDefault(),
       F2: async (event) => event.preventDefault(),

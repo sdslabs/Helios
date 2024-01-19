@@ -1,4 +1,3 @@
-import useWindowFocus from '@giveQuiz/hooks/useWindowFocus';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface TimerContextProps {
@@ -10,13 +9,10 @@ const TimerContext = createContext<TimerContextProps | undefined>(undefined);
 
 interface TimerProviderProps {
   children: ReactNode;
-  handleBlur?: () => void;
 }
 
-export const TimerProvider: React.FC<TimerProviderProps> = ({ children, handleBlur }) => {
+export const TimerProvider: React.FC<TimerProviderProps> = ({ children }) => {
   const [timerValue, setTimerValue] = useState<number | null>(0);
-  if(handleBlur)
-    useWindowFocus(handleBlur);
   const setTimer = (value: number | null) => {
     setTimerValue(value);
   }

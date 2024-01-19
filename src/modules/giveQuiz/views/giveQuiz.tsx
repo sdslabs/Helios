@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect } from 'react'
 import WithSidebarWrapper from '@common/views/WithSidebarWrapper'
-import { GiveQuizSteps } from '../types'
+import { GiveQuizSteps, LogType } from '../types'
 import Instructions from '@giveQuiz/components/Instructions'
 import TopNav from '@common/components/TopNav'
 import SideNavContent from '@giveQuiz/sideNav'
@@ -16,7 +16,9 @@ import { ToastContainer, toast } from 'react-toastify'
 import { useParams } from 'react-router-dom';
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import 'react-toastify/dist/ReactToastify.css';
+import './style.css'
 import useLog from '@giveQuiz/api/useLog'
+import { ipURL } from '../../../config/config'
 
 const   giveQuiz = () => {
   const { quizId } = useParams() as { quizId: string }
@@ -24,36 +26,14 @@ const   giveQuiz = () => {
     setQuizId: state.setQuizId,
     currentQuestion: state.currentQuestion
   }))
-  const { mutate: log } = useLog()
-  setQuizId(quizId)
+  const { mutate: log } = useLog()  
   const [quizStage, setQuizStage] = useState<GiveQuizSteps>(0)
   const fullScreenHandle = useFullScreenHandle()
-  const [isOnFS, setIsOnFS] = useState<boolean>(false);
   const [isMediaPermission, setIsMediaPermission] = useState<boolean>(false);
   const { hasLocationAccess } = useLocationAccess();
-  const handleBlur = () => {
-    toast.warn(
-      'Action logged (TAB CHANGE), avoid using any other tab/window/program during quiz.',
-      {
-        position: 'top-center',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      },
-    );
-    log({
-      questionId: currentQuestion,
-      logType: 'tabChange',
-      quizId: quizId
-    })
-  }
   const reportChange = useCallback(
     (state: boolean) => {
       if (state === false) {
-        setIsOnFS(false);
         toast.dark(
           'Quiz must be given on Full Screen. Press `Ctrl + F` to go to Fullscreen',
           {
@@ -66,6 +46,11 @@ const   giveQuiz = () => {
             toastId: 'fsToast',
           },
         );
+        log({
+          questionId: currentQuestion,
+          logType: LogType.FullScreenExit,
+          quizId: quizId
+        })
       } else {
         toast.dismiss('fsToast');
       }
@@ -73,7 +58,7 @@ const   giveQuiz = () => {
     [fullScreenHandle],
   );
 
-  useKeyLogging({ handle: fullScreenHandle, setIsOnFS });
+  useKeyLogging({ handle: fullScreenHandle });
   const renderQuiz = () => {
     switch (quizStage) {
     case GiveQuizSteps.Instructions:
@@ -129,21 +114,20 @@ const   giveQuiz = () => {
       );
     }
   }, [hasLocationAccess]);
-  if (!isOnFS) {
-    return (
-      <>
-        <ToastContainer />
-        <MediaAccess
-          setIsMediaPermission={setIsMediaPermission}
-          hidden={false}
-        />
-        <FullScreen handle={fullScreenHandle} onChange={reportChange}> 
-        </FullScreen>
-      </>
-    );
-  }
 
-  if (!isMediaPermission) {
+  useEffect(() => {
+    fetch(ipURL).then((res) => res.json()).then((data) => {
+      log({
+        questionId: currentQuestion,
+        logType: 'ip',
+         quizId: quizId,
+         ip: data.ip
+      })
+    }).catch((err) => console.log(err))
+    setQuizId(quizId)
+  }, [quizId])
+  
+  if (!hasLocationAccess || !isMediaPermission) {
     return (
       <>
         <ToastContainer />
@@ -154,28 +138,17 @@ const   giveQuiz = () => {
       </>
     );
   }
-
-  if (!hasLocationAccess) {
-    return (
-      <>
-        <ToastContainer />
-        <MediaAccess
-          setIsMediaPermission={setIsMediaPermission}
-          hidden={false}
-        />
-      </>
-    );
-  }
-  return (
+  return (  
     <>
-      <TimerProvider handleBlur={handleBlur}>
+      <TimerProvider>
         <ToastContainer />
-        <MediaAccess setIsMediaPermission={setIsMediaPermission} hidden={true} />
-        <FullScreen handle={fullScreenHandle} onChange={reportChange}>
+        <MediaAccess setIsMediaPermission={setIsMediaPermission} hidden={false} />
+        <FullScreen handle={fullScreenHandle} onChange={reportChange} className='bg-white'>
+        <ToastContainer />
           <TopNav />
           <WithSidebarWrapper
             sidebarContent={<SideNavContent stage={quizStage} setStage={setQuizStage} />}
-          >
+          > 
             <SectionTopBar />
             {renderQuiz()}
           </WithSidebarWrapper>
