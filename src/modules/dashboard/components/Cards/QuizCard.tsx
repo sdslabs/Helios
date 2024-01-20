@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
-import { Card, CardBody, Image, Stack, Heading, Text, Button, Flex } from '@chakra-ui/react'
+import React, { useState } from 'react'
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  Image,
+  Stack,
+  Heading,
+  Text,
+  Button,
+  Flex,
+} from '@chakra-ui/react'
 import { ButtonType } from '../../types'
 import { StartModal } from '@giveQuiz/components/Modals/StartQuizModal'
 import { RegisterModal } from '@giveQuiz/components/Modals/RegistrationModal'
-import useQuizStore from '@giveQuiz/store/QuizStore';
-import { useNavigate } from 'react-router-dom';
+import useQuizStore from '@giveQuiz/store/QuizStore'
+import { useNavigate } from 'react-router-dom'
+import defaultQuizBg from '@assets/images/default-quiz-bg.png'
 
 interface QuizCardProps {
   title: string
@@ -23,7 +34,6 @@ const QuizCard: React.FC<QuizCardProps> = ({
   image,
   btnText,
   quizId,
-
 }: QuizCardProps) => {
   const formattedTime = time.toLocaleString('en-US', {
     day: 'numeric',
@@ -34,71 +44,81 @@ const QuizCard: React.FC<QuizCardProps> = ({
     hour12: true,
   })
 
-  const [isStartModalOpen, setIsStartModalOpen] = useState(false);
+  const [isStartModalOpen, setIsStartModalOpen] = useState(false)
   const toggleStartModal = () => {
     setIsStartModalOpen(!isStartModalOpen)
   }
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false)
   const toggleRegisterModal = () => {
     setIsRegisterModalOpen(!isRegisterModalOpen)
   }
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const {setIsStarted} = useQuizStore();
+  const { setIsStarted } = useQuizStore()
 
   const handleClick = () => {
-    if (btnText === ButtonType.start){
-      setIsStarted(true);
+    if (btnText === ButtonType.start) {
+      setIsStarted(true)
       navigate(`/giveQuiz/${quizId}`)
+    }
+    if (btnText === ButtonType.register) {
+      setIsRegisterModalOpen(true)
+    }
+  }
 
-    }
-    if (btnText === ButtonType.register){
-      setIsRegisterModalOpen(true);
-    }
-    
-  };
-   
   return (
-    
+    <>
       <Card
+        flexShrink={0}
         direction={{ base: 'column', sm: 'row' }}
-        overflow='hidden'
+        padding={4}
         variant='outline'
-        width='30vw'
-        height='22vh'
-        p='1.6vh'
-        marginY='2.4vh'
+        my={4}
+        width='48rem'
       >
-        <Image objectFit='cover' w='10vw' src={image} alt='banner image' />
-
+        <Image
+          src={image ? image : defaultQuizBg}
+          alt='Quiz Banner'
+          objectFit='cover'
+          borderRadius={4}
+          minW='36%'
+        />
         <Stack>
           <CardBody>
-            <Heading fontSize='1.2vh' fontWeight='600'>
-              {title}
-            </Heading>
-
-            <Text color='#939393' marginBottom='1.6vh' fontSize='1.2vh'>
+            <Flex gap={2} alignItems='center'>
+              <Heading size='sm' textTransform='capitalize'>
+                {title}
+              </Heading>
+            </Flex>
+            <Text pt='2' color='n6'>
               {content}
             </Text>
-            <Text fontSize='1.2vh'>Scheduled:{formattedTime}</Text>
+            <Text pt='2' color='n6'>
+              Schedule : <span style={{ color: '#191919' }}> {formattedTime} </span>
+            </Text>
+
             <Button
               colorScheme='purple'
-              color='white'
               bgColor='brand'
-              height='3.2vh'
-              width='5.2vw'
-              fontSize='1.2vh'
-              marginTop='1.6vh'
+              px={6}
+              borderRadius={3}
+              size={'sm'}
+              mt={4}
               isDisabled={btnText === ButtonType.completed || btnText === ButtonType.registered}
               onClick={handleClick}
             >
               {btnText}
               <StartModal open={isStartModalOpen} toggleIsOpen={toggleStartModal} quizId={quizId} />
-              <RegisterModal open={isRegisterModalOpen} toggleIsOpen={toggleRegisterModal} quizId={quizId} />
-            </Button>       
-          </CardBody>  
-        </Stack>    
-      </Card>  
+              <RegisterModal
+                open={isRegisterModalOpen}
+                toggleIsOpen={toggleRegisterModal}
+                quizId={quizId}
+              />
+            </Button>
+          </CardBody>
+        </Stack>
+      </Card>
+    </>
   )
 }
 

@@ -72,7 +72,7 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
             <Text pt='2' color='n6'>
               Schedule : <span style={{ color: '#191919' }}> {schedule} </span>
             </Text>
-            <Button colorScheme='purple' bgColor='brand' px={4} borderRadius={3} size={'sm'} mt={4}>
+            <Button colorScheme='purple' bgColor='brand' px={6} borderRadius={3} size={'sm'} mt={4}>
               {edit ? 'Check Quiz' : 'Edit Quiz'}
             </Button>
           </CardBody>
