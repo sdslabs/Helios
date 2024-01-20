@@ -2,6 +2,7 @@ import axiosInstance from '@auth/api/axiosInstance'
 import { Spinner } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { reactAppURL } from '../../../config/config'
 
 const querytoObject = (query: string) => {
   const parameters = new URLSearchParams(query)
@@ -20,7 +21,7 @@ const GoogleCallback = () => {
         navigate("/")
       } else {
         // TODO; some better solution for redirecting to dashboard
-        window.location.assign(`${process.env.REACT_APP_URL}/dashboard`)
+        window.location.assign(`${reactAppURL}/dashboard`)
       }
     })()
   }, [])

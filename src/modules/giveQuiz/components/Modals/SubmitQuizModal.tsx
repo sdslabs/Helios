@@ -7,13 +7,14 @@ import * as io from "socket.io-client";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSubmitQuiz } from '../../api/useUser';
 import useQuizStore from '@giveQuiz/store/QuizStore';
+import { baseURL } from '../../../../config/config';
 
 interface SubmitQuizModalProps {
   open: boolean
   toggleIsOpen: () => void
 }
 
-const socket = io.connect('http://localhost:4000');
+const socket = io.connect(`${baseURL}`);
 
 export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) => {
 

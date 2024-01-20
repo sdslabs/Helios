@@ -2,6 +2,7 @@ import axiosInstance from '@auth/api/axiosInstance'
 import { Spinner } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { reactAppURL } from '../../../config/config'
 
 const querytoObject = (query: string) => {
   const parameters = new URLSearchParams(query)
@@ -19,7 +20,7 @@ const GithubCallback = () => {
         alert("Login failed")
         navigate("/")
       } else {
-        window.location.assign(`${process.env.REACT_APP_URL}/dashboard`)//TODO
+        window.location.assign(`${reactAppURL}/dashboard`)//TODO
       }
     })()
   }, [])
