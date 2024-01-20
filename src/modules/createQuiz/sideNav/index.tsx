@@ -26,7 +26,6 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
       },
       onError: () => {
         console.log('Quiz publish failed')
-        navigate('/')
       }
     })
   }

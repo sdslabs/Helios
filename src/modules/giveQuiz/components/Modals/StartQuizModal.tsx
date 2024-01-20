@@ -1,6 +1,5 @@
 import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
-import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-ui/react'
-import { CloseIcon } from '@chakra-ui/icons'
+import { Modal, ModalContent, ModalOverlay, ModalCloseButton, Text, Button, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useStartQuiz } from '@giveQuiz/api/useUser'
 import * as io from 'socket.io-client'
@@ -11,11 +10,11 @@ import { baseURL } from '../../../../config/config'
 
 interface StartModalProps {
   open: boolean
-  toggleIsOpen: () => void
+  close: () => void
   quizId: string
 }
 
-export const StartModal = ({ open, toggleIsOpen, quizId }: StartModalProps) => {
+export const StartModal = ({ open, close, quizId }: StartModalProps) => {
   const [accessCode, setAccessCode] = useState('')
   const [isAccessCodeNeeded, setIsAccessCodeNeeded] = useState(true)
   const [canClose, setCanClose] = useState(false)
@@ -29,9 +28,10 @@ export const StartModal = ({ open, toggleIsOpen, quizId }: StartModalProps) => {
       { quizId, accessCode },
       {
         onSuccess: (data) => {
+          console.log(data)
           if (data) {
             setCanClose(true)
-            navigate(`/giveQuiz/${quizId}`)
+            navigate(`/give-quiz/${quizId}`)
             const socket = io.connect(`${baseURL}`)
             socket.emit('join_quiz', { quizId: quizId, userId: user.userId })
             socket.on('sendTime', (timeLeft) => {
@@ -45,14 +45,8 @@ export const StartModal = ({ open, toggleIsOpen, quizId }: StartModalProps) => {
 
   return (
     <Modal
-      isOpen={open && !canClose}
-      onClose={
-        canClose
-          ? toggleIsOpen
-          : () => {
-              console.log("can't close")
-            }
-      }
+      isOpen={open}
+      onClose={close}
       isCentered
     >
       <ModalOverlay />
@@ -61,7 +55,7 @@ export const StartModal = ({ open, toggleIsOpen, quizId }: StartModalProps) => {
           <Text fontSize='1.125rem' fontWeight='600'>
             Start Quiz
           </Text>
-          <CloseIcon color='crossBlack' w='0.875rem' h='0.875rem' alignSelf='center' />
+          <ModalCloseButton />
         </Flex>
         <Text fontSize='1rem' fontWeight='400' mb={4}>
           Are you sure you want to start this quiz?
@@ -77,6 +71,7 @@ export const StartModal = ({ open, toggleIsOpen, quizId }: StartModalProps) => {
           bgColor='brand'
           alignSelf='flex-end'
           mt={4}
+          borderRadius={3}
           onClick={handleStartQuiz}
         >
           Start Quiz

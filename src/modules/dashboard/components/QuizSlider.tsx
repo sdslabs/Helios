@@ -11,7 +11,7 @@ interface QuizSliderProps {
 const QuizSlider: React.FC<QuizSliderProps> = ({ data, type }: QuizSliderProps) => {
   return (
     <Flex
-      overflowY='scroll'
+      overflowX='scroll'
       gap={4}
       css={{
         scrollbarWidth: 'none',
@@ -31,6 +31,7 @@ const QuizSlider: React.FC<QuizSliderProps> = ({ data, type }: QuizSliderProps) 
             content={card.description}
             time={card.startDateTimestamp}
             image={card.bannerImage}
+            registrationMetadata={card.registrationMetadata}
             btnText={
               type == QuizType.ongoing
                 ? card.submitted

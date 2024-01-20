@@ -28,7 +28,6 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
   schedule,
   edit,
 }: CreatedQuizCardProps) => {
-  console.log(image)
   return (
     <>
       <Card

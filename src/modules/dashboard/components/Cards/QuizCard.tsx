@@ -2,17 +2,17 @@ import React, { useState } from 'react'
 import {
   Card,
   CardBody,
-  CardFooter,
   Image,
   Stack,
   Heading,
   Text,
   Button,
   Flex,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { ButtonType } from '../../types'
 import { StartModal } from '@giveQuiz/components/Modals/StartQuizModal'
-import { RegisterModal } from '@giveQuiz/components/Modals/RegistrationModal'
+import { RegisterModal } from '../RegisterModal'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import { useNavigate } from 'react-router-dom'
 import defaultQuizBg from '@assets/images/default-quiz-bg.png'
@@ -25,6 +25,7 @@ interface QuizCardProps {
   image: string
   btnText: string
   quizId?: any
+  registrationMetadata?: any
 }
 
 const QuizCard: React.FC<QuizCardProps> = ({
@@ -34,6 +35,7 @@ const QuizCard: React.FC<QuizCardProps> = ({
   image,
   btnText,
   quizId,
+  registrationMetadata,
 }: QuizCardProps) => {
   const formattedTime = time.toLocaleString('en-US', {
     day: 'numeric',
@@ -44,22 +46,21 @@ const QuizCard: React.FC<QuizCardProps> = ({
     hour12: true,
   })
 
-  const [isStartModalOpen, setIsStartModalOpen] = useState(false)
-  const toggleStartModal = () => {
-    setIsStartModalOpen(!isStartModalOpen)
-  }
+  const {
+    isOpen: isStartModalOpen,
+    onOpen: onStartModalOpen,
+    onClose: onStartModalClose,
+  } = useDisclosure()
+
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false)
   const toggleRegisterModal = () => {
     setIsRegisterModalOpen(!isRegisterModalOpen)
   }
   const navigate = useNavigate()
 
-  const { setIsStarted } = useQuizStore()
-
   const handleClick = () => {
-    if (btnText === ButtonType.start) {
-      setIsStarted(true)
-      navigate(`/giveQuiz/${quizId}`)
+    if (btnText == ButtonType.start) {
+      onStartModalOpen()
     }
     if (btnText === ButtonType.register) {
       setIsRegisterModalOpen(true)
@@ -108,11 +109,12 @@ const QuizCard: React.FC<QuizCardProps> = ({
               onClick={handleClick}
             >
               {btnText}
-              <StartModal open={isStartModalOpen} toggleIsOpen={toggleStartModal} quizId={quizId} />
+              <StartModal open={isStartModalOpen} close={onStartModalClose} quizId={quizId} />
               <RegisterModal
                 open={isRegisterModalOpen}
                 toggleIsOpen={toggleRegisterModal}
                 quizId={quizId}
+                additionalDetails={registrationMetadata.customFields}
               />
             </Button>
           </CardBody>

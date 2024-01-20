@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Text, useDisclosure } from '@chakra-ui/react'
 import { useState, useEffect } from 'react';
 import { GiveQuizSteps } from '../types';
 import { useGetQuiz } from '../api/useQuiz';
@@ -57,14 +57,21 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
     isSuccess: boolean
     error: Error | null
   }
-  const [isStartModalOpen, setIsStartModalOpen] = useState(false)
-  const toggleStartModal = () => {
-    setIsStartModalOpen(!isStartModalOpen)
+
+  const {
+    isOpen: isStartModalOpen,
+    onOpen: onStartModalOpen,
+    onClose: onStartModalClose,
+  } = useDisclosure()
+  const openStartModal = () => {
+    // setIsStartModalOpen(!isStartModalOpen)
+    onStartModalOpen()
   }
 
   useEffect(() => {
     if (isStarted) {
-      setIsStartModalOpen(true)
+      // setIsStartModalOpen(true)
+      onStartModalOpen()
       setIsStarted(false)
     }
   }, [])
@@ -156,7 +163,7 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
               }}
             >
               Continue
-              <StartModal open={isStartModalOpen} toggleIsOpen={toggleStartModal} quizId={quizId} />
+              <StartModal open={isStartModalOpen} close={onStartModalClose} quizId={quizId} />
             </Button>
           </Flex>
         </Flex>
