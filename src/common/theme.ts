@@ -6,6 +6,7 @@ const theme = extendTheme({
     brand: '#593C8F',
     v1: '#EBE7F2',
     v6: '#604195',
+    n6: '#939393',
     accentBlack: '#191919',
     yellowMarkedForReview: '#ffb45c',
     green: '#75c673',

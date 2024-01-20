@@ -5,6 +5,7 @@ import { QuizCreationSteps } from '../types'
 import QuestionsNavItem from './QuestionsNavItem'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import { usePublishQuiz } from '@createQuiz/api/useQuiz'
+import { useNavigate } from 'react-router-dom'
 
 interface SideNavContentProps {
   stage: QuizCreationSteps
@@ -16,11 +17,17 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
   const { mutate: mutatePublishQuiz } = usePublishQuiz()
   // TODO: publish quiz in the backend to check that the quiz is perfect in nature
   // TODO: handle the onSucess and onError also 
+  const navigate = useNavigate()
   const handlePublishQuiz = () => {
     mutatePublishQuiz({ quizId }, {
       onSuccess: () => {
-        setStage(6)
+        console.log('Quiz published successfully')
+        navigate('/')
       },
+      onError: () => {
+        console.log('Quiz publish failed')
+        navigate('/')
+      }
     })
   }
   return (
