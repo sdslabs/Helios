@@ -145,6 +145,11 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
             if (allResponsesStatus[currentResponseIndex] === ResponseStatus.answered) {
               setChecksCompleted(checksCompleted + 1)
             }
+            setAllResponesesStatus([
+              ...allResponsesStatus.slice(0, currentResponseIndex),
+              ResponseStatus.checked,
+              ...allResponsesStatus.slice(currentResponseIndex + 1),
+            ])
             setCurrentResponseIndex(currentResponseIndex + 1)
           } else {
             setIsQuestionCheckModalOpen(true)
