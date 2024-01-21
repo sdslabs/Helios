@@ -20,6 +20,7 @@ interface QuizDetailsProps {
 }
 
 const QuizDetails = ({ setQuizStage} : QuizDetailsProps) => {
+  // TODO: Managers daalte hi code fat rha hai. Fix the bug
   const { quizId, details, setKey } = useQuizDetailsStore((state) => state)
   const { mutate } = useUpdateQuizDetails()
   const handleChange = (key : string, value : string) => {

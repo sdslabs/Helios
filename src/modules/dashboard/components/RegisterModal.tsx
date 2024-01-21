@@ -2,26 +2,35 @@ import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 import { useState } from 'react'
 import { Modal, ModalContent, ModalOverlay, Button, Text, Flex } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
-import { useRegisterUser } from '../../api/useUser'
+import { useRegisterUser } from '../../giveQuiz/api/useUser'
 import { useQueryClient } from '@tanstack/react-query'
 
 interface RegisterModalProps {
   open: boolean
   toggleIsOpen: () => void
   quizId: string
+  additionalDetails?: { label: string; name: string; isRequired: boolean }[]
 }
 
-export const RegisterModal = ({ open, toggleIsOpen, quizId }: RegisterModalProps) => {
+export const RegisterModal = ({
+  open,
+  toggleIsOpen,
+  quizId,
+  additionalDetails = [],
+}: RegisterModalProps) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [contactNo, setContactNo] = useState('')
   const [organisationName, setOrganisationName] = useState('')
-  const [additionalDetails, setAdditionalDetails] = useState([
-    { label: 'Additional Detail1', placeholder: 'Label 1', isRequired: true },
-    { label: 'Additional Detail2', placeholder: 'Label 2', isRequired: false },
-    { label: 'Additional Detail3', placeholder: 'Label 3', isRequired: false },
-  ])
+  const [additionalDetailsState, setAdditionalDetailsState] = useState(
+    additionalDetails.map((detail) => ({
+      label: detail.label,
+      isRequired: detail.isRequired,
+      value: '',
+    })),
+  )
+
   const { mutate } = useRegisterUser()
   const queryClient = useQueryClient()
 
@@ -33,9 +42,9 @@ export const RegisterModal = ({ open, toggleIsOpen, quizId }: RegisterModalProps
         { name: 'email', value: email },
         { name: 'contactNo', value: contactNo },
         { name: 'organisationName', value: organisationName },
-        ...additionalDetails.map((detail, index) => ({
-          name: detail.label,
-          value: detail.placeholder,
+        ...additionalDetailsState.map((detail, index: number) => ({
+          name: additionalDetails[index].label,
+          value: detail.value,
         })),
       ],
     }
@@ -44,12 +53,13 @@ export const RegisterModal = ({ open, toggleIsOpen, quizId }: RegisterModalProps
       {
         onSuccess: () => {
           toggleIsOpen()
-          queryClient.invalidateQueries({ exact: true, queryKey: ['dashboard'] });
-
+          queryClient.invalidateQueries({ exact: true, queryKey: ['dashboard'] })
         },
       },
     )
   }
+
+  console.log(additionalDetailsState)
 
   return (
     <Modal isOpen={open} onClose={toggleIsOpen} isCentered size='6xl'>
@@ -98,15 +108,25 @@ export const RegisterModal = ({ open, toggleIsOpen, quizId }: RegisterModalProps
             onChange: (e) => setOrganisationName(e.target.value),
           }}
         />
-        <Text fontSize='1.125rem' fontStyle='normal' fontWeight='700' mt={4} mb={4}>
-          Additional Details
-        </Text>
+        {additionalDetails.length > 0 && (
+          <Text fontSize='1.125rem' fontStyle='normal' fontWeight='700' mt={4} mb={4}>
+            Additional Details
+          </Text>
+        )}
         <Flex flexDirection='column' gap='1.5rem'>
-          {additionalDetails.map((detail, index) => (
+          {additionalDetails.map((detail, index: number) => (
             <CustomInputWithLabel
               key={index}
               label={detail.label}
-              inputProps={{ placeholder: detail.placeholder, isRequired: detail.isRequired }}
+              inputProps={{
+                placeholder: detail.name,
+                isRequired: detail.isRequired,
+                onChange: (e) => {
+                  const newAdditionalDetails = [...additionalDetailsState]
+                  newAdditionalDetails[index].value = e.target.value
+                  setAdditionalDetailsState(newAdditionalDetails)
+                },
+              }}
             />
           ))}
         </Flex>
