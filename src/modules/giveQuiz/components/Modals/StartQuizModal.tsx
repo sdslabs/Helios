@@ -2,11 +2,7 @@ import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 import { Modal, ModalContent, ModalOverlay, ModalCloseButton, Text, Button, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useStartQuiz } from '@giveQuiz/api/useUser'
-import * as io from 'socket.io-client'
-import { useTimer } from '../TimerContext'
 import { useNavigate } from 'react-router-dom'
-import useAuthStore from '@auth/store/authStore'
-import { baseURL } from '../../../../config/config'
 
 interface StartModalProps {
   open: boolean
@@ -20,8 +16,6 @@ export const StartModal = ({ open, close, quizId }: StartModalProps) => {
   const [canClose, setCanClose] = useState(false)
   const { mutate } = useStartQuiz()
   const navigate = useNavigate()
-  const { setTimer } = useTimer()
-  const user = useAuthStore((state) => state.user)
 
   async function handleStartQuiz() {
     mutate(
@@ -32,11 +26,6 @@ export const StartModal = ({ open, close, quizId }: StartModalProps) => {
           if (data) {
             setCanClose(true)
             navigate(`/give-quiz/${quizId}`)
-            const socket = io.connect(`${baseURL}`)
-            socket.emit('join_quiz', { quizId: quizId, userId: user.userId })
-            socket.on('sendTime', (timeLeft) => {
-              setTimer(timeLeft)
-            })
           }
         },
       },

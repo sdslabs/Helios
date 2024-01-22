@@ -1,4 +1,5 @@
 export enum GiveQuizSteps {
+    AccessWindow = -1,
     Instructions = 0,
     Sections = 1,
     Questions = 2,

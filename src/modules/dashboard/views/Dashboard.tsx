@@ -5,7 +5,6 @@ import QuizTabs from '../components/QuizTabs'
 import useAuthStore from '@auth/store/authStore'
 import Hero from '../components/Hero'
 import { UserRoles } from '../../types'
-import { TimerProvider } from '@giveQuiz/components/TimerContext'
 
 const Dashboard = () => {
   const { data, isLoading } = useDashboard()
@@ -25,7 +24,6 @@ const Dashboard = () => {
     </div>
   ) : (
     <>
-     <TimerProvider>
       <TopNav isDashboard={true} isAdmin={isAdmin} />
       <div style={{ paddingLeft: '12.4vw', paddingRight: '12.4vw', paddingTop: '8vh' }}>
         <Hero
@@ -35,7 +33,6 @@ const Dashboard = () => {
         />
         <QuizTabs isAdmin={isAdmin} quizzes={data.quizzes} createdQuizzes={data.createdQuizzes} />
       </div>
-      </TimerProvider>
     </>    
   )
 }

@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import GoogleCallback from '@auth/views/googleCallback'
 import GithubCallback from '@auth/views/githubCallback'
 import { UserRoles } from './modules/types'
+import { TimerProvider } from './modules/giveQuiz/components/TimerContext'
 
 function App() {
   const authStore = useAuthStore()
@@ -47,6 +48,7 @@ function App() {
   return (
     
     <ChakraProvider theme={theme}>
+      <TimerProvider>
       <Routes>
         {!isLoggedIn && !isLoading && data.user === null ? (
           <>
@@ -60,7 +62,7 @@ function App() {
             <Route path='/*' element={<Register />} />
           </>
         ) : isLoggedIn && authStore.onboarded && !isLoading ?(
-          <>
+          <> 
             <Route path='/dashboard' element={<Dashboard />} />
             {data.user.role === UserRoles.admin && (
               <Route path='/create-quiz/:quizId' element={<CreateQuiz />} />
@@ -71,6 +73,7 @@ function App() {
         ): null}
         {/* TODO: something better than using null and make this conditional routing more elegant */}
       </Routes>
+      </TimerProvider>
     </ChakraProvider>
     
   )
