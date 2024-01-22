@@ -2,7 +2,7 @@ import { Card, Flex, Heading, Text } from '@chakra-ui/react'
 
 const Banner: React.FC = () => {
   return (
-    <Card w='60vw' h='12vw' backgroundColor='#EBE7F2' boxShadow='none' padding='6.4vh'>
+    <Card w='60vw' backgroundColor='#EBE7F2' boxShadow='none' padding='6.4vh'>
       <Flex flexDirection='column' gap='0.8vh'>
         <Heading color='#604195' fontSize='3.2vh' fontWeight='600'>
           Register For a Quiz
