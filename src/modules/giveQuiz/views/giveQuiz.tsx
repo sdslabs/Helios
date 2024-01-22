@@ -7,7 +7,7 @@ import SideNavContent from '@giveQuiz/sideNav'
 import SectionTopBar from '@giveQuiz/components/SectionTopBar'
 import SectionInstructions from '@giveQuiz/components/SectionInstructions'
 import QuestionView from '@giveQuiz/components/QuestionView'
-import { TimerProvider } from '@giveQuiz/components/TimerContext'
+import {useTimer} from '@giveQuiz/components/TimerContext'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
 import useLocationAccess from '@giveQuiz/hooks/useLocationAccess'
 import useKeyLogging from '@giveQuiz/hooks/useKeyLogging'
@@ -18,7 +18,9 @@ import useQuizStore from '@giveQuiz/store/QuizStore'
 import 'react-toastify/dist/ReactToastify.css';
 import './style.css'
 import useLog from '@giveQuiz/api/useLog'
-import { ipURL } from '../../../config/config'
+import { ipURL, baseURL } from '../../../config/config'
+import useAuthStore from '@auth/store/authStore'
+import * as io from 'socket.io-client'
 
 const   giveQuiz = () => {
   const { quizId } = useParams() as { quizId: string }
@@ -27,13 +29,16 @@ const   giveQuiz = () => {
     currentQuestion: state.currentQuestion
   }))
   const { mutate: log } = useLog()  
-  const [quizStage, setQuizStage] = useState<GiveQuizSteps>(0)
+  const [quizStage, setQuizStage] = useState<GiveQuizSteps>(-1)
   const fullScreenHandle = useFullScreenHandle()
   const [isMediaPermission, setIsMediaPermission] = useState<boolean>(false);
   const { hasLocationAccess } = useLocationAccess();
+  const { setTimer } = useTimer()
+  const user = useAuthStore((state) => state.user)
   const reportChange = useCallback(
     (state: boolean) => {
       if (state === false) {
+        setQuizStage(GiveQuizSteps.AccessWindow);
         toast.dark(
           'Quiz must be given on Full Screen. Press `Ctrl + F` to go to Fullscreen',
           {
@@ -53,6 +58,12 @@ const   giveQuiz = () => {
         })
       } else {
         toast.dismiss('fsToast');
+        setQuizStage(GiveQuizSteps.Instructions);
+        const socket = io.connect(`${baseURL}`)
+            socket.emit('join_quiz', { quizId: quizId, userId: user.userId })
+            socket.on('sendTime', (timeLeft) => {
+              setTimer(timeLeft)
+            })
       }
     },
     [fullScreenHandle],
@@ -138,9 +149,22 @@ const   giveQuiz = () => {
       </>
     );
   }
+ 
+  const renderQuizGivingPage = () => {
+    if(quizStage < 0) {
+      console.log(quizStage)
+      return (
+        <>
+            <ToastContainer />
+            <MediaAccess setIsMediaPermission={setIsMediaPermission} hidden={false} />
+            <FullScreen handle={fullScreenHandle} onChange={reportChange} className='bg-white'>
+            </FullScreen>
+        </>
+    
+      )
+   }
   return (  
     <>
-      <TimerProvider>
         <ToastContainer />
         <MediaAccess setIsMediaPermission={setIsMediaPermission} hidden={false} />
         <FullScreen handle={fullScreenHandle} onChange={reportChange} className='bg-white'>
@@ -153,8 +177,13 @@ const   giveQuiz = () => {
             {renderQuiz()}
           </WithSidebarWrapper>
         </FullScreen>
-      </TimerProvider>
     </>
+  )   
+}
+ return (
+  <>
+  {renderQuizGivingPage()}
+  </>
   )
 }
 
