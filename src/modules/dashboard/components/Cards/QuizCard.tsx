@@ -37,14 +37,15 @@ const QuizCard: React.FC<QuizCardProps> = ({
   quizId,
   registrationMetadata,
 }: QuizCardProps) => {
-  const formattedTime = time.toLocaleString('en-US', {
+  const formattedTime = new Intl.DateTimeFormat('en-US', {
     day: 'numeric',
-    month: 'short',
+    month: 'long',
     year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
+    hour: 'numeric',
+    minute: 'numeric',
     hour12: true,
-  })
+    timeZone: 'IST',
+  }).format(new Date(time))
 
   const {
     isOpen: isStartModalOpen,
