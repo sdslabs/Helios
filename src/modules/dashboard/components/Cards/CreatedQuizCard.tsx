@@ -28,6 +28,20 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
   schedule,
   edit,
 }: CreatedQuizCardProps) => {
+  let formattedTime
+  if (schedule) {
+    formattedTime = new Intl.DateTimeFormat('en-US', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+      timeZone: 'IST',
+    }).format(new Date(schedule))
+  } else {
+    formattedTime = 'Invalid'
+  }
   return (
     <>
       <Card
@@ -69,7 +83,7 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
               {content}
             </Text>
             <Text pt='2' color='n6'>
-              Schedule : <span style={{ color: '#191919' }}> {schedule} </span>
+              Schedule : <span style={{ color: '#191919' }}> {formattedTime} </span>
             </Text>
             <Button colorScheme='purple' bgColor='brand' px={6} borderRadius={3} size={'sm'} mt={4}>
               {edit ? 'Check Quiz' : 'Edit Quiz'}
