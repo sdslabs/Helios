@@ -1,4 +1,7 @@
-import { QuestionType } from '../types'
+export enum QuestionType {
+  MCQ = "mcq",
+  SUB = 'Subjective',
+}
 
 export type Question = {
     _id: string
