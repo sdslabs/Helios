@@ -14,6 +14,7 @@ import GithubCallback from '@auth/views/githubCallback'
 import { UserRoles } from './modules/types'
 import CheckQuiz from '@checkQuiz/views/checkQuiz'
 import CheckQuestionView from '@checkQuiz/components/giveQuiz/CheckQuestionView'
+import { TimerProvider } from './modules/giveQuiz/components/TimerContext'
 
 function App() {
   const authStore = useAuthStore()
@@ -49,6 +50,7 @@ function App() {
   return (
     
     <ChakraProvider theme={theme}>
+      <TimerProvider>
       <Routes>
         {!isLoggedIn && !isLoading && data.user === null ? (
           <>
@@ -75,6 +77,7 @@ function App() {
         ): null}
         {/* TODO: something better than using null and make this conditional routing more elegant */}
       </Routes>
+      </TimerProvider>
     </ChakraProvider>
     
   )

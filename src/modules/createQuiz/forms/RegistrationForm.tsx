@@ -12,8 +12,40 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import InputField from '@common/components/CustomInputWithLabel'
+import { useUpdateQuizDetails } from '@createQuiz/api/useQuiz'
+import useRegistrationFormStore, { CustomFields } from '@createQuiz/store/useRegistrationFormStore'
+import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
+interface RegistrationFormProps {
+  setQuizStage: (stage: number) => void
+}
 
-const RegistrationForm = () => {
+const RegistrationForm = ({ setQuizStage } : RegistrationFormProps) => {
+  const { mutate } = useUpdateQuizDetails()
+  const { registrationForm, setRegistrationForm } = useRegistrationFormStore((state) => state)
+  const quizId = useQuizDetailsStore((state) => state.quizId)
+
+  const handleChange = (key: keyof CustomFields, value: string | boolean, index: number) => {
+    const updatedCustomFields = [...registrationForm.customFields]
+    if(index + 1 > updatedCustomFields.length) {
+      updatedCustomFields.push({
+        name: '',
+        label: '',
+        isRequired: false
+      })
+    }
+    (updatedCustomFields[index] as any)[key] = value;
+    if(!updatedCustomFields[index].name && !updatedCustomFields[index].label) {
+      updatedCustomFields.splice(index, 1)
+    }
+    setRegistrationForm({
+      customFields: updatedCustomFields
+    })
+  }
+
+  const handleSaveRegistrationForm = () => {
+    mutate({ quizId, body: { registrationMetadata : registrationForm } })
+    setQuizStage(2)
+  }
   return (
     <Box w='980px' mx='auto' my={14}>
       <Heading fontSize='3xl' color='accentBlack'>
@@ -80,74 +112,46 @@ const RegistrationForm = () => {
       <Heading fontSize='xl' color='accentBlack' mt={8}>
         Additional Details
       </Heading>
-      <VStack mt={6} gap={3}>
-        <FormControl display='flex' alignItems='center' color='gray.500' gap={3}>
-          <FormLabel mb='0' flexGrow={1}>
-            Custom Field 1
-          </FormLabel>
-          <Text>Required</Text>
-          <Switch id='cf-1' colorScheme='purple' />
-        </FormControl>
-        <InputField
-          label='Field Name'
-          inputProps={{
-            placeholder: 'Enter a field name',
-          }}
-        />
-        <InputField
-          label='Field Label'
-          inputProps={{
-            placeholder: 'Enter a field label',
-          }}
-        />
-      </VStack>
-      <VStack mt={8} gap={3}>
-        <FormControl display='flex' alignItems='center' color='gray.500' gap={3}>
-          <FormLabel mb='0' flexGrow={1}>
-            Custom Field 2
-          </FormLabel>
-          <Text>Required</Text>
-          <Switch id='cf-1' colorScheme='purple' />
-        </FormControl>
-        <InputField
-          label='Field Name'
-          inputProps={{
-            placeholder: 'Enter a field name',
-          }}
-        />
-        <InputField
-          label='Field Label'
-          inputProps={{
-            placeholder: 'Enter a field label',
-          }}
-        />
-      </VStack>
-      <VStack mt={8} gap={3}>
-        <FormControl display='flex' alignItems='center' color='gray.500' gap={3}>
-          <FormLabel mb='0' flexGrow={1}>
-            Custom Field 3
-          </FormLabel>
-          <Text>Required</Text>
-          <Switch id='cf-1' colorScheme='purple' />
-        </FormControl>
-        <InputField
-          label='Field Name'
-          inputProps={{
-            placeholder: 'Enter a field name',
-          }}
-        />
-        <InputField
-          label='Field Label'
-          inputProps={{
-            placeholder: 'Enter a field label',
-          }}
-        />
-      </VStack>
+      {[0, 1, 2].map((index) => (
+        <VStack key={index} mt={8} gap={3}>
+          <FormControl display='flex' alignItems='center' color='gray.500' gap={3}>
+            <FormLabel mb='0' flexGrow={1}>
+              Custom Field {index + 1}
+            </FormLabel>
+            <Text>Required</Text>
+            <Switch
+              id={`cf-${index + 1}`}
+              colorScheme='purple'
+              disabled={registrationForm.customFields.length <= index}
+              isChecked={registrationForm.customFields[index]?.isRequired}
+              onChange={(e) => handleChange('isRequired', e.target.checked, index)}
+            />
+          </FormControl>
+          <InputField
+            label='Field Name'
+            inputProps={{
+              placeholder: 'Enter a field name',
+              value: registrationForm.customFields[index]?.name || '',
+              isReadOnly: registrationForm.customFields.length < index,
+              onChange: (e) => handleChange('name', e.target.value, index),
+            }}
+          />
+          <InputField
+            label='Field Label'
+            inputProps={{
+              placeholder: 'Enter a field label',
+              value: registrationForm.customFields[index]?.label || '',
+              isReadOnly: registrationForm.customFields.length <= index,
+              onChange: (e) => handleChange('label', e.target.value, index),
+            }}
+          />
+        </VStack>
+      ))}
       <HStack justifyContent='end' my={12} gap={3}>
         <Button color='brand' colorScheme='purple' fontWeight='400' variant='outline'>
           Reset
         </Button>
-        <Button color='white' colorScheme='purple' bgColor='brand' fontWeight='400'>
+        <Button color='white' colorScheme='purple' bgColor='brand' fontWeight='400' onClick={handleSaveRegistrationForm}>
           Save & Continue
         </Button>
       </HStack>

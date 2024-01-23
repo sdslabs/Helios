@@ -3,6 +3,9 @@ import { PageInfoIcon, PagePersonIcon, RegistrantsOutlinedIcon } from '@common/c
 import BasicNavButton from '@common/components/BasicNavButton'
 import { QuizCreationSteps } from '../types'
 import QuestionsNavItem from './QuestionsNavItem'
+import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
+import { usePublishQuiz } from '@createQuiz/api/useQuiz'
+import { useNavigate } from 'react-router-dom'
 
 interface SideNavContentProps {
   stage: QuizCreationSteps
@@ -10,6 +13,22 @@ interface SideNavContentProps {
 }
 
 const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
+  const quizId = useQuizDetailsStore((state) => state.quizId)
+  const { mutate: mutatePublishQuiz } = usePublishQuiz()
+  // TODO: publish quiz in the backend to check that the quiz is perfect in nature
+  // TODO: handle the onSucess and onError also 
+  const navigate = useNavigate()
+  const handlePublishQuiz = () => {
+    mutatePublishQuiz({ quizId }, {
+      onSuccess: () => {
+        console.log('Quiz published successfully')
+        navigate('/')
+      },
+      onError: () => {
+        console.log('Quiz publish failed')
+      }
+    })
+  }
   return (
     <>
       <Heading fontSize='xl' color='brand' pl={10} pb={6}>
@@ -37,7 +56,7 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
         Registrants
       </BasicNavButton>
       <VStack flexGrow={1} justifyContent='flex-end' w='100%' alignItems='stretch'>
-        <Button variant='outline' color='v6' borderColor='v6'>
+        <Button variant='outline' color='v6' borderColor='v6' onClick={handlePublishQuiz}>
           Publish Quiz
         </Button>
       </VStack>

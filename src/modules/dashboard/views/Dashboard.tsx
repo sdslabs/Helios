@@ -33,7 +33,7 @@ const Dashboard = () => {
         />
         <QuizTabs isAdmin={isAdmin} quizzes={data.quizzes} createdQuizzes={data.createdQuizzes} />
       </div>
-    </>
+    </>    
   )
 }
 

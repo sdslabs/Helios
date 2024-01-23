@@ -1,19 +1,33 @@
 import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-ui/react'
-import { useState } from 'react'
 import { TimeIcon, CloseIcon } from '@chakra-ui/icons'
 import QuizSummaryPie from '../QuizSummaryPie'
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSubmitQuiz } from '../../api/useUser';
+import * as io from 'socket.io-client';
+import { baseURL } from '../../../../config/config';
 
 interface QuizSummaryModalProps {
   open: boolean
   toggleIsOpen: () => void
 }
 
+const socket = io.connect(`${baseURL}`);
+
 export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) => {
   const labelColor = '#27A624'
   const lableBgColor = '#E5F4E5'
-
-  const handleReturnDashboard = () => {
-    //TODO: route to dashboard
+  const navigate = useNavigate();
+  const { mutate } = useSubmitQuiz();
+  const { quizId } = useParams();
+  const handleReturnDashboard = async () => {
+    socket.disconnect()
+    if (quizId) {
+      mutate(quizId, {
+        onSuccess: () => {
+          navigate('/dashboard')
+        },
+      })
+    }
   }
 
   return (

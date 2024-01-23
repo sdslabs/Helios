@@ -12,6 +12,7 @@ import {
 import useStepStore from '@auth/store/StepStore'
 import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 import usePersonalDetailsStore from '@auth/store/PersonalDetailsStore'
+import useAuthStore from '@auth/store/authStore'
 interface FormProps {
   nextStep: () => void
 }
@@ -19,8 +20,9 @@ interface FormProps {
 export const PersonalDetailsForm = (props: FormProps) => {
   const setStep = useStepStore((state) => state.setStep)
   const personalDetails = usePersonalDetailsStore()
-
+  const authDetails = useAuthStore()
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    personalDetails.updateEmail(authDetails.user.emailAdd)
     e.preventDefault()
     props.nextStep()
     setStep(2)
@@ -64,8 +66,8 @@ export const PersonalDetailsForm = (props: FormProps) => {
               inputProps={{
                 placeholder: 'Email Address',
                 type: 'email',
-                defaultValue: personalDetails.email,
-                onChange: (e) => personalDetails.updateEmail(e.target.value),
+                defaultValue: authDetails.user.emailAdd,
+                isReadOnly:true
               }}
             />
             <CustomInputWithLabel

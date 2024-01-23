@@ -1,14 +1,67 @@
-import { Box, Button, Card, Flex, Heading, Image, Tag, Text } from '@chakra-ui/react'
+import {
+  Button,
+  Card,
+  Flex,
+  Heading,
+  Image,
+  Tag,
+  Text,
+  Stack,
+  CardBody,
+} from '@chakra-ui/react'
+import defaultQuizBg from '@assets/images/default-quiz-bg.png'
 
-const CreatedQuizCard: React.FC<any> = ({ image, name, tags, content, schedule, edit }) => {
+interface CreatedQuizCardProps {
+  image: string
+  name: string
+  tags: string[]
+  content: string
+  schedule: string
+  edit: boolean
+}
+
+const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
+  image,
+  name,
+  tags,
+  content,
+  schedule,
+  edit,
+}: CreatedQuizCardProps) => {
+  let formattedTime
+  if (schedule) {
+    formattedTime = new Intl.DateTimeFormat('en-US', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+      timeZone: 'IST',
+    }).format(new Date(schedule))
+  } else {
+    formattedTime = 'Invalid'
+  }
   return (
-    <Card padding='1.6vh' height='20vh'>
-      <Flex gap='1.6vh'>
-        <Image width='7.5vw' src={image} />
-        <Box>
-          <Flex flexDirection='column' gap='1vh'>
-            <Flex gap='0.76vh' alignItems='center'>
-              <Heading fontSize='1.2vh'>{name}</Heading>
+    <>
+      <Card
+        direction={{ base: 'column', sm: 'row' }}
+        padding={4}
+        overflow='hidden'
+        variant='outline'
+      >
+        <Image
+          src={image ? image : defaultQuizBg}
+          alt='Quiz Banner'
+          objectFit='cover'
+          borderRadius={4}
+        />
+        <Stack>
+          <CardBody>
+            <Flex gap={2} alignItems='center'>
+              <Heading size='sm' textTransform='capitalize'>
+                {name}
+              </Heading>
               {tags.map((t: any, i: any) => (
                 <Tag
                   bgColor={
@@ -26,19 +79,19 @@ const CreatedQuizCard: React.FC<any> = ({ image, name, tags, content, schedule, 
                 </Tag>
               ))}
             </Flex>
-            <Flex flexDirection='column' gap='0.8vh'>
-              <Text color='#939393'>{content}</Text>
-              <Flex color='#939393'>
-                Scheduled:<Text color='black'>{schedule}</Text>
-              </Flex>
-            </Flex>
-            <Button height='3.2vh' width='5.2vw' bgColor='#593C8F' color='#FFFFFF'>
+            <Text pt='2' color='n6'>
+              {content}
+            </Text>
+            <Text pt='2' color='n6'>
+              Schedule : <span style={{ color: '#191919' }}> {formattedTime} </span>
+            </Text>
+            <Button colorScheme='purple' bgColor='brand' px={6} borderRadius={3} size={'sm'} mt={4}>
               {edit ? 'Check Quiz' : 'Edit Quiz'}
             </Button>
-          </Flex>
-        </Box>
-      </Flex>
-    </Card>
+          </CardBody>
+        </Stack>
+      </Card>
+    </>
   )
 }
 

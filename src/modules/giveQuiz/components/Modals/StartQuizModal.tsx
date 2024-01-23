@@ -1,37 +1,50 @@
 import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
-import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-ui/react'
-import { CloseIcon } from '@chakra-ui/icons'
-
+import { Modal, ModalContent, ModalOverlay, ModalCloseButton, Text, Button, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
+import { useStartQuiz } from '@giveQuiz/api/useUser'
+import { useNavigate } from 'react-router-dom'
 
 interface StartModalProps {
   open: boolean
-  toggleIsOpen: () => void
+  close: () => void
+  quizId: string
 }
 
-export const StartModal = ({ open, toggleIsOpen }: StartModalProps) => {
+export const StartModal = ({ open, close, quizId }: StartModalProps) => {
   const [accessCode, setAccessCode] = useState('')
   const [isAccessCodeNeeded, setIsAccessCodeNeeded] = useState(true)
+  const [canClose, setCanClose] = useState(false)
+  const { mutate } = useStartQuiz()
+  const navigate = useNavigate()
 
-  const handleStartQuiz = () => {
-    // TODO: start quiz and route to quiz page
+  async function handleStartQuiz() {
+    mutate(
+      { quizId, accessCode },
+      {
+        onSuccess: (data) => {
+          console.log(data)
+          if (data) {
+            setCanClose(true)
+            navigate(`/give-quiz/${quizId}`)
+          }
+        },
+      },
+    )
   }
 
   return (
-    <Modal isOpen={open} onClose={toggleIsOpen} isCentered>
+    <Modal
+      isOpen={open}
+      onClose={close}
+      isCentered
+    >
       <ModalOverlay />
       <ModalContent padding={6} borderRadius={0}>
         <Flex flexDirection='row' justifyContent='space-between' mb={4}>
           <Text fontSize='1.125rem' fontWeight='600'>
             Start Quiz
           </Text>
-          <CloseIcon
-            onClick={toggleIsOpen}
-            color='crossBlack'
-            w='0.875rem'
-            h='0.875rem'
-            alignSelf='center'
-          />
+          <ModalCloseButton />
         </Flex>
         <Text fontSize='1rem' fontWeight='400' mb={4}>
           Are you sure you want to start this quiz?
@@ -47,6 +60,7 @@ export const StartModal = ({ open, toggleIsOpen }: StartModalProps) => {
           bgColor='brand'
           alignSelf='flex-end'
           mt={4}
+          borderRadius={3}
           onClick={handleStartQuiz}
         >
           Start Quiz
