@@ -14,6 +14,7 @@ const theme = extendTheme({
     grey: '#B3B3B3',
     markedForReviewBubbleBorder: '#FF8900',
     answeredBubbleBorder: '#27A624',
+    N6: "#939393"
   },
   fonts: {
     heading: 'Open Sans',

@@ -12,6 +12,8 @@ import { useEffect, useState } from 'react'
 import GoogleCallback from '@auth/views/googleCallback'
 import GithubCallback from '@auth/views/githubCallback'
 import { UserRoles } from './modules/types'
+import CheckQuiz from '@checkQuiz/views/checkQuiz'
+import CheckQuestionView from '@checkQuiz/components/giveQuiz/CheckQuestionView'
 import { TimerProvider } from './modules/giveQuiz/components/TimerContext'
 
 function App() {
@@ -62,12 +64,14 @@ function App() {
             <Route path='/*' element={<Register />} />
           </>
         ) : isLoggedIn && authStore.onboarded && !isLoading ?(
-          <> 
+          <>
             <Route path='/dashboard' element={<Dashboard />} />
             {data.user.role === UserRoles.admin && (
               <Route path='/create-quiz/:quizId' element={<CreateQuiz />} />
             )}
             <Route path='/give-quiz/:quizId' element={<GiveQuiz />} />
+            <Route path='/checkQuiz/:quizID/:questionIDParam' element={<CheckQuestionView />} />
+            <Route path='/checkQuiz/:quizID' element={<CheckQuiz />} />
             <Route path='/*' element={<Navigate to='/dashboard' />} />
           </>
         ): null}
