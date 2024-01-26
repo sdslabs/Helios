@@ -26,6 +26,7 @@ interface QuizCardProps {
   btnText: string
   quizId?: any
   registrationMetadata?: any
+  isAccessCodePresent?: boolean
 }
 
 const QuizCard: React.FC<QuizCardProps> = ({
@@ -36,6 +37,7 @@ const QuizCard: React.FC<QuizCardProps> = ({
   btnText,
   quizId,
   registrationMetadata,
+  isAccessCodePresent
 }: QuizCardProps) => {
   const formattedTime = new Intl.DateTimeFormat('en-US', {
     day: 'numeric',
@@ -110,7 +112,7 @@ const QuizCard: React.FC<QuizCardProps> = ({
               onClick={handleClick}
             >
               {btnText}
-              <StartModal open={isStartModalOpen} close={onStartModalClose} quizId={quizId} />
+              <StartModal open={isStartModalOpen} close={onStartModalClose} quizId={quizId} isAccessCodePresent={isAccessCodePresent} />
               <RegisterModal
                 open={isRegisterModalOpen}
                 toggleIsOpen={toggleRegisterModal}

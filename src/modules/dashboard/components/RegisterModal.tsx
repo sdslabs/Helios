@@ -59,8 +59,6 @@ export const RegisterModal = ({
     )
   }
 
-  console.log(additionalDetailsState)
-
   return (
     <Modal isOpen={open} onClose={toggleIsOpen} isCentered size='6xl'>
       <ModalOverlay />
