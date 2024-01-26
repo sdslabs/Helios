@@ -72,6 +72,7 @@ export const PersonalDetailsForm = (props: FormProps) => {
             />
             <CustomInputWithLabel
               label='Phone Number'
+              isRequired
               inputProps={{
                 placeholder: 'Phone Number',
                 type: 'number',

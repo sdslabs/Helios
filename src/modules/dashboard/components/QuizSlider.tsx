@@ -32,6 +32,7 @@ const QuizSlider: React.FC<QuizSliderProps> = ({ data, type }: QuizSliderProps) 
             time={card.startDateTimestamp}
             image={card.bannerImage}
             registrationMetadata={card.registrationMetadata}
+            isAccessCodePresent={card.isAccessCodePresent}
             btnText={
               type == QuizType.ongoing
                 ? card.submitted

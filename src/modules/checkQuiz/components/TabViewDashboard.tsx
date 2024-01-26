@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator } from '@chakra-ui/react'
-import Filters from './Filters'
+import Filters from './filters'
 import Leaderboard from './Leaderboard'
 import QuestionsBoard from './QuestionsBoard'
 import { Section } from '@checkQuiz/types'

@@ -9,7 +9,7 @@ import { UserRoles } from '../../types'
 const Dashboard = () => {
   const { data, isLoading } = useDashboard()
   const { user } = useAuthStore()
-  const isAdmin = user.role === UserRoles.admin ? true : false
+  const isAdmin = user.role === UserRoles.admin
   return isLoading ? (
     <div
       style={{
