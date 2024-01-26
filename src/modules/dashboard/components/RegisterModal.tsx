@@ -60,9 +60,9 @@ export const RegisterModal = ({
   }
 
   return (
-    <Modal isOpen={open} onClose={toggleIsOpen} isCentered size='6xl'>
+    <Modal isOpen={open} onClose={toggleIsOpen} isCentered size='4xl'>
       <ModalOverlay />
-      <ModalContent padding={6} borderRadius={0} overflowY='scroll'>
+      <ModalContent padding={6} borderRadius={0} overflowY='auto'>
         <Flex flexDirection='row' justifyContent='space-between' mb={4}>
           <Text fontSize='1.125rem' fontStyle='normal' fontWeight='600'>
             Registration form
@@ -78,6 +78,7 @@ export const RegisterModal = ({
         <Flex flexDirection='row' mb={4} mt={4} gap='0.625rem'>
           <CustomInputWithLabel
             label='First Name'
+            isRequired
             inputProps={{ value: firstName, onChange: (e) => setFirstName(e.target.value) }}
           />
           <CustomInputWithLabel
@@ -88,14 +89,16 @@ export const RegisterModal = ({
         <Flex flexDirection='row' mb={4} gap='0.625rem'>
           <CustomInputWithLabel
             label='Email'
+            isRequired
             inputProps={{ value: email, onChange: (e) => setEmail(e.target.value), type: 'email' }}
           />
           <CustomInputWithLabel
             label='Contact No.'
+            isRequired
             inputProps={{
               value: contactNo,
               onChange: (e) => setContactNo(e.target.value),
-              type: 'tel',
+              type: 'phone',
             }}
           />
         </Flex>
@@ -116,9 +119,9 @@ export const RegisterModal = ({
             <CustomInputWithLabel
               key={index}
               label={detail.label}
+              isRequired={detail.isRequired}
               inputProps={{
                 placeholder: detail.name,
-                isRequired: detail.isRequired,
                 onChange: (e) => {
                   const newAdditionalDetails = [...additionalDetailsState]
                   newAdditionalDetails[index].value = e.target.value
