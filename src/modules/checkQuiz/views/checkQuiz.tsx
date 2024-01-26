@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import TopNav from '@common/components/TopNav'
 import { Box, Button, Flex } from '@chakra-ui/react'
-import DashboardHeader from '@checkQuiz/components/dashboardHeader'
+import DashboardHeader from '@checkQuiz/components/DashboardHeader'
 import TabViewDashboard from '@checkQuiz/components/TabViewDashboard'
 import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
 import axios from 'axios'
