@@ -11,6 +11,7 @@ import {
 import { SubmitQuizModal } from './Modals/SubmitQuizModal'
 import { useParams } from 'react-router-dom'
 import useAuthStore from '@auth/store/authStore'
+import { QuestionType } from '../../types'
 
 const QuestionView = () => {
   const [questionType, setQuestionType] = useState('')
@@ -193,8 +194,8 @@ const QuestionView = () => {
           emailAdd: user.emailAdd,
           role: user.role,
         },
-        selectedOptionId: questionType === 'mcq' ? answer : undefined,
-        subjectiveAnswer: questionType !== 'mcq' ? answer : undefined,
+        selectedOptionId: questionType === QuestionType.MCQ ? answer : undefined,
+        subjectiveAnswer: questionType !== QuestionType.MCQ ? answer : undefined,
         status: status,
       }
 

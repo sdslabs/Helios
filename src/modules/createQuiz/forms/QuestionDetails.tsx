@@ -177,8 +177,8 @@ const QuestionDetails = () => {
             Question {(currentQuestionIdx ?? 0) + 1}
           </Text>
           <Select value={type} onChange={handleChangeType} w={48}>
-            <option value={'subjective'}>{'subjective'}</option>
-            <option value={'mcq'}>{'mcq'}</option>
+            <option value={QuestionType.SUB}>{'Subjective'}</option>
+            <option value={QuestionType.MCQ}>{'Multi Choice'}</option>
           </Select>
         </HStack>
         <FormControl>

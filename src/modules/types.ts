@@ -1,6 +1,6 @@
 export enum QuestionType {
-  MCQ = 'Multiple Choice',
-  SUB = 'Subjective',
+  MCQ = 'mcq',
+  SUB = 'sub',
 }
 
 export enum UserRoles {
