@@ -8,6 +8,7 @@ export type QuizDetails = {
   bannerImage: string
   isAcceptingAnswers: boolean
   registrationMetadata: object
+  isAccessCodePresent: boolean
   registered: boolean
   submitted: boolean
 }

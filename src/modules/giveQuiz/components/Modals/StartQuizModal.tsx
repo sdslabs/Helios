@@ -1,5 +1,16 @@
 import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
-import { Modal, ModalContent, ModalOverlay, ModalCloseButton, Text, Button, Flex } from '@chakra-ui/react'
+import {
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  ModalCloseButton,
+  Text,
+  Button,
+  Flex,
+  Alert,
+  AlertIcon,
+} from '@chakra-ui/react'
+
 import { useState } from 'react'
 import { useStartQuiz } from '@giveQuiz/api/useUser'
 import { useNavigate } from 'react-router-dom'
@@ -8,12 +19,14 @@ interface StartModalProps {
   open: boolean
   close: () => void
   quizId: string
+  isAccessCodePresent?: boolean
 }
 
-export const StartModal = ({ open, close, quizId }: StartModalProps) => {
+export const StartModal = ({ open, close, quizId, isAccessCodePresent }: StartModalProps) => {
+  // TODO: Quiz without access code on starting goes for a blank page.
   const [accessCode, setAccessCode] = useState('')
-  const [isAccessCodeNeeded, setIsAccessCodeNeeded] = useState(true)
   const [canClose, setCanClose] = useState(false)
+  const [error, setError] = useState('')
   const { mutate } = useStartQuiz()
   const navigate = useNavigate()
 
@@ -22,10 +35,11 @@ export const StartModal = ({ open, close, quizId }: StartModalProps) => {
       { quizId, accessCode },
       {
         onSuccess: (data) => {
-          console.log(data)
-          if (data) {
+          if (data.success) {
             setCanClose(true)
             navigate(`/give-quiz/${quizId}`)
+          } else {
+            setError(data.message)
           }
         },
       },
@@ -33,11 +47,7 @@ export const StartModal = ({ open, close, quizId }: StartModalProps) => {
   }
 
   return (
-    <Modal
-      isOpen={open}
-      onClose={close}
-      isCentered
-    >
+    <Modal isOpen={open} onClose={close} isCentered>
       <ModalOverlay />
       <ModalContent padding={6} borderRadius={0}>
         <Flex flexDirection='row' justifyContent='space-between' mb={4}>
@@ -49,12 +59,21 @@ export const StartModal = ({ open, close, quizId }: StartModalProps) => {
         <Text fontSize='1rem' fontWeight='400' mb={4}>
           Are you sure you want to start this quiz?
         </Text>
-        {isAccessCodeNeeded ? (
+        {isAccessCodePresent && (
           <CustomInputWithLabel
             label='Access Code'
-            inputProps={{ value: accessCode, onChange: (e) => setAccessCode(e.target.value) }}
+            inputProps={{
+              value: accessCode,
+              onChange: (e) => (isAccessCodePresent ? setAccessCode(e.target.value) : null),
+            }}
           />
-        ) : null}
+        )}
+        {error.length > 0 && (
+          <Alert mt={4} variant='subtle' status='error'>
+            <AlertIcon />
+            {error}
+          </Alert>
+        )}
         <Button
           colorScheme='purple'
           bgColor='brand'
