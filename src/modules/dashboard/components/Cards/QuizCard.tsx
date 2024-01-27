@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { ButtonType } from '../../types'
-import { StartModal } from '@giveQuiz/components/Modals/StartQuizModal'
+import { StartModal } from '@dashboard/components/StartQuizModal'
 import { RegisterModal } from '../RegisterModal'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import { useNavigate } from 'react-router-dom'

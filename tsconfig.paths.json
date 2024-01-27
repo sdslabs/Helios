@@ -7,6 +7,7 @@
             "@auth/*":["./src/modules/auth/*"],
             "@createQuiz/*":["./src/modules/createQuiz/*"],
             "@checkQuiz/*":["./src/modules/checkQuiz/*"],
+            "@dashboard/*":["./src/modules/dashboard/*"],
             "@giveQuiz/*":["./src/modules/giveQuiz/*"],
         }
     }
