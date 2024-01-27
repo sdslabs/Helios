@@ -78,7 +78,7 @@ const QuizCard: React.FC<QuizCardProps> = ({
         padding={4}
         variant='outline'
         my={4}
-        width='48rem'
+        width='xl'
       >
         <Image
           src={image ? image : defaultQuizBg}

@@ -34,12 +34,14 @@ const QuizSlider: React.FC<QuizSliderProps> = ({ data, type }: QuizSliderProps) 
             registrationMetadata={card.registrationMetadata}
             isAccessCodePresent={card.isAccessCodePresent}
             btnText={
-              type == QuizType.ongoing
-                ? card.submitted
-                  ? ButtonType.completed
+              type == QuizType.ongoing 
+              ? (!card.registered) 
+                ? ButtonType.register
+                : card.submitted
+                  ? ButtonType.completed 
                   : ButtonType.start
-                : card.registered
-                ? ButtonType.registered
+              : card.registered
+                ? ButtonType.registered 
                 : ButtonType.register
             }
           />
