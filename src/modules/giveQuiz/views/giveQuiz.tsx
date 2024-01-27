@@ -35,6 +35,8 @@ const   giveQuiz = () => {
   const { hasLocationAccess } = useLocationAccess();
   const { setTimer } = useTimer()
   const user = useAuthStore((state) => state.user)
+  const isStarted = useQuizStore((state) => state.isStarted)
+  const { setIsStarted } = useQuizStore()
   const reportChange = useCallback(
     (state: boolean) => {
       if (state === false) {
@@ -60,9 +62,16 @@ const   giveQuiz = () => {
         toast.dismiss('fsToast');
         setQuizStage(GiveQuizSteps.Instructions);
         const socket = io.connect(`${baseURL}`)
+            console.log("isStarted: "+isStarted)
+            if(isStarted) {
+              socket.emit('checkRejoin', { quizId: quizId, userId: user.userId });
+              console.log("here")
+            }
             socket.emit('join_quiz', { quizId: quizId, userId: user.userId })
             socket.on('sendTime', (timeLeft) => {
               setTimer(timeLeft)
+              console.log(timeLeft)
+              setIsStarted(true);
             })
       }
     },

@@ -20,7 +20,7 @@ interface QuizStore {
   markedAnsweredQuestions: string[];
   isStarted: boolean;
   isCurrentQuestionMarked: boolean;
-
+  
   setQuizId: (to: string) => void;
   setCurrentQuestion: (to: string) => void;
   setTimer: (to: number) => void;
