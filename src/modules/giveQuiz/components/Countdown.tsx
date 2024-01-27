@@ -2,8 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { TimeIcon } from '@chakra-ui/icons';
 import { Flex } from '@chakra-ui/react';
 import { useTimer } from './TimerContext';
+import { useNavigate, useParams } from 'react-router-dom';
 import useQuizStore from '@giveQuiz/store/QuizStore';
 import { QuizSummaryModal } from './Modals/QuizSummaryModal';
+import { useSubmitQuiz } from '@giveQuiz/api/useUser';
+import * as io from 'socket.io-client';
+import { baseURL } from '../../../config/config';
+
+const socket = io.connect(`${baseURL}`);
 
 function Countdown() {
   const { timerValue } = useTimer();
@@ -13,9 +19,12 @@ function Countdown() {
   const [countSeconds, setCountSeconds] = useState('00');
   const { setTimer } = useQuizStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { mutate } = useSubmitQuiz();
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen)
   }
+  const { quizId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setDuration((prevDuration) => (timerValue !== null ? timerValue : prevDuration));
@@ -35,7 +44,14 @@ function Countdown() {
           setCountSeconds(seconds.toString().padStart(2, '0'));
           setDuration((prevDuration) => (prevDuration !== null) ? (prevDuration - 1000) : prevDuration);
           if (duration <= 1000) {
-            setIsModalOpen(true);
+            socket.disconnect()
+            if (quizId) {
+              mutate(quizId, {
+                onSuccess: () => {
+                  setIsModalOpen(true);
+                },
+              })
+            }
             clearInterval(interval);
           }
           setTimer(duration)
