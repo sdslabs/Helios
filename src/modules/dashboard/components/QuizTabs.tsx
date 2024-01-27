@@ -91,11 +91,13 @@ const QuizTabs: React.FC<TabsProps> = ({ isAdmin = false, quizzes, createdQuizze
                       <CreatedQuizCard
                         key={index}
                         image={quiz?.quizMetadata?.bannerImage}
+                        quizId={quiz?._id}
                         name={quiz?.quizMetadata?.name}
                         tags={tags}
                         content={quiz?.quizMetadata?.description}
                         schedule={quiz?.quizMetadata?.startDateTimestamp}
                         edit={quiz.isPublished}
+                        id={quiz._id}
                       />
                     )
                   })

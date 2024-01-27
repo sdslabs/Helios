@@ -39,7 +39,8 @@ const CheckQuiz = () => {
 
   useEffect(() => {
     if (isFetched && data) {
-      setLeaderboard(data.leaderboard[0].participants)
+      console.log(data)
+      // setLeaderboard(data.leaderboard[0])
       setSections(data.sections)
       setTotalParticipants(data.participants)
       setChecksCompleted(data.checksCompleted)

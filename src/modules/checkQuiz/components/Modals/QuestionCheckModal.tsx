@@ -27,7 +27,7 @@ export const QuestionsCheckModal = ({ open, toggleIsOpen }: QuestionsCheckModalP
   const Navigate = useNavigate()
 
   const handleQuizSubmit = () => {
-    Navigate(`/checkQuiz/${quizID}`)
+    Navigate(`/check-quiz/${quizID}`)
   }
 
   return (

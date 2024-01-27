@@ -76,7 +76,7 @@ const SideNavContent = () => {
         setCurrentQuestionIndex(currentQuestionIndex + 1)
       }
     }
-    Navigate(`/checkQuiz/${quizID}/${currentSection.questions[currentQuestionIndex - 1]._id}`)
+    Navigate(`/check-quiz/${quizID}/${currentSection.questions[currentQuestionIndex - 1]._id}`)
   }
 
   const PrevQuestion = () => {
@@ -92,7 +92,7 @@ const SideNavContent = () => {
         setCurrentQuestionIndex(1)
       }
     }
-    Navigate(`/checkQuiz/${quizID}/${currentSection.questions[currentQuestionIndex - 1]._id}`)
+    Navigate(`/check-quiz/${quizID}/${currentSection.questions[currentQuestionIndex - 1]._id}`)
   }
 
   useEffect(() => {

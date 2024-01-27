@@ -37,7 +37,7 @@ const QuestionsBoard: React.FC<QuestionsBoardProps> = ({ quizID }) => {
           setCurrentSectionIndex(index + 1)
           setCurrentQuestionIndex(questionIndex + 1)
           setCurrentSection(sections[index])
-          Navigate(`/checkQuiz/${quizID}/${info._id}`)
+          Navigate(`/check-quiz/${quizID}/${info._id}`)
         }
       })
     })
