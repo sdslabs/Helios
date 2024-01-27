@@ -38,7 +38,6 @@ interface Option {
 }
 
 const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
-  console.log('questionID', questionID)
   const {
     data: questionData,
     isLoading: questionIsLoading,
