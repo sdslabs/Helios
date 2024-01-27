@@ -20,14 +20,7 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
   const { mutate } = useSubmitQuiz();
   const { quizId } = useParams();
   const handleReturnDashboard = async () => {
-    socket.disconnect()
-    if (quizId) {
-      mutate(quizId, {
-        onSuccess: () => {
-          navigate('/dashboard')
-        },
-      })
-    }
+    navigate('/dashboard')
   }
 
   return (
@@ -38,13 +31,6 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
             <Flex flexDirection='row' justifyContent='space-between' mb={4} >
               <Text fontSize='1.125rem' fontWeight='600'>
                 Quiz Summary  </Text>
-              <CloseIcon
-                onClick={toggleIsOpen}
-                color='crossBlack'
-                w='0.875rem'
-                h='0.875rem'
-                alignSelf='center'
-              />
             </Flex >
             <Flex
               flexDirection='row'
