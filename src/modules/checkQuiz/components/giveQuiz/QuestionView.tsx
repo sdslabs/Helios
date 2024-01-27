@@ -19,8 +19,8 @@ import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import useCheckResponse from '@checkQuiz/api/useCheckResponse'
 
 interface QuestionViewProps {
-  quizID: string
-  questionID: string
+  quizId: string
+  questionId: string
 }
 
 export enum ResponseStatus {
@@ -37,14 +37,14 @@ interface Option {
   label: string
 }
 
-const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
+const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
   const {
     data: questionData,
     isLoading: questionIsLoading,
     isFetched: questionIsFetched,
     refetch: questionRefetch,
     error: questionError,
-  } = useQuestion(questionID)
+  } = useQuestion(questionId)
 
   const [question, setQuestion] = useState({
     description: '',
@@ -72,11 +72,11 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
     state.setcurrentResponseIndex,
   ])
 
-  const [allResponsesID, allResponsesStatus, setAllResponsesID, setAllResponesesStatus] =
+  const [allResponsesId, allResponsesStatus, setAllResponsesId, setAllResponesesStatus] =
     useCheckQuizStore((state) => [
-      state.allResponsesID,
+      state.allResponsesId,
       state.allResponsesStatus,
-      state.setallResponsesID,
+      state.setallResponsesId,
       state.setallResponsesStatus,
     ])
 
@@ -91,7 +91,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
     isFetched: allResponsesIsFetched,
     refetch: allResponsesRefetch,
     error: allResponsesError,
-  } = useAllResponse({ quizID, questionID })
+  } = useAllResponse({ quizId, questionId })
 
   useEffect(() => {
     if (questionIsFetched && questionData) {
@@ -102,15 +102,15 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
   useEffect(() => {
     setCurrentResponseIndex(0)
     if (allResponsesIsFetched && allResponses && Array.isArray(allResponses.responses)) {
-      if (allResponses.questionId !== questionID) {
+      if (allResponses.questionId !== questionId) {
         window.location.reload()
       }
-      setAllResponsesID(allResponses.responses.map((response: any) => response.responseId))
+      setAllResponsesId(allResponses.responses.map((response: any) => response.responseId))
       setAllResponesesStatus(allResponses.responses.map((response: any) => response.status))
     }
   }, [allResponsesIsFetched])
 
-  const { mutate: mutateResponse } = useCheckResponse(allResponsesID[currentResponseIndex])
+  const { mutate: mutateResponse } = useCheckResponse(allResponsesId[currentResponseIndex])
 
   const {
     data: responseData,
@@ -118,7 +118,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
     isFetched: responseIsFetched,
     refetch: responseRefetch,
     error: responseError,
-  } = useResponse(allResponsesID[currentResponseIndex])
+  } = useResponse(allResponsesId[currentResponseIndex], quizId)
 
   useEffect(() => {
     if (responseIsFetched && responseData) {
@@ -132,15 +132,15 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizID, questionID }) => {
   const handleNextResponse = () => {
     mutateResponse(
       {
-        quizId: quizID,
-        responseId: allResponsesID[currentResponseIndex],
+        quizId: quizId,
+        responseId: allResponsesId[currentResponseIndex],
         body: {
           marksAwarded: response.marksAwarded,
         },
       },
       {
         onSuccess: () => {
-          if (currentResponseIndex < allResponsesID.length - 1) {
+          if (currentResponseIndex < allResponsesId.length - 1) {
             if (allResponsesStatus[currentResponseIndex] === ResponseStatus.answered) {
               setChecksCompleted(checksCompleted + 1)
             }

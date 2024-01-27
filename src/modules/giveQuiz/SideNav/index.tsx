@@ -35,12 +35,12 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
   const setCurrentSectionIndex = useQuizStore((state) => state.setCurrentSectionIndex)
 
   const handleQuestionBubbleClick = (
-    questionID: string,
+    questionId: string,
     sectionName: string,
     questionIndex: number,
     sectionIndex: number,
   ): void => {
-    setCurrentQuestion(questionID)
+    setCurrentQuestion(questionId)
     setCurrentQuestionIndex(questionIndex)
     setCurrentSectionIndex(sectionIndex)
     setStage(2)

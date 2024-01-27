@@ -4,9 +4,9 @@ import Bubble from './Bubble'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 
 const SectionTopBar = () => {
-  const [checksCompleted, allResponsesID] = useCheckQuizStore((state) => [
+  const [checksCompleted, allResponsesId] = useCheckQuizStore((state) => [
     state.checksCompleted,
-    state.allResponsesID,
+    state.allResponsesId,
   ])
 
   return (
@@ -25,7 +25,7 @@ const SectionTopBar = () => {
     >
       <Bubble
         Label='Unchecked'
-        Value={allResponsesID.length - checksCompleted}
+        Value={allResponsesId.length - checksCompleted}
         BgColor='yellowMarkedForReview'
         BorderColor='markedForReviewBubbleBorder'
         FontColor='white'

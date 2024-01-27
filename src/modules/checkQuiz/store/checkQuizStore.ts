@@ -17,10 +17,10 @@ interface CheckQuizStore {
   checksCompleted: number;
   scheduled: string;
   totalParticipants: number;
-  quizID: string;
+  quizId: string;
   currentResponse: string;
   currentResponseIndex: number;
-  allResponsesID: string[];
+  allResponsesId: string[];
   allResponsesStatus: string[];
 
   setSections: (to: Section[]) => void;
@@ -37,10 +37,10 @@ interface CheckQuizStore {
   setChecksCompleted: (to: number) => void;
   setScheduled: (to: string) => void;
   setTotalParticipants: (to: number) => void;
-  setQuizID: (to: string) => void;
+  setQuizId: (to: string) => void;
   setcurrentResponse: (to: string) => void;
   setcurrentResponseIndex: (to: number) => void;
-  setallResponsesID: (to: string[]) => void;
+  setallResponsesId: (to: string[]) => void;
   setallResponsesStatus: (to: string[]) => void;
 }
 
@@ -60,10 +60,10 @@ const useCheckQuizStore = create<CheckQuizStore>((set: SetState<CheckQuizStore>)
     checksCompleted: 0,
     scheduled: '',
     totalParticipants: 0,
-    quizID: '',
+    quizId: '',
     currentResponse: '',
     currentResponseIndex: 0,
-    allResponsesID: [],
+    allResponsesId: [],
     allResponsesStatus: [],
 
     setSections: (to: Section[]) => set({ sections: to }),
@@ -80,10 +80,10 @@ const useCheckQuizStore = create<CheckQuizStore>((set: SetState<CheckQuizStore>)
     setChecksCompleted: (to: number) => set({ checksCompleted: to }),
     setScheduled: (to: string) => set({ scheduled: to }),
     setTotalParticipants: (to: number) => set({ totalParticipants: to }),
-    setQuizID: (to: string) => set({ quizID: to }),
+    setQuizId: (to: string) => set({ quizId: to }),
     setcurrentResponse: (to: string) => set({ currentResponse: to }),
     setcurrentResponseIndex: (to: number) => set({ currentResponseIndex: to }),
-    setallResponsesID: (to: string[]) => set({ allResponsesID: to }),
+    setallResponsesId: (to: string[]) => set({ allResponsesId: to }),
     setallResponsesStatus: (to: string[]) => set({ allResponsesStatus: to }),
   };
 

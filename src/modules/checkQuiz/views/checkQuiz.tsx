@@ -10,8 +10,8 @@ import { useParams } from 'react-router-dom'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 
 const CheckQuiz = () => {
-  const { quizID } = useParams() as { quizID: string }
-  const { data, isLoading, isFetched, refetch, error } = useFetchDashboard(quizID)
+  const { quizId } = useParams() as { quizId: string }
+  const { data, isLoading, isFetched, refetch, error } = useFetchDashboard(quizId)
   const [leaderboard, setLeaderboard] = useCheckQuizStore((state) => [
     state.leaderboard,
     state.setLeaderboard,
@@ -35,7 +35,7 @@ const CheckQuiz = () => {
     state.scheduled,
     state.setScheduled,
   ])
-  const [setQuizID] = useCheckQuizStore((state) => [state.setQuizID])
+  const [setQuizId] = useCheckQuizStore((state) => [state.setQuizId])
 
   useEffect(() => {
     if (isFetched && data) {
@@ -48,7 +48,7 @@ const CheckQuiz = () => {
       setAdmin(data.admin)
       setQuizName(data.name)
       setScheduled(data.scheduled)
-      setQuizID(quizID)
+      setQuizId(quizId)
     }
   }, [isFetched, data])
 

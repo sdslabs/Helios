@@ -24,7 +24,7 @@ import { ResponseStatus } from '../QuestionView'
 const SideNavContent = () => {
   const [
     sections,
-    quizID,
+    quizId,
     currentSection,
     currentQuestionIndex,
     currentSectionIndex,
@@ -32,7 +32,7 @@ const SideNavContent = () => {
     totalParticipants,
     checksCompleted,
     totalAttempts,
-    allResponsesID,
+    allResponsesId,
     currentResponseIndex,
     allResponsesStatus,
     setChecksCompleted,
@@ -42,7 +42,7 @@ const SideNavContent = () => {
     setCurrentSection,
   ] = useCheckQuizStore((state) => [
     state.sections,
-    state.quizID,
+    state.quizId,
     state.currentSection,
     state.currentQuestionIndex,
     state.currentSectionIndex,
@@ -50,7 +50,7 @@ const SideNavContent = () => {
     state.totalParticipants,
     state.checksCompleted,
     state.totalAttempts,
-    state.allResponsesID,
+    state.allResponsesId,
     state.currentResponseIndex,
     state.allResponsesStatus,
     state.setChecksCompleted,
@@ -76,7 +76,7 @@ const SideNavContent = () => {
         setCurrentQuestionIndex(currentQuestionIndex + 1)
       }
     }
-    Navigate(`/check-quiz/${quizID}/${currentSection.questions[currentQuestionIndex - 1]._id}`)
+    Navigate(`/check-quiz/${quizId}/${currentSection.questions[currentQuestionIndex - 1]._id}`)
   }
 
   const PrevQuestion = () => {
@@ -92,7 +92,7 @@ const SideNavContent = () => {
         setCurrentQuestionIndex(1)
       }
     }
-    Navigate(`/check-quiz/${quizID}/${currentSection.questions[currentQuestionIndex - 1]._id}`)
+    Navigate(`/check-quiz/${quizId}/${currentSection.questions[currentQuestionIndex - 1]._id}`)
   }
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const SideNavContent = () => {
             <Text fontSize={'0.75rem'} color={'accentBlack'}>
               Total Responses:{' '}
               <Text as={'span'} color={'v6'} fontWeight={600}>
-                {allResponsesID.length}
+                {allResponsesId.length}
               </Text>
             </Text>
           </Flex>
@@ -151,7 +151,7 @@ const SideNavContent = () => {
             <Text fontSize={'0.75rem'} color={'accentBlack'}>
               Unchecked:{' '}
               <Text as={'span'} color={'v6'} fontWeight={600}>
-                {allResponsesID.length - checksCompleted}
+                {allResponsesId.length - checksCompleted}
               </Text>
             </Text>
           </Flex>
@@ -181,7 +181,7 @@ const SideNavContent = () => {
           Total Response
         </Flex>
         <VStack flexGrow={1} w='100%' mt={8}>
-          {allResponsesID?.map((response, index) => (
+          {allResponsesId?.map((response, index) => (
             <Flex
               key={index}
               flexDirection='row'

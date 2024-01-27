@@ -11,23 +11,23 @@ interface QuestionsCheckModalProps {
 }
 
 export const QuestionsCheckModal = ({ open, toggleIsOpen }: QuestionsCheckModalProps) => {
-  const [quizID, allResponsesID] = useCheckQuizStore((state) => [
-    state.quizID,
-    state.allResponsesID,
+  const [quizId, allResponsesId] = useCheckQuizStore((state) => [
+    state.quizId,
+    state.allResponsesId,
   ])
 
   const [summaryData, setSummaryData] = useState([0, 0, 0, 0])
   
   useEffect(() => {
-    if (allResponsesID.length > 0) {
-      setSummaryData([allResponsesID.length, 0, 0, 20])
+    if (allResponsesId.length > 0) {
+      setSummaryData([allResponsesId.length, 0, 0, 20])
     }
-  }, [allResponsesID])
+  }, [allResponsesId])
 
   const Navigate = useNavigate()
 
   const handleQuizSubmit = () => {
-    Navigate(`/check-quiz/${quizID}`)
+    Navigate(`/check-quiz/${quizId}`)
   }
 
   return (

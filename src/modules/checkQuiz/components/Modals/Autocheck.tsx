@@ -12,9 +12,9 @@ interface AutocheckModalProps {
 }
 
 const AutocheckModal = ({ open, toggleIsOpen, totalMCQs }: AutocheckModalProps) => {
-  const [quizID] = useCheckQuizStore((state) => [state.quizID])
+  const [quizId] = useCheckQuizStore((state) => [state.quizId])
 
-  const { mutate: autocheck } = useAutocheck(quizID)
+  const { mutate: autocheck } = useAutocheck(quizId)
 
   const handleAutocheck = () => {
     autocheck()

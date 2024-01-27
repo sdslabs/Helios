@@ -10,10 +10,10 @@ import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 const columnHelper = createColumnHelper<QuestionType>()
 
 interface QuestionsBoardProps {
-  quizID: string
+  quizId: string
 }
 
-const QuestionsBoard: React.FC<QuestionsBoardProps> = ({ quizID }) => {
+const QuestionsBoard: React.FC<QuestionsBoardProps> = ({ quizId }) => {
   const Navigate = useNavigate()
   const [sections] = useCheckQuizStore((state) => [state.sections])
   const [
@@ -37,7 +37,7 @@ const QuestionsBoard: React.FC<QuestionsBoardProps> = ({ quizID }) => {
           setCurrentSectionIndex(index + 1)
           setCurrentQuestionIndex(questionIndex + 1)
           setCurrentSection(sections[index])
-          Navigate(`/check-quiz/${quizID}/${info._id}`)
+          Navigate(`/check-quiz/${quizId}/${info._id}`)
         }
       })
     })

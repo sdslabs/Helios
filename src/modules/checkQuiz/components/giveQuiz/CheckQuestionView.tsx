@@ -9,27 +9,27 @@ import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import { useAllResponse } from '@checkQuiz/api/useResponse'
 
 const CheckQuestionView = () => {
-  const { quizID, questionIDParam } = useParams() as { quizID: string; questionIDParam: string }
+  const { quizId, questionIdParam } = useParams() as { quizId: string; questionIdParam: string }
   const [sections] = useCheckQuizStore((state) => [state.sections])
   const [currentQuestionIndex, currentSectionIndex] = useCheckQuizStore((state) => [
     state.currentQuestionIndex,
     state.currentSectionIndex,
   ])
   const Navigate = useNavigate()
-  const [questionID, setQuestionID] = useState(questionIDParam)
+  const [questionId, setQuestionId] = useState(questionIdParam)
 
   if (sections.length == 0) {
-    Navigate(`/check-quiz/${quizID}`)
+    Navigate(`/check-quiz/${quizId}`)
   }
 
   useEffect(() => {
     if (sections[currentSectionIndex - 1]?.questions[currentQuestionIndex - 1]) {
-      setQuestionID(sections[currentSectionIndex - 1]?.questions[currentQuestionIndex - 1]?._id)
+      setQuestionId(sections[currentSectionIndex - 1]?.questions[currentQuestionIndex - 1]?._id)
     }
   }, [currentQuestionIndex, currentSectionIndex])
 
   const renderQuiz = () => {
-      return <QuestionView quizID={quizID} questionID={questionID} key={questionID} />
+      return <QuestionView quizId={quizId} questionId={questionId} key={questionId} />
   }
 
   return (
