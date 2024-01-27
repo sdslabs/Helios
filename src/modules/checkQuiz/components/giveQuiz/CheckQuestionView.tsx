@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import WithSidebarWrapper from '@common/views/WithSidebarWrapper'
 import TopNav from '@common/components/TopNav'
-import SideNavContent from '@checkQuiz/components/giveQuiz/SideNav/index'
+import SideNavContent from '@checkQuiz/components/giveQuiz/sideNav/index'
 import SectionTopBar from '@checkQuiz/components/giveQuiz/SectionTopBar'
 import QuestionView from '@checkQuiz/components/giveQuiz/QuestionView'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -19,7 +19,7 @@ const CheckQuestionView = () => {
   const [questionID, setQuestionID] = useState(questionIDParam)
 
   if (sections.length == 0) {
-    Navigate(`/checkQuiz/${quizID}`)
+    Navigate(`/check-quiz/${quizID}`)
   }
 
   useEffect(() => {

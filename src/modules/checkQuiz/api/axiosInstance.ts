@@ -12,8 +12,8 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use((config) => {
-  // const { jwtToken } = Cookies.get()
-  // config.headers.Authorization = `Bearer ${jwtToken}`
+  const { jwtToken } = Cookies.get()
+  config.headers.Authorization = `Bearer ${jwtToken}`
   return config
 })
 

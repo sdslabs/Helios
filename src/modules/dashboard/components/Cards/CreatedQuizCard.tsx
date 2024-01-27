@@ -10,9 +10,11 @@ import {
   CardBody,
 } from '@chakra-ui/react'
 import defaultQuizBg from '@assets/images/default-quiz-bg.png'
+import { useNavigate } from 'react-router-dom'
 
 interface CreatedQuizCardProps {
   image: string
+  quizId: string
   name: string
   tags: string[]
   content: string
@@ -22,12 +24,14 @@ interface CreatedQuizCardProps {
 
 const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
   image,
+  quizId,
   name,
   tags,
   content,
   schedule,
   edit,
 }: CreatedQuizCardProps) => {
+  const navigate = useNavigate()
   let formattedTime
   if (schedule) {
     formattedTime = new Intl.DateTimeFormat('en-US', {
@@ -85,7 +89,7 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
             <Text pt='2' color='n6'>
               Schedule : <span style={{ color: '#191919' }}> {formattedTime} </span>
             </Text>
-            <Button colorScheme='purple' bgColor='brand' px={6} borderRadius={3} size={'sm'} mt={4}>
+            <Button colorScheme='purple' bgColor='purple.500' px={6} borderRadius={3} size={'sm'} mt={4} onClick={() => navigate(`/check-quiz/${quizId}`)}>
               {edit ? 'Check Quiz' : 'Edit Quiz'}
             </Button>
           </CardBody>
