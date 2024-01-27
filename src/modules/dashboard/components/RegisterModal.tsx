@@ -1,9 +1,10 @@
 import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Modal, ModalContent, ModalOverlay, Button, Text, Flex } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
 import { useRegisterUser } from '../../giveQuiz/api/useUser'
 import { useQueryClient } from '@tanstack/react-query'
+import useUserDetailsStore from '@dashboard/store/UserDetailsStore'
 
 interface RegisterModalProps {
   open: boolean
@@ -18,11 +19,8 @@ export const RegisterModal = ({
   quizId,
   additionalDetails = [],
 }: RegisterModalProps) => {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [contactNo, setContactNo] = useState('')
-  const [organisationName, setOrganisationName] = useState('')
+  const userDetails = useUserDetailsStore()
+  const [detailsFilled, setDetailsFilled] = useState(false)
   const [additionalDetailsState, setAdditionalDetailsState] = useState(
     additionalDetails.map((detail) => ({
       label: detail.label,
@@ -37,11 +35,7 @@ export const RegisterModal = ({
   async function handleRegister() {
     const body = {
       customFields: [
-        { name: 'firstName', value: firstName },
-        { name: 'lastName', value: lastName },
-        { name: 'email', value: email },
-        { name: 'contactNo', value: contactNo },
-        { name: 'organisationName', value: organisationName },
+        { name: 'Institute Name', value: userDetails.instituteName},
         ...additionalDetailsState.map((detail, index: number) => ({
           name: additionalDetails[index].label,
           value: detail.value,
@@ -58,6 +52,10 @@ export const RegisterModal = ({
       },
     )
   }
+  useEffect(() => {
+    const filled = additionalDetailsState.every((detail) => detail.isRequired ? detail.value !== '' : true)
+    setDetailsFilled(filled)
+  }, [additionalDetailsState])
 
   return (
     <Modal isOpen={open} onClose={toggleIsOpen} isCentered size='4xl'>
@@ -79,34 +77,32 @@ export const RegisterModal = ({
           <CustomInputWithLabel
             label='First Name'
             isRequired
-            inputProps={{ value: firstName, onChange: (e) => setFirstName(e.target.value) }}
+            inputProps={{ defaultValue: userDetails.firstName, isDisabled: true}}
           />
           <CustomInputWithLabel
             label='Last Name'
-            inputProps={{ value: lastName, onChange: (e) => setLastName(e.target.value) }}
+            inputProps={{ defaultValue: userDetails.lastName, isDisabled: true}}
           />
         </Flex>
         <Flex flexDirection='row' mb={4} gap='0.625rem'>
           <CustomInputWithLabel
             label='Email'
             isRequired
-            inputProps={{ value: email, onChange: (e) => setEmail(e.target.value), type: 'email' }}
+            inputProps={{ defaultValue: userDetails.emailAdd, isDisabled: true}}
           />
           <CustomInputWithLabel
             label='Contact No.'
             isRequired
-            inputProps={{
-              value: contactNo,
-              onChange: (e) => setContactNo(e.target.value),
-              type: 'phone',
-            }}
+            inputProps={{ defaultValue: userDetails.phoneNo, isDisabled: true}}
           />
         </Flex>
         <CustomInputWithLabel
-          label='Organisation’s Name'
+          label='Institute or Organization Name'
           inputProps={{
-            value: organisationName,
-            onChange: (e) => setOrganisationName(e.target.value),
+            value: userDetails.instituteName,
+            onChange: (e) => {
+              userDetails.setInstituteName(e.target.value)
+            },
           }}
         />
         {additionalDetails.length > 0 && (
@@ -138,6 +134,7 @@ export const RegisterModal = ({
           alignSelf='flex-end'
           mt={10}
           onClick={handleRegister}
+          isDisabled={!detailsFilled}
         >
           Register
         </Button>

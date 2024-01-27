@@ -5,11 +5,22 @@ import QuizTabs from '../components/QuizTabs'
 import useAuthStore from '@auth/store/authStore'
 import Hero from '../components/Hero'
 import { UserRoles } from '../../types'
+import useUserDetailsStore from '@dashboard/store/UserDetailsStore'
+import { useEffect } from 'react'
 
 const Dashboard = () => {
   const { data, isLoading } = useDashboard()
+  const setDetails = useUserDetailsStore((state) => state.setDetails)
   const { user } = useAuthStore()
   const isAdmin = user.role === UserRoles.admin
+
+  useEffect(() => {
+    if (data) {
+      console.log(data.userDetails)
+      setDetails(data.userDetails)
+    }
+  },[data])
+
   return isLoading ? (
     <div
       style={{

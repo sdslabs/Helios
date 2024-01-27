@@ -145,7 +145,7 @@ export const SocialHandlesForm = (props: FormProps) => {
   const navigate = useNavigate()
 
   const personalDetails = {
-    name: firstName + lastName,
+    name: firstName + " " + lastName,
     emailAdd: email,
     phoneNo: phone,
   }
