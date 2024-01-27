@@ -202,11 +202,6 @@ const QuestionView = () => {
       mutate({ quizId, questionId, responseData },{
           onSuccess: () => {
             nextQuestion()
-            setAnswer('')
-
-            if (isLastQuestion) {
-              toggleModal()
-            }
           },
         })
     }
