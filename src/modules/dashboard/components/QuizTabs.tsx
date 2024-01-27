@@ -15,13 +15,13 @@ const QuizTabs: React.FC<TabsProps> = ({ isAdmin = false, quizzes, createdQuizze
   const date = new Date()
   
   const ongoingQuizzes = quizzes?.filter((q: QuizDetails) => {
-    const quizendTimeStamp = new Date(q.endDateTimestamp.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
-    const quizstartTimeStamp = new Date(q.startDateTimestamp.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
+    const quizendTimeStamp = new Date(q.endDateTimestamp);
+    const quizstartTimeStamp = new Date(q.startDateTimestamp);
     return quizendTimeStamp > date && quizstartTimeStamp < date;
    });
    
   const upcomingQuizzes = quizzes?.filter((q: QuizDetails) => {
-    const quizstartTimeStamp = new Date(q.startDateTimestamp.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
+    const quizstartTimeStamp = new Date(q.startDateTimestamp);
     return quizstartTimeStamp > date
   })
   return (

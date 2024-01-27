@@ -1,6 +1,5 @@
 import { Box, HStack } from '@chakra-ui/react'
 import SideNavWrapper from '../components/SideNavWrapper'
-import useWindowFocus from '@giveQuiz/hooks/useWindowFocus'
 
 interface WithSidebarWrapperProps {
   children: React.ReactNode
@@ -8,7 +7,6 @@ interface WithSidebarWrapperProps {
 }
 
 const WithSidebarWrapper = ({ children, sidebarContent }: WithSidebarWrapperProps) => {
-  useWindowFocus();
   return(
     <HStack alignItems='flex-start'>
       <SideNavWrapper>{sidebarContent}</SideNavWrapper>

@@ -20,14 +20,7 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
   const { mutate } = useSubmitQuiz();
   const { quizId } = useParams();
   const handleReturnDashboard = async () => {
-    socket.disconnect()
-    if (quizId) {
-      mutate(quizId, {
-        onSuccess: () => {
-          navigate('/dashboard')
-        },
-      })
-    }
+    navigate('/dashboard')
   }
 
   return (
