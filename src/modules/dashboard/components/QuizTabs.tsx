@@ -97,6 +97,7 @@ const QuizTabs: React.FC<TabsProps> = ({ isAdmin = false, quizzes, createdQuizze
                         content={quiz?.quizMetadata?.description}
                         schedule={quiz?.quizMetadata?.startDateTimestamp}
                         edit={quiz.isPublished}
+                        id={quiz._id}
                       />
                     )
                   })

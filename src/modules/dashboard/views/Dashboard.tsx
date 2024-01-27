@@ -16,7 +16,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data.userDetails)
       setDetails(data.userDetails)
     }
   },[data])

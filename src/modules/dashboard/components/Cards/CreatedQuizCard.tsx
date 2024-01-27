@@ -1,14 +1,4 @@
-import {
-  Button,
-  Card,
-  Flex,
-  Heading,
-  Image,
-  Tag,
-  Text,
-  Stack,
-  CardBody,
-} from '@chakra-ui/react'
+import { Button, Card, Flex, Heading, Image, Tag, Text, Stack, CardBody } from '@chakra-ui/react'
 import defaultQuizBg from '@assets/images/default-quiz-bg.png'
 import { useNavigate } from 'react-router-dom'
 
@@ -20,6 +10,7 @@ interface CreatedQuizCardProps {
   content: string
   schedule: string
   edit: boolean
+  id: string
 }
 
 const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
@@ -30,8 +21,8 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
   content,
   schedule,
   edit,
+  id,
 }: CreatedQuizCardProps) => {
-  const navigate = useNavigate()
   let formattedTime
   if (schedule) {
     formattedTime = new Intl.DateTimeFormat('en-US', {
@@ -46,6 +37,9 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
   } else {
     formattedTime = 'Invalid'
   }
+
+  const navigate = useNavigate()
+
   return (
     <>
       <Card
@@ -89,7 +83,15 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
             <Text pt='2' color='n6'>
               Schedule : <span style={{ color: '#191919' }}> {formattedTime} </span>
             </Text>
-            <Button colorScheme='purple' bgColor='purple.500' px={6} borderRadius={3} size={'sm'} mt={4} onClick={() => navigate(`/check-quiz/${quizId}`)}>
+            <Button
+              colorScheme='purple'
+              bgColor='v6'
+              px={6}
+              borderRadius={3}
+              size={'sm'}
+              mt={4}
+              onClick={() => navigate(`/check-quiz/${quizId}`)}
+            >
               {edit ? 'Check Quiz' : 'Edit Quiz'}
             </Button>
           </CardBody>
