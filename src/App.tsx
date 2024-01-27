@@ -70,8 +70,8 @@ function App() {
               <Route path='/create-quiz/:quizId' element={<CreateQuiz />} />
             )}
             <Route path='/give-quiz/:quizId' element={<GiveQuiz />} />
-            <Route path='/checkQuiz/:quizID/:questionIDParam' element={<CheckQuestionView />} />
-            <Route path='/checkQuiz/:quizID' element={<CheckQuiz />} />
+            <Route path='/check-quiz/:quizID/:questionIDParam' element={<CheckQuestionView />} />
+            <Route path='/check-quiz/:quizID' element={<CheckQuiz />} />
             <Route path='/*' element={<Navigate to='/dashboard' />} />
           </>
         ): null}

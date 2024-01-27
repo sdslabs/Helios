@@ -1,24 +1,21 @@
-export enum QuestionType {
-  MCQ = "mcq",
-  SUB = 'Subjective',
+import { QuestionType } from "../types"
+
+export interface Question {
+  _id: string
+  type: QuestionType
+  description: string
+  options: { id: string; label: string }[]
+  correctAnswer: string
+  maxMarks?: number
+  notes?: string
+  autoCheck?: boolean
+  totalAttempts?: number
+  checkedAttempts?: number
+  assignedTo?: string[]
 }
 
-export type Question = {
-    _id: string
-    type: QuestionType
-    description: string
-    options: { id: string; label: string }[]
-    correctAnswer: string
-    maxMarks?: number
-    notes?: string
-    autoCheck?: boolean
-    totalAttempts?: number
-    checkedAttempts?: number
-    assignedTo?: string[]
-  }
-  
-export type Section = {
-    name: string
-    description: string
-    questions: Question[]
-  }
+export interface Section {
+  name: string
+  description: string
+  questions: Question[]
+}
