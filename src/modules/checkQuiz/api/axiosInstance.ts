@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
     Accept: 'application/json',
   },
   baseURL,
-  withCredentials: false,
+  withCredentials: true,
 })
 
 axiosInstance.interceptors.request.use((config) => {
