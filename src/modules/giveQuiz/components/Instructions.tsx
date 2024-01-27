@@ -41,8 +41,7 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
   const setCurrentSection = useQuizStore((state) => state.setCurrentSection)
   const setCurrentSectionIndex = useQuizStore((state) => state.setCurrentSectionIndex)
   const sections = useQuizStore((state) => state.sections)
-  const isStarted = useQuizStore((state) => state.isStarted)
-  const { setAnsweredQuestions, setMarkedQuestions, setMarkedAnsweredQuestions, setIsStarted } =
+  const { setAnsweredQuestions, setMarkedQuestions, setMarkedAnsweredQuestions } =
     useQuizStore()
   const { quizId } = useParams() as { quizId: string }
   const {
