@@ -44,7 +44,7 @@ const SectionTopBar = () => {
     >
       <HStack spacing='2.5rem' height='100%' px={12} py={3}>
         <Bubble
-          Label='Not Visited'
+          Label='Unanswered'
           Value={notVisitedQuestions}
           BorderColor='v6'
           BgColor='white'
