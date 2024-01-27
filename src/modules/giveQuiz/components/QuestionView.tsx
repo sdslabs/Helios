@@ -202,7 +202,6 @@ const QuestionView = () => {
       mutate({ quizId, questionId, responseData },{
           onSuccess: () => {
             nextQuestion()
-
           },
         })
     }

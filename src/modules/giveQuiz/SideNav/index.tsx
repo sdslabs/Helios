@@ -15,6 +15,7 @@ import BasicNavButton from '@common/components/BasicNavButton'
 import { GiveQuizSteps } from '../types'
 import { SubmitQuizModal } from '../components/Modals/SubmitQuizModal'
 import useQuizStore from '@giveQuiz/store/QuizStore'
+import useWindowFocus from '@giveQuiz/hooks/useWindowFocus'
 
 interface SideNavContentProps {
   stage: GiveQuizSteps
@@ -22,6 +23,7 @@ interface SideNavContentProps {
 }
 
 const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
+  useWindowFocus();
   const [isModalOpen, setIsModalOpen] = useState(false)
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen)
