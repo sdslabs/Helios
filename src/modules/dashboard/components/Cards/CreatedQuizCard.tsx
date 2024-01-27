@@ -10,8 +10,10 @@ import {
   CardBody,
 } from '@chakra-ui/react'
 import defaultQuizBg from '@assets/images/default-quiz-bg.png'
+import { Link } from 'react-router-dom'
 
 interface CreatedQuizCardProps {
+  id:string
   image: string
   name: string
   tags: string[]
@@ -21,6 +23,7 @@ interface CreatedQuizCardProps {
 }
 
 const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
+  id,
   image,
   name,
   tags,
@@ -86,7 +89,9 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
               Schedule : <span style={{ color: '#191919' }}> {formattedTime} </span>
             </Text>
             <Button colorScheme='purple' bgColor='brand' px={6} borderRadius={3} size={'sm'} mt={4}>
+              <Link to={`/checkQuiz/${id}`}>
               {edit ? 'Check Quiz' : 'Edit Quiz'}
+              </Link>
             </Button>
           </CardBody>
         </Stack>

@@ -89,6 +89,7 @@ const QuizTabs: React.FC<TabsProps> = ({ isAdmin = false, quizzes, createdQuizze
                     }
                     return (
                       <CreatedQuizCard
+                        id={quiz?._id}
                         key={index}
                         image={quiz?.quizMetadata?.bannerImage}
                         name={quiz?.quizMetadata?.name}
