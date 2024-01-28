@@ -4,3 +4,16 @@
   box-sizing: border-box;
   font-family: 'Open Sans', sans-serif;
 }
+
+.fetching {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFFFFF;
+}
+
+.bg-white {
+  background-color: white;
+}

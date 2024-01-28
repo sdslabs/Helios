@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom'
 import useAuthStore from '@auth/store/authStore'
 import { QuestionType, ResponseStatus } from '../../types'
 import { toast } from 'react-toastify'
+import Fetching from '../../../animations/Fetching'
 
 const QuestionView = () => {
   const [questionType, setQuestionType] = useState('')
@@ -224,6 +225,10 @@ const QuestionView = () => {
         currentSectionIndex === sections.length,
     )
   }, [currentQuestionIndex, currentSectionIndex])
+
+  if(isQuestionDataLoading){
+    return <Fetching />
+  }
 
   return (
     <Box as='main' display='flex' mt={10}>
