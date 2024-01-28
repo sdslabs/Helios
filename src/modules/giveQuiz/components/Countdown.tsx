@@ -64,7 +64,10 @@ function Countdown() {
     <Flex bgColor='v1' justifyContent='center' alignItems='center' gap='0.3rem' height='100%'>
       <div style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
         <TimeIcon color='v6' style={{ marginRight: '0.5rem' }} />
-        <span>{`${countHours} : ${countMinutes} : ${countSeconds}`}</span>
+        { countHours === '00' && countMinutes === '00' && countSeconds === '00' ?
+          <span> Loading</span> :
+          <span>{`${countHours} : ${countMinutes} : ${countSeconds}`}</span>
+        }
       </div>
       <QuizSummaryModal open={isModalOpen} toggleIsOpen={toggleModal} />
     </Flex>
