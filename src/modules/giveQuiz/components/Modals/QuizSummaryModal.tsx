@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSubmitQuiz } from '../../api/useUser';
 import * as io from 'socket.io-client';
 import { baseURL } from '../../../../config/config';
+import { useEffect } from 'react';
 
 interface QuizSummaryModalProps {
   open: boolean
@@ -23,10 +24,18 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
     navigate('/dashboard')
   }
 
+  useEffect(()=>{
+    if(open){
+      setTimeout(()=>{
+        navigate("/dashboard");
+      },2000)
+    }
+  },[open])
+
   return (
     <>
       {open ? (
-        <Flex pos='fixed' w='100vw' h='100vh' justify='center' align='center' top={0} left={0} bg='rgba(0, 0, 0, 0.5)'>
+        <Flex pos='fixed' w='100vw' h='100vh' justify='center' align='center' top={0} left={0} bg='white' zIndex={94}>
           <Box minW={'40vw'} bg='white' p={6} boxShadow='xl' borderRadius={8}>
             <Flex flexDirection='row' justifyContent='space-between' mb={4} >
               <Text fontSize='1.125rem' fontWeight='600'>
