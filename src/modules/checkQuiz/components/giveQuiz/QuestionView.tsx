@@ -124,7 +124,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
     if (responseIsFetched && responseData) {
       setResponse(responseData.response)
       if (responseData.response.status === ResponseStatus.answered) {
-        setQuestion({ ...question, maxMarks: 0 })
+        setResponse({ ...responseData.response, marksAwarded: 0 })
       }
     }
   }, [responseIsFetched, responseData])
@@ -237,11 +237,9 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
             </Flex>
           ) : (
             <Box w='full' height='max-content' mb={4}>
-              <Textarea
+              <CustomRichTextEditor
                 value={response.subjectiveAnswer}
-                readOnly
-                color={'N6'}
-                height={'max-content'}
+                onChange={() => undefined}
               />
             </Box>
           )}
@@ -302,7 +300,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
             w={'full'}
           >
             <Text>Checker&apos;s notes</Text>
-            <Input height={'4rem'} mb={8}></Input>
+            <Input height={'4rem'} mb={8} disabled></Input>
           </Flex>
         </Flex>
       </Flex>
