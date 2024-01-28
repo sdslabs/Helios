@@ -1,9 +1,9 @@
 import axios from 'axios'
 import axiosInstance from './axiosInstance'
 
-export const FetchAutocheck = async ({ quizId } : { quizId : string }) => {
+export const GenerateLeaderboard = async ({ quizId } : { quizId : string }) => {
   try {
-    const res = await axiosInstance.patch(`/checkQuiz/autocheck/${quizId}`)
+    const res = await axiosInstance.patch(`/checkQuiz/leaderboard/${quizId}`)
     return res.data
   } catch(e: any) {
     if(axios.isAxiosError(e)){

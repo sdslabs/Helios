@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Select } from 'chakra-react-select'
 import { Button, HStack, Input, Select as SelectChakra, Text } from '@chakra-ui/react'
+import { useLeaderboard } from '@checkQuiz/api/useLeaderboard'
 import AutocheckModal from './Modals/Autocheck'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 
@@ -10,9 +11,27 @@ interface FiltersProps {
   totalMCQs: number
 }
 
-const Filters: React.FC<FiltersProps> = ({ SearchBox = false, SelectFilter = false, totalMCQs}) => {
+const Filters: React.FC<FiltersProps> = ({
+  SearchBox = false,
+  SelectFilter = false,
+  totalMCQs,
+}) => {
   const [assignees, setAssignees] = useState<any>([])
   const [isAutocheckModalOpen, setIsAutocheckModalOpen] = useState<boolean>(false)
+  const [quizId] = useCheckQuizStore((state) => [state.quizId])
+
+  const { mutate: generateLeaderboard } = useLeaderboard()
+
+  const handleLeaderboard = () => {
+    generateLeaderboard(
+      { quizId },
+      {
+        onSuccess: () => {
+          window.location.reload()
+        },
+      },
+    )
+  }
 
   // TODO: fetch assignees from athena
   const [availableAssignees] = useState([
@@ -70,19 +89,27 @@ const Filters: React.FC<FiltersProps> = ({ SearchBox = false, SelectFilter = fal
             />
           )}
 
-          <SelectChakra
-            width='12rem'
-            placeholder='Sort by'
-            color='#939393'
-          >
+          <SelectChakra width='12rem' placeholder='Sort by' color='#939393'>
             <option value='ascending' color='#939393'>
-            Progress (0-100%)
+              Progress (0-100%)
             </option>
             <option value='descending' color='#939393'>
-            Progress (100-0%)
+              Progress (100-0%)
             </option>
           </SelectChakra>
         </HStack>
+
+        <Button
+          colorScheme='purple'
+          bgColor='brand'
+          px={6}
+          py={3}
+          fontSize='0.875rem'
+          fontWeight='400'
+          onClick={handleLeaderboard}
+        >
+          Generate Leaderboard
+        </Button>
 
         <Button
           colorScheme='purple'
@@ -96,7 +123,11 @@ const Filters: React.FC<FiltersProps> = ({ SearchBox = false, SelectFilter = fal
           Autocheck
         </Button>
       </HStack>
-      <AutocheckModal open={isAutocheckModalOpen} toggleIsOpen={() => setIsAutocheckModalOpen(!isAutocheckModalOpen)} totalMCQs={totalMCQs}/>
+      <AutocheckModal
+        open={isAutocheckModalOpen}
+        toggleIsOpen={() => setIsAutocheckModalOpen(!isAutocheckModalOpen)}
+        totalMCQs={totalMCQs}
+      />
     </>
   )
 }

@@ -14,11 +14,17 @@ interface AutocheckModalProps {
 const AutocheckModal = ({ open, toggleIsOpen, totalMCQs }: AutocheckModalProps) => {
   const [quizId] = useCheckQuizStore((state) => [state.quizId])
 
-  const { mutate: autocheck } = useAutocheck(quizId)
+  const { mutate: autocheck } = useAutocheck()
 
   const handleAutocheck = () => {
-    autocheck()
-    window.location.reload()
+    autocheck(
+      { quizId },
+      {
+        onSuccess: () => {
+          window.location.reload()
+        },
+      },
+    )
   }
 
   return (
