@@ -27,6 +27,7 @@ function App() {
     } else if (isFetched && !isLoading && data.user !== null) {
       authStore.setUser(data.user)
       authStore.setOnboarded(data.onboarded)
+      authStore.setProfileUrl(data.profileUrl)
       setIsLoggedIn(true)
     }
   }, [isFetched, isLoading, data])
