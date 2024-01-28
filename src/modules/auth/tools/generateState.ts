@@ -1,4 +1,3 @@
-
 export const generateState = () => {
   const validChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   const array = new Uint8Array(40)

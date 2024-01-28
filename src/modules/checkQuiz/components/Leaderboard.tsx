@@ -39,7 +39,10 @@ const columns = [
   columnHelper.accessor('questionsAttempted', {
     cell: (info: any) => (
       <div style={{ cursor: 'pointer', textDecoration: 'underline' }}>
-        <QuestionCounter totalQuestions={info.row.original.questionsAttempted} checkedQuestion={info.row.original.questionsChecked} />
+        <QuestionCounter
+          totalQuestions={info.row.original.questionsAttempted}
+          checkedQuestion={info.row.original.questionsChecked}
+        />
       </div>
     ),
     header: 'Questions Checked',

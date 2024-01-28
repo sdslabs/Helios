@@ -31,10 +31,24 @@ const QuizCard: React.FC<QuizCardProps> = ({
             <Text fontSize='1rem' fontWeight={650} color='accentBlack'>
               {quizName}
             </Text>
-            <Badge color={'markedForReviewBubbleBorder'} py={'0.25rem'} px={'0.62rem'} style={{borderRadius: "0.25rem", fontSize: '0.875rem', backgroundColor: 'markedForReviewBubbleBorder'}}>
+            <Badge
+              color={'markedForReviewBubbleBorder'}
+              py={'0.25rem'}
+              px={'0.62rem'}
+              style={{
+                borderRadius: '0.25rem',
+                fontSize: '0.875rem',
+                backgroundColor: 'markedForReviewBubbleBorder',
+              }}
+            >
               Completed
             </Badge>
-            <Badge color={'#775BA4'} py={'0.25rem'} px={'0.62rem'} style={{borderRadius: "0.25rem", fontSize: '0.875rem', backgroundColor: 'v1'}}>
+            <Badge
+              color={'#775BA4'}
+              py={'0.25rem'}
+              px={'0.62rem'}
+              style={{ borderRadius: '0.25rem', fontSize: '0.875rem', backgroundColor: 'v1' }}
+            >
               Result Published
             </Badge>
           </Flex>

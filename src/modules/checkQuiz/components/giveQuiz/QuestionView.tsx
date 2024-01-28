@@ -229,10 +229,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
             </Flex>
           ) : (
             <Box w='full' height='max-content' mb={4}>
-              <CustomRichTextEditor
-                value={response.subjectiveAnswer}
-                onChange={() => undefined}
-              />
+              <CustomRichTextEditor value={response.subjectiveAnswer} onChange={() => undefined} />
             </Box>
           )}
           <Flex

@@ -31,7 +31,6 @@ const SectionTopBar = () => {
   }, [answeredQuestions, totalQuestion])
 
   return (
-
     <HStack
       top={0}
       id='top-nav'
@@ -76,7 +75,6 @@ const SectionTopBar = () => {
         <Countdown />
       </Box>
     </HStack>
-    
   )
 }
 

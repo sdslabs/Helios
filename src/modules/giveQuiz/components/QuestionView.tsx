@@ -22,7 +22,7 @@ const QuestionView = () => {
   const [options, setOptions] = useState([
     {
       label: '',
-      id: ''
+      id: '',
     },
   ])
   const [answer, setAnswer] = useState('')
@@ -200,7 +200,9 @@ const QuestionView = () => {
         subjectiveAnswer: questionType !== QuestionType.MCQ ? answer : undefined,
         status: status,
       }
-      mutate({ quizId, questionId, responseData },{
+      mutate(
+        { quizId, questionId, responseData },
+        {
           onSuccess: () => {
             toast.success('Response Saved Successfully', {
               position: 'bottom-center',
@@ -211,7 +213,8 @@ const QuestionView = () => {
             })
             nextQuestion()
           },
-      })
+        },
+      )
     }
   }
 

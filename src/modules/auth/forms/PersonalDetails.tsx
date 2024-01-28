@@ -67,7 +67,7 @@ export const PersonalDetailsForm = (props: FormProps) => {
                 placeholder: 'Email Address',
                 type: 'email',
                 defaultValue: authDetails.user.emailAdd,
-                isReadOnly:true
+                isReadOnly: true,
               }}
             />
             <CustomInputWithLabel
@@ -94,4 +94,3 @@ export const PersonalDetailsForm = (props: FormProps) => {
     </>
   )
 }
-

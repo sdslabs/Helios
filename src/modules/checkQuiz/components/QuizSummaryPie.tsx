@@ -18,9 +18,7 @@ interface QuizSummaryPieProps {
   summaryData: number[]
 }
 
-
 const QuizSummaryPie: React.FC<QuizSummaryPieProps> = ({ summaryData }) => {
-
   const data = {
     labels: ['Not Visited', 'Answered', 'Marked for Review', 'Answered and Marked for Review'],
     datasets: [

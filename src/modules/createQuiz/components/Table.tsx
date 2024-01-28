@@ -106,7 +106,7 @@ const Table = ({ data, columns }: any) => {
                     {header.column.getCanFilter() ? (
                       <div>
                         <Filter column={header.column} table={table} />
-                      </div> 
+                      </div>
                     ) : null}
                   </Flex>
                 </Th>

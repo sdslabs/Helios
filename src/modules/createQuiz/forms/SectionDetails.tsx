@@ -17,12 +17,13 @@ import { useUpdateSection } from '@createQuiz/api/useSection'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 
 const SectionDetails = () => {
-  const { sections, setSections, currentSectionIdx, setSectionMetadata } = useSectionStore((state) => state)
+  const { sections, setSections, currentSectionIdx, setSectionMetadata } = useSectionStore(
+    (state) => state,
+  )
   const quizId = useQuizDetailsStore((state) => state.quizId)
   const activeSection = currentSectionIdx !== null ? sections[currentSectionIdx] : null
   const topNavHeight = useGetTopNavHeight()
   const { mutate } = useUpdateSection()
-
 
   const handleChangeSectionInstructions = (value?: string) => {
     setSectionMetadata(currentSectionIdx ?? 0, 'instructions', value ?? '')
@@ -30,12 +31,20 @@ const SectionDetails = () => {
   const handleResetSection = () => {
     setSectionMetadata(currentSectionIdx ?? 0, 'instructions', '')
     setSectionMetadata(currentSectionIdx ?? 0, 'name', 'Section ' + ((currentSectionIdx ?? 0) + 1))
-    mutate({ quizId, sectionIdx: currentSectionIdx, body: { name: 'Section ' + ((currentSectionIdx ?? 0) + 1), instructions: '' } })
+    mutate({
+      quizId,
+      sectionIdx: currentSectionIdx,
+      body: { name: 'Section ' + ((currentSectionIdx ?? 0) + 1), instructions: '' },
+    })
   }
 
   const handleSectionSave = () => {
-    if (activeSection && currentSectionIdx !== null ) {
-      const updatedSection = { ...activeSection, name: activeSection.name, instructions: activeSection.instructions }
+    if (activeSection && currentSectionIdx !== null) {
+      const updatedSection = {
+        ...activeSection,
+        name: activeSection.name,
+        instructions: activeSection.instructions,
+      }
       const updatedSections = [...sections]
       updatedSections[currentSectionIdx] = updatedSection
       setSections(updatedSections)
@@ -77,10 +86,22 @@ const SectionDetails = () => {
           />
         </FormControl>
         <HStack justifyContent='end' my={12} gap={3}>
-          <Button color='brand' colorScheme='purple' fontWeight='400' variant='outline' onClick={handleResetSection}>
+          <Button
+            color='brand'
+            colorScheme='purple'
+            fontWeight='400'
+            variant='outline'
+            onClick={handleResetSection}
+          >
             Reset
           </Button>
-          <Button color='white' colorScheme='purple' bgColor='brand' fontWeight='400' onClick={handleSectionSave}>
+          <Button
+            color='white'
+            colorScheme='purple'
+            bgColor='brand'
+            fontWeight='400'
+            onClick={handleSectionSave}
+          >
             Save & Continue
           </Button>
         </HStack>

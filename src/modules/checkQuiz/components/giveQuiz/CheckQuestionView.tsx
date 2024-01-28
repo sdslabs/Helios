@@ -29,7 +29,7 @@ const CheckQuestionView = () => {
   }, [currentQuestionIndex, currentSectionIndex])
 
   const renderQuiz = () => {
-      return <QuestionView quizId={quizId} questionId={questionId} key={questionId} />
+    return <QuestionView quizId={quizId} questionId={questionId} key={questionId} />
   }
 
   return (

@@ -18,7 +18,7 @@ const Dashboard = () => {
     if (data) {
       setDetails(data.userDetails)
     }
-  },[data])
+  }, [data])
 
   return isLoading ? (
     <div
@@ -43,7 +43,7 @@ const Dashboard = () => {
         />
         <QuizTabs isAdmin={isAdmin} quizzes={data.quizzes} createdQuizzes={data.createdQuizzes} />
       </div>
-    </>    
+    </>
   )
 }
 

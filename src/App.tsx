@@ -48,38 +48,36 @@ function App() {
   }
 
   return (
-    
     <ChakraProvider theme={theme}>
       <TimerProvider>
-      <Routes>
-        {!isLoggedIn && !isLoading && data.user === null ? (
-          <>
-            <Route path='/' element={<JoinUs />} />
-            <Route path='/callback/google' element={<GoogleCallback />} />
-            <Route path='/callback/github' element={<GithubCallback />} />
-            <Route path='*' element={<Navigate to='/' />} />
-          </>
-        ) : isLoggedIn && !authStore.onboarded && !isLoading ? (
-          <>
-            <Route path='/*' element={<Register />} />
-          </>
-        ) : isLoggedIn && authStore.onboarded && !isLoading ?(
-          <>
-            <Route path='/dashboard' element={<Dashboard />} />
-            {data.user.role === UserRoles.admin && (
-              <Route path='/create-quiz/:quizId' element={<CreateQuiz />} />
-            )}
-            <Route path='/give-quiz/:quizId' element={<GiveQuiz />} />
-            <Route path='/check-quiz/:quizId/:questionIdParam' element={<CheckQuestionView />} />
-            <Route path='/check-quiz/:quizId' element={<CheckQuiz />} />
-            <Route path='/*' element={<Navigate to='/dashboard' />} />
-          </>
-        ): null}
-        {/* TODO: something better than using null and make this conditional routing more elegant */}
-      </Routes>
+        <Routes>
+          {!isLoggedIn && !isLoading && data.user === null ? (
+            <>
+              <Route path='/' element={<JoinUs />} />
+              <Route path='/callback/google' element={<GoogleCallback />} />
+              <Route path='/callback/github' element={<GithubCallback />} />
+              <Route path='*' element={<Navigate to='/' />} />
+            </>
+          ) : isLoggedIn && !authStore.onboarded && !isLoading ? (
+            <>
+              <Route path='/*' element={<Register />} />
+            </>
+          ) : isLoggedIn && authStore.onboarded && !isLoading ? (
+            <>
+              <Route path='/dashboard' element={<Dashboard />} />
+              {data.user.role === UserRoles.admin && (
+                <Route path='/create-quiz/:quizId' element={<CreateQuiz />} />
+              )}
+              <Route path='/give-quiz/:quizId' element={<GiveQuiz />} />
+              <Route path='/check-quiz/:quizId/:questionIdParam' element={<CheckQuestionView />} />
+              <Route path='/check-quiz/:quizId' element={<CheckQuiz />} />
+              <Route path='/*' element={<Navigate to='/dashboard' />} />
+            </>
+          ) : null}
+          {/* TODO: something better than using null and make this conditional routing more elegant */}
+        </Routes>
       </TimerProvider>
     </ChakraProvider>
-    
   )
 }
 

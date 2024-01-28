@@ -3,7 +3,7 @@ import axiosInstance from './axiosInstance'
 import { getDashboard } from './getDashboard'
 
 export const useFetchDashboard = (quizId: string) => {
-  const query = useQuery({  
+  const query = useQuery({
     queryKey: ['fetchDashboard', quizId],
     queryFn: () => getDashboard(quizId),
   })

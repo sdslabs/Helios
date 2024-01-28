@@ -1,47 +1,47 @@
-import { create, SetState } from 'zustand';
-import { Question, Section } from '@checkQuiz/types';
-import { set } from 'lodash';
+import { create, SetState } from 'zustand'
+import { Question, Section } from '@checkQuiz/types'
+import { set } from 'lodash'
 
 interface CheckQuizStore {
-  sections: Section[];
-  currentQuestionIndex: number;
-  currentSection: Section;
-  currentSectionIndex: number;
-  totalQuestion: number;
-  checkedAnsweredQuestions: string[];
-  isCurrentQuestionchecked: string;
-  leaderboard: any;
-  admin: string;
-  quizName: string;
-  totalAttempts: number;
-  checksCompleted: number;
-  scheduled: string;
-  totalParticipants: number;
-  quizId: string;
-  currentResponse: string;
-  currentResponseIndex: number;
-  allResponsesId: string[];
-  allResponsesStatus: string[];
+  sections: Section[]
+  currentQuestionIndex: number
+  currentSection: Section
+  currentSectionIndex: number
+  totalQuestion: number
+  checkedAnsweredQuestions: string[]
+  isCurrentQuestionchecked: string
+  leaderboard: any
+  admin: string
+  quizName: string
+  totalAttempts: number
+  checksCompleted: number
+  scheduled: string
+  totalParticipants: number
+  quizId: string
+  currentResponse: string
+  currentResponseIndex: number
+  allResponsesId: string[]
+  allResponsesStatus: string[]
 
-  setSections: (to: Section[]) => void;
-  setCurrentQuestionIndex: (to: number) => void;
-  setCurrentSection: (to: Section) => void;
-  setCurrentSectionIndex: (to: number) => void;
-  setTotalQuestion: (to: number) => void;
-  setcheckedAnsweredQuestions: (to: string[]) => void;
-  setIsCurrentQuestionchecked: (to: string) => void;
-  setLeaderboard: (to: any) => void;
-  setAdmin: (to: string) => void;
-  setQuizName: (to: string) => void;
-  setTotalAttempts: (to: number) => void;
-  setChecksCompleted: (to: number) => void;
-  setScheduled: (to: string) => void;
-  setTotalParticipants: (to: number) => void;
-  setQuizId: (to: string) => void;
-  setcurrentResponse: (to: string) => void;
-  setcurrentResponseIndex: (to: number) => void;
-  setallResponsesId: (to: string[]) => void;
-  setallResponsesStatus: (to: string[]) => void;
+  setSections: (to: Section[]) => void
+  setCurrentQuestionIndex: (to: number) => void
+  setCurrentSection: (to: Section) => void
+  setCurrentSectionIndex: (to: number) => void
+  setTotalQuestion: (to: number) => void
+  setcheckedAnsweredQuestions: (to: string[]) => void
+  setIsCurrentQuestionchecked: (to: string) => void
+  setLeaderboard: (to: any) => void
+  setAdmin: (to: string) => void
+  setQuizName: (to: string) => void
+  setTotalAttempts: (to: number) => void
+  setChecksCompleted: (to: number) => void
+  setScheduled: (to: string) => void
+  setTotalParticipants: (to: number) => void
+  setQuizId: (to: string) => void
+  setcurrentResponse: (to: string) => void
+  setcurrentResponseIndex: (to: number) => void
+  setallResponsesId: (to: string[]) => void
+  setallResponsesStatus: (to: string[]) => void
 }
 
 const useCheckQuizStore = create<CheckQuizStore>((set: SetState<CheckQuizStore>) => {
@@ -85,9 +85,9 @@ const useCheckQuizStore = create<CheckQuizStore>((set: SetState<CheckQuizStore>)
     setcurrentResponseIndex: (to: number) => set({ currentResponseIndex: to }),
     setallResponsesId: (to: string[]) => set({ allResponsesId: to }),
     setallResponsesStatus: (to: string[]) => set({ allResponsesStatus: to }),
-  };
+  }
 
-  return initialState;
-});
+  return initialState
+})
 
-export default useCheckQuizStore;
+export default useCheckQuizStore

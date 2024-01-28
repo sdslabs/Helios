@@ -1,10 +1,9 @@
-import { create } from "zustand";
+import { create } from 'zustand'
 
 export interface CustomFields {
   name: string
   label: string
   isRequired: boolean
-
 }
 export interface RegistrationForm {
   customFields: CustomFields[]
@@ -17,7 +16,7 @@ export interface RegistrationFormStore {
 
 const useRegistrationFormStore = create<RegistrationFormStore>((set) => ({
   registrationForm: {
-    customFields: []
+    customFields: [],
   },
   setRegistrationForm: (registrationForm) => set({ registrationForm }),
 }))

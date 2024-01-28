@@ -66,18 +66,16 @@ const QuestionDetails = () => {
   }
   const handleEdit = (id: string, newLabel: string) => {
     setOptions((prevOptions) =>
-      prevOptions.map((option) =>
-        option.id === id ? { ...option, label: newLabel } : option
-      )
-    );
-  };
+      prevOptions.map((option) => (option.id === id ? { ...option, label: newLabel } : option)),
+    )
+  }
   const handleDelete = (id: string) => {
-    const newOptions = options.filter((option) => option.id !== id);
+    const newOptions = options.filter((option) => option.id !== id)
     newOptions.forEach((option, idx) => {
-      option.id = '' + (idx + 1);
-    });
-    setOptions(newOptions);
-  };
+      option.id = '' + (idx + 1)
+    })
+    setOptions(newOptions)
+  }
   const handleSaveQuestion = () => {
     const updatedQuestion = {
       description,
@@ -103,7 +101,7 @@ const QuestionDetails = () => {
       setNotes(data.question?.checkerNotes)
       setAnswer(data.question?.correctAnswer)
     }
-  },[isFetched, isLoading, data])
+  }, [isFetched, isLoading, data])
 
   const renderChoiceBuilder = () => {
     if (type === QuestionType.SUB) return null
@@ -142,8 +140,12 @@ const QuestionDetails = () => {
           w='max-content'
           size='sm'
           fontWeight='400'
-          onClick={() => setOptions((prevOptions) =>
-            [...prevOptions, { id: '' + (prevOptions.length + 1), label: `Option ${prevOptions.length + 1}`}])}
+          onClick={() =>
+            setOptions((prevOptions) => [
+              ...prevOptions,
+              { id: '' + (prevOptions.length + 1), label: `Option ${prevOptions.length + 1}` },
+            ])
+          }
         >
           + Add Option
         </Button>
@@ -151,7 +153,7 @@ const QuestionDetails = () => {
     )
   }
   // TODO: use the fetching animation instead of loading spinner
-  if(isLoading) {
+  if (isLoading) {
     return (
       <div
         style={{
@@ -196,7 +198,12 @@ const QuestionDetails = () => {
           <Text color='accentBlack' fontSize='sm'>
             Marks:
           </Text>
-          <Input type='number' w={20} value={marks} onChange={(e) => setMarks(parseInt(e.target.value, 10))} />
+          <Input
+            type='number'
+            w={20}
+            value={marks}
+            onChange={(e) => setMarks(parseInt(e.target.value, 10))}
+          />
         </HStack>
         {type === QuestionType.MCQ && (
           <>
@@ -204,7 +211,11 @@ const QuestionDetails = () => {
               <Text color='accentBlack' fontSize='sm'>
                 Autocheck:
               </Text>
-              <Switch colorScheme='purple' isChecked={autoCheck} onChange={(e) => setAutoCheck(e.target.checked)}/>
+              <Switch
+                colorScheme='purple'
+                isChecked={autoCheck}
+                onChange={(e) => setAutoCheck(e.target.checked)}
+              />
             </HStack>
             <HStack>
               <Text color='accentBlack' fontSize='sm'>
@@ -230,10 +241,22 @@ const QuestionDetails = () => {
         </FormControl>
       )}
       <HStack justifyContent='end' my={12} gap={3}>
-        <Button color='brand' colorScheme='purple' fontWeight='400' variant='outline' onClick={handleDiscardChanges}>
+        <Button
+          color='brand'
+          colorScheme='purple'
+          fontWeight='400'
+          variant='outline'
+          onClick={handleDiscardChanges}
+        >
           Discard changes
         </Button>
-        <Button color='white' colorScheme='purple' bgColor='brand' fontWeight='400' onClick={handleSaveQuestion}>
+        <Button
+          color='white'
+          colorScheme='purple'
+          bgColor='brand'
+          fontWeight='400'
+          onClick={handleSaveQuestion}
+        >
           Save changes
         </Button>
       </HStack>

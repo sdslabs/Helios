@@ -8,7 +8,6 @@ interface SideNavContentProps {
   setStage: (stage: GiveQuizSteps) => void
 }
 
-
 const SectionInstructions = ({ stage, setStage }: SideNavContentProps) => {
   const [sectionInstructions, setSectionInstructions] = useState('')
   const [sectionNumber, setSectionNumber] = useState(1)

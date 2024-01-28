@@ -7,7 +7,7 @@ interface WithSidebarWrapperProps {
 }
 
 const WithSidebarWrapper = ({ children, sidebarContent }: WithSidebarWrapperProps) => {
-  return(
+  return (
     <HStack alignItems='flex-start'>
       <SideNavWrapper>{sidebarContent}</SideNavWrapper>
       <Box as='main' flexGrow={1} alignItems='flex-start'>
