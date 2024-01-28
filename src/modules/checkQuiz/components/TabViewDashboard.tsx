@@ -15,10 +15,7 @@ const TabViewDashboard = () => {
     fontSize: '0.875rem',
     fontWeight: '600',
   }
-  const [sections, quizId] = checkQuizStore((state) => [
-    state.sections,
-    state.quizId,
-  ])
+  const [sections, quizId] = checkQuizStore((state) => [state.sections, state.quizId])
 
   const [totalMCQs, setTotalMCQs] = useState<number>(0)
   useEffect(() => {

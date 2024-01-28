@@ -1,26 +1,25 @@
 import { Modal, ModalContent, ModalOverlay, Text, Button, Flex, Box } from '@chakra-ui/react'
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 import { TimeIcon, CloseIcon } from '@chakra-ui/icons'
 import { QuizSummaryModal } from './QuizSummaryModal'
 import QuizSummaryPie from '../QuizSummaryPie'
-import * as io from "socket.io-client";
-import { useNavigate, useParams } from 'react-router-dom';
-import { useSubmitQuiz } from '../../api/useUser';
-import useQuizStore from '@giveQuiz/store/QuizStore';
-import { baseURL } from '../../../../config/config';
+import * as io from 'socket.io-client'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useSubmitQuiz } from '../../api/useUser'
+import useQuizStore from '@giveQuiz/store/QuizStore'
+import { baseURL } from '../../../../config/config'
 
 interface SubmitQuizModalProps {
   open: boolean
   toggleIsOpen: () => void
 }
 
-const socket = io.connect(`${baseURL}`);
+const socket = io.connect(`${baseURL}`)
 
 export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) => {
-
   const [timeLeft, setTimeLeft] = useState('00 : 00 : 00')
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const timer = useQuizStore((state) => state.timer)
   const { quizId } = useParams()
   const { mutate } = useSubmitQuiz()
@@ -54,7 +53,16 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
   return (
     <>
       {open ? (
-        <Flex pos='fixed' w='100vw' h='100vh' justify='center' align='center' top={0} left={0} bg='rgba(0, 0, 0, 0.5)'>
+        <Flex
+          pos='fixed'
+          w='100vw'
+          h='100vh'
+          justify='center'
+          align='center'
+          top={0}
+          left={0}
+          bg='rgba(0, 0, 0, 0.5)'
+        >
           <Box minW={'40vw'} bg='white' p={6} boxShadow='xl' borderRadius={8}>
             <Flex flexDirection='row' justifyContent='space-between' mb={6}>
               <Text fontSize='1.125rem' fontWeight='600'>
@@ -121,8 +129,7 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
             </Flex>
           </Box>
         </Flex>
-      ) : null
-      }
+      ) : null}
     </>
   )
 }

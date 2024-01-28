@@ -6,5 +6,5 @@ export const useLeaderboard = () => {
   const mutation = useMutation({
     mutationFn: GenerateLeaderboard,
   })
-  return mutation;
+  return mutation
 }

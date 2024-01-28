@@ -19,31 +19,31 @@ interface RegistrationFormProps {
   setQuizStage: (stage: number) => void
 }
 
-const RegistrationForm = ({ setQuizStage } : RegistrationFormProps) => {
+const RegistrationForm = ({ setQuizStage }: RegistrationFormProps) => {
   const { mutate } = useUpdateQuizDetails()
   const { registrationForm, setRegistrationForm } = useRegistrationFormStore((state) => state)
   const quizId = useQuizDetailsStore((state) => state.quizId)
 
   const handleChange = (key: keyof CustomFields, value: string | boolean, index: number) => {
     const updatedCustomFields = [...registrationForm.customFields]
-    if(index + 1 > updatedCustomFields.length) {
+    if (index + 1 > updatedCustomFields.length) {
       updatedCustomFields.push({
         name: '',
         label: '',
-        isRequired: false
+        isRequired: false,
       })
     }
-    (updatedCustomFields[index] as any)[key] = value;
-    if(!updatedCustomFields[index].name && !updatedCustomFields[index].label) {
+    ;(updatedCustomFields[index] as any)[key] = value
+    if (!updatedCustomFields[index].name && !updatedCustomFields[index].label) {
       updatedCustomFields.splice(index, 1)
     }
     setRegistrationForm({
-      customFields: updatedCustomFields
+      customFields: updatedCustomFields,
     })
   }
 
   const handleSaveRegistrationForm = () => {
-    mutate({ quizId, body: { registrationMetadata : registrationForm } })
+    mutate({ quizId, body: { registrationMetadata: registrationForm } })
     setQuizStage(2)
   }
   return (
@@ -151,7 +151,13 @@ const RegistrationForm = ({ setQuizStage } : RegistrationFormProps) => {
         <Button color='brand' colorScheme='purple' fontWeight='400' variant='outline'>
           Reset
         </Button>
-        <Button color='white' colorScheme='purple' bgColor='brand' fontWeight='400' onClick={handleSaveRegistrationForm}>
+        <Button
+          color='white'
+          colorScheme='purple'
+          bgColor='brand'
+          fontWeight='400'
+          onClick={handleSaveRegistrationForm}
+        >
           Save & Continue
         </Button>
       </HStack>

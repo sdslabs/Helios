@@ -23,7 +23,7 @@ export const PublishResultModal = ({
     totalAttempts - checkedQuestions,
     20,
   ])
-  
+
   const handlePublish = () => {
     toggleIsOpen()
   }
@@ -61,17 +61,20 @@ export const PublishResultModal = ({
             w='full'
             ml={6}
           >
-            {isAllChecked ? ( 
-               <Text fontSize='1.25rem' fontWeight='600' mb={1} color='answeredBubbleBorder'>
+            {isAllChecked ? (
+              <Text fontSize='1.25rem' fontWeight='600' mb={1} color='answeredBubbleBorder'>
                 You have checked all the submissions
-             </Text>
+              </Text>
             ) : (
               <Text fontSize='1.25rem' fontWeight='600' mb={1} color='v5'>
-               You still have {summaryData[2]} incomplete checks!
+                You still have {summaryData[2]} incomplete checks!
               </Text>
-            )
-            }
-            <Text fontSize='1rem' fontWeight='400' color={isAllChecked ? 'answeredBubbleBorder' : 'v5'}>
+            )}
+            <Text
+              fontSize='1rem'
+              fontWeight='400'
+              color={isAllChecked ? 'answeredBubbleBorder' : 'v5'}
+            >
               Are you sure you want to publish results ?
             </Text>
           </Flex>

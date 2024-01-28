@@ -1,9 +1,9 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react'
-import { useState, useEffect } from 'react';
-import { GiveQuizSteps } from '../types';
-import { useGetQuiz } from '../api/useQuiz';
-import useQuizStore from '../store/QuizStore';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react'
+import { GiveQuizSteps } from '../types'
+import { useGetQuiz } from '../api/useQuiz'
+import useQuizStore from '../store/QuizStore'
+import { useParams } from 'react-router-dom'
 
 interface SideNavContentProps {
   stage: GiveQuizSteps
@@ -11,19 +11,19 @@ interface SideNavContentProps {
 }
 interface QuizData {
   quiz: {
-    name: string;
-    description: string;
-    instructions: string;
+    name: string
+    description: string
+    instructions: string
     sections: [
       {
-        name: string;
-        description: string;
+        name: string
+        description: string
         questions: [
           {
-            question: string;
-            options: string[];
-            answer: string;
-            mark: number;
+            question: string
+            options: string[]
+            answer: string
+            mark: number
           },
         ]
       },
@@ -41,8 +41,7 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
   const setCurrentSection = useQuizStore((state) => state.setCurrentSection)
   const setCurrentSectionIndex = useQuizStore((state) => state.setCurrentSectionIndex)
   const sections = useQuizStore((state) => state.sections)
-  const { setAnsweredQuestions, setMarkedQuestions, setMarkedAnsweredQuestions } =
-    useQuizStore()
+  const { setAnsweredQuestions, setMarkedQuestions, setMarkedAnsweredQuestions } = useQuizStore()
   const { quizId } = useParams() as { quizId: string }
   const {
     data: quizData,

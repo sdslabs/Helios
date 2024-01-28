@@ -17,7 +17,7 @@ export const QuestionsCheckModal = ({ open, toggleIsOpen }: QuestionsCheckModalP
   ])
 
   const [summaryData, setSummaryData] = useState([0, 0, 0, 0])
-  
+
   useEffect(() => {
     if (allResponsesId.length > 0) {
       setSummaryData([allResponsesId.length, 0, 0, 20])
@@ -36,7 +36,7 @@ export const QuestionsCheckModal = ({ open, toggleIsOpen }: QuestionsCheckModalP
       <ModalContent padding={6} borderRadius={0}>
         <Flex flexDirection='row' justifyContent='space-between' mb={6}>
           <Text fontSize='1.125rem' fontWeight='600'>
-          Quiz Checking
+            Quiz Checking
           </Text>
           <CloseIcon
             onClick={toggleIsOpen}
@@ -47,7 +47,7 @@ export const QuestionsCheckModal = ({ open, toggleIsOpen }: QuestionsCheckModalP
           />
         </Flex>
         <Flex flexDirection='row' alignItems='center' justifyContent='center' mt={9}>
-          <QuizSummaryPie summaryData={summaryData}/>
+          <QuizSummaryPie summaryData={summaryData} />
         </Flex>
 
         <Flex flexDirection='row' justifyContent='flex-end'>

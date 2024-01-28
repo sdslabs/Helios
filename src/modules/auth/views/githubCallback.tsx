@@ -12,15 +12,15 @@ const querytoObject = (query: string) => {
 const GithubCallback = () => {
   const navigate = useNavigate()
   useEffect(() => {
-    (async function getToken() {
+    ;(async function getToken() {
       const payload = querytoObject(window.location.search.split('?')[1])
-      const { code } = payload;
+      const { code } = payload
       const data = await axiosInstance.post(`/auth/github/token?`, { code })
       if (!(data.status === 200)) {
-        alert("Login failed")
-        navigate("/")
+        alert('Login failed')
+        navigate('/')
       } else {
-        window.location.assign(`${reactAppURL}/dashboard`)//TODO
+        window.location.assign(`${reactAppURL}/dashboard`) //TODO
       }
     })()
   }, [])

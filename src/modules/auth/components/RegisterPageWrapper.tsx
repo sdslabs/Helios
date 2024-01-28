@@ -6,20 +6,14 @@ interface RegisterPageWrapperProps {
   heading: string
 }
 
-export const RegisterPageWrapper = ({
-  imageUrl,
-  children,
-  heading,
-}: RegisterPageWrapperProps) => {
+export const RegisterPageWrapper = ({ imageUrl, children, heading }: RegisterPageWrapperProps) => {
   return (
     <Box as='main' h='100vh' w='100vw' display='flex'>
       <Center bgColor='brand' w='40%' flexDirection='column'>
         <Heading color='white'>{heading}</Heading>
         <Image src={imageUrl} w='500px' h='500px' />
       </Center>
-      <Center p={40}>
-        {children}
-      </Center>
+      <Center p={40}>{children}</Center>
     </Box>
   )
 }

@@ -1,5 +1,4 @@
-import { create } from "zustand";
-
+import { create } from 'zustand'
 
 export interface QuizDetails {
   name?: string
@@ -17,7 +16,7 @@ export interface QuizDetails {
 
 export interface QuizDetailsStore {
   details: QuizDetails
-  quizId : string
+  quizId: string
   setDetails: (quizDetails: QuizDetails) => void
   setKey: (key: string, value: string) => void
   setQuizId: (quizId: string) => void
@@ -26,9 +25,9 @@ export interface QuizDetailsStore {
 const useQuizDetailsStore = create<QuizDetailsStore>((set) => ({
   details: {},
   quizId: '',
-  setDetails: ( details) => set({ details }),
+  setDetails: (details) => set({ details }),
   setKey: (key, value) => set((state) => ({ details: { ...state.details, [key]: value } })),
-  setQuizId: (quizId) => set({ quizId })
+  setQuizId: (quizId) => set({ quizId }),
 }))
 
 export default useQuizDetailsStore

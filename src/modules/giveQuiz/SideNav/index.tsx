@@ -23,7 +23,7 @@ interface SideNavContentProps {
 }
 
 const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
-  useWindowFocus();
+  useWindowFocus()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen)

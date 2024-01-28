@@ -66,8 +66,8 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
                     t === 'Completed'
                       ? 'rgba(255, 137, 0, 0.24)'
                       : t === 'Live'
-                      ? 'rgba(39, 166, 36, 0.20)'
-                      : '#EBE7F2'
+                        ? 'rgba(39, 166, 36, 0.20)'
+                        : '#EBE7F2'
                   }
                   color={t === 'Completed' ? '#FF8900' : t === 'Live' ? '#27A624' : '#775BA4'}
                   padding='0.4vh, 0.1vh'

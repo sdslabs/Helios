@@ -16,9 +16,8 @@ const TopNav = ({ isDashboard = false, isAdmin = false }: TopNavProps) => {
     mutate(void 0, {
       onSuccess: (data) => {
         navigate(`/create-quiz/${data.quizId}`)
-      }
-    });
-  
+      },
+    })
   }
   return (
     <HStack
@@ -39,7 +38,7 @@ const TopNav = ({ isDashboard = false, isAdmin = false }: TopNavProps) => {
       <HStack spacing={4}>
         {isDashboard && isAdmin && (
           <Button colorScheme='purple' bgColor='brand' px={4} onClick={handleHostQuiz}>
-              + Host Quiz
+            + Host Quiz
           </Button>
         )}
         {isDashboard && (

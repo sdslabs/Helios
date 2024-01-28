@@ -35,7 +35,7 @@ export const RegisterModal = ({
   async function handleRegister() {
     const body = {
       customFields: [
-        { name: 'Institute Name', value: userDetails.instituteName},
+        { name: 'Institute Name', value: userDetails.instituteName },
         ...additionalDetailsState.map((detail, index: number) => ({
           name: additionalDetails[index].label,
           value: detail.value,
@@ -53,7 +53,9 @@ export const RegisterModal = ({
     )
   }
   useEffect(() => {
-    const filled = additionalDetailsState.every((detail) => detail.isRequired ? detail.value !== '' : true)
+    const filled = additionalDetailsState.every((detail) =>
+      detail.isRequired ? detail.value !== '' : true,
+    )
     setDetailsFilled(filled)
   }, [additionalDetailsState])
 
@@ -77,23 +79,23 @@ export const RegisterModal = ({
           <CustomInputWithLabel
             label='First Name'
             isRequired
-            inputProps={{ defaultValue: userDetails.firstName, isDisabled: true}}
+            inputProps={{ defaultValue: userDetails.firstName, isDisabled: true }}
           />
           <CustomInputWithLabel
             label='Last Name'
-            inputProps={{ defaultValue: userDetails.lastName, isDisabled: true}}
+            inputProps={{ defaultValue: userDetails.lastName, isDisabled: true }}
           />
         </Flex>
         <Flex flexDirection='row' mb={4} gap='0.625rem'>
           <CustomInputWithLabel
             label='Email'
             isRequired
-            inputProps={{ defaultValue: userDetails.emailAdd, isDisabled: true}}
+            inputProps={{ defaultValue: userDetails.emailAdd, isDisabled: true }}
           />
           <CustomInputWithLabel
             label='Contact No.'
             isRequired
-            inputProps={{ defaultValue: userDetails.phoneNo, isDisabled: true}}
+            inputProps={{ defaultValue: userDetails.phoneNo, isDisabled: true }}
           />
         </Flex>
         <CustomInputWithLabel

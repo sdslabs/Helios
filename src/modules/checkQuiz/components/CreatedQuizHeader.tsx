@@ -7,13 +7,18 @@ interface CreatedQuizHeaderProps {
   hostedQuiz: number
 }
 
-const CreatedQuizHeader: React.FC<CreatedQuizHeaderProps> = ({
-    attemptedQuiz,
-    hostedQuiz,
-}) => {
+const CreatedQuizHeader: React.FC<CreatedQuizHeaderProps> = ({ attemptedQuiz, hostedQuiz }) => {
   return (
     <Flex flexDirection='row' gap={10}>
-      <Flex bgColor='v1' px={10} py={6} borderRadius={4} width='50rem' flexDirection={'column'} justifyContent={'center'}>
+      <Flex
+        bgColor='v1'
+        px={10}
+        py={6}
+        borderRadius={4}
+        width='50rem'
+        flexDirection={'column'}
+        justifyContent={'center'}
+      >
         <Flex flexDirection='column'>
           <Text fontSize='2rem' fontWeight={600} color='v6'>
             Register for a Quiz
@@ -25,11 +30,7 @@ const CreatedQuizHeader: React.FC<CreatedQuizHeaderProps> = ({
       </Flex>
 
       {['Attempted Quizzes', 'Hosted Quizzes'].map((title, index) => (
-        <HighlightCard
-          key={index}
-          title={title}
-          value={index === 0 ? attemptedQuiz : hostedQuiz}
-        />
+        <HighlightCard key={index} title={title} value={index === 0 ? attemptedQuiz : hostedQuiz} />
       ))}
     </Flex>
   )
