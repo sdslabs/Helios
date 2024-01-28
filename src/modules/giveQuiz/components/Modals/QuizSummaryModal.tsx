@@ -1,45 +1,47 @@
 import { Text, Button, Flex, Box } from '@chakra-ui/react'
 import { TimeIcon, CloseIcon } from '@chakra-ui/icons'
 import QuizSummaryPie from '../QuizSummaryPie'
-import { useNavigate, useParams } from 'react-router-dom';
-import { useSubmitQuiz } from '../../api/useUser';
-import * as io from 'socket.io-client';
-import { baseURL } from '../../../../config/config';
-import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'
+import { useSubmitQuiz } from '../../api/useUser'
+import * as io from 'socket.io-client'
+import { baseURL } from '../../../../config/config'
+import { useEffect } from 'react'
 
 interface QuizSummaryModalProps {
   open: boolean
   toggleIsOpen: () => void
 }
 
-const socket = io.connect(`${baseURL}`);
+const socket = io.connect(`${baseURL}`)
 
 export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) => {
   const labelColor = '#27A624'
   const lableBgColor = '#E5F4E5'
-  const navigate = useNavigate();
-  const { mutate } = useSubmitQuiz();
-  const { quizId } = useParams();
+  const navigate = useNavigate()
+  const { mutate } = useSubmitQuiz()
+  const { quizId } = useParams()
   const handleReturnDashboard = async () => {
     navigate('/dashboard')
   }
-
-  useEffect(()=>{
-    if(open){
-      setTimeout(()=>{
-        navigate("/dashboard");
-      },2000)
-    }
-  },[open])
-
   return (
     <>
       {open ? (
-        <Flex pos='fixed' w='100vw' h='100vh' justify='center' align='center' top={0} left={0} bg='white' zIndex={94}>
+        <Flex
+          pos='fixed'
+          w='100vw'
+          h='100vh'
+          justify='center'
+          align='center'
+          top={0}
+          left={0}
+          bg='white'
+          zIndex={94}
+        >
           <Box minW={'40vw'} bg='white' p={6} boxShadow='xl' borderRadius={8}>
-            <Flex flexDirection='row' justifyContent='space-between' mb={4} >
+            <Flex flexDirection='row' justifyContent='space-between' mb={4}>
               <Text fontSize='1.125rem' fontWeight='600'>
-                Quiz Summary  </Text>
+                Quiz Summary{' '}
+              </Text>
               <CloseIcon
                 onClick={toggleIsOpen}
                 color='crossBlack'
@@ -47,7 +49,7 @@ export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) 
                 h='0.875rem'
                 alignSelf='center'
               />
-            </Flex >
+            </Flex>
             <Flex
               flexDirection='row'
               alignItems='center'
