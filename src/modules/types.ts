@@ -15,3 +15,11 @@ export interface UserData {
   emailAdd: string
   role: UserRoles
 }
+
+export enum ResponseStatus {
+  unanswered = 'unanswered',
+  answered = 'answered',
+  checked = 'checked',
+  markedanswer = 'marked-answered',
+  marked = 'marked',
+}

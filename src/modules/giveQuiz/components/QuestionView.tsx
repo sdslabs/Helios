@@ -11,7 +11,7 @@ import {
 import { SubmitQuizModal } from './Modals/SubmitQuizModal'
 import { useParams } from 'react-router-dom'
 import useAuthStore from '@auth/store/authStore'
-import { QuestionType } from '../../types'
+import { QuestionType, ResponseStatus } from '../../types'
 
 const QuestionView = () => {
   const [questionType, setQuestionType] = useState('')
@@ -21,6 +21,7 @@ const QuestionView = () => {
   const [options, setOptions] = useState([
     {
       label: '',
+      id: ''
     },
   ])
   const [answer, setAnswer] = useState('')
@@ -149,21 +150,21 @@ const QuestionView = () => {
 
   async function handleSaveButton() {
     const questionId = currentQuestion as string
-    let status = 'unanswered'
+    let status: ResponseStatus = ResponseStatus.unanswered
     if (answer) {
-      status = 'answered'
+      status = ResponseStatus.answered
       if (!answeredQuestions.includes(currentQuestion)) {
         setAnsweredQuestions([...answeredQuestions, currentQuestion])
       }
 
       if (markedAnsweredQuestions.includes(currentQuestion)) {
-        status = 'marked-answered'
+        status = ResponseStatus.markedanswer
         if (!answeredQuestions.includes(currentQuestion)) {
           setAnsweredQuestions([...answeredQuestions, currentQuestion])
         }
       }
       if (markedQuestions.includes(currentQuestion)) {
-        status = 'marked-answered'
+        status = ResponseStatus.markedanswer
         const indexInMarkedQuestions = markedQuestions.indexOf(currentQuestion)
         setMarkedQuestions(markedQuestions.filter((_, i) => i !== indexInMarkedQuestions))
         if (!markedAnsweredQuestions.includes(currentQuestion)) {
@@ -172,9 +173,9 @@ const QuestionView = () => {
       }
     }
     if (markedQuestions.includes(currentQuestion) && !answer) {
-      status = 'marked'
+      status = ResponseStatus.marked
     }
-    if (status === 'unanswered' || status === 'marked') {
+    if (status === ResponseStatus.unanswered || status === ResponseStatus.marked) {
       const answeredIndex = answeredQuestions.indexOf(currentQuestion)
       const markedAnsweredIndex = markedAnsweredQuestions.indexOf(currentQuestion)
 
@@ -247,7 +248,7 @@ const QuestionView = () => {
                 onChange={(event) => setAnswer(event)}
               >
                 {options.map((option) => (
-                  <Radio key={option.label} value={option.label} mb={4}>
+                  <Radio key={option.label} value={option.id} mb={4}>
                     {option.label}
                   </Radio>
                 ))}

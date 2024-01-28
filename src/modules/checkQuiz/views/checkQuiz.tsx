@@ -39,7 +39,6 @@ const CheckQuiz = () => {
 
   useEffect(() => {
     if (isFetched && data) {
-      console.log(data)
       setLeaderboard(data?.leaderboard[0]?.participants || [])
       setSections(data.sections)
       setTotalParticipants(data.participants)

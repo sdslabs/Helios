@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { useState, useEffect } from 'react'
-import { QuestionType } from '../../../types'
+import { QuestionType, ResponseStatus } from '../../../types'
 import { QuestionsCheckModal } from '../Modals/QuestionCheckModal'
 import { useQuestion } from '@checkQuiz/api/useQuestion'
 import { useResponse, useAllResponse } from '@checkQuiz/api/useResponse'
@@ -21,14 +21,6 @@ import useCheckResponse from '@checkQuiz/api/useCheckResponse'
 interface QuestionViewProps {
   quizId: string
   questionId: string
-}
-
-export enum ResponseStatus {
-  unanswered = 'unanswered',
-  answered = 'answered',
-  checked = 'checked',
-  markedanswer = 'marked-answered',
-  marked = 'marked',
 }
 
 interface Option {

@@ -80,12 +80,10 @@ const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
                   onClick={() => {
                     mutateQuestion({ quizId, sectionIdx: idx },{
                       onSuccess: (data) => {
-                        console.log(data)
                         addQuestion(idx, data.questionId)
                       },
                       onError: (err) => {
                         // TODO: handle error using toast or something else
-                        console.log(err)
                       }
                     })
                   }}

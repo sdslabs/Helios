@@ -19,7 +19,7 @@ import AssignView from '@checkQuiz/components/Assign'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import { useNavigate } from 'react-router-dom'
-import { ResponseStatus } from '../QuestionView'
+import { ResponseStatus } from '../../../../types'
 
 const SideNavContent = () => {
   const [

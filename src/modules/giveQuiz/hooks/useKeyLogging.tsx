@@ -77,7 +77,6 @@ const useKeyLogging = ({ handle }: { handle: FullScreenHandle }) => {
         handleSusAction('DEVTOOLS', 'Control+Shift+KeyJ');
       },
       'Alt+Tab': (event) => {
-        console.log('ALT+TAB');
         event.preventDefault();
         handleSusAction('ALT+TAB', 'Alt+Tab');
       },

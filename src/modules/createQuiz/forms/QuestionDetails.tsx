@@ -83,6 +83,7 @@ const QuestionDetails = () => {
       description,
       type,
       maxMarks: marks,
+      correctAnswer: type === QuestionType.SUB ? '' : answer,
       autoCheck: type === QuestionType.SUB ? false : autoCheck,
       options: type === QuestionType.SUB ? [] : options,
       checkerNotes: type === QuestionType.SUB ? notes : '',
