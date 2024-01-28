@@ -12,6 +12,7 @@ import { SubmitQuizModal } from './Modals/SubmitQuizModal'
 import { useParams } from 'react-router-dom'
 import useAuthStore from '@auth/store/authStore'
 import { QuestionType, ResponseStatus } from '../../types'
+import { toast } from 'react-toastify'
 
 const QuestionView = () => {
   const [questionType, setQuestionType] = useState('')
@@ -199,12 +200,18 @@ const QuestionView = () => {
         subjectiveAnswer: questionType !== QuestionType.MCQ ? answer : undefined,
         status: status,
       }
-
       mutate({ quizId, questionId, responseData },{
           onSuccess: () => {
+            toast.success('Response Saved Successfully', {
+              position: 'bottom-center',
+              autoClose: 1000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+            })
             nextQuestion()
           },
-        })
+      })
     }
   }
 

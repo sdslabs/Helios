@@ -31,6 +31,7 @@ const   giveQuiz = () => {
   }))
   const { mutate: log } = useLog()  
   const [quizStage, setQuizStage] = useState<GiveQuizSteps>(-1)
+  const [count, setCount] = useState<number>(0)
   const fullScreenHandle = useFullScreenHandle()
   const [isMediaPermission, setIsMediaPermission] = useState<boolean>(false);
   const { hasLocationAccess } = useLocationAccess();
@@ -56,13 +57,26 @@ const   giveQuiz = () => {
             toastId: 'fsToast',
           },
         );
-        log({
-          questionId: currentQuestion,
-          logType: LogType.FullScreenExit,
-          quizId: quizId
-        })
       } else {
         toast.dismiss('fsToast');
+        if(count){
+          setTimeout(() =>{toast.warn('Action Logged (FullScreen Exit), avoid exiting fullscreen during quiz',
+          {
+            position: 'top-center',
+				    autoClose: 5000,
+				    hideProgressBar: false,
+				    closeOnClick: true,
+				    pauseOnHover: true,
+				    draggable: true,
+				    progress: undefined,
+          })}, 2000)
+          log({
+            questionId: currentQuestion,
+            logType: LogType.FullScreenExit,
+            quizId: quizId
+          })
+        }
+        setCount(count + 1)
         setQuizStage(GiveQuizSteps.Instructions);
         const socket = io.connect(`${baseURL}`)
             if(isStarted) {
