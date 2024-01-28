@@ -30,7 +30,7 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
       mutate(quizId, {
         onSuccess: () => {
           setIsQuizSubmitted(true)
-          navigate('/')
+          navigate('/dashboard')
         },
       })
     }

@@ -48,7 +48,7 @@ function Countdown() {
             if (quizId) {
               mutate(quizId, {
                 onSuccess: () => {
-                  setIsModalOpen(true);
+                  navigate('/dashboard')
                 },
               })
             }
