@@ -13,7 +13,7 @@ import useLocationAccess from '@giveQuiz/hooks/useLocationAccess'
 import useKeyLogging from '@giveQuiz/hooks/useKeyLogging'
 import MediaAccess from '@giveQuiz/components/MediaAccess'
 import { ToastContainer, toast } from 'react-toastify'
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import 'react-toastify/dist/ReactToastify.css';
 import './style.css'
@@ -21,6 +21,7 @@ import useLog from '@giveQuiz/api/useLog'
 import { ipURL, baseURL } from '../../../config/config'
 import useAuthStore from '@auth/store/authStore'
 import * as io from 'socket.io-client'
+import { useSubmitQuiz } from '@giveQuiz/api/useUser'
 
 const   giveQuiz = () => {
   const { quizId } = useParams() as { quizId: string }
@@ -37,6 +38,8 @@ const   giveQuiz = () => {
   const user = useAuthStore((state) => state.user)
   const isStarted = useQuizStore((state) => state.isStarted)
   const { setIsStarted } = useQuizStore()
+  const { mutate } = useSubmitQuiz();
+  const navigate = useNavigate();
   const reportChange = useCallback(
     (state: boolean) => {
       if (state === false) {
@@ -68,6 +71,16 @@ const   giveQuiz = () => {
             socket.emit('join_quiz', { quizId: quizId, userId: user.userId })
             socket.on('sendTime', (timeLeft) => {
               setTimer(timeLeft)
+              if(timeLeft < 0) {
+                socket.disconnect();
+                if (quizId) {
+                  mutate(quizId, {
+                    onSuccess: () => {
+                      navigate('/dashboard')
+                    },
+                  })
+                }
+              }
               setIsStarted(true);
             })
       }

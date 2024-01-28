@@ -19,7 +19,7 @@ function QuizSummaryPie() {
   const [totalQuestions, setTotalQuestions] = useState(100)
 
   const data = {
-    labels: ['Not Visited', 'Answered', 'Marked for Review', 'Answered and Marked for Review'],
+    labels: ['Unanswered', 'Answered', 'Marked for Review', 'Answered and Marked for Review'],
     datasets: [
       {
         data: summaryData,
