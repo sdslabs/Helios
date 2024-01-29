@@ -226,7 +226,7 @@ const QuestionView = () => {
     )
   }, [currentQuestionIndex, currentSectionIndex])
 
-  if(isQuestionDataLoading){
+  if (isQuestionDataLoading) {
     return <Fetching />
   }
 
@@ -270,13 +270,12 @@ const QuestionView = () => {
               </RadioGroup>
               <Button
                 alignSelf='flex-end'
-                bg='none'
+                variant={'ghost'}
+                colorScheme='purple'
                 width='min-content'
                 onClick={handleClearResponse}
               >
-                <Text fontSize='1rem' color='accentBlack' fontWeight='400'>
-                  Clear Response
-                </Text>
+                Clear Response
               </Button>
             </Flex>
           ) : (
@@ -286,6 +285,17 @@ const QuestionView = () => {
           )}
           <Flex flexDirection='row' w='full' justifyContent='flex-end'>
             <Button
+              alignSelf='flex-end'
+              variant={'ghost'}
+              colorScheme='purple'
+              width='min-content'
+              mr={4}
+              onClick={handleClearResponse}
+              color='v6'
+            >
+              Clear Response
+            </Button>
+            <Button
               variant='outline'
               color='v6'
               borderColor='v6'
@@ -294,7 +304,7 @@ const QuestionView = () => {
                 isCurrentQuestionMarked ? removeFromMarkedQuestions : handleMarkedForReviewButton
               }
             >
-              {isCurrentQuestionMarked ? 'Unmark for Review' : 'Marked for Review'}
+              {isCurrentQuestionMarked ? 'Unmark for Review' : 'Mark for Review'}
             </Button>
 
             <Button
