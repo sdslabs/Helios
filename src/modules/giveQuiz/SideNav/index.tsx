@@ -60,20 +60,19 @@ const QuestionBubble = (props: QuestionBubbleProps) => {
   const isAnswered = answeredQuestions.includes(props.question)
   const isMarked = markedQuestions.includes(props.question)
   const isMarkedAndAnswered = markedAnsweredQuestions.includes(props.question)
+  const isNotVisited = !isAnswered && !isMarked && !isMarkedAndAnswered
 
   return (
     <>
       <Button
-        variant={
-          isAnswered || isMarked || isMarkedAndAnswered ? 'solid' : 'outline'
-        }
+        variant={isNotVisited ? 'ghost' : 'solid'}
         colorScheme={
-          isMarkedAndAnswered ? 'twitter' : isMarked ? 'orange' : isAnswered ? 'whatsapp' : 'purple'
+          isMarkedAndAnswered ? 'twitter' : isMarked ? 'yellow' : isAnswered ? 'whatsapp' : 'purple'
         }
         rounded='full'
-        boxShadow={isCurrentQuestion ? 'lg' : 'inner'}
-        
+        boxShadow={isCurrentQuestion ? 'lg' : 'inset 0 4px 4px 0 rgba(0,0,0,0.1)'}
         width='1'
+        textColor={isNotVisited ? 'v6' : 'white'}
         ml={4}
         onClick={() =>
           handleQuestionBubbleClick(
@@ -121,7 +120,7 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
         <BasicNavButton isActive={stage == 0} mb={2} onClick={() => setStage(0)}>
           Instructions
         </BasicNavButton>
-        <Accordion w='100%' allowToggle>
+        <Accordion w='100%' allowMultiple>
           {sections.map((section, sectionIndex) => (
             <AccordionItem key={sectionIndex} border='none'>
               {({ isExpanded }) => (
