@@ -1,31 +1,29 @@
 import { Center, Button, Text } from '@chakra-ui/react'
 
 interface BubbleProps {
-  Label: string
-  Value: number
-  BgColor: string
-  BorderColor: string
-  FontColor: string
+  label: string
+  value: number
+  variant: string
+  colorScheme: string
+  textColor: string
 }
 
-const Bubble = ({ Label, Value, BgColor, BorderColor, FontColor }: BubbleProps) => {
+const Bubble = ({ label, value, variant, colorScheme, textColor }: BubbleProps) => {
   return (
     <Center flexDirection='row' gap='1rem'>
       <Button
-        bgColor={BgColor}
-        variant='outline'
-        color={FontColor}
-        borderColor={BorderColor}
+        colorScheme={colorScheme}
+        variant={variant}
+        textColor={textColor}
         rounded='full'
-        borderRadius='2.5rem'
-        width='2.5rem'
-        height='2.5rem'
+        width={1}
+        boxShadow='inset 0 4px 4px 0 rgba(0,0,0,0.1)'
         _hover={{}}
         _focus={{}}
       >
-        {Value}
+        {value}
       </Button>
-      <Text fontWeight={600}>{Label}</Text>
+      <Text fontWeight={600}>{label}</Text>
     </Center>
   )
 }

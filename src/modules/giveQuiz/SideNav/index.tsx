@@ -65,14 +65,14 @@ const QuestionBubble = (props: QuestionBubbleProps) => {
   return (
     <>
       <Button
-        variant={isNotVisited ? 'ghost' : 'solid'}
+        variant={isNotVisited && !isCurrentQuestion ? 'ghost' : 'solid'}
         colorScheme={
           isMarkedAndAnswered ? 'twitter' : isMarked ? 'yellow' : isAnswered ? 'whatsapp' : 'purple'
         }
         rounded='full'
         boxShadow={isCurrentQuestion ? 'lg' : 'inset 0 4px 4px 0 rgba(0,0,0,0.1)'}
         width='1'
-        textColor={isNotVisited ? 'v6' : 'white'}
+        textColor={isNotVisited && !isCurrentQuestion ? 'v6' : 'white'}
         ml={4}
         onClick={() =>
           handleQuestionBubbleClick(

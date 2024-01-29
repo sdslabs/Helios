@@ -43,32 +43,32 @@ const SectionTopBar = () => {
     >
       <HStack spacing='2.5rem' height='100%' px={12} py={3}>
         <Bubble
-          Label='Unanswered'
-          Value={notVisitedQuestions}
-          BorderColor='v6'
-          BgColor='white'
-          FontColor='v6'
+          label='Unanswered'
+          value={notVisitedQuestions}
+          colorScheme={'purple'}
+          variant={'ghost'}
+          textColor='v6'
         />
         <Bubble
-          Label='Marked for Review'
-          Value={markedForReviewQuestions}
-          BgColor='yellowMarkedForReview'
-          BorderColor='markedForReviewBubbleBorder'
-          FontColor='white'
+          label='Marked for Review'
+          value={markedForReviewQuestions}
+          colorScheme={'yellow'}
+          variant={'solid'}
+          textColor='white'
         />
         <Bubble
-          Label='Answered'
-          Value={answeredQuestion}
-          BgColor='green'
-          BorderColor='answeredBubbleBorder'
-          FontColor='white'
+          label='Answered'
+          value={answeredQuestion}
+          colorScheme={'whatsapp'}
+          variant={'solid'}
+          textColor='white'
         />
         <Bubble
-          Label='Answered & Marked for Review'
-          Value={answeredAndMarkedForReviewQuestions}
-          BgColor='yellowMarkedForReview'
-          BorderColor='markedForReviewBubbleBorder'
-          FontColor='white'
+          label='Answered & Marked for Review'
+          value={answeredAndMarkedForReviewQuestions}
+          colorScheme={'twitter'}
+          variant={'solid'}
+          textColor='white'
         />
       </HStack>
       <Box justifySelf='end' color='v6' bgColor='v1' py={5} px={4} height='100%'>

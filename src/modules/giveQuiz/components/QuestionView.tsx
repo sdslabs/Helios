@@ -31,6 +31,7 @@ const QuestionView = () => {
   const [isLastQuestion, setIsLastQuestion] = useState(false)
   const { mutate: deleteResponse } = useDeleteResponse()
   const handleClearResponse = () => {
+    if (isCurrentQuestionMarked) removeFromMarkedQuestions()
     setAnswer('')
     const questionId = currentQuestion as string
     deleteResponse({ quizId, questionId })
