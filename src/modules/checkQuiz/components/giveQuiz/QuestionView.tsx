@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { useState, useEffect } from 'react'
-import { QuestionType, ResponseStatus } from '../../../types'
+import { QuestionType, ResponseStatus, Option } from '../../../types'
 import { QuestionsCheckModal } from '../Modals/QuestionCheckModal'
 import { useQuestion } from '@checkQuiz/api/useQuestion'
 import { useResponse, useAllResponse } from '@checkQuiz/api/useResponse'
@@ -21,12 +21,6 @@ import useCheckResponse from '@checkQuiz/api/useCheckResponse'
 interface QuestionViewProps {
   quizId: string
   questionId: string
-}
-
-interface Option {
-  _id: string
-  id: string
-  label: string
 }
 
 const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
@@ -83,7 +77,10 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
     isFetched: allResponsesIsFetched,
     refetch: allResponsesRefetch,
     error: allResponsesError,
-  } = useAllResponse({ quizId, questionId })
+  } = useAllResponse({
+    quizId,
+    questionId,
+  })
 
   useEffect(() => {
     if (questionIsFetched && questionData) {
@@ -116,7 +113,10 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
     if (responseIsFetched && responseData) {
       setResponse(responseData.response)
       if (responseData.response.status === ResponseStatus.answered) {
-        setResponse({ ...responseData.response, marksAwarded: 0 })
+        setResponse({
+          ...responseData.response,
+          marksAwarded: 0,
+        })
       }
     }
   }, [responseIsFetched, responseData])
@@ -251,9 +251,15 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
                 onChange={(e) => {
                   const marks = parseInt(e.target.value)
                   if (!isNaN(marks) && marks <= question.maxMarks) {
-                    setResponse({ ...response, marksAwarded: marks })
+                    setResponse({
+                      ...response,
+                      marksAwarded: marks,
+                    })
                   } else {
-                    setResponse({ ...response, marksAwarded: 0 })
+                    setResponse({
+                      ...response,
+                      marksAwarded: 0,
+                    })
                   }
                 }}
               />

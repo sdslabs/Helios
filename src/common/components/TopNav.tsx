@@ -44,8 +44,9 @@ const TopNav = ({ isDashboard = false, isAdmin = false }: TopNavProps) => {
             + Host Quiz
           </Button>
         )}
-        {isDashboard && (<>
-          <Avatar name='User Name' src={profileUrl} size='sm' />
+        {isDashboard && (
+          <>
+            <Avatar name='User Name' src={profileUrl} size='sm' />
           </>
         )}
       </HStack>

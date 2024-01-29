@@ -8,6 +8,7 @@ interface Section {
 
 interface QuizStore {
   quizId: string
+  quizName: string
   currentQuestion: string
   timer: number
   sections: Section[]
@@ -22,6 +23,7 @@ interface QuizStore {
   isCurrentQuestionMarked: boolean
 
   setQuizId: (to: string) => void
+  setQuizName: (to: string) => void
   setCurrentQuestion: (to: string) => void
   setTimer: (to: number) => void
   setSections: (to: Section[]) => void
@@ -45,6 +47,7 @@ interface QuizStore {
 
 const useQuizStore = create<QuizStore>((set) => ({
   quizId: '',
+  quizName: '',
   sections: [],
   currentQuestion: '',
   currentQuestionIndex: 1,
@@ -59,6 +62,7 @@ const useQuizStore = create<QuizStore>((set) => ({
   isCurrentQuestionMarked: false,
 
   setQuizId: (to: string) => set({ quizId: to }),
+  setQuizName: (to: string) => set({ quizName: to }),
   setCurrentQuestion: (to: string) => set({ currentQuestion: to }),
   setTimer: (to: number) => set({ timer: to }),
   setSections: (to: Section[]) => set({ sections: to }),
@@ -72,8 +76,10 @@ const useQuizStore = create<QuizStore>((set) => ({
   setIsStarted: (to: boolean) => set({ isStarted: to }),
   setIsCurrentQuestionMarked: (to: boolean) => set({ isCurrentQuestionMarked: to }),
 
-  nextQuestion: () =>
+  nextQuestion: () =>{
+    set({ isCurrentQuestionMarked: false })
     set((state) => {
+      
       if (
         state.currentQuestionIndex >= state.sections[state.currentSectionIndex - 1].questions.length
       ) {
@@ -93,7 +99,8 @@ const useQuizStore = create<QuizStore>((set) => ({
             state.sections[state.currentSectionIndex - 1].questions[state.currentQuestionIndex], // And here
         }
       }
-    }),
+    })
+  },
 }))
 
 export default useQuizStore

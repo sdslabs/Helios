@@ -10,131 +10,137 @@ import {
 } from '@giveQuiz/api/useResponse'
 import { SubmitQuizModal } from './Modals/SubmitQuizModal'
 import { useParams } from 'react-router-dom'
-import useAuthStore from '@auth/store/authStore'
-import { QuestionType, ResponseStatus } from '../../types'
+import { Option, QuestionType, ResponseStatus } from '../../types'
 import { toast } from 'react-toastify'
 import Fetching from '../../../animations/Fetching'
+import removeFromArray from '@giveQuiz/utils/removeFromArray'
+import handleQuestionShift from '@giveQuiz/utils/handleQuestionShift'
+import { useQueryClient } from '@tanstack/react-query'
 
 const QuestionView = () => {
   const [questionType, setQuestionType] = useState('')
-  const [sectionName, setSectionName] = useState('')
   const [questionNumber, setQuestionNumber] = useState(1)
   const [question, setQuestion] = useState('')
-  const [options, setOptions] = useState([
-    {
-      label: '',
-      id: '',
-    },
-  ])
+  const [options, setOptions] = useState<Option[]>([])
   const [answer, setAnswer] = useState('')
   const [mark, setMark] = useState(4)
   const [isLastQuestion, setIsLastQuestion] = useState(false)
   const { mutate: deleteResponse } = useDeleteResponse()
-  const handleClearResponse = () => {
-    if (isCurrentQuestionMarked) removeFromMarkedQuestions()
-    setAnswer('')
-    const questionId = currentQuestion as string
-    deleteResponse({ quizId, questionId })
-    const markedIndex = markedQuestions.indexOf(currentQuestion)
-    const markedAnsweredIndex = markedAnsweredQuestions.indexOf(currentQuestion)
-    const answeredIndex = answeredQuestions.indexOf(currentQuestion)
-
-    if (markedIndex !== -1) {
-      setMarkedQuestions(markedQuestions.filter((_, i) => i !== markedIndex))
-    }
-    if (markedAnsweredIndex !== -1) {
-      setMarkedAnsweredQuestions(
-        markedAnsweredQuestions.filter((_, i) => i !== markedAnsweredIndex),
-      )
-    }
-    if (answeredIndex !== -1) {
-      setAnsweredQuestions(answeredQuestions.filter((_, i) => i !== answeredIndex))
-    }
+  const {
+    currentQuestion,
+    currentSection,
+    currentSectionIndex,
+    currentQuestionIndex,
+    answeredQuestions,
+    isCurrentQuestionMarked,
+    sections,
+    nextQuestion,
+    setIsCurrentQuestionMarked,
+    markedQuestions,
+    markedAnsweredQuestions,
+  } = useQuizStore()
+  const { quizId } = useParams() as {
+    quizId: string
   }
-
-  const currentQuestion = useQuizStore((state) => state.currentQuestion)
-  const currentSection = useQuizStore((state) => state.currentSection)
-  const currentSectionIndex = useQuizStore((state) => state.currentSectionIndex)
-  const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex)
-  const answeredQuestions = useQuizStore((state) => state.answeredQuestions)
-  const isCurrentQuestionMarked = useQuizStore((state) => state.isCurrentQuestionMarked)
-  const sections = useQuizStore((state) => state.sections)
-  const { nextQuestion, setIsCurrentQuestionMarked } = useQuizStore()
-  const markedQuestions = useQuizStore((state) => state.markedQuestions)
-  const markedAnsweredQuestions = useQuizStore((state) => state.markedAnsweredQuestions)
-  const user = useAuthStore((state) => state.user)
-  const { quizId } = useParams() as { quizId: string }
   const { mutate } = useCreateUpdateResponse()
   const {
     data: questionData,
     isLoading: isQuestionDataLoading,
     isSuccess: isQuestionDataSuccess,
-    error: questionError,
-  } = useGetQuestion(currentQuestion as string)
+  } = useGetQuestion(currentQuestion)
   const { setAnsweredQuestions, setMarkedQuestions, setMarkedAnsweredQuestions } = useQuizStore()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen)
   }
 
-  function handleMarkedForReviewButton() {
-    setIsCurrentQuestionMarked(true)
-    const indexInMarkedQuestions = markedQuestions.indexOf(currentQuestion)
-    const indexInMarkedAnsweredQuestions = markedAnsweredQuestions.indexOf(currentQuestion)
-    if (answer) {
-      if (indexInMarkedQuestions !== -1) {
-        setMarkedQuestions(markedQuestions.filter((_, i) => i !== indexInMarkedQuestions))
-        if (!markedAnsweredQuestions.includes(currentQuestion)) {
-          setMarkedAnsweredQuestions([...markedAnsweredQuestions, currentQuestion])
-        }
-      }
-      if (!markedAnsweredQuestions.includes(currentQuestion)) {
-        setMarkedAnsweredQuestions([...markedAnsweredQuestions, currentQuestion])
-      }
-    } else {
-      if (indexInMarkedAnsweredQuestions !== -1) {
-        setMarkedAnsweredQuestions(
-          markedAnsweredQuestions.filter((_, i) => i !== indexInMarkedAnsweredQuestions),
-        )
-        if (!markedQuestions.includes(currentQuestion)) {
-          setMarkedQuestions([...markedQuestions, currentQuestion])
-        }
-      }
-      if (!markedQuestions.includes(currentQuestion)) {
-        setMarkedQuestions([...markedQuestions, currentQuestion])
-      }
-    }
+  const { data: getResponseData, isSuccess: isGetResponseSuccess } = useGetResponse(
+    quizId,
+    currentQuestion,
+  )
+
+  const handleClearResponse = () => {
+    setAnswer('')
+    deleteResponse({
+      quizId,
+      questionId: currentQuestion,
+    })
+    removeFromArray(answeredQuestions, currentQuestion, setAnsweredQuestions)
+    removeFromArray(markedQuestions, currentQuestion, setMarkedQuestions)
+    removeFromArray(markedAnsweredQuestions, currentQuestion, setMarkedAnsweredQuestions)
   }
 
-  async function removeFromMarkedQuestions() {
-    setIsCurrentQuestionMarked(false)
-    const markedIndex = markedQuestions.indexOf(currentQuestion)
-    const markedAnsweredIndex = markedAnsweredQuestions.indexOf(currentQuestion)
-
-    if (markedIndex !== -1) {
-      setMarkedQuestions(markedQuestions.filter((_, i) => i !== markedIndex))
+  async function handleSaveButton() {
+    let status: ResponseStatus = ResponseStatus.unanswered
+    if (!answer && !isCurrentQuestionMarked) {
+      toast.info('This question is unanswered and not marked for review', {
+        position: 'bottom-center',
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: 'colored',
+      })
+    } else if (!answer && isCurrentQuestionMarked) {
+      status = ResponseStatus.marked
+    } else if (answer && !isCurrentQuestionMarked) {
+      status = ResponseStatus.answered
+    } else if (answer && isCurrentQuestionMarked) {
+      status = ResponseStatus.markedanswer
     }
-    if (markedAnsweredIndex !== -1) {
-      setMarkedAnsweredQuestions(
-        markedAnsweredQuestions.filter((_, i) => i !== markedAnsweredIndex),
-      )
+    handleQuestionShift(
+      markedAnsweredQuestions,
+      answeredQuestions,
+      markedQuestions,
+      setMarkedAnsweredQuestions,
+      setAnsweredQuestions,
+      setMarkedQuestions,
+      currentQuestion,
+      status,
+    )
+    if (status === ResponseStatus.unanswered) {
+      deleteResponse({
+        quizId,
+        questionId: currentQuestion,
+      })
+      return nextQuestion()
     }
+    const responseData = {
+      selectedOptionId: questionType === QuestionType.MCQ ? answer : undefined,
+      subjectiveAnswer: questionType !== QuestionType.MCQ ? answer : undefined,
+      status: status,
+    }
+    mutate(
+      {
+        quizId,
+        questionId: currentQuestion,
+        responseData,
+      },
+      {
+        onSuccess: () => {
+          toast.success('Response Saved Successfully', {
+            position: 'bottom-center',
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+          })
+          nextQuestion()
+          useQueryClient().invalidateQueries({
+            exact: true,
+            queryKey: ['response', quizId, currentQuestion],
+          })
+        },
+      },
+    )
   }
 
   useEffect(() => {
-    if (isQuestionDataSuccess) {
-      setQuestion(questionData.question.description)
-      setQuestionNumber(currentQuestionIndex as number)
-      setOptions(questionData.question.options)
-      setMark(questionData.question.maxMarks)
-      setQuestionType(questionData.question.type)
-    }
-  }, [isQuestionDataSuccess, currentQuestion, currentSection, currentQuestionIndex, questionData])
-
-  const { data: getResponseData, isSuccess: isGetResponseSuccess } = useGetResponse(
-    quizId || '',
-    currentQuestion || '',
-  )
+    setIsLastQuestion(
+      currentQuestionIndex === sections[currentSectionIndex - 1].questions.length &&
+        currentSectionIndex === sections.length,
+    )
+  }, [currentQuestionIndex, currentSectionIndex])
 
   useEffect(() => {
     if (isGetResponseSuccess) {
@@ -145,87 +151,30 @@ const QuestionView = () => {
         } else if (firstItem.subjectiveAnswer) {
           setAnswer(firstItem.subjectiveAnswer)
         }
+        if (
+          firstItem.status === ResponseStatus.markedanswer ||
+          firstItem.status === ResponseStatus.marked
+        ) {
+          setIsCurrentQuestionMarked(true)
+        } else {
+          setIsCurrentQuestionMarked(false)
+        }
       } else {
         setAnswer('')
+        setIsCurrentQuestionMarked(false)
       }
     }
   }, [isGetResponseSuccess, getResponseData])
 
-  async function handleSaveButton() {
-    const questionId = currentQuestion as string
-    let status: ResponseStatus = ResponseStatus.unanswered
-    if (answer) {
-      status = ResponseStatus.answered
-      if (!answeredQuestions.includes(currentQuestion)) {
-        setAnsweredQuestions([...answeredQuestions, currentQuestion])
-      }
-
-      if (markedAnsweredQuestions.includes(currentQuestion)) {
-        status = ResponseStatus.markedanswer
-        if (!answeredQuestions.includes(currentQuestion)) {
-          setAnsweredQuestions([...answeredQuestions, currentQuestion])
-        }
-      }
-      if (markedQuestions.includes(currentQuestion)) {
-        status = ResponseStatus.markedanswer
-        const indexInMarkedQuestions = markedQuestions.indexOf(currentQuestion)
-        setMarkedQuestions(markedQuestions.filter((_, i) => i !== indexInMarkedQuestions))
-        if (!markedAnsweredQuestions.includes(currentQuestion)) {
-          setMarkedAnsweredQuestions([...markedAnsweredQuestions, currentQuestion])
-        }
-      }
-    }
-    if (markedQuestions.includes(currentQuestion) && !answer) {
-      status = ResponseStatus.marked
-    }
-    if (status === ResponseStatus.unanswered || status === ResponseStatus.marked) {
-      const answeredIndex = answeredQuestions.indexOf(currentQuestion)
-      const markedAnsweredIndex = markedAnsweredQuestions.indexOf(currentQuestion)
-
-      if (answeredIndex !== -1) {
-        setMarkedQuestions(answeredQuestions.filter((_, i) => i !== answeredIndex))
-      }
-      if (markedAnsweredIndex !== -1) {
-        setMarkedAnsweredQuestions(
-          markedAnsweredQuestions.filter((_, i) => i !== markedAnsweredIndex),
-        )
-      }
-      nextQuestion()
-    } else {
-      const responseData = {
-        user: {
-          userId: user.userId,
-          emailAdd: user.emailAdd,
-          role: user.role,
-        },
-        selectedOptionId: questionType === QuestionType.MCQ ? answer : undefined,
-        subjectiveAnswer: questionType !== QuestionType.MCQ ? answer : undefined,
-        status: status,
-      }
-      mutate(
-        { quizId, questionId, responseData },
-        {
-          onSuccess: () => {
-            toast.success('Response Saved Successfully', {
-              position: 'bottom-center',
-              autoClose: 1000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-            })
-            nextQuestion()
-          },
-        },
-      )
-    }
-  }
-
   useEffect(() => {
-    setIsLastQuestion(
-      currentQuestionIndex === sections[currentSectionIndex - 1].questions.length &&
-        currentSectionIndex === sections.length,
-    )
-  }, [currentQuestionIndex, currentSectionIndex])
+    if (isQuestionDataSuccess) {
+      setQuestion(questionData.question.description)
+      setQuestionNumber(currentQuestionIndex as number)
+      setOptions(questionData.question.options)
+      setMark(questionData.question.maxMarks)
+      setQuestionType(questionData.question.type)
+    }
+  }, [isQuestionDataSuccess, currentQuestionIndex, questionData])
 
   if (isQuestionDataLoading) {
     return <Fetching />
@@ -241,7 +190,7 @@ const QuestionView = () => {
           justifyContent='center'
         >
           <Text fontSize='2rem' fontWeight='700' mb={6} alignSelf='start'>
-            {sectionName}
+            {sections[currentSectionIndex - 1]?.name}
           </Text>
           <Flex flexDirection='row' w='full' justifyContent='space-between'>
             <Text fontSize='1rem' fontWeight='600' mb={6} alignSelf='self-start'>
@@ -286,33 +235,18 @@ const QuestionView = () => {
           )}
           <Flex flexDirection='row' w='full' justifyContent='flex-end'>
             <Button
-              alignSelf='flex-end'
-              variant={'ghost'}
-              colorScheme='purple'
-              width='min-content'
-              mr={4}
-              onClick={handleClearResponse}
-              color='v6'
-            >
-              Clear Response
-            </Button>
-            <Button
               variant='outline'
               color='v6'
               borderColor='v6'
               mr={4}
-              onClick={
-                isCurrentQuestionMarked ? removeFromMarkedQuestions : handleMarkedForReviewButton
-              }
+              onClick={() => setIsCurrentQuestionMarked(!isCurrentQuestionMarked)}
             >
               {isCurrentQuestionMarked ? 'Unmark for Review' : 'Mark for Review'}
             </Button>
-
             <Button
               colorScheme='purple'
               bgColor='brand'
               alignSelf='flex-end'
-              //TODO:  on click save and next
               onClick={handleSaveButton}
             >
               {isLastQuestion ? 'Save' : 'Save & Next'}

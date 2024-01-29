@@ -6,8 +6,3 @@ export enum QuizCreationSteps {
   questionDetails = 4,
   registrants = 5,
 }
-
-export interface Option {
-  id: string
-  label: string
-}
