@@ -145,8 +145,15 @@ const QuestionView = () => {
         } else if (firstItem.subjectiveAnswer) {
           setAnswer(firstItem.subjectiveAnswer)
         }
+        if(firstItem.status === ResponseStatus.markedanswer || firstItem.status === ResponseStatus.marked){
+          console.log('here')
+          setIsCurrentQuestionMarked(true)
+        } else {
+          setIsCurrentQuestionMarked(false)
+        }
       } else {
         setAnswer('')
+        setIsCurrentQuestionMarked(false)
       }
     }
   }, [isGetResponseSuccess, getResponseData])
@@ -178,7 +185,7 @@ const QuestionView = () => {
     if (markedQuestions.includes(currentQuestion) && !answer) {
       status = ResponseStatus.marked
     }
-    if (status === ResponseStatus.unanswered || status === ResponseStatus.marked) {
+    // if (status === ResponseStatus.unanswered || status === ResponseStatus.marked) {
       const answeredIndex = answeredQuestions.indexOf(currentQuestion)
       const markedAnsweredIndex = markedAnsweredQuestions.indexOf(currentQuestion)
 
@@ -191,7 +198,7 @@ const QuestionView = () => {
         )
       }
       nextQuestion()
-    } else {
+    // } else {
       const responseData = {
         user: {
           userId: user.userId,
@@ -202,6 +209,7 @@ const QuestionView = () => {
         subjectiveAnswer: questionType !== QuestionType.MCQ ? answer : undefined,
         status: status,
       }
+      console.log(responseData)
       mutate(
         { quizId, questionId, responseData },
         {
@@ -217,7 +225,7 @@ const QuestionView = () => {
           },
         },
       )
-    }
+    // }
   }
 
   useEffect(() => {
@@ -285,17 +293,6 @@ const QuestionView = () => {
             </Box>
           )}
           <Flex flexDirection='row' w='full' justifyContent='flex-end'>
-            <Button
-              alignSelf='flex-end'
-              variant={'ghost'}
-              colorScheme='purple'
-              width='min-content'
-              mr={4}
-              onClick={handleClearResponse}
-              color='v6'
-            >
-              Clear Response
-            </Button>
             <Button
               variant='outline'
               color='v6'
