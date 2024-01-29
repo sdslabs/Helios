@@ -36,7 +36,8 @@ interface QuizData {
 
 const Instructions = ({ stage, setStage }: SideNavContentProps) => {
   const [quizInstructions, setQuizInstructions] = useState('')
-  const [quizName, setQuizName] = useState('')
+  const quizName = useQuizStore((state) => state.quizName)
+  const setQuizName = useQuizStore((state) => state.setQuizName)
   const [quizDescription, setQuizDescription] = useState('')
   const setCurrentSection = useQuizStore((state) => state.setCurrentSection)
   const setCurrentSectionIndex = useQuizStore((state) => state.setCurrentSectionIndex)

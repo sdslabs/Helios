@@ -10,7 +10,6 @@ interface SideNavContentProps {
 
 const SectionInstructions = ({ stage, setStage }: SideNavContentProps) => {
   const [sectionInstructions, setSectionInstructions] = useState('')
-  const [sectionNumber, setSectionNumber] = useState(1)
   const currentSection = useQuizStore((state) => state.currentSection)
   const currentSectionIndex = useQuizStore((state) => state.currentSectionIndex)
   const setCurrentQuestion = useQuizStore((state) => state.setCurrentQuestion)
@@ -22,7 +21,6 @@ const SectionInstructions = ({ stage, setStage }: SideNavContentProps) => {
   }
   useEffect(() => {
     setSectionInstructions(currentSection?.description)
-    setSectionNumber(currentSectionIndex)
     setCurrentQuestion(currentSection.questions[0])
     setCurrentQuestionIndex(1)
   }, [currentSection, currentSectionIndex])
@@ -38,7 +36,7 @@ const SectionInstructions = ({ stage, setStage }: SideNavContentProps) => {
             justifyContent='center'
           >
             <Text fontSize='2rem' fontWeight='700' mb={4} alignSelf='start'>
-              Section {sectionNumber}
+              {currentSection?.name}
             </Text>
             <Text fontSize='1.5rem' fontWeight='600' mb={4} alignSelf='self-start'>
               Section Instructions

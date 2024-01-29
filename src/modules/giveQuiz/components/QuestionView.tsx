@@ -17,7 +17,6 @@ import Fetching from '../../../animations/Fetching'
 
 const QuestionView = () => {
   const [questionType, setQuestionType] = useState('')
-  const [sectionName, setSectionName] = useState('')
   const [questionNumber, setQuestionNumber] = useState(1)
   const [question, setQuestion] = useState('')
   const [options, setOptions] = useState([
@@ -248,7 +247,7 @@ const QuestionView = () => {
           justifyContent='center'
         >
           <Text fontSize='2rem' fontWeight='700' mb={6} alignSelf='start'>
-            {sectionName}
+            {currentSection?.name}
           </Text>
           <Flex flexDirection='row' w='full' justifyContent='space-between'>
             <Text fontSize='1rem' fontWeight='600' mb={6} alignSelf='self-start'>

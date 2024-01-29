@@ -96,6 +96,7 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
     setIsModalOpen(!isModalOpen)
   }
 
+  const { quizName } = useQuizStore()
   const { sections, setCurrentSection, setCurrentSectionIndex } = useQuizStore()
 
   const handleSectionClick = (sectionIndex: number): void => {
@@ -115,7 +116,7 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
         pl={6}
       >
         <Heading fontSize='xl' color='brand' pl={4} pb={6}>
-          Quiz Name
+          {quizName}
         </Heading>
         <BasicNavButton isActive={stage == 0} mb={2} onClick={() => setStage(0)}>
           Instructions
