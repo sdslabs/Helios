@@ -27,7 +27,7 @@ const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProp
       <Flex flexDirection='row' alignItems='center' justifyContent='center' mb={3}>
         <Box bgColor={BgColor[0]} w='1rem' h='1rem' borderRadius='20%' alignSelf='center' />
         <Text fontSize='0.875rem' fontWeight='400' ml={3} color='accentBlack'>
-          Not visited:&nbsp;
+          Unaswered:&nbsp;
         </Text>
         <Text fontSize='0.875rem' fontWeight='600' color='accentBlack'>
           {notVisitedQuestions}
