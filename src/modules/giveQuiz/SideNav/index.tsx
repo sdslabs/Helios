@@ -22,17 +22,26 @@ interface SideNavContentProps {
   setStage: (stage: GiveQuizSteps) => void
 }
 
-const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
-  useWindowFocus()
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen)
-  }
-  const sections = useQuizStore((state) => state.sections)
-  const setCurrentQuestion = useQuizStore((state) => state.setCurrentQuestion)
-  const setCurrentSection = useQuizStore((state) => state.setCurrentSection)
-  const setCurrentQuestionIndex = useQuizStore((state) => state.setCurrentQuestionIndex)
-  const setCurrentSectionIndex = useQuizStore((state) => state.setCurrentSectionIndex)
+interface QuestionBubbleProps {
+  stage: GiveQuizSteps
+  setStage: (stage: GiveQuizSteps) => void
+  question: string
+  sectionName: string
+  questionIndex: number
+  sectionIndex: number
+}
+
+const QuestionBubble = (props: QuestionBubbleProps) => {
+  const {
+    currentQuestionIndex,
+    currentSectionIndex,
+    markedQuestions,
+    markedAnsweredQuestions,
+    answeredQuestions,
+    setCurrentQuestion,
+    setCurrentQuestionIndex,
+    setCurrentSectionIndex,
+  } = useQuizStore()
 
   const handleQuestionBubbleClick = (
     questionId: string,
@@ -43,8 +52,51 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
     setCurrentQuestion(questionId)
     setCurrentQuestionIndex(questionIndex)
     setCurrentSectionIndex(sectionIndex)
-    setStage(2)
+    props.setStage(2)
   }
+
+  const isCurrentQuestion =
+    props.questionIndex + 1 == currentQuestionIndex && props.sectionIndex + 1 == currentSectionIndex
+  const isAnswered = answeredQuestions.includes(props.question)
+  const isMarked = markedQuestions.includes(props.question)
+  const isMarkedAndAnswered = markedAnsweredQuestions.includes(props.question)
+  const isNotVisited = !isAnswered && !isMarked && !isMarkedAndAnswered
+
+  return (
+    <>
+      <Button
+        variant={isNotVisited && !isCurrentQuestion ? 'ghost' : 'solid'}
+        colorScheme={
+          isMarkedAndAnswered ? 'twitter' : isMarked ? 'yellow' : isAnswered ? 'whatsapp' : 'purple'
+        }
+        rounded='full'
+        boxShadow={isCurrentQuestion ? 'lg' : 'inset 0 4px 4px 0 rgba(0,0,0,0.1)'}
+        width='1'
+        textColor={isNotVisited && !isCurrentQuestion ? 'v6' : 'white'}
+        ml={4}
+        onClick={() =>
+          handleQuestionBubbleClick(
+            props.question,
+            props.sectionName,
+            props.questionIndex + 1,
+            props.sectionIndex + 1,
+          )
+        }
+      >
+        {props.questionIndex + 1}
+      </Button>
+    </>
+  )
+}
+
+const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
+  useWindowFocus()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen)
+  }
+
+  const { sections, setCurrentSection, setCurrentSectionIndex } = useQuizStore()
 
   const handleSectionClick = (sectionIndex: number): void => {
     setStage(1)
@@ -68,42 +120,42 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
         <BasicNavButton isActive={stage == 0} mb={2} onClick={() => setStage(0)}>
           Instructions
         </BasicNavButton>
-        {sections.map((section, sectionIndex) => (
-          <Accordion key={sectionIndex} w='100%' allowToggle>
-            <AccordionItem border='none'>
-              <AccordionButton color='v6' onClick={() => handleSectionClick(sectionIndex + 1)}>
-                <Text flexGrow={1} textAlign='left' fontWeight='600'>
-                  {section.name}
-                </Text>
-                <AccordionIcon />
-              </AccordionButton>
-              <AccordionPanel pb={4} px={0}>
-                {Array.isArray(section.questions)
-                  ? section.questions.map((question, index) => (
-                      <Button
-                        key={index}
-                        variant='outline'
-                        colorScheme='purple'
-                        rounded='full'
-                        width='1'
-                        ml={4}
-                        onClick={() =>
-                          handleQuestionBubbleClick(
-                            question,
-                            section.name,
-                            index + 1,
-                            sectionIndex + 1,
-                          )
-                        }
-                      >
-                        {index + 1}
-                      </Button>
-                    ))
-                  : null}
-              </AccordionPanel>
+        <Accordion w='100%' allowMultiple>
+          {sections.map((section, sectionIndex) => (
+            <AccordionItem key={sectionIndex} border='none'>
+              {({ isExpanded }) => (
+                <>
+                  <AccordionButton
+                    color='v6'
+                    onClick={() => {
+                      handleSectionClick(sectionIndex + 1)
+                    }}
+                  >
+                    <Text flexGrow={1} textAlign='left' fontWeight='600'>
+                      {section.name}
+                    </Text>
+                    <AccordionIcon />
+                  </AccordionButton>
+                  <AccordionPanel pb={4} px={0}>
+                    {Array.isArray(section.questions)
+                      ? section.questions.map((question, index) => (
+                          <QuestionBubble
+                            key={index}
+                            stage={stage}
+                            setStage={setStage}
+                            question={question}
+                            sectionName={section.name}
+                            questionIndex={index}
+                            sectionIndex={sectionIndex}
+                          />
+                        ))
+                      : null}
+                  </AccordionPanel>
+                </>
+              )}
             </AccordionItem>
-          </Accordion>
-        ))}
+          ))}
+        </Accordion>
         <VStack flexGrow={1} justifyContent='flex-end' w='100%' alignItems='stretch'>
           <Button variant='outline' color='v6' borderColor='v6' onClick={toggleModal}>
             Submit Quiz
