@@ -216,11 +216,10 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
               >
                 {question.options.map((option: Option) => (
                   <Radio
-                    key={option._id}
-                    value={option.label}
+                    key={option.id}
+                    value={option.id}
                     mb={4}
-                    isDisabled
-                    isChecked={response.selectedOptionId === option.label}
+                    isChecked={response.selectedOptionId === option.id}
                   >
                     {option.label}
                   </Radio>
