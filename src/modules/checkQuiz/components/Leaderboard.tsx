@@ -3,6 +3,7 @@ import { createColumnHelper } from '@tanstack/react-table'
 import Table from '@checkQuiz/components/Table'
 import QuestionCounter from './QuestionCounter'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
+import { useEffect, useState } from 'react'
 
 type Leaderboard = {
   Sr: number
@@ -52,6 +53,10 @@ const columns = [
 
 const Leaderboard = () => {
   const [leaderboard] = useCheckQuizStore((state) => [state.leaderboard])
+  const [_,refresh] = useState<number>(0);
+  useEffect(()=>{
+    refresh((state)=>{return state++});
+  },[leaderboard])
   return (
     <Box mx='auto' my='8vh'>
       <Table data={leaderboard} columns={columns} />
