@@ -13,6 +13,12 @@ const Dashboard = () => {
   const setDetails = useUserDetailsStore((state) => state.setDetails)
   const { user } = useAuthStore()
   const isAdmin = user.role === UserRoles.admin
+  navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+    stream.getTracks().forEach((track) => {
+      track.stop()
+      track.enabled = false
+    })
+  })
 
   useEffect(() => {
     if (data) {

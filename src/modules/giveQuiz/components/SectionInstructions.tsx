@@ -11,12 +11,8 @@ interface SideNavContentProps {
 
 const SectionInstructions = ({ stage, setStage }: SideNavContentProps) => {
   const [sectionInstructions, setSectionInstructions] = useState('')
-  const {
-    currentSection,
-    currentSectionIndex,
-    setCurrentQuestion,
-    setCurrentQuestionIndex,
-  } = useQuizStore()
+  const { currentSection, currentSectionIndex, setCurrentQuestion, setCurrentQuestionIndex } =
+    useQuizStore()
 
   async function handleButtonClick() {
     setCurrentQuestion(currentSection.questions[0])

@@ -23,6 +23,9 @@ const theme = extendTheme({
   components: {
     Steps,
   },
+  shadows: {
+    depth: 'inset 0 4px 4px 0 rgba(0,0,0,0.1)'
+  }
 })
 
 export default theme

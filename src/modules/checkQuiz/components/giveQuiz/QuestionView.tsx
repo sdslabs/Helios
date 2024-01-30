@@ -244,12 +244,14 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
               </Text>
               <Input
                 colorScheme='accentBlack'
+                type='number'
                 fontSize={'0.875rem'}
                 w={'4rem'}
                 ml={2}
+                step={0.1}
                 value={response.marksAwarded}
                 onChange={(e) => {
-                  const marks = parseInt(e.target.value)
+                  const marks = parseFloat(e.target.value)
                   if (!isNaN(marks) && marks <= question.maxMarks) {
                     setResponse({
                       ...response,

@@ -76,10 +76,9 @@ const useQuizStore = create<QuizStore>((set) => ({
   setIsStarted: (to: boolean) => set({ isStarted: to }),
   setIsCurrentQuestionMarked: (to: boolean) => set({ isCurrentQuestionMarked: to }),
 
-  nextQuestion: () =>{
+  nextQuestion: () => {
     set({ isCurrentQuestionMarked: false })
     set((state) => {
-      
       if (
         state.currentQuestionIndex >= state.sections[state.currentSectionIndex - 1].questions.length
       ) {

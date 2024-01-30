@@ -42,11 +42,11 @@ const TabViewDashboard = () => {
         <TabIndicator mt='-1.5px' height='2px' bg='brand' borderRadius='1px' />
         <TabPanels>
           <TabPanel>
-            <Filters SelectFilter totalMCQs={totalMCQs} />
+            <Filters totalMCQs={totalMCQs} sections={sections} question />
             {sections && <QuestionsBoard quizId={quizId} />}
           </TabPanel>
           <TabPanel>
-            <Filters SearchBox totalMCQs={totalMCQs} />
+            <Filters totalMCQs={totalMCQs} sections={sections} participants />
             <Leaderboard />
           </TabPanel>
         </TabPanels>

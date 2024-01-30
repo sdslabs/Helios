@@ -1,5 +1,5 @@
 import { Flex, Button, Text, Box, RadioGroup, Radio } from '@chakra-ui/react'
-import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
+import CustomRichTextEditor, { renderPreview } from '@common/components/CustomRichTextEditor'
 import { useState, useEffect } from 'react'
 import useQuizStore from '../store/QuizStore'
 import { useGetQuestion } from '../api/useQuiz'
@@ -181,7 +181,7 @@ const QuestionView = () => {
   }
 
   return (
-    <Box as='main' display='flex' mt={10}>
+    <Box as='main' display='flex' mt={10} overflow='scroll'>
       <Flex flexDirection='column' alignItems='center' justifyContent='center' w={'full'}>
         <Flex
           width='min-content'
@@ -200,8 +200,8 @@ const QuestionView = () => {
               {mark} Marks
             </Text>
           </Flex>
-          <Text fontSize='1rem' fontWeight='400' mb={6} w='58.5rem' p={4} bgColor='v1'>
-            {question}
+          <Text fontSize='1rem' fontWeight='400' mb={6} w='58.5rem' p={4} bgColor='v1' overflow='scroll'>
+            {renderPreview(question)}
           </Text>
           {questionType === 'mcq' ? (
             <Flex flexDirection='column' w={'full'} mb={4}>

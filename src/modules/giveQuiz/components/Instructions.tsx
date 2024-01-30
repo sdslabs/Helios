@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { GiveQuizSteps } from '../types'
 import { useGetQuiz } from '../api/useQuiz'
 import useQuizStore from '../store/QuizStore'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { renderPreview } from '@common/components/CustomRichTextEditor'
 
 interface SideNavContentProps {
@@ -55,13 +55,16 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
     data: quizData,
     isLoading: isQuizDataLoading,
     isSuccess: isQuizDataSuccess,
+    isError: isQuizDataError,
     error: quizError,
-  } = useGetQuiz(quizId) as {
+  } = useGetQuiz(quizId) as unknown as {
     data: QuizData
     isLoading: boolean
+    isError: boolean
     isSuccess: boolean
-    error: Error | null
+    error: Error
   }
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (isQuizDataSuccess) {
@@ -87,18 +90,26 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
     }
   }, [isQuizDataSuccess, quizData])
 
-  if (!isQuizDataSuccess) {
-    <div
-      style={{
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Spinner size='xl' />
-    </div>
+  useEffect(() => {
+    if (isQuizDataError) {
+      navigate('/dashboard', { replace: true })
+    }
+  }, [isQuizDataError, quizError])
+
+  if (!quizData || isQuizDataLoading) {
+    return (
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Spinner size='xl' />
+      </div>
+    )
   }
 
   const handleContinueClick = () => {

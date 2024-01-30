@@ -9,6 +9,12 @@ import giveQuiz from '@checkQuiz/components/giveQuiz/CheckQuestionView'
 import { useParams } from 'react-router-dom'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 
+interface UserType {
+  userId: string
+  name: string
+  phoneNo: string
+}
+
 const CheckQuiz = () => {
   const { quizId } = useParams() as { quizId: string }
   const { data, isLoading, isFetched, refetch, error } = useFetchDashboard(quizId)
@@ -17,6 +23,10 @@ const CheckQuiz = () => {
     state.setLeaderboard,
   ])
   const [sections, setSections] = useCheckQuizStore((state) => [state.sections, state.setSections])
+  const [leaderboardUserDetails, setLeaderboardUserDetails] = useCheckQuizStore((state) => [
+    state.leaderboardUserDetails,
+    state.setLeaderboardUserDetails,
+  ])
   const [totalParticipants, setTotalParticipants] = useCheckQuizStore((state) => [
     state.totalParticipants,
     state.setTotalParticipants,
@@ -40,6 +50,7 @@ const CheckQuiz = () => {
   useEffect(() => {
     if (isFetched && data) {
       setLeaderboard(data?.leaderboard[0]?.participants || [])
+      setLeaderboardUserDetails(data.users)
       setSections(data.sections)
       setTotalParticipants(data.participants)
       setChecksCompleted(data.checksCompleted)

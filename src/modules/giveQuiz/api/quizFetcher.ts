@@ -19,7 +19,7 @@ export const getQuiz = async (quizId: string) => {
     return res.data
   } catch (e: unknown) {
     if (e instanceof AxiosError) {
-      return e.response?.data || e.message
+      return Promise.reject(new Error(e.response?.data || e.message))
     }
     throw e
   }

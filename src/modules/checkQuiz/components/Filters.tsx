@@ -1,30 +1,63 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Select } from 'chakra-react-select'
 import { Button, HStack, Input, Select as SelectChakra, Text } from '@chakra-ui/react'
 import { useLeaderboard } from '@checkQuiz/api/useLeaderboard'
 import AutocheckModal from './Modals/Autocheck'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
+import { Section } from '@checkQuiz/types'
+import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
+import { getDashboard } from '@checkQuiz/api/getDashboard'
 
 interface FiltersProps {
-  SearchBox?: boolean
-  SelectFilter?: boolean
+  question?: boolean
+  participants?: boolean
   totalMCQs: number
+  sections: Section[]
 }
 
 const Filters: React.FC<FiltersProps> = ({
-  SearchBox = false,
-  SelectFilter = false,
+  question = false,
+  participants = false,
   totalMCQs,
+  sections,
 }) => {
   const [assignees, setAssignees] = useState<any>([])
   const [isAutocheckModalOpen, setIsAutocheckModalOpen] = useState<boolean>(false)
+  const [sectionIndex, setSectionIndex] = useState<number | null>(null)
   const [quizId] = useCheckQuizStore((state) => [state.quizId])
+  const [leaderboard, setLeaderboard] = useCheckQuizStore((state) => [
+    state.leaderboard,
+    state.setLeaderboard,
+  ])
+
+  const { data, isFetched, refetch } = useFetchDashboard(quizId, sectionIndex)
+
+  useEffect(() => {
+    if (isFetched && data) {
+      if (sectionIndex === null) {
+        if (data?.leaderboard?.length > 0) {
+          setLeaderboard(data?.leaderboard[0]?.participants || [])
+        }
+      } else {
+        if (data?.sectionLeaderboard?.length > 0) {
+          setLeaderboard(data?.sectionLeaderboard[0].participants || [])
+        }
+      }
+    } else {
+      refetch()
+    }
+  }, [sectionIndex, isFetched, data])
 
   const { mutate: generateLeaderboard } = useLeaderboard()
+  const {
+    data: sectionData,
+    isFetched: sectionDataIsFetched,
+    refetch: sectionDataRefetch,
+  } = useFetchDashboard(quizId, sectionIndex)
 
-  const handleLeaderboard = () => {
+  const handleLeaderboard = (sectionIndex: number | null) => {
     generateLeaderboard(
-      { quizId },
+      { quizId, sectionIndex },
       {
         onSuccess: () => {
           window.location.reload()
@@ -47,11 +80,23 @@ const Filters: React.FC<FiltersProps> = ({
     setAssignees(selectedAssignees)
   }
 
+  const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value != '') {
+      setSectionIndex(parseInt(e.target.value))
+    } else {
+      setSectionIndex(null)
+    }
+  }
+
+  useEffect(() => {
+    sectionDataRefetch()
+  }, [sectionIndex])
+
   return (
     <>
       <HStack spacing={4} alignItems='center' width='full' justifyContent='space-between' mt={6}>
         <HStack spacing={4} alignItems='center' width='full'>
-          {SelectFilter && (
+          {question && (
             <>
               <Text fontSize='0.875rem' color='#939393'>
                 Assigned to:
@@ -75,53 +120,68 @@ const Filters: React.FC<FiltersProps> = ({
             </>
           )}
 
-          {SearchBox && (
-            <Input
-              maxWidth='20rem'
-              placeholder='Search'
-              variant='outline'
-              borderColor='#939393'
-              borderRadius='0.25rem'
-              fontSize='0.875rem'
-              fontWeight='600'
-              color='#939393'
-              _placeholder={{ color: '#939393' }}
-            />
+          {participants && (
+            <>
+              <Input
+                maxWidth='20rem'
+                placeholder='Search'
+                variant='outline'
+                borderColor='#939393'
+                borderRadius='0.25rem'
+                fontSize='0.875rem'
+                fontWeight='600'
+                color='#939393'
+                _placeholder={{ color: '#939393' }}
+              />
+              <Text fontSize='0.875rem' color='#939393'>
+                Sort by
+              </Text>
+              <SelectChakra
+                width='12rem'
+                placeholder='None'
+                color='#939393'
+                onChange={handleSectionChange}
+              >
+                {sections.map((section, index) => (
+                  <option value={index} key={section.name}>
+                    {section.name}
+                  </option>
+                ))}
+              </SelectChakra>
+            </>
           )}
-
-          <SelectChakra width='12rem' placeholder='Sort by' color='#939393'>
-            <option value='ascending' color='#939393'>
-              Progress (0-100%)
-            </option>
-            <option value='descending' color='#939393'>
-              Progress (100-0%)
-            </option>
-          </SelectChakra>
         </HStack>
+        {participants && (
+          <Button
+            colorScheme='purple'
+            bgColor='brand'
+            px={6}
+            py={3}
+            fontSize='0.875rem'
+            fontWeight='400'
+            onClick={() => {
+              handleLeaderboard(sectionIndex)
+            }}
+          >
+            Generate Leaderboard
+          </Button>
+        )}
 
-        <Button
-          colorScheme='purple'
-          bgColor='brand'
-          px={6}
-          py={3}
-          fontSize='0.875rem'
-          fontWeight='400'
-          onClick={handleLeaderboard}
-        >
-          Generate Leaderboard
-        </Button>
-
-        <Button
-          colorScheme='purple'
-          bgColor='brand'
-          px={6}
-          py={3}
-          fontSize='0.875rem'
-          fontWeight='400'
-          onClick={() => setIsAutocheckModalOpen(true)}
-        >
-          Autocheck
-        </Button>
+        {question && (
+          <>
+            <Button
+              colorScheme='purple'
+              bgColor='brand'
+              px={6}
+              py={3}
+              fontSize='0.875rem'
+              fontWeight='400'
+              onClick={() => setIsAutocheckModalOpen(true)}
+            >
+              Autocheck
+            </Button>
+          </>
+        )}
       </HStack>
       <AutocheckModal
         open={isAutocheckModalOpen}

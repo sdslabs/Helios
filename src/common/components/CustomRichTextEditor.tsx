@@ -26,7 +26,7 @@ export const renderPreview = (value: string) => {
     <MDEditor.Markdown
       source={value}
       rehypePlugins={[[rehypeSanitize]]}
-      style={{ color:'black', whiteSpace: 'pre-wrap', backgroundColor: 'inherit'}}
+      style={{ color: 'black', whiteSpace: 'pre-wrap', backgroundColor: 'inherit' }}
     />
   )
 }

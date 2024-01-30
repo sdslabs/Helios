@@ -21,7 +21,10 @@ function QuizSummaryPie() {
   const markedQuestions = useQuizStore((state) => state.markedQuestions)
   const markedAnsweredQuestions = useQuizStore((state) => state.markedAnsweredQuestions)
   const [summaryData, setSummaryData] = useState([
-    totalQuestion - answeredQuestions.length,
+    totalQuestion -
+      answeredQuestions.length -
+      markedQuestions.length -
+      markedAnsweredQuestions.length,
     answeredQuestions.length,
     markedQuestions.length,
     markedAnsweredQuestions.length,
@@ -31,7 +34,7 @@ function QuizSummaryPie() {
     datasets: [
       {
         data: summaryData,
-        backgroundColor: ['#AD9EC9', '#27A624', '#FF8900', '#604195'], // pie chart colors
+        backgroundColor: ['#AD9EC9', '#22C35E', '#ECC94B', '#1DA1F2'], // pie chart colors
       },
     ],
   }
