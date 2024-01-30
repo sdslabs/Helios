@@ -70,7 +70,7 @@ const QuestionBubble = (props: QuestionBubbleProps) => {
           isMarkedAndAnswered ? 'twitter' : isMarked ? 'yellow' : isAnswered ? 'whatsapp' : 'purple'
         }
         rounded='full'
-        boxShadow={isCurrentQuestion ? 'lg' : 'inset 0 4px 4px 0 rgba(0,0,0,0.1)'}
+        boxShadow={isCurrentQuestion ? 'lg' : 'depth'}
         width='1'
         textColor={isNotVisited && !isCurrentQuestion ? 'v6' : 'white'}
         ml={4}
