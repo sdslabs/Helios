@@ -11,18 +11,18 @@ const handleQuestionShift = (
   currentQuestion: string,
   status: ResponseStatus,
 ) => {
-  removeFromArray(markedAnsweredQuestions, currentQuestion, setMarkedAnsweredQuestions)
-  removeFromArray(answeredQuestions, currentQuestion, setAnsweredQuestions)
-  removeFromArray(markedQuestions, currentQuestion, setMarkedQuestions)
+  const newMAQ = removeFromArray(markedAnsweredQuestions, currentQuestion, setMarkedAnsweredQuestions)
+  const newAQ = removeFromArray(answeredQuestions, currentQuestion, setAnsweredQuestions)
+  const newMQ =removeFromArray(markedQuestions, currentQuestion, setMarkedQuestions)
   switch (status) {
     case ResponseStatus.marked:
-      setMarkedQuestions([...markedQuestions, currentQuestion])
+      setMarkedQuestions([...newMQ, currentQuestion])
       break
     case ResponseStatus.answered:
-      setAnsweredQuestions([...answeredQuestions, currentQuestion])
+      setAnsweredQuestions([...newAQ, currentQuestion])
       break
     case ResponseStatus.markedanswer:
-      setMarkedAnsweredQuestions([...markedAnsweredQuestions, currentQuestion])
+      setMarkedAnsweredQuestions([...newMAQ, currentQuestion])
       break
     default:
       break

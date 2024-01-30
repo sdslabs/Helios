@@ -190,7 +190,7 @@ const QuestionView = () => {
           justifyContent='center'
         >
           <Text fontSize='2rem' fontWeight='700' mb={6} alignSelf='start'>
-            {sections[currentSectionIndex-1]?.name}
+            {sections[currentSectionIndex - 1]?.name}
           </Text>
           <Flex flexDirection='row' w='full' justifyContent='space-between'>
             <Text fontSize='1rem' fontWeight='600' mb={6} alignSelf='self-start'>

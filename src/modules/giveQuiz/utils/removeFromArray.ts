@@ -5,6 +5,7 @@ const removeFromArray = (
 ) => {
   const newArray = array.filter((item) => item !== currentItem)
   setArray(newArray)
+  return newArray
 }
 
 export default removeFromArray
