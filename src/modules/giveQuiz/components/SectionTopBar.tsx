@@ -27,8 +27,13 @@ const SectionTopBar = () => {
   }, [markedAnsweredQuestions])
 
   useEffect(() => {
-    setNotVisitedQuestions(totalQuestion - answeredQuestions.length)
-  }, [answeredQuestions, totalQuestion])
+    setNotVisitedQuestions(
+      totalQuestion -
+        answeredQuestions.length -
+        markedQuestions.length -
+        markedAnsweredQuestions.length,
+    )
+  }, [answeredQuestions, totalQuestion, markedQuestions, markedAnsweredQuestions])
 
   return (
     <HStack

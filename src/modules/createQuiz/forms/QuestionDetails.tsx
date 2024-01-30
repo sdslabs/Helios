@@ -22,13 +22,12 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
-import { QuestionType } from '../../types'
+import { QuestionType, Option } from '../../types'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { CircleIconOutlined } from '@common/components/Icons'
 import useSectionStore from '@createQuiz/store/useSectionStore'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import { useGetQuestion, useUpdateQuestion } from '@createQuiz/api/useQuestion'
-import { Option } from '@createQuiz/types'
 
 const QuestionDetails = () => {
   const [description, setDescription] = useState<string>('')
