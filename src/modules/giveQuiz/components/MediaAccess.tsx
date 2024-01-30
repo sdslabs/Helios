@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Flex, Text } from '@chakra-ui/react'
+import useQuizStore from '@giveQuiz/store/QuizStore'
 
 interface MediaAccessProps {
   setIsMediaPermission: (value: boolean) => void
@@ -7,6 +8,7 @@ interface MediaAccessProps {
 }
 
 const MediaAccess = ({ setIsMediaPermission, hidden = true }: MediaAccessProps) => {
+  const isStarted = useQuizStore((state) => state.isStarted)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const getVideo = () => {
@@ -47,6 +49,10 @@ const MediaAccess = ({ setIsMediaPermission, hidden = true }: MediaAccessProps) 
       <Text fontWeight='bold' fontSize='xl' pt={8}>
         You must be clearly visible in the video above (Video Proctoring)
       </Text>
+      <Text fontWeight='bold' fontSize='xl' pt={8}>
+        {isStarted && ' \nTimer is running... Get in the quiz!!'}
+      </Text>
+
     </Flex>
   )
 }

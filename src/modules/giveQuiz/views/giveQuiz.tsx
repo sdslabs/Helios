@@ -82,6 +82,13 @@ const giveQuiz = () => {
         }
         socket.emit('join_quiz', { quizId: quizId, userId: user.userId })
         socket.on('sendTime', (timeLeft) => {
+          // handle special case when userQuizStatus is false
+          // happens when either user is already giving quiz or user has already submitted the quiz
+          // also happens when quiz is not live 
+          // in both cases, we need to redirect the user to dashboard
+          if(timeLeft == 0) {
+           navigate('/dashboard')
+          }
           setTimer(timeLeft)
           if (timeLeft < 0) {
             socket.disconnect()
