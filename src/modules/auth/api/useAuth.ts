@@ -5,6 +5,7 @@ export const useAuth = () => {
   const query = useQuery({
     queryKey: ['auth'],
     queryFn: fetchers.checkAuth,
+    staleTime: 1000 * 60 * 60 * 24 * 7, // 1 week
   })
   return query
 }

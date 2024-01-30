@@ -8,6 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useSubmitQuiz } from '../../api/useUser'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import { baseURL } from '../../../../config/config'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface SubmitQuizModalProps {
   open: boolean
@@ -17,6 +18,7 @@ interface SubmitQuizModalProps {
 const socket = io.connect(`${baseURL}`)
 
 export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) => {
+  const queryClient = useQueryClient()
   const [timeLeft, setTimeLeft] = useState('00 : 00 : 00')
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
   const navigate = useNavigate()
@@ -29,6 +31,7 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
       mutate(quizId, {
         onSuccess: () => {
           setIsQuizSubmitted(true)
+          queryClient.invalidateQueries({ exact: true, queryKey: ['dashboard'] })
           navigate('/dashboard')
         },
       })
