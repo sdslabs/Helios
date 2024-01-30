@@ -21,6 +21,16 @@ interface CustomRichTextEditorProps {
   onChange: (value?: string) => void
 }
 
+export const renderPreview = (value: string) => {
+  return (
+    <MDEditor.Markdown
+      source={value}
+      rehypePlugins={[[rehypeSanitize]]}
+      style={{ color:'black', whiteSpace: 'pre-wrap', backgroundColor: 'inherit'}}
+    />
+  )
+}
+
 const CustomRichTextEditor = ({ value, onChange }: CustomRichTextEditorProps) => {
   const renderMarkdownEditor = () => (
     <MDEditor
@@ -36,16 +46,6 @@ const CustomRichTextEditor = ({ value, onChange }: CustomRichTextEditorProps) =>
     />
   )
 
-  const renderPreview = () => {
-    return (
-      <MDEditor.Markdown
-        source={value}
-        rehypePlugins={[[rehypeSanitize]]}
-        style={{ whiteSpace: 'pre-wrap' }}
-      />
-    )
-  }
-
   return (
     <div data-color-mode='light'>
       <Tabs colorScheme='purple' size='sm'>
@@ -55,7 +55,7 @@ const CustomRichTextEditor = ({ value, onChange }: CustomRichTextEditorProps) =>
         </TabList>
         <TabPanels>
           <TabPanel px={0}>{renderMarkdownEditor()}</TabPanel>
-          <TabPanel>{renderPreview()}</TabPanel>
+          <TabPanel>{renderPreview(value)}</TabPanel>
         </TabPanels>
       </Tabs>
     </div>

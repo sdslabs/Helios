@@ -23,3 +23,8 @@ export enum ResponseStatus {
   markedanswer = 'marked-answered',
   marked = 'marked',
 }
+
+export interface Option {
+  id: string
+  label: string
+}
