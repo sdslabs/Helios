@@ -11,6 +11,7 @@ interface CheckQuizStore {
   checkedAnsweredQuestions: string[]
   isCurrentQuestionchecked: string
   leaderboard: any
+  leaderboardUserDetails : any
   admin: string
   quizName: string
   totalAttempts: number
@@ -31,6 +32,7 @@ interface CheckQuizStore {
   setcheckedAnsweredQuestions: (to: string[]) => void
   setIsCurrentQuestionchecked: (to: string) => void
   setLeaderboard: (to: any) => void
+  setLeaderboardUserDetails: (to: any) => void
   setAdmin: (to: string) => void
   setQuizName: (to: string) => void
   setTotalAttempts: (to: number) => void
@@ -54,6 +56,7 @@ const useCheckQuizStore = create<CheckQuizStore>((set: SetState<CheckQuizStore>)
     checkedAnsweredQuestions: [],
     isCurrentQuestionchecked: 'answered',
     leaderboard: [],
+    leaderboardUserDetails : [],
     admin: '',
     quizName: '',
     totalAttempts: 0,
@@ -74,6 +77,7 @@ const useCheckQuizStore = create<CheckQuizStore>((set: SetState<CheckQuizStore>)
     setcheckedAnsweredQuestions: (to: string[]) => set({ checkedAnsweredQuestions: to }),
     setIsCurrentQuestionchecked: (to: string) => set({ isCurrentQuestionchecked: to }),
     setLeaderboard: (to: any) => set({ leaderboard: to }),
+    setLeaderboardUserDetails: (to: any) => set({ leaderboardUserDetails: to }),
     setAdmin: (to: string) => set({ admin: to }),
     setQuizName: (to: string) => set({ quizName: to }),
     setTotalAttempts: (to: number) => set({ totalAttempts: to }),
