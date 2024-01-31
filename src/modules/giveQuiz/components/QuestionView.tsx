@@ -181,7 +181,7 @@ const QuestionView = () => {
   }
 
   return (
-    <Box as='main' display='flex' mt={10}>
+    <Box as='main' display='flex' mt={10} overflow='scroll'>
       <Flex flexDirection='column' alignItems='center' justifyContent='center' w={'full'}>
         <Flex
           width='min-content'
@@ -200,7 +200,7 @@ const QuestionView = () => {
               {mark} Marks
             </Text>
           </Flex>
-          <Text fontSize='1rem' fontWeight='400' mb={6} w='58.5rem' p={4} bgColor='v1'>
+          <Text fontSize='1rem' fontWeight='400' mb={6} w='58.5rem' p={4} bgColor='v1' overflow='scroll'>
             {renderPreview(question)}
           </Text>
           {questionType === 'mcq' ? (
