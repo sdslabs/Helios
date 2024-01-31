@@ -8,11 +8,13 @@ import { QuizSummaryModal } from './Modals/QuizSummaryModal'
 import { useSubmitQuiz } from '@giveQuiz/api/useUser'
 import * as io from 'socket.io-client'
 import { baseURL } from '../../../config/config'
+import { useQueryClient } from '@tanstack/react-query'
 
 const socket = io.connect(`${baseURL}`)
 
 function Countdown() {
   const { timerValue } = useTimer()
+  const queryClient = useQueryClient()
   const [duration, setDuration] = useState(0)
   const [countHours, setCountHours] = useState('00')
   const [countMinutes, setCountMinutes] = useState('00')
@@ -48,6 +50,7 @@ function Countdown() {
           if (quizId) {
             mutate(quizId, {
               onSuccess: () => {
+                queryClient.invalidateQueries({ exact: true, queryKey: ['quiz', quizId]})
                 navigate('/dashboard')
               },
             })

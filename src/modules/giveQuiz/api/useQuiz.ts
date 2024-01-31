@@ -6,6 +6,7 @@ export const useGetQuiz = (quizId: string) => {
     queryKey: ['quiz', quizId],
     queryFn: () => fetchers.getQuiz(quizId),
     staleTime: 1000 * 60 * 60 * 3,
+    retry: 1,
   })
   return query
 }
