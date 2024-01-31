@@ -12,7 +12,11 @@ const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProp
   const markedAnsweredQuestions = useQuizStore((state) => state.markedAnsweredQuestions)
   const markedQuestions = useQuizStore((state) => state.markedQuestions)
   const totalQuestion = useQuizStore((state) => state.totalQuestion)
-  const notVisitedQuestions = totalQuestion - answeredQuestions.length - markedQuestions.length - markedAnsweredQuestions.length
+  const notVisitedQuestions =
+    totalQuestion -
+    answeredQuestions.length -
+    markedQuestions.length -
+    markedAnsweredQuestions.length
 
   return (
     <Flex flexDirection='column' alignItems='flex-start' justifyContent='center'>

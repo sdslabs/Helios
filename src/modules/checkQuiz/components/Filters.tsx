@@ -19,7 +19,7 @@ const Filters: React.FC<FiltersProps> = ({
   question = false,
   participants = false,
   totalMCQs,
-  sections
+  sections,
 }) => {
   const [assignees, setAssignees] = useState<any>([])
   const [isAutocheckModalOpen, setIsAutocheckModalOpen] = useState<boolean>(false)
@@ -44,12 +44,16 @@ const Filters: React.FC<FiltersProps> = ({
         }
       }
     } else {
-      refetch();
+      refetch()
     }
   }, [sectionIndex, isFetched, data])
 
   const { mutate: generateLeaderboard } = useLeaderboard()
-  const { data: sectionData, isFetched: sectionDataIsFetched, refetch: sectionDataRefetch } = useFetchDashboard(quizId, sectionIndex);
+  const {
+    data: sectionData,
+    isFetched: sectionDataIsFetched,
+    refetch: sectionDataRefetch,
+  } = useFetchDashboard(quizId, sectionIndex)
 
   const handleLeaderboard = (sectionIndex: number | null) => {
     generateLeaderboard(
@@ -78,14 +82,14 @@ const Filters: React.FC<FiltersProps> = ({
 
   const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value != '') {
-      setSectionIndex(parseInt(e.target.value));
+      setSectionIndex(parseInt(e.target.value))
     } else {
-      setSectionIndex(null);
+      setSectionIndex(null)
     }
   }
 
   useEffect(() => {
-    sectionDataRefetch();
+    sectionDataRefetch()
   }, [sectionIndex])
 
   return (
@@ -132,16 +136,20 @@ const Filters: React.FC<FiltersProps> = ({
               <Text fontSize='0.875rem' color='#939393'>
                 Sort by
               </Text>
-              <SelectChakra width='12rem' placeholder='None' color='#939393' onChange={handleSectionChange}>
+              <SelectChakra
+                width='12rem'
+                placeholder='None'
+                color='#939393'
+                onChange={handleSectionChange}
+              >
                 {sections.map((section, index) => (
-                  <option value={index} key={section.name}>{section.name}</option>
+                  <option value={index} key={section.name}>
+                    {section.name}
+                  </option>
                 ))}
               </SelectChakra>
             </>
           )}
-
-
-
         </HStack>
         {participants && (
           <Button
@@ -151,7 +159,9 @@ const Filters: React.FC<FiltersProps> = ({
             py={3}
             fontSize='0.875rem'
             fontWeight='400'
-            onClick={() => { handleLeaderboard(sectionIndex) }}
+            onClick={() => {
+              handleLeaderboard(sectionIndex)
+            }}
           >
             Generate Leaderboard
           </Button>
@@ -172,7 +182,6 @@ const Filters: React.FC<FiltersProps> = ({
             </Button>
           </>
         )}
-
       </HStack>
       <AutocheckModal
         open={isAutocheckModalOpen}

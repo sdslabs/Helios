@@ -50,7 +50,7 @@ function Countdown() {
           if (quizId) {
             mutate(quizId, {
               onSuccess: () => {
-                queryClient.invalidateQueries({ exact: true, queryKey: ['quiz', quizId]})
+                queryClient.invalidateQueries({ exact: true, queryKey: ['quiz', quizId] })
                 navigate('/dashboard')
               },
             })

@@ -21,7 +21,10 @@ function QuizSummaryPie() {
   const markedQuestions = useQuizStore((state) => state.markedQuestions)
   const markedAnsweredQuestions = useQuizStore((state) => state.markedAnsweredQuestions)
   const [summaryData, setSummaryData] = useState([
-    totalQuestion - answeredQuestions.length - markedQuestions.length - markedAnsweredQuestions.length,
+    totalQuestion -
+      answeredQuestions.length -
+      markedQuestions.length -
+      markedAnsweredQuestions.length,
     answeredQuestions.length,
     markedQuestions.length,
     markedAnsweredQuestions.length,
