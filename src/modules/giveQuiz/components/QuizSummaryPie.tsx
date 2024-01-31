@@ -31,7 +31,7 @@ function QuizSummaryPie() {
     datasets: [
       {
         data: summaryData,
-        backgroundColor: ['#AD9EC9', '#ECC94B', '#22C35E', '#1DA1F2'], // pie chart colors
+        backgroundColor: ['#AD9EC9', '#22C35E', '#ECC94B', '#1DA1F2'], // pie chart colors
       },
     ],
   }
