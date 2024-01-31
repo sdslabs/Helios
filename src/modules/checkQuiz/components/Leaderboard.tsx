@@ -6,58 +6,64 @@ import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import { useEffect, useState } from 'react'
 
 type Leaderboard = {
- Sr: number
- userId: string
- rank: number
- marks: string
- questionsAttempted: number
- questionsChecked: number
- name : string
- phoneNumber : string
+  Sr: number
+  userId: string
+  rank: number
+  marks: string
+  questionsAttempted: number
+  questionsChecked: number
+  name: string
+  phoneNumber: string
 }
 
 const Leaderboard = () => {
- const [leaderboard] = useCheckQuizStore((state) => [state.leaderboard])
- const [leaderboardUserDetails] = useCheckQuizStore((state) => [state.leaderboardUserDetails]);
- const [_,refresh] = useState<number>(0);
- useEffect(()=>{
-    refresh((state)=>{return state++});
- },[leaderboard])
+  const [leaderboard] = useCheckQuizStore((state) => [state.leaderboard])
+  const [leaderboardUserDetails] = useCheckQuizStore((state) => [state.leaderboardUserDetails])
+  const [_, refresh] = useState<number>(0)
+  useEffect(() => {
+    refresh((state) => {
+      return state++
+    })
+  }, [leaderboard])
 
- const columnHelper = createColumnHelper<Leaderboard>()
+  const columnHelper = createColumnHelper<Leaderboard>()
 
- const columns = [
+  const columns = [
     columnHelper.accessor('Sr', {
       cell: (info) => info.row.index + 1,
       header: 'Sr.',
       enableColumnFilter: true,
     }),
 
-      columnHelper.accessor('name', {
-         cell: (info) => {
-           const userDetail = leaderboardUserDetails.find((user: any) => user.userId === info.row.original.userId);
-           if (userDetail) {
-             return userDetail.name;
-           } else {
-             return '';
-           }
-         },
-         header: 'Name',
-         enableColumnFilter: false,
-      }),
-      columnHelper.accessor('phoneNumber', {
-         cell: (info) => {
-           const userDetail = leaderboardUserDetails.find((user: any) => user.userId === info.row.original.userId);
-           if (userDetail) {
-             return userDetail.phoneNumber;
-           } else {
-             return '';
-           }
-         },
-         header: 'Phone Number',
-         enableColumnFilter: false,
-      }),
-     
+    columnHelper.accessor('name', {
+      cell: (info) => {
+        const userDetail = leaderboardUserDetails.find(
+          (user: any) => user.userId === info.row.original.userId,
+        )
+        if (userDetail) {
+          return userDetail.name
+        } else {
+          return ''
+        }
+      },
+      header: 'Name',
+      enableColumnFilter: false,
+    }),
+    columnHelper.accessor('phoneNumber', {
+      cell: (info) => {
+        const userDetail = leaderboardUserDetails.find(
+          (user: any) => user.userId === info.row.original.userId,
+        )
+        if (userDetail) {
+          return userDetail.phoneNumber
+        } else {
+          return ''
+        }
+      },
+      header: 'Phone Number',
+      enableColumnFilter: false,
+    }),
+
     columnHelper.accessor('rank', {
       cell: (info) => info.row.index + 1,
       header: 'Current rank',
@@ -80,13 +86,13 @@ const Leaderboard = () => {
       header: 'Questions Checked',
       enableColumnFilter: false,
     }),
- ]
+  ]
 
- return (
+  return (
     <Box mx='auto' my='8vh'>
       <Table data={leaderboard} columns={columns} />
     </Box>
- )
+  )
 }
 
 export default Leaderboard

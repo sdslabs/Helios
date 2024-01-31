@@ -97,18 +97,18 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
   }, [isQuizDataError, quizError])
 
   if (!quizData || isQuizDataLoading) {
-    return(
-    <div
-      style={{
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Spinner size='xl' />
-    </div>
+    return (
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Spinner size='xl' />
+      </div>
     )
   }
 

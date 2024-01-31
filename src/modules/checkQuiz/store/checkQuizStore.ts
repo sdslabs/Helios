@@ -11,7 +11,7 @@ interface CheckQuizStore {
   checkedAnsweredQuestions: string[]
   isCurrentQuestionchecked: string
   leaderboard: any
-  leaderboardUserDetails : any
+  leaderboardUserDetails: any
   admin: string
   quizName: string
   totalAttempts: number
@@ -56,7 +56,7 @@ const useCheckQuizStore = create<CheckQuizStore>((set: SetState<CheckQuizStore>)
     checkedAnsweredQuestions: [],
     isCurrentQuestionchecked: 'answered',
     leaderboard: [],
-    leaderboardUserDetails : [],
+    leaderboardUserDetails: [],
     admin: '',
     quizName: '',
     totalAttempts: 0,
