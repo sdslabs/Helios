@@ -15,5 +15,6 @@
 }
 
 .bg-white {
+  overflow: auto;
   background-color: white;
 }
