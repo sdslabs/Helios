@@ -8,6 +8,7 @@ import {
   Input,
   Badge,
   Textarea,
+  Spinner
 } from '@chakra-ui/react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { useState, useEffect } from 'react'
@@ -153,6 +154,22 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
   const toggleQuestionCheckModal = () => {
     setIsQuestionCheckModalOpen(!isQuestionCheckModalOpen)
   }
+
+  if (questionIsLoading || responseIsLoading || allResponsesIsLoading) {
+      return (
+        <div
+          style={{
+            width: '100vw',
+            height: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Spinner size='xl' />
+        </div>
+      )
+    }
 
   return (
     <Box as='main' display='flex' mt={10}>
