@@ -5,7 +5,7 @@ import { QuizSummaryModal } from './QuizSummaryModal'
 import QuizSummaryPie from '../QuizSummaryPie'
 import * as io from "socket.io-client";
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSubmitQuiz } from '../../api/UseSubmitQuiz';
+import { useSubmitQuiz } from '../../api/useUser';
 import useQuizStore from '@giveQuiz/store/QuizStore';
 
 interface SubmitQuizModalProps {

@@ -2,7 +2,7 @@ import { Modal, ModalContent, ModalOverlay, Text, Button, Flex } from '@chakra-u
 import { TimeIcon, CloseIcon } from '@chakra-ui/icons'
 import QuizSummaryPie from '../QuizSummaryPie'
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSubmitQuiz } from '../../api/UseSubmitQuiz';
+import { useSubmitQuiz } from '../../api/useUser';
 import * as io from 'socket.io-client';
 
 interface QuizSummaryModalProps {

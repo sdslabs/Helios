@@ -105,7 +105,7 @@ const QuestionDetails = () => {
   },[isFetched, isLoading, data])
 
   const renderChoiceBuilder = () => {
-    if (type === 'subjective') return null
+    if (type === 'Subjective') return null
 
     return (
       <>
@@ -197,7 +197,7 @@ const QuestionDetails = () => {
           </Text>
           <Input type='number' w={20} value={marks} onChange={(e) => setMarks(parseInt(e.target.value, 10))} />
         </HStack>
-        {type === 'mcq' && (
+        {type === 'Multiple Choice' && (
           <>
             <HStack>
               <Text color='accentBlack' fontSize='sm'>
@@ -220,7 +220,7 @@ const QuestionDetails = () => {
           </>
         )}
       </HStack>
-      {type === 'subjective' && (
+      {type === 'Subjective' && (
         <FormControl>
           <FormLabel fontWeight='400' fontSize='sm' color='gray.500'>
             Checker&#39;s notes

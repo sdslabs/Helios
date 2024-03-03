@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react'
 import { useState, useEffect } from 'react';
 import { GiveQuizSteps } from '../types';
-import { useQuiz } from '../api/UseQuiz';
+import { useQuiz } from '../api/useQuiz';
 import useQuizStore from '../store/QuizStore';
 import { useParams } from 'react-router-dom';
 import { StartModal } from './Modals/StartQuizModal';

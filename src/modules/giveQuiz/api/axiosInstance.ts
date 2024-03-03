@@ -17,5 +17,4 @@ const axiosInstance = axios.create({
     return config
   })
 
-
 export default axiosInstance;

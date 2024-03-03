@@ -2,12 +2,12 @@ import { Flex, Button, Text, Box, RadioGroup, Radio } from '@chakra-ui/react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { useState, useEffect } from 'react'
 import useQuizStore from '../store/QuizStore'
-import { useQuestion } from '../api/UseQuestion'
+import { useQuestion } from '../api/useQuiz'
 import {
   useCreateUpdateResponse,
   useDeleteResponse,
   useGetResponse,
-} from '@giveQuiz/api/UseResponse'
+} from '@giveQuiz/api/useResponse'
 import { SubmitQuizModal } from './Modals/SubmitQuizModal'
 import { useParams } from 'react-router-dom'
 import useAuthStore from '@auth/store/authStore'

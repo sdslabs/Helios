@@ -2,7 +2,7 @@ import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 import { useState } from 'react'
 import { Modal, ModalContent, ModalOverlay, Button, Text, Flex } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
-import { useRegisterUser } from '../../api/UseRegister'
+import { useRegisterUser } from '../../api/useUser'
 import { useQueryClient } from '@tanstack/react-query'
 
 interface RegisterModalProps {

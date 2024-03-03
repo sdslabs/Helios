@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
-import * as fetchers from './FetchResponse';
+import * as fetchers from './responseFetcher';
 
 export const useGetResponse = (quizId: string, questionId: string)=>{
     const query= useQuery({
