@@ -119,11 +119,11 @@ const SideNavContent = () => {
         </Heading>
         <Flex flexDirection={'row'} mb={4} w={'full'} alignItems={'center'}>
           {/* TODO: FIx this */}
-          {/* <ChevronLeftIcon w={8} h={8} color={'v6'} /> */}
+          <ChevronLeftIcon w={8} h={8} color={'v6'} onClick={PrevQuestion}/>
           <Text color={'v6'} fontSize={'1.25rem'} fontWeight={600}>
             Section {currentSectionIndex} - Question {currentQuestionIndex}
           </Text>
-          {/* <ChevronRightIcon w={8} h={8} color={'v6'} /> */}
+          <ChevronRightIcon w={8} h={8} color={'v6'} onClick={NextQuestion}/>
         </Flex>
 
         <Flex flexDirection={'row'} mb={5} bgColor={'v1'} p={3} w={'full'} borderRadius={'0.25rem'}>
@@ -175,12 +175,13 @@ const SideNavContent = () => {
           w={'full'}
           borderRadius={'0.25rem'}
           px={7}
+          p={3}
           h={'3rem'}
           alignItems={'center'}
         >
           Total Response
         </Flex>
-        <VStack flexGrow={1} w='100%' mt={8}>
+        <VStack flexGrow={1} w='100%' mt={8} overflowY={'auto'}>
           {allResponsesId?.map((response, index) => (
             <Flex
               key={index}
