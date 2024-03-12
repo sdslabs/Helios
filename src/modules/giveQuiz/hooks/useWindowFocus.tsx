@@ -1,19 +1,16 @@
 import { useEffect } from 'react'
-import { toast } from 'react-toastify'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import useLog from '@giveQuiz/api/useLog'
 import { LogType } from '@giveQuiz/types'
+import {displayToast} from '@giveQuiz/utils/toastNotifications'
 
 const handleBlur = (currentQuestion: string, quizId: string, log: any) => {
-  toast.warn('Action logged (TAB CHANGE), avoid using any other tab/window/program during quiz.', {
-    position: 'top-center',
+  displayToast('Quiz must be given on Full Screen. Press `Ctrl + F` to go to Fullscreen', {
     autoClose: 5000,
-    hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
-    progress: undefined,
-  })
+  });
   log({
     questionId: currentQuestion,
     logType: LogType.TabSwitch,

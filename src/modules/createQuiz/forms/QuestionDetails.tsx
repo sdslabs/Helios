@@ -15,7 +15,6 @@ import {
   ListIcon,
   ListItem,
   Select,
-  Spinner,
   Switch,
   Text,
   VStack,
@@ -28,6 +27,7 @@ import { CircleIconOutlined } from '@common/components/Icons'
 import useSectionStore from '@createQuiz/store/useSectionStore'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import { useGetQuestion, useUpdateQuestion } from '@createQuiz/api/useQuestion'
+import Spin from '@common/components/Spinner';
 
 const QuestionDetails = () => {
   const [description, setDescription] = useState<string>('')
@@ -154,17 +154,7 @@ const QuestionDetails = () => {
   // TODO: use the fetching animation instead of loading spinner
   if (isLoading) {
     return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Spinner size='xl' />
-      </div>
+      <Spin />
     )
   }
 

@@ -7,7 +7,7 @@ export const getResponse = async (quizId: string, questionId: string) => {
     return res.data
   } catch (e: unknown) {
     if (e instanceof AxiosError) {
-      return e.response?.data || e.message
+      return Promise.reject(new Error(e.response?.data || e.message))
     }
     throw e
   }
@@ -27,7 +27,7 @@ export const createUpdateResponse = async ({
     return res.data
   } catch (e: unknown) {
     if (e instanceof AxiosError) {
-      return e.response?.data || e.message
+      return Promise.reject(new Error(e.response?.data || e.message))
     }
     throw e
   }
@@ -45,7 +45,7 @@ export const deleteResponse = async ({
     return res.data
   } catch (e: unknown) {
     if (e instanceof AxiosError) {
-      return e.response?.data || e.message
+      return Promise.reject(new Error(e.response?.data || e.message))
     }
     throw e
   }

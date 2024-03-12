@@ -15,6 +15,12 @@ const theme = extendTheme({
     markedForReviewBubbleBorder: '#FF8900',
     answeredBubbleBorder: '#27A624',
     N6: '#939393',
+    labelColor: '#27A624',
+    lableBgColor: '#E5F4E5',
+    unanswered: '#AD9EC9',
+    answered: '#22C35E',
+    markedForReview: '#ECC94B',
+    answeredAndMarkedForReview: '#1DA1F2',
   },
   fonts: {
     heading: 'Open Sans',
