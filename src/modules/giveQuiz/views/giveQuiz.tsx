@@ -17,14 +17,16 @@ import { useParams, useNavigate } from 'react-router-dom'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import 'react-toastify/dist/ReactToastify.css'
 import useLog from '@giveQuiz/api/useLog'
-import { ipURL, baseURL } from '../../../config/config'
+import { baseURL } from '../../../config/config'
 import useAuthStore from '@auth/store/authStore'
 import * as io from 'socket.io-client'
 import { useSubmitQuiz } from '@giveQuiz/api/useUser'
+import displayToast from '@giveQuiz/utils/toastNotifications'
+import useLogIP from '@giveQuiz/hooks/useLogIP';
 
 const giveQuiz = () => {
   const { quizId } = useParams() as { quizId: string }
-  const { setQuizId, currentQuestion } = useQuizStore((state) => ({
+  const { currentQuestion } = useQuizStore((state) => ({
     setQuizId: state.setQuizId,
     currentQuestion: state.currentQuestion,
   }))
@@ -40,33 +42,26 @@ const giveQuiz = () => {
   const { setIsStarted } = useQuizStore()
   const { mutate } = useSubmitQuiz()
   const navigate = useNavigate()
+
   const reportChange = useCallback(
     (state: boolean) => {
       if (state === false) {
-        setQuizStage(GiveQuizSteps.AccessWindow)
-        toast.dark('Quiz must be given on Full Screen. Press `Ctrl + F` to go to Fullscreen', {
-          position: 'top-center',
-          autoClose: false,
-          hideProgressBar: true,
-          closeOnClick: false,
-          closeButton: false,
-          progress: undefined,
+        setQuizStage(GiveQuizSteps.AccessWindow);
+        displayToast('Quiz must be given on Full Screen. Press `Ctrl + F` to go to Fullscreen', {
           toastId: 'fsToast',
-        })
+          hideProgressBar: true,
+        });
       } else {
         toast.dismiss('fsToast')
         if (count) {
           setTimeout(() => {
-            //TODO: gandi jugaad hai yeh sahii karna hai
-            toast.warn('Action Logged (FullScreen Exit), avoid exiting fullscreen during quiz', {
+            displayToast('Action Logged (FullScreen Exit), avoid exiting fullscreen during quiz', {
               position: 'top-center',
               autoClose: 5000,
-              hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
-              progress: undefined,
-            })
+        });
           }, 2000)
           log({
             questionId: currentQuestion,
@@ -101,6 +96,35 @@ const giveQuiz = () => {
   )
 
   useKeyLogging({ handle: fullScreenHandle })
+
+  useEffect(() => {
+    if (!isMediaPermission) {
+      displayToast('Please allow microphone and camera access for the quiz to start', {
+        toastId: 'mediaToast',
+        hideProgressBar: true,
+        type: 'error',
+      });
+    } else {
+      toast.dismiss('mediaToast')
+      displayToast('Microphone and Camera access detected!', {
+        position: 'top-right',
+        type: 'info',
+      });
+    }
+  }, [isMediaPermission])
+
+  useEffect(() => {
+    if (hasLocationAccess) {
+      toast.dismiss('locationToast')
+      displayToast('Location access detected!', {
+        position: 'top-left',
+        type: 'info',
+      });
+    }
+  }, [hasLocationAccess])
+
+  useLogIP();
+
   const renderQuiz = () => {
     switch (quizStage) {
       case GiveQuizSteps.Instructions:
@@ -113,58 +137,6 @@ const giveQuiz = () => {
         return null
     }
   }
-
-  useEffect(() => {
-    if (!isMediaPermission) {
-      toast.error('Please allow microphone and camera access for the quiz to start', {
-        position: 'top-right',
-        autoClose: false,
-        hideProgressBar: true,
-        closeOnClick: false,
-        closeButton: false,
-        progress: undefined,
-        toastId: 'mediaToast',
-      })
-    } else {
-      toast.dismiss('mediaToast')
-      toast.info('Microphone and Camera access detected!', {
-        position: 'top-right',
-        autoClose: false,
-        hideProgressBar: false,
-        closeOnClick: false,
-        closeButton: false,
-        progress: undefined,
-      })
-    }
-  }, [isMediaPermission])
-  useEffect(() => {
-    if (hasLocationAccess) {
-      toast.dismiss('locationToast')
-      toast.info('Location access detected!', {
-        position: 'top-left',
-        autoClose: false,
-        hideProgressBar: false,
-        closeOnClick: false,
-        closeButton: false,
-        progress: undefined,
-      })
-    }
-  }, [hasLocationAccess])
-
-  useEffect(() => {
-    fetch(ipURL)
-      .then((res) => res.json())
-      .then((data) => {
-        log({
-          questionId: currentQuestion,
-          logType: 'ip',
-          quizId: quizId,
-          ip: data.ip,
-        })
-      })
-      .catch((err) => console.log(err))
-    setQuizId(quizId)
-  }, [quizId])
 
   if (!hasLocationAccess || !isMediaPermission) {
     return (

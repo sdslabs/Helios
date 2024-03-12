@@ -28,7 +28,6 @@ const QuestionView = () => {
   const { mutate: deleteResponse } = useDeleteResponse()
   const {
     currentQuestion,
-    currentSection,
     currentSectionIndex,
     currentQuestionIndex,
     answeredQuestions,

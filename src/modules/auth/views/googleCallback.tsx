@@ -1,5 +1,5 @@
 import axiosInstance from '@auth/api/axiosInstance'
-import { Spinner } from '@chakra-ui/react'
+import Spin from '@common/components/Spinner';
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { reactAppURL } from '../../../config/config'
@@ -26,17 +26,7 @@ const GoogleCallback = () => {
     })()
   }, [])
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Spinner size='xl' />
-    </div>
+    <Spin />
   )
 }
 

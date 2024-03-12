@@ -1,4 +1,4 @@
-import { Flex, Spinner } from '@chakra-ui/react'
+import Spin from '@common/components/Spinner';
 import TopNav from '@common/components/TopNav'
 import { useDashboard } from '../api/useDashboard'
 import QuizTabs from '../components/QuizTabs'
@@ -27,17 +27,7 @@ const Dashboard = () => {
   }, [data])
 
   return isLoading ? (
-    <div
-      style={{
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Spinner size='xl' />
-    </div>
+    <Spin />
   ) : (
     <>
       <TopNav isDashboard={true} isAdmin={isAdmin} />

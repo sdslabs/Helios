@@ -1,10 +1,11 @@
-import { Box, Button, Flex, Spinner, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Text } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { GiveQuizSteps } from '../types'
 import { useGetQuiz } from '../api/useQuiz'
 import useQuizStore from '../store/QuizStore'
 import { useNavigate, useParams } from 'react-router-dom'
 import { renderPreview } from '@common/components/CustomRichTextEditor'
+import Spin from '@common/components/Spinner';
 
 interface SideNavContentProps {
   stage: GiveQuizSteps
@@ -98,17 +99,7 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
 
   if (!quizData || isQuizDataLoading) {
     return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Spinner size='xl' />
-      </div>
+     <Spin />
     )
   }
 

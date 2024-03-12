@@ -7,7 +7,7 @@ import TopNav from '@common/components/TopNav'
 import Registrants from '@createQuiz/forms/Registrants'
 import { useParams } from 'react-router-dom'
 import { useGetQuizDetails } from '@createQuiz/api/useQuiz'
-import { Spinner } from '@chakra-ui/react'
+import Spin from '@common/components/Spinner';
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import useRegistrationFormStore from '@createQuiz/store/useRegistrationFormStore'
 import useSectionStore from '@createQuiz/store/useSectionStore'
@@ -49,17 +49,7 @@ const CreateQuiz = () => {
   }
   if (isLoading)
     return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Spinner size='xl' />
-      </div>
+      <Spin />
     )
 
   return (
