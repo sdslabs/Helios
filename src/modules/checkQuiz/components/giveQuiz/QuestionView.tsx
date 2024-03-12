@@ -18,6 +18,7 @@ import { useQuestion } from '@checkQuiz/api/useQuestion'
 import { useResponse, useAllResponse } from '@checkQuiz/api/useResponse'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import useCheckResponse from '@checkQuiz/api/useCheckResponse'
+import { useNavigate } from 'react-router-dom'
 
 interface QuestionViewProps {
   quizId: string
@@ -83,6 +84,8 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
     questionId,
   })
 
+  const Navigate = useNavigate()
+
   useEffect(() => {
     if (questionIsFetched && questionData) {
       setQuestion(questionData.question)
@@ -93,7 +96,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
     setCurrentResponseIndex(0)
     if (allResponsesIsFetched && allResponses && Array.isArray(allResponses.responses)) {
       if (allResponses.questionId !== questionId) {
-        window.location.reload()
+        Navigate(`/check-quiz/${quizId}/${allResponses.responses[0].questionId}`)
       }
       setAllResponsesId(allResponses.responses.map((response: any) => response.responseId))
       setAllResponesesStatus(allResponses.responses.map((response: any) => response.status))
@@ -170,7 +173,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
       </div>
     )
   }
-  
+
   return (
     <Box as='main' display='flex' mt={10}>
       <Flex flexDirection='column' alignItems='center' justifyContent='center' w={'full'}>
