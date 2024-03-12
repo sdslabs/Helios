@@ -34,7 +34,7 @@
     "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
     "react-select": "^5.7.4",
-    "react-toastify": "^10.0.1",
+    "react-toastify": "^10.0.4",
     "react-use": "^17.4.0",
     "rehype-sanitize": "^5.0.1",
     "socket.io-client": "^4.7.2",

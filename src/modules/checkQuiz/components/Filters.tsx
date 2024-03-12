@@ -133,21 +133,6 @@ const Filters: React.FC<FiltersProps> = ({
                 color='#939393'
                 _placeholder={{ color: '#939393' }}
               />
-              <Text fontSize='0.875rem' color='#939393'>
-                Sort by
-              </Text>
-              <SelectChakra
-                width='12rem'
-                placeholder='None'
-                color='#939393'
-                onChange={handleSectionChange}
-              >
-                {sections.map((section, index) => (
-                  <option value={index} key={section.name}>
-                    {section.name}
-                  </option>
-                ))}
-              </SelectChakra>
             </>
           )}
         </HStack>

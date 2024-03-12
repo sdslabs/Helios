@@ -67,7 +67,7 @@ const Leaderboard = () => {
     columnHelper.accessor('rank', {
       cell: (info) => info.row.index + 1,
       header: 'Current rank',
-      enableColumnFilter: false,
+      enableColumnFilter: true,
     }),
     columnHelper.accessor('marks', {
       cell: (info) => info.row.original.marks,
