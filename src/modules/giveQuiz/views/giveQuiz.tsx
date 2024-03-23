@@ -30,7 +30,7 @@ const giveQuiz = () => {
     setQuizId: state.setQuizId,
     currentQuestion: state.currentQuestion,
   }))
-  const { mutate: log } = useLog()
+  const { mutate: log } = useLog() 
   const [quizStage, setQuizStage] = useState<GiveQuizSteps>(-1)
   const [count, setCount] = useState<number>(0)
   const fullScreenHandle = useFullScreenHandle()
@@ -53,6 +53,7 @@ const giveQuiz = () => {
         });
       } else {
         toast.dismiss('fsToast')
+        //TODO: use something more robust than settimeout
         if (count) {
           setTimeout(() => {
             displayToast('Action Logged (FullScreen Exit), avoid exiting fullscreen during quiz', {
@@ -67,6 +68,11 @@ const giveQuiz = () => {
             questionId: currentQuestion,
             logType: LogType.FullScreenExit,
             quizId: quizId,
+          },
+          {
+            onError: (error) => {
+              console.error("An error occurred while logging:", error);
+           },
           })
         }
         setCount(count + 1)
@@ -83,9 +89,19 @@ const giveQuiz = () => {
             if (quizId) {
               mutate(quizId, {
                 onSuccess: () => {
-                  navigate('/dashboard')
+                  navigate('/dashboard');
                 },
-              })
+                onError: (error) => {
+                  console.error('Error submitting quiz:', error);
+                  toast.error('Failed to submit quiz. Please try again.', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                  });
+                },
+              });
             }
           }
           setIsStarted(true)

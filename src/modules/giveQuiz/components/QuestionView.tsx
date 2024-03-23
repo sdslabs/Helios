@@ -46,30 +46,48 @@ const QuestionView = () => {
     data: questionData,
     isLoading: isQuestionDataLoading,
     isSuccess: isQuestionDataSuccess,
+    error: isQuestionDataError,
   } = useGetQuestion(currentQuestion)
+
   const { setAnsweredQuestions, setMarkedQuestions, setMarkedAnsweredQuestions } = useQuizStore()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen)
   }
 
-  const { data: getResponseData, isSuccess: isGetResponseSuccess } = useGetResponse(
-    quizId,
-    currentQuestion,
-  )
+  const {
+    data: getResponseData,
+    isSuccess: isGetResponseSuccess,
+    isLoading: isGetResponseLoading,
+    error: isGetResponseError,
+  } = useGetResponse(quizId, currentQuestion)
 
   const handleClearResponse = () => {
     setAnswer('')
-    deleteResponse({
-      quizId,
-      questionId: currentQuestion,
-    })
+    deleteResponse(
+      {
+        quizId,
+        questionId: currentQuestion,
+      },
+      {
+        onError: (error) => {
+          console.error('Error deleting response:', error)
+          toast.error('Failed to delete response. Please try again.', {
+            position: 'bottom-center',
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+          })
+        },
+      },
+    )
     removeFromArray(answeredQuestions, currentQuestion, setAnsweredQuestions)
     removeFromArray(markedQuestions, currentQuestion, setMarkedQuestions)
     removeFromArray(markedAnsweredQuestions, currentQuestion, setMarkedAnsweredQuestions)
   }
 
-  async function handleSaveButton() {
+  const handleSaveButton = async () => {
     let status: ResponseStatus = ResponseStatus.unanswered
     if (!answer && !isCurrentQuestionMarked) {
       toast.info('This question is unanswered and not marked for review', {
@@ -98,10 +116,24 @@ const QuestionView = () => {
       status,
     )
     if (status === ResponseStatus.unanswered) {
-      deleteResponse({
-        quizId,
-        questionId: currentQuestion,
-      })
+      deleteResponse(
+        {
+          quizId,
+          questionId: currentQuestion,
+        },
+        {
+          onError: (error) => {
+            console.error('Error deleting response:', error)
+            toast.error('Failed to delete response. Please try again.', {
+              position: 'bottom-center',
+              autoClose: 1000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+            })
+          },
+        },
+      )
       return nextQuestion()
     }
     const responseData = {
@@ -128,6 +160,16 @@ const QuestionView = () => {
           useQueryClient().invalidateQueries({
             exact: true,
             queryKey: ['response', quizId, currentQuestion],
+          })
+        },
+        onError: (error) => {
+          console.error('Error saving response:', error)
+          toast.error('Failed to save response. Please try again.', {
+            position: 'bottom-center',
+            autoClose: 1000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
           })
         },
       },
@@ -165,6 +207,20 @@ const QuestionView = () => {
     }
   }, [isGetResponseSuccess, getResponseData])
 
+  if (isGetResponseLoading) {
+    return <Fetching />
+  }
+  if (isGetResponseError) {
+    console.error('Error fetching response data:')
+    toast.error('Failed to fetch response data. Please reload.', {
+      position: 'bottom-center',
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+    })
+  }
+
   useEffect(() => {
     if (isQuestionDataSuccess) {
       setQuestion(questionData.question.description)
@@ -177,6 +233,16 @@ const QuestionView = () => {
 
   if (isQuestionDataLoading) {
     return <Fetching />
+  }
+  if (isQuestionDataError) {
+    console.error('Error fetching question data')
+    toast.error('Failed to fetch question data. Please reload.', {
+      position: 'bottom-center',
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+    })
   }
 
   return (
@@ -199,7 +265,15 @@ const QuestionView = () => {
               {mark} Marks
             </Text>
           </Flex>
-          <Text fontSize='1rem' fontWeight='400' mb={6} w='58.5rem' p={4} bgColor='v1' overflow='scroll'>
+          <Text
+            fontSize='1rem'
+            fontWeight='400'
+            mb={6}
+            w='58.5rem'
+            p={4}
+            bgColor='v1'
+            overflow='scroll'
+          >
             {renderPreview(question)}
           </Text>
           {questionType === 'mcq' ? (

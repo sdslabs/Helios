@@ -23,7 +23,7 @@ const useLogIP = () => {
         });
       })
       .catch((err) => console.log(err));
- }, [quizId, currentQuestion, log]);
+ }, [log]);
 };
 
 export default useLogIP;

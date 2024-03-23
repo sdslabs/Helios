@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { TimeIcon } from '@chakra-ui/icons'
 import { Flex } from '@chakra-ui/react'
 import { useTimer } from './TimerContext'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import { QuizSummaryModal } from './Modals/QuizSummaryModal'
 import { useSubmitQuiz } from '@giveQuiz/api/useUser'
@@ -26,7 +26,7 @@ function Countdown() {
     setIsModalOpen(!isModalOpen)
   }
   const { quizId } = useParams()
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     setDuration((prevDuration) => (timerValue !== null ? timerValue : prevDuration))
@@ -52,7 +52,7 @@ function Countdown() {
               onSuccess: () => {
                 queryClient.invalidateQueries({ exact: true, queryKey: ['dashboard'] })
                 queryClient.invalidateQueries({ exact: true, queryKey: ['quiz', quizId] })
-                window.location.assign(`${reactAppURL}/dashboard`)
+                navigate(`${reactAppURL}/dashboard`);
               },
             })
           }

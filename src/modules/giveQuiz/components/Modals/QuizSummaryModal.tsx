@@ -1,4 +1,4 @@
-import { Text, Button, Flex, Box } from '@chakra-ui/react'
+import { Text, Button, Flex, Box, useTheme } from '@chakra-ui/react'
 import { TimeIcon, CloseIcon } from '@chakra-ui/icons'
 import QuizSummaryPie from '../QuizSummaryPie'
 import { useNavigate } from 'react-router-dom'
@@ -9,8 +9,9 @@ interface QuizSummaryModalProps {
 }
 
 export const QuizSummaryModal = ({ open, toggleIsOpen }: QuizSummaryModalProps) => {
-  const labelColor = '#27A624'
-  const lableBgColor = '#E5F4E5'
+  const theme = useTheme();
+  const labelColor = theme.colors.labelColor;
+  const lableBgColor = theme.colors.lableBgColor;
   const navigate = useNavigate()
   const handleReturnDashboard = async () => {
     navigate('/dashboard')
