@@ -21,7 +21,7 @@ import { baseURL } from '../../../config/config'
 import useAuthStore from '@auth/store/authStore'
 import * as io from 'socket.io-client'
 import { useSubmitQuiz } from '@giveQuiz/api/useUser'
-import {displayToast} from '@giveQuiz/utils/toastNotifications'
+import {displayToast,displayErrorToast} from '@giveQuiz/utils/toastNotifications'
 import useLogIP from '@giveQuiz/hooks/useLogIP';
 
 const giveQuiz = () => {
@@ -92,13 +92,7 @@ const giveQuiz = () => {
                   navigate('/dashboard');
                 },
                 onError: (error) => {
-                  toast.error('Failed to submit quiz. Please try again.', {
-                    position: 'bottom-center',
-                    autoClose: 1000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                  });
+                  displayErrorToast('Failed to submit quiz. Please try again.')
                 },
               });
             }

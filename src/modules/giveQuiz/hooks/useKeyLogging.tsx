@@ -29,7 +29,7 @@ const useKeyLogging = ({ handle }: { handle: FullScreenHandle }) => {
   }
   const handleContextMenu = (e: MouseEvent) => {
     e.preventDefault()
-    displayToast('Please allow the location access for the quiz to start', {
+    displayToast('Action logged (RIGHT CLICK), avoid using right click during quiz.', {
       autoClose: 5000,
       closeOnClick: true,
       pauseOnHover: true,
