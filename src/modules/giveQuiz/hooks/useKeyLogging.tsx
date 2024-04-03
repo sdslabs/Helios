@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { tinykeys } from 'tinykeys'
-import { toast } from 'react-toastify'
 import { FullScreenHandle } from 'react-full-screen'
 import useLog from '@giveQuiz/api/useLog'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import { LogType } from '@giveQuiz/types'
+import {displayToast} from '@giveQuiz/utils/toastNotifications'
 
 const useKeyLogging = ({ handle }: { handle: FullScreenHandle }) => {
   const { mutate: log } = useLog()
@@ -13,15 +13,13 @@ const useKeyLogging = ({ handle }: { handle: FullScreenHandle }) => {
     quizId: state.quizId,
   }))
   const handleSusAction = (logType: string, key: string) => {
-    toast.warn(`Action logged (${logType}), avoid using suspicious key presses during quiz.`, {
-      position: 'top-center',
+    displayToast('Action logged (${logType}), avoid using suspicious key presses during quiz.', {
       autoClose: 5000,
-      hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      progress: undefined,
-    })
+    });
+
     log({
       questionId: currentQuestion,
       logType: LogType.SusKey,
@@ -31,15 +29,12 @@ const useKeyLogging = ({ handle }: { handle: FullScreenHandle }) => {
   }
   const handleContextMenu = (e: MouseEvent) => {
     e.preventDefault()
-    toast.warn('Action logged (RIGHT CLICK), avoid using right click during quiz.', {
-      position: 'top-center',
+    displayToast('Action logged (RIGHT CLICK), avoid using right click during quiz.', {
       autoClose: 5000,
-      hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      progress: undefined,
-    })
+    });
     log({
       questionId: currentQuestion,
       logType: LogType.RightClick,

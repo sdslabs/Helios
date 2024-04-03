@@ -1,10 +1,9 @@
-import { Modal, ModalContent, ModalOverlay, Text, Button, Flex, Box } from '@chakra-ui/react'
+import {  Text, Button, Flex, Box } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { TimeIcon, CloseIcon } from '@chakra-ui/icons'
-import { QuizSummaryModal } from './QuizSummaryModal'
 import QuizSummaryPie from '../QuizSummaryPie'
 import * as io from 'socket.io-client'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useSubmitQuiz } from '../../api/useUser'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import { baseURL, reactAppURL } from '../../../../config/config'
@@ -21,10 +20,11 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
   const queryClient = useQueryClient()
   const [timeLeft, setTimeLeft] = useState('00 : 00 : 00')
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
-
   const timer = useQuizStore((state) => state.timer)
   const { quizId } = useParams()
   const { mutate } = useSubmitQuiz()
+  const navigate = useNavigate();
+
   const handleQuizSubmit = async () => {
     socket.disconnect()
     if (quizId) {
@@ -33,7 +33,7 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
           setIsQuizSubmitted(true)
           queryClient.invalidateQueries({ exact: true, queryKey: ['dashboard'] })
           queryClient.invalidateQueries({ exact: true, queryKey: ['quiz', quizId] })
-          window.location.assign(`${reactAppURL}/dashboard`)
+          navigate(`${reactAppURL}/dashboard`);
         },
       })
     }

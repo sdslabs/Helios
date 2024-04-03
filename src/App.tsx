@@ -1,4 +1,4 @@
-import { ChakraProvider, Spinner } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import theme from '@common/theme'
 import JoinUs from './modules/auth/views/joinUs'
@@ -15,6 +15,7 @@ import { UserRoles } from './modules/types'
 import CheckQuiz from '@checkQuiz/views/checkQuiz'
 import CheckQuestionView from '@checkQuiz/components/giveQuiz/CheckQuestionView'
 import { TimerProvider } from './modules/giveQuiz/components/TimerContext'
+import Spin from '@common/components/Spinner';
 
 function App() {
   const authStore = useAuthStore()
@@ -34,17 +35,7 @@ function App() {
 
   if (isLoading) {
     return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Spinner size='xl' />
-      </div>
+      <Spin />
     )
   }
 

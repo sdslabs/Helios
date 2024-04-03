@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Chart as ChartJS, ArcElement, Legend } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Flex, useTheme } from '@chakra-ui/react'
 import SummaryStats from './SummaryStats'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 
@@ -29,12 +29,20 @@ function QuizSummaryPie() {
     markedQuestions.length,
     markedAnsweredQuestions.length,
   ]) // order according to labels
+
+  const theme = useTheme()
+
   const data = {
     labels: ['Unanswered', 'Answered', 'Marked for Review', 'Answered and Marked for Review'],
     datasets: [
       {
         data: summaryData,
-        backgroundColor: ['#AD9EC9', '#22C35E', '#ECC94B', '#1DA1F2'], // pie chart colors
+        backgroundColor: [
+          theme.colors.unanswered,
+          theme.colors.answered,
+          theme.colors.markedForReview,
+          theme.colors.answeredAndMarkedForReview,
+        ],
       },
     ],
   }

@@ -2,7 +2,7 @@ import useLog from '@giveQuiz/api/useLog'
 import { LogType } from '@giveQuiz/types'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import {displayToast} from '@giveQuiz/utils/toastNotifications'
 
 const useLocationAccess = () => {
   const [hasLocationAccess, setHasLocationAccess] = useState(false)
@@ -25,27 +25,23 @@ const useLocationAccess = () => {
         (error) => {
           console.error(error)
           setHasLocationAccess(false)
-          toast.error('Please allow the location access for the quiz to start', {
+          displayToast('Please allow the location access for the quiz to start', {
             position: 'top-left',
-            autoClose: false,
             hideProgressBar: true,
-            closeOnClick: false,
-            closeButton: false,
-            progress: undefined,
             toastId: 'locationToast',
-          })
+            type: 'error',
+          });
+          
+
         },
       )
     } else {
-      toast.error('Please allow the location access for the quiz to start', {
+      displayToast('Please allow the location access for the quiz to start', {
         position: 'top-left',
-        autoClose: false,
         hideProgressBar: true,
-        closeOnClick: false,
-        closeButton: false,
-        progress: undefined,
         toastId: 'locationToast',
-      })
+        type: 'error',
+      });
     }
   }, [])
   return { hasLocationAccess }

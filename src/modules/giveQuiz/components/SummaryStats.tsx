@@ -7,7 +7,7 @@ interface SummaryStatsProps {
   BgColor: string[]
 }
 
-const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProps) => {
+const SummaryStats = ({ BgColor }: SummaryStatsProps) => {
   const answeredQuestions = useQuizStore((state) => state.answeredQuestions)
   const markedAnsweredQuestions = useQuizStore((state) => state.markedAnsweredQuestions)
   const markedQuestions = useQuizStore((state) => state.markedQuestions)
