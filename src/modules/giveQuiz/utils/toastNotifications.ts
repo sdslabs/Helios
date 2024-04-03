@@ -1,6 +1,6 @@
 import { toast, ToastOptions  } from 'react-toastify';
 
-const displayToast = (message: any, options: ToastOptions= {}) => {
+export const displayToast = (message: any, options: ToastOptions= {}) => {
  const defaultOptions: ToastOptions = {
     position: 'top-center',
     autoClose: false,
@@ -17,5 +17,20 @@ const displayToast = (message: any, options: ToastOptions= {}) => {
  toast(message, mergedOptions);
 };
 
-export default displayToast;
+export const displayErrorToast = (message: any, options: ToastOptions= {}) => {
+   const defaultOptions: ToastOptions = {
+      position: 'bottom-center',
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      type: 'error',
+      toastId: 'customToast',
+   };
+  
+   const mergedOptions = { ...defaultOptions, ...options };
+  
+   toast(message, mergedOptions);
+  };
+
 

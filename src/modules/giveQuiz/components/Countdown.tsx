@@ -7,7 +7,7 @@ import useQuizStore from '@giveQuiz/store/QuizStore'
 import { QuizSummaryModal } from './Modals/QuizSummaryModal'
 import { useSubmitQuiz } from '@giveQuiz/api/useUser'
 import * as io from 'socket.io-client'
-import { baseURL, reactAppURL } from '../../../config/config'
+import { baseURL } from '../../../config/config'
 import { useQueryClient } from '@tanstack/react-query'
 
 const socket = io.connect(`${baseURL}`)
@@ -52,7 +52,7 @@ function Countdown() {
               onSuccess: () => {
                 queryClient.invalidateQueries({ exact: true, queryKey: ['dashboard'] })
                 queryClient.invalidateQueries({ exact: true, queryKey: ['quiz', quizId] })
-                navigate(`${reactAppURL}/dashboard`);
+                navigate(`/dashboard`);
               },
             })
           }

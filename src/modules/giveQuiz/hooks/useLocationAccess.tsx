@@ -2,7 +2,7 @@ import useLog from '@giveQuiz/api/useLog'
 import { LogType } from '@giveQuiz/types'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import displayToast from '@giveQuiz/utils/toastNotifications'
+import {displayToast} from '@giveQuiz/utils/toastNotifications'
 
 const useLocationAccess = () => {
   const [hasLocationAccess, setHasLocationAccess] = useState(false)

@@ -4,7 +4,7 @@ import { FullScreenHandle } from 'react-full-screen'
 import useLog from '@giveQuiz/api/useLog'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import { LogType } from '@giveQuiz/types'
-import displayToast from '@giveQuiz/utils/toastNotifications'
+import {displayToast} from '@giveQuiz/utils/toastNotifications'
 
 const useKeyLogging = ({ handle }: { handle: FullScreenHandle }) => {
   const { mutate: log } = useLog()

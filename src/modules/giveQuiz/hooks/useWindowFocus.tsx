@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import useLog from '@giveQuiz/api/useLog'
 import { LogType } from '@giveQuiz/types'
-import displayToast from '@giveQuiz/utils/toastNotifications'
+import {displayToast} from '@giveQuiz/utils/toastNotifications'
 
 const handleBlur = (currentQuestion: string, quizId: string, log: any) => {
   displayToast('Quiz must be given on Full Screen. Press `Ctrl + F` to go to Fullscreen', {
