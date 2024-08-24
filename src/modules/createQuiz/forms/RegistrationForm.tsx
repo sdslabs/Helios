@@ -25,22 +25,22 @@ const RegistrationForm = ({ setQuizStage }: RegistrationFormProps) => {
   const quizId = useQuizDetailsStore((state) => state.quizId)
 
   const handleChange = (key: keyof CustomFields, value: string | boolean, index: number) => {
-    const updatedCustomFields = [...registrationForm.customFields]
+    const updatedCustomFields = [...registrationForm.customFields];
     if (index + 1 > updatedCustomFields.length) {
       updatedCustomFields.push({
         name: '',
         label: '',
         isRequired: false,
-      })
+      });
     }
-    ;(updatedCustomFields[index] as any)[key] = value
+    ;(updatedCustomFields[index] as any)[key] = value;
     if (!updatedCustomFields[index].name && !updatedCustomFields[index].label) {
-      updatedCustomFields.splice(index, 1)
+      updatedCustomFields.splice(index, 1);
     }
     setRegistrationForm({
       customFields: updatedCustomFields,
-    })
-  }
+    });
+  };
 
   const handleSaveRegistrationForm = () => {
     mutate({ quizId, body: { registrationMetadata: registrationForm } })
@@ -115,14 +115,18 @@ const RegistrationForm = ({ setQuizStage }: RegistrationFormProps) => {
       {[0, 1, 2].map((index) => (
         <VStack key={index} mt={8} gap={3}>
           <FormControl display='flex' alignItems='center' color='gray.500' gap={3}>
-            <FormLabel mb='0' flexGrow={1}>
+            <FormLabel mb='0' flexGrow={1} display='flex' alignItems='center'>
               Custom Field {index + 1}
+              {registrationForm.customFields[index]?.isRequired && (
+                <Text as='span' color='red.500' ml={1}>
+                  *
+                </Text>
+              )}
             </FormLabel>
             <Text>Required</Text>
             <Switch
               id={`cf-${index + 1}`}
               colorScheme='purple'
-              disabled={registrationForm.customFields.length <= index}
               isChecked={registrationForm.customFields[index]?.isRequired}
               onChange={(e) => handleChange('isRequired', e.target.checked, index)}
             />

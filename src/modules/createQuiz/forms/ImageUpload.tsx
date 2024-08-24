@@ -1,5 +1,4 @@
 import { Button, Center, Input, Text } from '@chakra-ui/react'
-import { noop } from 'lodash'
 import { useRef, useState } from 'react'
 
 const ImageUpload = () => {
@@ -16,6 +15,13 @@ const ImageUpload = () => {
     fileUploadInputRef.current?.click()
   }
 
+  const handleDeleteImage = () => {
+    setImagePreview(null)
+    if (fileUploadInputRef.current) {
+      fileUploadInputRef.current.value = ''
+    }
+  }
+
   return (
     <Center
       h={270}
@@ -24,30 +30,54 @@ const ImageUpload = () => {
       borderRadius={4}
       border='1px dashed'
       borderColor='v6'
-      opacity={0.4}
       flexDirection='column'
-      gap={8}
-      onClick={imagePreview ? noop : handleOpenFileUpload}
-      px={8}
-      ml='auto'
+      position='relative'
+      overflow='hidden'
     >
       {imagePreview ? (
         <>
-          <img src={imagePreview} alt='Quiz Banner' height={150} width={150} />
-          <Button variant='link' colorScheme='v6' size='sm' onClick={handleOpenFileUpload}>
-            Change Image
-          </Button>
+          <img
+            src={imagePreview}
+            alt='Quiz Banner'
+            style={{
+              height: '100%',
+              width: '100%',
+              objectFit: 'cover',
+            }}
+          />
+          <Center
+            position='absolute'
+            bottom={0}
+            width='100%'
+            bgColor='v1'
+            py={2}
+            flexDirection='column'
+            gap={2}
+          >
+            <Button variant='link' color='v6' size='sm' onClick={handleOpenFileUpload} p={2}>
+              Change Banner
+            </Button>
+            <Button variant='link' color='v6' size='sm' onClick={handleDeleteImage} p={2}>
+              Remove
+            </Button>
+          </Center>
         </>
       ) : (
-        <>
-          <Text color='v6' textAlign='center'>
+        <Center
+          h='100%'
+          w='100%'
+          flexDirection='column'
+          cursor='pointer'
+          onClick={handleOpenFileUpload}
+        >
+          <Text color='v6' textAlign='center' p={5} opacity={0.4}>
             Click here to upload Quiz banner
           </Text>
-          <Text color='gray.500' as='i' fontSize='sm' textAlign='center'>
+          <Text color='gray.500' as='i' fontSize='sm' textAlign='center' p={5} opacity={0.4}>
             Use a square image only with Max file size: 1MB <br />
             (Accepted file types: .jpg, .jpeg, .png)
           </Text>
-        </>
+        </Center>
       )}
       <Input
         type='file'

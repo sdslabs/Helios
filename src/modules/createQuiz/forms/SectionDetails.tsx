@@ -15,15 +15,20 @@ import InputField from '@common/components/CustomInputWithLabel'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { useUpdateSection } from '@createQuiz/api/useSection'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
-
-const SectionDetails = () => {
-  const { sections, setSections, currentSectionIdx, setSectionMetadata } = useSectionStore(
+import { useCreateQuestion } from '@createQuiz/api/useQuestion'
+import { QuizCreationSteps } from '../types'
+interface SectionDetailsProps {
+  setStage: (stage: QuizCreationSteps) => void;
+}
+const SectionDetails = ({ setStage }: SectionDetailsProps) => {
+  const { sections, setSections, currentSectionIdx, setSectionMetadata,addQuestion,setCurrentQuestionIdx } = useSectionStore(
     (state) => state,
   )
   const quizId = useQuizDetailsStore((state) => state.quizId)
   const activeSection = currentSectionIdx !== null ? sections[currentSectionIdx] : null
   const topNavHeight = useGetTopNavHeight()
   const { mutate } = useUpdateSection()
+  const { mutate: mutateQuestion } = useCreateQuestion()
 
   const handleChangeSectionInstructions = (value?: string) => {
     setSectionMetadata(currentSectionIdx ?? 0, 'instructions', value ?? '')
@@ -48,7 +53,30 @@ const SectionDetails = () => {
       const updatedSections = [...sections]
       updatedSections[currentSectionIdx] = updatedSection
       setSections(updatedSections)
-      mutate({ quizId, sectionIdx: currentSectionIdx, body: updatedSection })
+      // mutate({ quizId, sectionIdx: currentSectionIdx, body: updatedSection })
+      mutate(
+        { quizId, sectionIdx: currentSectionIdx, body: updatedSection },
+        {
+          onSuccess: () => {
+            mutateQuestion(
+              { quizId, sectionIdx: currentSectionIdx },
+              {
+                onSuccess: (data) => {
+                  addQuestion(currentSectionIdx, data.questionId);
+                  setCurrentQuestionIdx(sections[currentSectionIdx].questions.length - 1); 
+                  setStage(4);
+                },
+                onError: (err) => {
+                  // Handle error if question creation fails
+                },
+              }
+            )
+          },
+          onError: (err) => {
+            // Handle error if section save fails
+          },
+        }
+      )
     }
   }
 
@@ -102,7 +130,7 @@ const SectionDetails = () => {
             fontWeight='400'
             onClick={handleSectionSave}
           >
-            Save & Continue
+            Start Adding Questions
           </Button>
         </HStack>
       </VStack>

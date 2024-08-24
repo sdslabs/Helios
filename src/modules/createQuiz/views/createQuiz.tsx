@@ -38,7 +38,7 @@ const CreateQuiz = () => {
         return <RegistrationForm setQuizStage={setQuizStage} />
       case QuizCreationSteps.questions:
       case QuizCreationSteps.sectionDetails:
-        return <SectionDetails />
+        return <SectionDetails setStage={setQuizStage}/>
       case QuizCreationSteps.questionDetails:
         return <QuestionDetails />
       case QuizCreationSteps.registrants:
