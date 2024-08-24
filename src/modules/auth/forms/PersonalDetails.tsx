@@ -22,6 +22,7 @@ export const PersonalDetailsForm = (props: FormProps) => {
   const personalDetails = usePersonalDetailsStore()
   const authDetails = useAuthStore()
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    personalDetails.updateEmail(authDetails.user.emailAdd)
     e.preventDefault()
     props.nextStep()
     setStep(2)
@@ -66,11 +67,12 @@ export const PersonalDetailsForm = (props: FormProps) => {
                 placeholder: 'Email Address',
                 type: 'email',
                 defaultValue: authDetails.user.emailAdd,
-                isReadOnly:true
+                isReadOnly: true,
               }}
             />
             <CustomInputWithLabel
               label='Phone Number'
+              isRequired
               inputProps={{
                 placeholder: 'Phone Number',
                 type: 'number',
@@ -92,4 +94,3 @@ export const PersonalDetailsForm = (props: FormProps) => {
     </>
   )
 }
-

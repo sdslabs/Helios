@@ -15,20 +15,19 @@ import {
   ListIcon,
   ListItem,
   Select,
-  Spinner,
   Switch,
   Text,
   VStack,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
-import { QuestionType } from '../../types'
+import { QuestionType, Option } from '../../types'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { CircleIconOutlined } from '@common/components/Icons'
 import useSectionStore from '@createQuiz/store/useSectionStore'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import { useGetQuestion, useUpdateQuestion } from '@createQuiz/api/useQuestion'
-import { Option } from '@createQuiz/types'
+import Spin from '@common/components/Spinner';
 
 const QuestionDetails = () => {
   const [description, setDescription] = useState<string>('')
@@ -66,23 +65,22 @@ const QuestionDetails = () => {
   }
   const handleEdit = (id: string, newLabel: string) => {
     setOptions((prevOptions) =>
-      prevOptions.map((option) =>
-        option.id === id ? { ...option, label: newLabel } : option
-      )
-    );
-  };
+      prevOptions.map((option) => (option.id === id ? { ...option, label: newLabel } : option)),
+    )
+  }
   const handleDelete = (id: string) => {
-    const newOptions = options.filter((option) => option.id !== id);
+    const newOptions = options.filter((option) => option.id !== id)
     newOptions.forEach((option, idx) => {
-      option.id = '' + (idx + 1);
-    });
-    setOptions(newOptions);
-  };
+      option.id = '' + (idx + 1)
+    })
+    setOptions(newOptions)
+  }
   const handleSaveQuestion = () => {
     const updatedQuestion = {
       description,
       type,
       maxMarks: marks,
+      correctAnswer: type === QuestionType.SUB ? '' : answer ?? '1',
       autoCheck: type === QuestionType.SUB ? false : autoCheck,
       options: type === QuestionType.SUB ? [] : options,
       checkerNotes: type === QuestionType.SUB ? notes : '',
@@ -102,10 +100,10 @@ const QuestionDetails = () => {
       setNotes(data.question?.checkerNotes)
       setAnswer(data.question?.correctAnswer)
     }
-  },[isFetched, isLoading, data])
+  }, [isFetched, isLoading, data])
 
   const renderChoiceBuilder = () => {
-    if (type === 'subjective') return null
+    if (type === QuestionType.SUB) return null
 
     return (
       <>
@@ -141,8 +139,12 @@ const QuestionDetails = () => {
           w='max-content'
           size='sm'
           fontWeight='400'
-          onClick={() => setOptions((prevOptions) =>
-            [...prevOptions, { id: '' + (prevOptions.length + 1), label: `Option ${prevOptions.length + 1}`}])}
+          onClick={() =>
+            setOptions((prevOptions) => [
+              ...prevOptions,
+              { id: '' + (prevOptions.length + 1), label: `Option ${prevOptions.length + 1}` },
+            ])
+          }
         >
           + Add Option
         </Button>
@@ -150,19 +152,9 @@ const QuestionDetails = () => {
     )
   }
   // TODO: use the fetching animation instead of loading spinner
-  if(isLoading) {
+  if (isLoading) {
     return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Spinner size='xl' />
-      </div>
+      <Spin />
     )
   }
 
@@ -177,8 +169,8 @@ const QuestionDetails = () => {
             Question {(currentQuestionIdx ?? 0) + 1}
           </Text>
           <Select value={type} onChange={handleChangeType} w={48}>
-            <option value={'subjective'}>{'subjective'}</option>
-            <option value={'mcq'}>{'mcq'}</option>
+            <option value={QuestionType.SUB}>{'Subjective'}</option>
+            <option value={QuestionType.MCQ}>{'Multi Choice'}</option>
           </Select>
         </HStack>
         <FormControl>
@@ -195,15 +187,24 @@ const QuestionDetails = () => {
           <Text color='accentBlack' fontSize='sm'>
             Marks:
           </Text>
-          <Input type='number' w={20} value={marks} onChange={(e) => setMarks(parseInt(e.target.value, 10))} />
+          <Input
+            type='number'
+            w={20}
+            value={marks}
+            onChange={(e) => setMarks(parseInt(e.target.value, 10))}
+          />
         </HStack>
-        {type === 'mcq' && (
+        {type === QuestionType.MCQ && (
           <>
             <HStack>
               <Text color='accentBlack' fontSize='sm'>
                 Autocheck:
               </Text>
-              <Switch colorScheme='purple' isChecked={autoCheck} onChange={(e) => setAutoCheck(e.target.checked)}/>
+              <Switch
+                colorScheme='purple'
+                isChecked={autoCheck}
+                onChange={(e) => setAutoCheck(e.target.checked)}
+              />
             </HStack>
             <HStack>
               <Text color='accentBlack' fontSize='sm'>
@@ -220,7 +221,7 @@ const QuestionDetails = () => {
           </>
         )}
       </HStack>
-      {type === 'subjective' && (
+      {type === QuestionType.SUB && (
         <FormControl>
           <FormLabel fontWeight='400' fontSize='sm' color='gray.500'>
             Checker&#39;s notes
@@ -229,10 +230,22 @@ const QuestionDetails = () => {
         </FormControl>
       )}
       <HStack justifyContent='end' my={12} gap={3}>
-        <Button color='brand' colorScheme='purple' fontWeight='400' variant='outline' onClick={handleDiscardChanges}>
+        <Button
+          color='brand'
+          colorScheme='purple'
+          fontWeight='400'
+          variant='outline'
+          onClick={handleDiscardChanges}
+        >
           Discard changes
         </Button>
-        <Button color='white' colorScheme='purple' bgColor='brand' fontWeight='400' onClick={handleSaveQuestion}>
+        <Button
+          color='white'
+          colorScheme='purple'
+          bgColor='brand'
+          fontWeight='400'
+          onClick={handleSaveQuestion}
+        >
           Save changes
         </Button>
       </HStack>

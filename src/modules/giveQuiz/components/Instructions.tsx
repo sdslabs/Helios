@@ -1,10 +1,11 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react'
-import { useState, useEffect } from 'react';
-import { GiveQuizSteps } from '../types';
-import { useQuiz } from '../api/UseQuiz';
-import useQuizStore from '../store/QuizStore';
-import { useParams } from 'react-router-dom';
-import { StartModal } from './Modals/StartQuizModal';
+import { useState, useEffect } from 'react'
+import { GiveQuizSteps } from '../types'
+import { useGetQuiz } from '../api/useQuiz'
+import useQuizStore from '../store/QuizStore'
+import { useNavigate, useParams } from 'react-router-dom'
+import { renderPreview } from '@common/components/CustomRichTextEditor'
+import Spin from '@common/components/Spinner';
 
 interface SideNavContentProps {
   stage: GiveQuizSteps
@@ -12,19 +13,19 @@ interface SideNavContentProps {
 }
 interface QuizData {
   quiz: {
-    name: string;
-    description: string;
-    instructions: string;
+    name: string
+    description: string
+    instructions: string
     sections: [
       {
-        name: string;
-        description: string;
+        name: string
+        description: string
         questions: [
           {
-            question: string;
-            options: string[];
-            answer: string;
-            mark: number;
+            question: string
+            options: string[]
+            answer: string
+            mark: number
           },
         ]
       },
@@ -37,37 +38,34 @@ interface QuizData {
 
 const Instructions = ({ stage, setStage }: SideNavContentProps) => {
   const [quizInstructions, setQuizInstructions] = useState('')
-  const [quizName, setQuizName] = useState('')
   const [quizDescription, setQuizDescription] = useState('')
-  const setCurrentSection = useQuizStore((state) => state.setCurrentSection)
-  const setCurrentSectionIndex = useQuizStore((state) => state.setCurrentSectionIndex)
-  const sections = useQuizStore((state) => state.sections)
-  const isStarted = useQuizStore((state) => state.isStarted)
-  const { setAnsweredQuestions, setMarkedQuestions, setMarkedAnsweredQuestions, setIsStarted } =
-    useQuizStore()
-  const { quizId } = useParams()
+  const {
+    quizName,
+    setSections,
+    setTotalQuestion,
+    setQuizName,
+    setCurrentSection,
+    setCurrentSectionIndex,
+    sections,
+    setAnsweredQuestions,
+    setMarkedQuestions,
+    setMarkedAnsweredQuestions,
+  } = useQuizStore()
+  const { quizId } = useParams() as { quizId: string }
   const {
     data: quizData,
     isLoading: isQuizDataLoading,
     isSuccess: isQuizDataSuccess,
+    isError: isQuizDataError,
     error: quizError,
-  } = useQuiz(quizId as string) as {
+  } = useGetQuiz(quizId) as unknown as {
     data: QuizData
     isLoading: boolean
+    isError: boolean
     isSuccess: boolean
-    error: Error | null
+    error: Error
   }
-  const [isStartModalOpen, setIsStartModalOpen] = useState(false)
-  const toggleStartModal = () => {
-    setIsStartModalOpen(!isStartModalOpen)
-  }
-
-  useEffect(() => {
-    if (isStarted) {
-      setIsStartModalOpen(true)
-      setIsStarted(false)
-    }
-  }, [])
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (isQuizDataSuccess) {
@@ -84,27 +82,28 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
           questions: section.questions,
         }
       })
-      useQuizStore.getState().setSections(sectionData)
+      setSections(sectionData)
       const totalQuestions = sectionData.reduce(
         (total, section) => total + section.questions.length,
         0,
       )
-      useQuizStore.getState().setTotalQuestion(totalQuestions)
+      setTotalQuestion(totalQuestions)
     }
   }, [isQuizDataSuccess, quizData])
 
-  if (isQuizDataLoading) {
-    // Change later
-    return <p>Loading...</p>
+  useEffect(() => {
+    if (isQuizDataError) {
+      navigate('/dashboard', { replace: true })
+    }
+  }, [isQuizDataError, quizError])
+
+  if (!quizData || isQuizDataLoading) {
+    return (
+     <Spin />
+    )
   }
 
-  if (!isQuizDataSuccess) {
-    // Change later
-    console.error('Error loading quiz data:', quizError)
-    return <p>Error loading quiz data</p>
-  }
-
-  async function handleContinueClick() {
+  const handleContinueClick = () => {
     setStage(1)
     setCurrentSectionIndex(1)
     setCurrentSection(sections[0])
@@ -131,7 +130,7 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
               color='GrayText'
               style={{ whiteSpace: 'pre-wrap' }}
             >
-              {quizDescription}
+              {renderPreview(quizDescription)}
             </Text>
             <Text fontSize='1.5rem' fontWeight='600' mb={4} alignSelf='self-start'>
               Instructions
@@ -144,19 +143,16 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
               color='GrayText'
               style={{ whiteSpace: 'pre-wrap' }}
             >
-              {quizInstructions}
+              {renderPreview(quizInstructions)}
             </Text>
             <Button
               colorScheme='purple'
               bgColor='brand'
               alignSelf='flex-end'
               mt={4}
-              onClick={() => {
-                handleContinueClick()
-              }}
+              onClick={handleContinueClick}
             >
               Continue
-              <StartModal open={isStartModalOpen} toggleIsOpen={toggleStartModal} quizId={quizId} />
             </Button>
           </Flex>
         </Flex>

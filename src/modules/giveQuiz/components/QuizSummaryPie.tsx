@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Chart as ChartJS, ArcElement, Legend } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Flex, useTheme } from '@chakra-ui/react'
 import SummaryStats from './SummaryStats'
+import useQuizStore from '@giveQuiz/store/QuizStore'
 
 ChartJS.register(ArcElement, Legend)
 
@@ -15,15 +16,33 @@ const options = {
 }
 
 function QuizSummaryPie() {
-  const [summaryData, setSummaryData] = useState([20, 70, 10, 20]) // order according to labels
-  const [totalQuestions, setTotalQuestions] = useState(100)
+  const answeredQuestions = useQuizStore((state) => state.answeredQuestions)
+  const totalQuestion = useQuizStore((state) => state.totalQuestion)
+  const markedQuestions = useQuizStore((state) => state.markedQuestions)
+  const markedAnsweredQuestions = useQuizStore((state) => state.markedAnsweredQuestions)
+  const [summaryData, setSummaryData] = useState([
+    totalQuestion -
+      answeredQuestions.length -
+      markedQuestions.length -
+      markedAnsweredQuestions.length,
+    answeredQuestions.length,
+    markedQuestions.length,
+    markedAnsweredQuestions.length,
+  ]) // order according to labels
+
+  const theme = useTheme()
 
   const data = {
-    labels: ['Not Visited', 'Answered', 'Marked for Review', 'Answered and Marked for Review'],
+    labels: ['Unanswered', 'Answered', 'Marked for Review', 'Answered and Marked for Review'],
     datasets: [
       {
         data: summaryData,
-        backgroundColor: ['#AD9EC9', '#27A624', '#FF8900', '#604195'], // pie chart colors
+        backgroundColor: [
+          theme.colors.unanswered,
+          theme.colors.answered,
+          theme.colors.markedForReview,
+          theme.colors.answeredAndMarkedForReview,
+        ],
       },
     ],
   }
@@ -34,7 +53,7 @@ function QuizSummaryPie() {
         <Pie data={data} options={options} />
       </Box>
       <SummaryStats
-        TotalQuestions={totalQuestions}
+        TotalQuestions={totalQuestion}
         SummaryData={summaryData}
         BgColor={data.datasets[0].backgroundColor}
       />

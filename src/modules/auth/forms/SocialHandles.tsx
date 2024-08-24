@@ -145,7 +145,7 @@ export const SocialHandlesForm = (props: FormProps) => {
   const navigate = useNavigate()
 
   const personalDetails = {
-    name: firstName + lastName,
+    name: firstName + ' ' + lastName,
     emailAdd: email,
     phoneNo: phone,
   }
@@ -183,9 +183,10 @@ export const SocialHandlesForm = (props: FormProps) => {
           <SocialMediaSelect />
         </Stack>
         <Flex alignItems='center' my='6'>
-          <Button variant={'ghost'} px={6} color={'gray.400'} _hover={{ bg: 'gray.100' }}>
+          {/* TODO */}
+          {/* <Button variant={'ghost'} px={6} color={'gray.400'} _hover={{ bg: 'gray.100' }}>
             Skip Step
-          </Button>
+          </Button> */}
           <Spacer />
           <ButtonGroup gap={2}>
             <Button

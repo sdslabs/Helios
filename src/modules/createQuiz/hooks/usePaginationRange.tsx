@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
-import { range } from 'lodash';
+import { range } from 'lodash'
 
-const DOTS = "..."
+const DOTS = '...'
 
-export const usePaginationRange = ({ currentPage ,totalPageCount}: any) => {
-  const siblingCount = 1;
+export const usePaginationRange = ({ currentPage, totalPageCount }: any) => {
+  const siblingCount = 1
   const paginationRange = useMemo(() => {
     const totalPageNumbers = siblingCount + 5
     if (totalPageNumbers >= totalPageCount) {
@@ -29,10 +29,10 @@ export const usePaginationRange = ({ currentPage ,totalPageCount}: any) => {
       return [firstPageIndex, DOTS, ...rightRange]
     }
     if (shouldShowLeftDots && shouldShowRightDots) {
-        const middleRange = range(leftSiblingIndex, rightSiblingIndex);
-        return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
-      }
-  },[ siblingCount, currentPage]);
+      const middleRange = range(leftSiblingIndex, rightSiblingIndex)
+      return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex]
+    }
+  }, [siblingCount, currentPage])
 
   return paginationRange
 }

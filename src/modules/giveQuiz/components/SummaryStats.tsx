@@ -7,12 +7,16 @@ interface SummaryStatsProps {
   BgColor: string[]
 }
 
-const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProps) => {
+const SummaryStats = ({ BgColor }: SummaryStatsProps) => {
   const answeredQuestions = useQuizStore((state) => state.answeredQuestions)
   const markedAnsweredQuestions = useQuizStore((state) => state.markedAnsweredQuestions)
   const markedQuestions = useQuizStore((state) => state.markedQuestions)
   const totalQuestion = useQuizStore((state) => state.totalQuestion)
-  const notVisitedQuestions = totalQuestion - answeredQuestions.length
+  const notVisitedQuestions =
+    totalQuestion -
+    answeredQuestions.length -
+    markedQuestions.length -
+    markedAnsweredQuestions.length
 
   return (
     <Flex flexDirection='column' alignItems='flex-start' justifyContent='center'>
@@ -27,7 +31,7 @@ const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProp
       <Flex flexDirection='row' alignItems='center' justifyContent='center' mb={3}>
         <Box bgColor={BgColor[0]} w='1rem' h='1rem' borderRadius='20%' alignSelf='center' />
         <Text fontSize='0.875rem' fontWeight='400' ml={3} color='accentBlack'>
-          Not visited:&nbsp;
+          Unanswered:&nbsp;
         </Text>
         <Text fontSize='0.875rem' fontWeight='600' color='accentBlack'>
           {notVisitedQuestions}

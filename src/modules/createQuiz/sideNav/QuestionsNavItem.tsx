@@ -22,16 +22,17 @@ interface QuestionsNavItemProps {
 }
 
 const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
-  const quizId  = useQuizDetailsStore((state) => state.quizId)
+  const quizId = useQuizDetailsStore((state) => state.quizId)
   const { mutate: mutateSection } = useCreateSection()
   const { mutate: mutateQuestion } = useCreateQuestion()
-  const { addSection, sections, setCurrentSectionIdx, addQuestion, setCurrentQuestionIdx } = useSectionStore()
+  const { addSection, sections, setCurrentSectionIdx, addQuestion, setCurrentQuestionIdx } =
+    useSectionStore()
 
-  const renderQuestions = (idx : number) => {
+  const renderQuestions = (idx: number) => {
     return sections[idx]?.questions?.map((q, i) => (
       <Button
         key={i}
-        variant='outline' 
+        variant='outline'
         colorScheme='purple'
         rounded='full'
         width='1'
@@ -78,16 +79,17 @@ const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
                   aria-label=''
                   rounded='full'
                   onClick={() => {
-                    mutateQuestion({ quizId, sectionIdx: idx },{
-                      onSuccess: (data) => {
-                        console.log(data)
-                        addQuestion(idx, data.questionId)
+                    mutateQuestion(
+                      { quizId, sectionIdx: idx },
+                      {
+                        onSuccess: (data) => {
+                          addQuestion(idx, data.questionId)
+                        },
+                        onError: (err) => {
+                          // TODO: handle error using toast or something else
+                        },
                       },
-                      onError: (err) => {
-                        // TODO: handle error using toast or something else
-                        console.log(err)
-                      }
-                    })
+                    )
                   }}
                 />
               </Wrap>
@@ -110,10 +112,15 @@ const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
         </AccordionButton>
         <AccordionPanel borderLeft='2px solid' borderColor='v1'>
           <Accordion allowToggle>{renderSections()}</Accordion>
-          <Button bgColor='v1' color='brand' w='100%' onClick={() => {
-            addSection()
-            mutateSection({ quizId })
-          }}>
+          <Button
+            bgColor='v1'
+            color='brand'
+            w='100%'
+            onClick={() => {
+              addSection()
+              mutateSection({ quizId })
+            }}
+          >
             + Add Section
           </Button>
         </AccordionPanel>

@@ -12,37 +12,40 @@ import {
 import InputField from '@common/components/CustomInputWithLabel'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import ImageUpload from './ImageUpload'
-import { useUpdateQuizDetails } from "@createQuiz/api/useQuiz";
-import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore';
+import { useUpdateQuizDetails } from '@createQuiz/api/useQuiz'
+import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 
 interface QuizDetailsProps {
   setQuizStage: (stage: number) => void
 }
 
-const QuizDetails = ({ setQuizStage} : QuizDetailsProps) => {
+const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
+  // TODO: Managers daalte hi code fat rha hai. Fix the bug
   const { quizId, details, setKey } = useQuizDetailsStore((state) => state)
   const { mutate } = useUpdateQuizDetails()
-  const handleChange = (key : string, value : string) => {
+  const handleChange = (key: string, value: string) => {
     setKey(key, value)
   }
-  const handleChangeQuizInstructions = (value? : string) => {
-    setKey('instructions', value ?? '');
+  const handleChangeQuizInstructions = (value?: string) => {
+    setKey('instructions', value ?? '')
   }
   const handleSaveQuizDetails = () => {
-    const { managers, ...rest }  = details;
-    const  { startTime, endTime, startDate, endDate, duration, ...metadata } = rest;
+    const { managers, ...rest } = details
+    const { startTime, endTime, startDate, endDate, duration, ...metadata } = rest
     const updatedMetadata = {
       ...metadata,
       startDateTimestamp: new Date(`${startDate} ${startTime}`).getTime(),
       endDateTimestamp: new Date(`${endDate} ${endTime}`).getTime(),
-      duration: duration? parseInt(duration.split(':')[0], 10) * 60 + parseInt(duration.split(':')[1], 10) : 0,
+      duration: duration
+        ? parseInt(duration.split(':')[0], 10) * 60 + parseInt(duration.split(':')[1], 10)
+        : 0,
     }
     const updatedDetails = {
       quizMetadata: updatedMetadata,
-      managers: managers
+      managers: managers,
     }
-    mutate({ quizId, body: updatedDetails });
-    setQuizStage(1);
+    mutate({ quizId, body: updatedDetails })
+    setQuizStage(1)
   }
   return (
     <Box w='930px' mx='auto' my={14}>
@@ -147,14 +150,23 @@ const QuizDetails = ({ setQuizStage} : QuizDetailsProps) => {
           <FormLabel fontWeight='400' fontSize='sm' color='gray.500'>
             Quiz Instructions
           </FormLabel>
-          <CustomRichTextEditor value={details?.instructions ?? ''} onChange={handleChangeQuizInstructions} />
+          <CustomRichTextEditor
+            value={details?.instructions ?? ''}
+            onChange={handleChangeQuizInstructions}
+          />
         </FormControl>
       </VStack>
       <HStack justifyContent='end' my={12} gap={3}>
         <Button color='brand' colorScheme='purple' fontWeight='400' variant='outline'>
           Reset
         </Button>
-        <Button color='white' colorScheme='purple' bgColor='brand' fontWeight='400' onClick={handleSaveQuizDetails}>
+        <Button
+          color='white'
+          colorScheme='purple'
+          bgColor='brand'
+          fontWeight='400'
+          onClick={handleSaveQuizDetails}
+        >
           Save & Continue
         </Button>
       </HStack>

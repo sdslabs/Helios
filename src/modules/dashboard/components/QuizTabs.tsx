@@ -13,52 +13,54 @@ interface TabsProps {
 
 const QuizTabs: React.FC<TabsProps> = ({ isAdmin = false, quizzes, createdQuizzes }: TabsProps) => {
   const date = new Date()
-  
+
   const ongoingQuizzes = quizzes?.filter((q: QuizDetails) => {
-    const quizendTimeStamp = new Date(q.endDateTimestamp.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
-    const quizstartTimeStamp = new Date(q.startDateTimestamp.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
-    return quizendTimeStamp > date && quizstartTimeStamp < date;
-   });
-   
+    const quizendTimeStamp = new Date(q.endDateTimestamp)
+    const quizstartTimeStamp = new Date(q.startDateTimestamp)
+    return quizendTimeStamp > date && quizstartTimeStamp < date
+  })
+
   const upcomingQuizzes = quizzes?.filter((q: QuizDetails) => {
-    const quizstartTimeStamp = new Date(q.startDateTimestamp.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
+    const quizstartTimeStamp = new Date(q.startDateTimestamp)
     return quizstartTimeStamp > date
   })
   return (
     <>
       <Tabs>
-        <TabList textColor='#939393' borderColor='#E7E7E7'>
-          <Tab _selected={{ color: '#604195', borderColor: '#604195' }} borderColor='#939393'>
+        <TabList textColor='n6' borderColor='v1'>
+          <Tab _selected={{ color: 'v6', borderColor: 'v6' }} borderColor='grey'>
             Quizzes
           </Tab>
           {isAdmin ? (
-            <Tab _selected={{ color: '#604195', borderColor: '#604195' }} borderColor='#939393'>
+            <Tab _selected={{ color: 'v6', borderColor: 'v6' }} borderColor='grey'>
               Created Quizzes
             </Tab>
           ) : null}
         </TabList>
 
-        <TabPanels borderColor='#E7E7E7'>
-          <TabPanel borderColor='#E7E7E7'>
-            <Flex bgColor='#EBE7F2' height='4vh' align='center' justify='center'>
+        <TabPanels borderColor='v1'>
+          <TabPanel borderColor='v1'>
+            <Flex bgColor='v1' align='center' justify='center'>
               <Heading
-                bgColor='#EBE7F2'
+                bgColor='v1'
                 textAlign='center'
-                color='#604195'
-                fontSize='1.2vh'
-                fontWeight='600'
+                color='v6'
+                fontSize='1rem'
+                fontWeight='500'
+                padding={'2'}
               >
                 Ongoing Quizzes
               </Heading>
             </Flex>
             <QuizSlider data={ongoingQuizzes} type={QuizType.ongoing} />
-            <Flex bgColor='#EBE7F2' height='4vh' align='center' justify='center'>
+            <Flex bgColor='v1' align='center' justify='center'>
               <Heading
-                bgColor='#EBE7F2'
+                bgColor='v1'
                 textAlign='center'
-                color='#604195'
-                fontSize='1.2vh'
-                fontWeight='600'
+                color='v6'
+                fontSize='1rem'
+                fontWeight='500'
+                padding={'2'}
               >
                 Upcoming Quizzes
               </Heading>
@@ -66,7 +68,7 @@ const QuizTabs: React.FC<TabsProps> = ({ isAdmin = false, quizzes, createdQuizze
             <QuizSlider data={upcomingQuizzes} type={QuizType.upcoming} />
           </TabPanel>
           {isAdmin && (
-            <TabPanel borderColor='#E7E7E7'>
+            <TabPanel borderColor='v1'>
               <Flex flexDirection='column' gap='2.4vh'>
                 {createdQuizzes.length != 0 ? (
                   createdQuizzes.map((quiz: any, index: number) => {
@@ -88,11 +90,13 @@ const QuizTabs: React.FC<TabsProps> = ({ isAdmin = false, quizzes, createdQuizze
                       <CreatedQuizCard
                         key={index}
                         image={quiz?.quizMetadata?.bannerImage}
+                        quizId={quiz?._id}
                         name={quiz?.quizMetadata?.name}
                         tags={tags}
                         content={quiz?.quizMetadata?.description}
                         schedule={quiz?.quizMetadata?.startDateTimestamp}
                         edit={quiz.isPublished}
+                        id={quiz._id}
                       />
                     )
                   })

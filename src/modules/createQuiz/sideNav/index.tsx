@@ -5,6 +5,7 @@ import { QuizCreationSteps } from '../types'
 import QuestionsNavItem from './QuestionsNavItem'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import { usePublishQuiz } from '@createQuiz/api/useQuiz'
+import { useNavigate } from 'react-router-dom'
 
 interface SideNavContentProps {
   stage: QuizCreationSteps
@@ -15,13 +16,21 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
   const quizId = useQuizDetailsStore((state) => state.quizId)
   const { mutate: mutatePublishQuiz } = usePublishQuiz()
   // TODO: publish quiz in the backend to check that the quiz is perfect in nature
-  // TODO: handle the onSucess and onError also 
+  // TODO: handle the onSucess and onError also
+  const navigate = useNavigate()
   const handlePublishQuiz = () => {
-    mutatePublishQuiz({ quizId }, {
-      onSuccess: () => {
-        setStage(6)
+    mutatePublishQuiz(
+      { quizId },
+      {
+        onSuccess: () => {
+          console.log('Quiz published successfully')
+          navigate('/')
+        },
+        onError: () => {
+          console.log('Quiz publish failed')
+        },
       },
-    })
+    )
   }
   return (
     <>
@@ -44,8 +53,9 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
       </BasicNavButton>
       <QuestionsNavItem setStage={setStage} />
       <BasicNavButton
-        leftIcon={<RegistrantsOutlinedIcon w={6} h={6}/>}
-        onClick={() => setStage(5)} isActive={stage === 5}
+        leftIcon={<RegistrantsOutlinedIcon w={6} h={6} />}
+        onClick={() => setStage(5)}
+        isActive={stage === 5}
       >
         Registrants
       </BasicNavButton>

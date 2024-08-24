@@ -7,21 +7,21 @@ import TopNav from '@common/components/TopNav'
 import Registrants from '@createQuiz/forms/Registrants'
 import { useParams } from 'react-router-dom'
 import { useGetQuizDetails } from '@createQuiz/api/useQuiz'
-import { Spinner } from '@chakra-ui/react'
+import Spin from '@common/components/Spinner';
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import useRegistrationFormStore from '@createQuiz/store/useRegistrationFormStore'
 import useSectionStore from '@createQuiz/store/useSectionStore'
 
 const CreateQuiz = () => {
   const [quizStage, setQuizStage] = useState<QuizCreationSteps>(0)
-  const { quizId } = useParams() as { quizId: string };
+  const { quizId } = useParams() as { quizId: string }
   const { data, isLoading } = useGetQuizDetails(quizId)
   const { setDetails, setQuizId } = useQuizDetailsStore((state) => state)
   const setRegistrationForm = useRegistrationFormStore((state) => state.setRegistrationForm)
   const setSections = useSectionStore((state) => state.setSections)
   useEffect(() => {
     if (data) {
-      setDetails({...data.quizDetails})
+      setDetails({ ...data.quizDetails })
       setRegistrationForm({
         customFields: data?.registrationForm?.customFields ?? [],
       })
@@ -33,9 +33,9 @@ const CreateQuiz = () => {
   const renderQuizForm = () => {
     switch (quizStage) {
       case QuizCreationSteps.info:
-        return <QuizDetails setQuizStage={setQuizStage}/>
+        return <QuizDetails setQuizStage={setQuizStage} />
       case QuizCreationSteps.registrationForm:
-        return <RegistrationForm setQuizStage={setQuizStage}/>
+        return <RegistrationForm setQuizStage={setQuizStage} />
       case QuizCreationSteps.questions:
       case QuizCreationSteps.sectionDetails:
         return <SectionDetails />
@@ -47,19 +47,10 @@ const CreateQuiz = () => {
         return null
     }
   }
-  if(isLoading) return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Spinner size='xl' />
-    </div>
-  )
+  if (isLoading)
+    return (
+      <Spin />
+    )
 
   return (
     <>

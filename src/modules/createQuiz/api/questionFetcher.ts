@@ -1,55 +1,75 @@
-import { isAxiosError } from "axios";
-import axiosInstance from "./axiosInstance";
+import { isAxiosError } from 'axios'
+import axiosInstance from './axiosInstance'
 
-export const createQuestion = async ({ quizId, sectionIdx }: { quizId: string, sectionIdx: number }) => {
+export const createQuestion = async ({
+  quizId,
+  sectionIdx,
+}: {
+  quizId: string
+  sectionIdx: number
+}) => {
   try {
     const res = await axiosInstance.post(`/createQuiz/question/${quizId}`, {
-      sectionIndex: sectionIdx
-    });
-    return res.data;
+      sectionIndex: sectionIdx,
+    })
+    return res.data
   } catch (e: unknown) {
     if (isAxiosError(e)) {
-      return e.response?.data || e.message;
+      return e.response?.data || e.message
     }
-    throw e;
+    throw e
   }
 }
 
-export const getQuestion = async ({ queryKey }: { queryKey: [string, string] }) => {
+export const getQuestion = async (questionId: string) => {
   try {
-    const res = await axiosInstance.get(`/createQuiz/question/${queryKey[1]}`);
-    return res.data;
+    const res = await axiosInstance.get(`/createQuiz/question/${questionId}`)
+    return res.data
   } catch (e: unknown) {
     if (isAxiosError(e)) {
-      return e.response?.data || e.message;
+      return e.response?.data || e.message
     }
-    throw e;
+    throw e
   }
 }
 
-export const updateQuestion = async ({ questionId, quizId, body }: {questionId: string, quizId: string, body: any}) => {
+export const updateQuestion = async ({
+  questionId,
+  quizId,
+  body,
+}: {
+  questionId: string
+  quizId: string
+  body: any
+}) => {
   try {
     const res = await axiosInstance.put(`/createQuiz/question/${quizId}`, {
       questionId,
-      question: body
-    });
-    return res.data;
+      question: body,
+    })
+    return res.data
   } catch (e: unknown) {
     if (isAxiosError(e)) {
-      return e.response?.data || e.message;
+      return e.response?.data || e.message
     }
-    throw e;
+    throw e
   }
 }
 
-export const deleteQuestion = async ({ questionId, quizId }: {questionId : string, quizId: string}) => {
+export const deleteQuestion = async ({
+  questionId,
+  quizId,
+}: {
+  questionId: string
+  quizId: string
+}) => {
   try {
-    const res = await axiosInstance.delete(`/createQuiz/question/${quizId}/${questionId}`);
-    return res.data;
+    const res = await axiosInstance.delete(`/createQuiz/question/${quizId}/${questionId}`)
+    return res.data
   } catch (e: unknown) {
     if (isAxiosError(e)) {
-      return e.response?.data || e.message;
+      return e.response?.data || e.message
     }
-    throw e;
+    throw e
   }
 }

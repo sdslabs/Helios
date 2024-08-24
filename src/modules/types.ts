@@ -1,6 +1,6 @@
 export enum QuestionType {
-  MCQ = 'Multiple Choice',
-  SUB = 'Subjective',
+  MCQ = 'mcq',
+  SUB = 'sub',
 }
 
 export enum UserRoles {
@@ -14,4 +14,17 @@ export interface UserData {
   userId: string
   emailAdd: string
   role: UserRoles
+}
+
+export enum ResponseStatus {
+  unanswered = 'unanswered',
+  answered = 'answered',
+  checked = 'checked',
+  markedanswer = 'marked-answered',
+  marked = 'marked',
+}
+
+export interface Option {
+  id: string
+  label: string
 }

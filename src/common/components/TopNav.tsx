@@ -1,12 +1,15 @@
-import { Button, Heading, HStack, Avatar } from '@chakra-ui/react'
+import { Button, Heading, HStack, Avatar, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { useHostQuiz } from '@createQuiz/api/useQuiz'
+import useAuthStore from '@auth/store/authStore'
+
 interface TopNavProps {
   isDashboard?: boolean
   isAdmin?: boolean
 }
 
 const TopNav = ({ isDashboard = false, isAdmin = false }: TopNavProps) => {
+  const profileUrl = useAuthStore((state) => state.profileUrl)
   const navigate = useNavigate()
   const { mutate } = useHostQuiz()
   const handleHomeClick = () => {
@@ -16,9 +19,8 @@ const TopNav = ({ isDashboard = false, isAdmin = false }: TopNavProps) => {
     mutate(void 0, {
       onSuccess: (data) => {
         navigate(`/create-quiz/${data.quizId}`)
-      }
-    });
-  
+      },
+    })
   }
   return (
     <HStack
@@ -39,11 +41,13 @@ const TopNav = ({ isDashboard = false, isAdmin = false }: TopNavProps) => {
       <HStack spacing={4}>
         {isDashboard && isAdmin && (
           <Button colorScheme='purple' bgColor='brand' px={4} onClick={handleHostQuiz}>
-              + Host Quiz
+            + Host Quiz
           </Button>
         )}
         {isDashboard && (
-          <Avatar name='User Name' src='/path-to-your-profile-picture.jpg' size='sm' />
+          <>
+            <Avatar name='User Name' src={profileUrl} size='sm' />
+          </>
         )}
       </HStack>
     </HStack>

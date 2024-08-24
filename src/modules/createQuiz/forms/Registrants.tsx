@@ -50,8 +50,8 @@ const columns = [
             row.getValue() === 'Submitted'
               ? '#006F16'
               : row.getValue() === 'Started'
-              ? '#604195'
-              : '#191919'
+                ? '#604195'
+                : '#191919'
           }
           fontWeight='600'
         >
