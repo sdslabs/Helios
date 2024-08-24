@@ -82,7 +82,7 @@ const QuestionsBoard: React.FC<QuestionsBoardProps> = ({ quizId }) => {
               data={section.questions}
               columns={columns}
               fontSize={'1.1875rem'}
-              showPagination={false}
+              showPagination={true}
             />
           </Box>
         </Box>

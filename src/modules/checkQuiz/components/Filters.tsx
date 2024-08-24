@@ -11,18 +11,17 @@ import { getDashboard } from '@checkQuiz/api/getDashboard'
 interface FiltersProps {
   question?: boolean
   participants?: boolean
-  totalMCQs: number
   sections: Section[]
 }
 
 const Filters: React.FC<FiltersProps> = ({
   question = false,
   participants = false,
-  totalMCQs,
   sections,
 }) => {
   const [assignees, setAssignees] = useState<any>([])
   const [isAutocheckModalOpen, setIsAutocheckModalOpen] = useState<boolean>(false)
+  const [totalAutocheckQuestions, setTotalAutocheckQuestions] = useState<number>(0)
   const [sectionIndex, setSectionIndex] = useState<number | null>(null)
   const [quizId] = useCheckQuizStore((state) => [state.quizId])
   const [leaderboard, setLeaderboard] = useCheckQuizStore((state) => [
@@ -47,6 +46,20 @@ const Filters: React.FC<FiltersProps> = ({
       refetch()
     }
   }, [sectionIndex, isFetched, data])
+
+  useEffect(() => {
+    if (sections) {
+      let totalAutocheckQuestionsCount = 0
+      sections.forEach((section: Section) => {
+        section.questions.forEach((question: any) => {
+          if (question.autoCheck === true) {
+            totalAutocheckQuestionsCount++
+          }
+        })
+      })
+      setTotalAutocheckQuestions(totalAutocheckQuestionsCount)
+    }
+  }, [sections])
 
   const { mutate: generateLeaderboard } = useLeaderboard()
   const {
@@ -133,21 +146,6 @@ const Filters: React.FC<FiltersProps> = ({
                 color='#939393'
                 _placeholder={{ color: '#939393' }}
               />
-              <Text fontSize='0.875rem' color='#939393'>
-                Sort by
-              </Text>
-              <SelectChakra
-                width='12rem'
-                placeholder='None'
-                color='#939393'
-                onChange={handleSectionChange}
-              >
-                {sections.map((section, index) => (
-                  <option value={index} key={section.name}>
-                    {section.name}
-                  </option>
-                ))}
-              </SelectChakra>
             </>
           )}
         </HStack>
@@ -185,8 +183,8 @@ const Filters: React.FC<FiltersProps> = ({
       </HStack>
       <AutocheckModal
         open={isAutocheckModalOpen}
+        totalAutocheckQuestions={totalAutocheckQuestions}
         toggleIsOpen={() => setIsAutocheckModalOpen(!isAutocheckModalOpen)}
-        totalMCQs={totalMCQs}
       />
     </>
   )

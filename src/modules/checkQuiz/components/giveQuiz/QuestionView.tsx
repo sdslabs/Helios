@@ -8,6 +8,7 @@ import {
   Input,
   Badge,
   Textarea,
+  Spinner
 } from '@chakra-ui/react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { useState, useEffect } from 'react'
@@ -17,6 +18,7 @@ import { useQuestion } from '@checkQuiz/api/useQuestion'
 import { useResponse, useAllResponse } from '@checkQuiz/api/useResponse'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import useCheckResponse from '@checkQuiz/api/useCheckResponse'
+import { useNavigate } from 'react-router-dom'
 
 interface QuestionViewProps {
   quizId: string
@@ -82,6 +84,8 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
     questionId,
   })
 
+  const Navigate = useNavigate()
+
   useEffect(() => {
     if (questionIsFetched && questionData) {
       setQuestion(questionData.question)
@@ -92,7 +96,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
     setCurrentResponseIndex(0)
     if (allResponsesIsFetched && allResponses && Array.isArray(allResponses.responses)) {
       if (allResponses.questionId !== questionId) {
-        window.location.reload()
+        Navigate(`/check-quiz/${quizId}/${allResponses.responses[0].questionId}`)
       }
       setAllResponsesId(allResponses.responses.map((response: any) => response.responseId))
       setAllResponesesStatus(allResponses.responses.map((response: any) => response.status))
@@ -152,6 +156,22 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
 
   const toggleQuestionCheckModal = () => {
     setIsQuestionCheckModalOpen(!isQuestionCheckModalOpen)
+  }
+
+  if (questionIsLoading || responseIsLoading || allResponsesIsLoading) {
+    return (
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Spinner size='xl' />
+      </div>
+    )
   }
 
   return (

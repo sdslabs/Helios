@@ -7,10 +7,44 @@ import {
   getFilteredRowModel,
   getFacetedUniqueValues,
 } from '@tanstack/react-table'
-import { useEffect, useState } from 'react'
+import { useMemo, useEffect, useState } from 'react'
 import { usePaginationRange } from '@createQuiz/hooks/usePaginationRange'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
-import { tab } from '@testing-library/user-event/dist/tab'
+
+const Filter = ({ column, table }: any) => {
+  const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id)
+
+  const sortedUniqueValues = useMemo(
+    () =>
+      typeof firstValue === 'number'
+        ? []
+        : Array.from(column.getFacetedUniqueValues().keys()).sort(),
+    [column.getFacetedUniqueValues()],
+  )
+
+  return (
+    <>
+      <select
+        value={column.filterValue}
+        onChange={(e) => {
+          if (e.target.value !== 'none') {
+            column.setFilterValue(e.target.value)
+          } else {
+            column.setFilterValue(null)
+          }
+        }}
+      >
+        <option value='none'>none</option>
+        {sortedUniqueValues.map((value: any) => (
+          <option value={value} key={value}>
+            {value}
+          </option>
+        ))}
+      </select>
+    </>
+  )
+}
+
 
 const Table = ({ data, columns, showPagination = true }: any) => {
   const [columnFilters, setColumnFilters] = useState()
@@ -20,6 +54,10 @@ const Table = ({ data, columns, showPagination = true }: any) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      columnFilters,
+    },
     sortingFns: {
       string: (a: any, b: any) => a.localeCompare(b),
       number: (a: any, b: any) => a - b,
@@ -72,6 +110,11 @@ const Table = ({ data, columns, showPagination = true }: any) => {
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
+                    {header.column.getCanFilter() ? (
+                      <div>
+                        <Filter column={header.column} table={table} />
+                      </div>
+                    ) : null}
                   </Flex>
                 </Th>
               ))}
