@@ -25,6 +25,7 @@ const CheckQuestionView = () => {
   useEffect(() => {
     if (sections[currentSectionIndex - 1]?.questions[currentQuestionIndex - 1]) {
       setQuestionId(sections[currentSectionIndex - 1]?.questions[currentQuestionIndex - 1]?._id)
+      renderQuiz()
     }
   }, [currentQuestionIndex, currentSectionIndex])
 

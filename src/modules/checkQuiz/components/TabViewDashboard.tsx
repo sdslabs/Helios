@@ -17,21 +17,6 @@ const TabViewDashboard = () => {
   }
   const [sections, quizId] = checkQuizStore((state) => [state.sections, state.quizId])
 
-  const [totalMCQs, setTotalMCQs] = useState<number>(0)
-  useEffect(() => {
-    if (sections) {
-      let totalMCQsCount = 0
-      sections.forEach((section: Section) => {
-        section.questions.forEach((question: any) => {
-          if (question.type === QuestionType.MCQ) {
-            totalMCQsCount++
-          }
-        })
-      })
-      setTotalMCQs(totalMCQsCount)
-    }
-  }, [sections])
-
   return (
     <>
       <Tabs width={'100%'} variant={'line'} mt={8}>
@@ -42,11 +27,11 @@ const TabViewDashboard = () => {
         <TabIndicator mt='-1.5px' height='2px' bg='brand' borderRadius='1px' />
         <TabPanels>
           <TabPanel>
-            <Filters totalMCQs={totalMCQs} sections={sections} question />
+            <Filters sections={sections} question />
             {sections && <QuestionsBoard quizId={quizId} />}
           </TabPanel>
           <TabPanel>
-            <Filters totalMCQs={totalMCQs} sections={sections} participants />
+            <Filters sections={sections} participants />
             <Leaderboard />
           </TabPanel>
         </TabPanels>

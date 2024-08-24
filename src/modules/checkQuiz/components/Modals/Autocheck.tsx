@@ -7,11 +7,11 @@ import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 
 interface AutocheckModalProps {
   open: boolean
+  totalAutocheckQuestions: number
   toggleIsOpen: () => void
-  totalMCQs: number
 }
 
-const AutocheckModal = ({ open, toggleIsOpen, totalMCQs }: AutocheckModalProps) => {
+const AutocheckModal = ({ open, totalAutocheckQuestions, toggleIsOpen }: AutocheckModalProps) => {
   const [quizId] = useCheckQuizStore((state) => [state.quizId])
 
   const { mutate: autocheck } = useAutocheck()
@@ -46,7 +46,7 @@ const AutocheckModal = ({ open, toggleIsOpen, totalMCQs }: AutocheckModalProps) 
         <Text fontSize='1rem' fontWeight='400' mb={4}>
           Are you sure you want to autocheck{' '}
           <Text as='span' fontWeight='bold'>
-            {totalMCQs}
+            {totalAutocheckQuestions}
           </Text>{' '}
           questions ?
         </Text>
