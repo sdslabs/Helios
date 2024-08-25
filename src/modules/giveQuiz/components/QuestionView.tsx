@@ -11,7 +11,7 @@ import {
 import { SubmitQuizModal } from './Modals/SubmitQuizModal'
 import { useParams } from 'react-router-dom'
 import { Option,ResponseStatus } from '../../types'
-import Fetching from '../../../animations/Fetching'
+import Fetching from '../../../animations/Fetching.jsx'
 import removeFromArray from '@giveQuiz/utils/removeFromArray'
 import { useQueryClient } from '@tanstack/react-query'
 import { handleSaveButton } from '@giveQuiz/utils/handleSaveButton'

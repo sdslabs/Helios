@@ -16,6 +16,7 @@ import CheckQuiz from '@checkQuiz/views/checkQuiz'
 import CheckQuestionView from '@checkQuiz/components/giveQuiz/CheckQuestionView'
 import { TimerProvider } from './modules/giveQuiz/components/TimerContext'
 import Spin from '@common/components/Spinner';
+import ProfilePage from './modules/profilePage/views/profilePage'
 
 function App() {
   const authStore = useAuthStore()
@@ -63,6 +64,7 @@ function App() {
               <Route path='/give-quiz/:quizId' element={<GiveQuiz />} />
               <Route path='/check-quiz/:quizId/:questionIdParam' element={<CheckQuestionView />} />
               <Route path='/check-quiz/:quizId' element={<CheckQuiz />} />
+              <Route path='/profile' element={<ProfilePage />} />
               <Route path='/*' element={<Navigate to='/dashboard' />} />
             </>
           ) : null}
