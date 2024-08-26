@@ -64,6 +64,7 @@ const QuizCard: React.FC<QuizCardProps> = ({
         padding={4}
         variant='outline'
         width='full'
+        height='22vh'
         justifyContent='space-between'
       >
         <Flex w='80%'>
@@ -76,7 +77,7 @@ const QuizCard: React.FC<QuizCardProps> = ({
             h='100%'
           />
           <Stack>
-            <CardBody>
+            <CardBody paddingTop={-1} fontSize='2vh'>
               <Flex gap={2} alignItems='center'>
                 <Heading size='sm'>
                   {name} |
@@ -92,11 +93,11 @@ const QuizCard: React.FC<QuizCardProps> = ({
                 {description}
               </Text>
               <Text pt='2' color='n6'>
-                Schedule : <span style={{ color: '#191919' }}> {formattedTime} </span>
+                Scheduled : <span style={{ color: '#191919' }}> {formattedTime} </span>
               </Text>
 
               {btnText === ButtonType.unchecked ? (
-                <Text color='purple' fontWeight='400'>
+                <Text color='brand' fontSize='2.2vh' fontWeight='600' paddingTop='1vh'>
                   Unchecked
                 </Text>
               ) : (
@@ -116,14 +117,14 @@ const QuizCard: React.FC<QuizCardProps> = ({
             </CardBody>
           </Stack>
         </Flex>
-        <Card boxShadow='none' justify='center' rowGap='0.8vw' padding='2vh'>
-          <Heading fontSize='2vh' textAlign='center' fontWeight='400' color='#604195'>
+        <Card boxShadow='none' justify='center' rowGap='0.5vw' padding='2vh'>
+          <Heading fontSize='2.5vh' textAlign='center' fontWeight='400' color='#604195'>
             Rank
           </Heading>
-          <Heading fontSize='4vh' textAlign='center' fontWeight='600' color='#604195'>
+          <Heading fontSize='5vh' textAlign='center' fontWeight='600' color='#604195'>
             {rank}
           </Heading>
-          <Heading fontSize='1.5vh' textAlign='center' fontWeight='200' color='#604195'>
+          <Heading fontSize='1.6vh' textAlign='center' fontWeight='200' color='#604195'>
             (Out of {totalParticipants})
           </Heading>
         </Card>

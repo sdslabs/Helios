@@ -1,14 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Card,
-  CardBody,
-  Box,
-  Text,
-  Flex,
-  useDisclosure,
-  Avatar,
-  Image
-} from '@chakra-ui/react'
+import { Card, CardBody, Box, Text, Flex, useDisclosure, Avatar, Image } from '@chakra-ui/react'
 import { EditProfileModal } from '../Modals/EditProfileModal'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -49,7 +40,6 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
   profileImage,
   socialHandles,
 }: DetailsCardProps) => {
-  console.log(socialHandles)
   const {
     isOpen: isEditProfileModalOpen,
     onOpen: onEditProfileModalOpen,
@@ -62,19 +52,95 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
     onEditProfileModalOpen()
   }
 
-  const handleSocialMediaClick = (link: string) => {
-    navigate(link)
-  }
-
-  const SocialMediaSelector = {
-    github: <GithubIconPurple />,
-    codeforces: <CodeForcesIcon />,
-    codechef: <CodeChefIcon />,
-    behance: <BehanceIcon />,
-    dribble: <DribbleIcon />,
-    linkedin: <LinkedinIcon />,
-    instagram: <InstagramIcon />,
-    facebook: <FacebookIcon />,
+  const SocialMediaSelector = (socialMedia: string, link: string, index: number) => {
+    if (socialMedia == 'github')
+      return (
+        <GithubIconPurple
+          key={index}
+          w='3vw'
+          h='4vh'
+          onClick={() => {
+            window.open(link)
+          }}
+        />
+      )
+    else if (socialMedia == 'codeforces')
+      return (
+        <CodeForcesIcon
+          key={index}
+          w='3vw'
+          h='4vh'
+          onClick={() => {
+            window.open(link)
+          }}
+        />
+      )
+    else if (socialMedia == 'codechef')
+      return (
+        <CodeChefIcon
+          key={index}
+          w='3vw'
+          h='4vh'
+          onClick={() => {
+            window.open(link)
+          }}
+        />
+      )
+    else if (socialMedia == 'behance')
+      return (
+        <BehanceIcon
+          key={index}
+          w='3vw'
+          h='4vh'
+          onClick={() => {
+            window.open(link)
+          }}
+        />
+      )
+    else if (socialMedia == 'dribble')
+      return (
+        <DribbleIcon
+          key={index}
+          w='3vw'
+          h='4vh'
+          onClick={() => {
+            window.open(link)
+          }}
+        />
+      )
+    else if (socialMedia == 'linkedin')
+      return (
+        <LinkedinIcon
+          key={index}
+          w='3vw'
+          h='4vh'
+          onClick={() => {
+            window.open(link)
+          }}
+        />
+      )
+    else if (socialMedia == 'instagram')
+      return (
+        <InstagramIcon
+          key={index}
+          w='3vw'
+          h='4vh'
+          onClick={() => {
+            window.open(link)
+          }}
+        />
+      )
+    else if (socialMedia == 'facebook')
+      return (
+        <FacebookIcon
+          key={index}
+          w='3vw'
+          h='4vh'
+          onClick={() => {
+            window.open(link)
+          }}
+        />
+      )
   }
 
   return (
@@ -84,9 +150,9 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
         direction={{ base: 'column', sm: 'row' }}
         padding={4}
         my={4}
-        width='xl'
+        width='48vw'
         justifyContent='space-between'
-        height='30vh'
+        height='28vh'
       >
         <Flex>
           <Flex gap={2} alignItems='center'>
@@ -101,7 +167,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
                   minW='36%'
                 />
               </Box>
-              <Text color='#604195' fontSize='md' padding='1.5vh' onClick={handleClick}>
+              <Text color='#604195' fontSize='2vh' padding='1.5vh' onClick={handleClick}>
                 Edit Details
                 <EditProfileModal
                   open={isEditProfileModalOpen}
@@ -117,44 +183,31 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
               <Text color='#604195' fontWeight='700' fontSize='xl'>
                 {firstName} {lastName}
               </Text>
-              <Text fontSize='md'>{instituteName}</Text>
-              <Text color='#604195' fontSize='md'>
+              <Text fontSize='2vh'>{instituteName}</Text>
+              <Text color='#604195' fontSize='2vh'>
                 {city}, {country}
               </Text>
               <Flex alignItems={{ base: 'row', sm: 'column' }}>
-                <Image
-                  src={gmail}
-                  alt='gmail'
-                  paddingTop='2vh'
-                  width={8}
-                  height={10}
-                />
-                <Text fontSize='md' paddingTop='2.5vh'>
+                <Image src={gmail} alt='gmail' paddingTop='2vh' width={8} height={10} />
+                <Text fontSize='2vh' paddingTop='2.5vh' paddingLeft='0.2vw'>
                   {emailAdd}
                 </Text>
               </Flex>
               <Flex alignItems={{ base: 'row', sm: 'column' }}>
-                <Image
-                  src={phone}
-                  alt='phone'
-                  paddingTop='0.8vh'
-                  width={8}
-                  height={8}
-                />
-                <Text fontSize='md' paddingTop='0.8vh'>
+                <Image src={phone} alt='phone' paddingTop='0.8vh' width={8} height={7} />
+                <Text fontSize='2vh' paddingTop='0.8vh' paddingLeft='0.2vw'>
                   {phoneNo}
                 </Text>
               </Flex>
             </Flex>
           </Flex>
         </Flex>
-        <Flex gap={2} alignItems='center'>
-          <CardBody>
-            {socialHandles.map(
-              (socialMedia: keyof typeof SocialMediaSelector, index: number) =>
-                SocialMediaSelector[socialMedia],
-            )}
-          </CardBody>
+        <Flex>
+          <Flex gap={5} flexDirection={{ base: 'row', sm: 'column' }} paddingTop='4vh'>
+            {socialHandles.map((socialMedia: any, index: number) => {
+              return SocialMediaSelector(socialMedia.type, socialMedia.handle, index)
+            })}
+          </Flex>
         </Flex>
       </Card>
     </>

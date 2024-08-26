@@ -31,10 +31,7 @@ const Info: React.FC = () => {
     }
   })
 
-  const {
-    attemptedQuizzesNo,
-    hostedQuizzesNo,
-  } = useQuizDetailsStore((state) => {
+  const { attemptedQuizzesNo, hostedQuizzesNo } = useQuizDetailsStore((state) => {
     return {
       attemptedQuizzesNo: state.attemptedQuizzes,
       hostedQuizzesNo: state.hostedQuizzes,
@@ -42,7 +39,7 @@ const Info: React.FC = () => {
   })
 
   return (
-    <Flex paddingBottom='3vh' justifyContent='space-around'>
+    <Flex paddingBottom='3vh' justifyContent='space-between'>
       <Flex>
         <DetailsCard
           userID={userID}

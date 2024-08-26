@@ -1,10 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
-import * as fetchers from './userFetcher'
+import * as fetchers from './userUpdate'
 
 export const useUpdateUser = () => {
-    const mutation = useMutation({
-      mutationFn: fetchers.updateUser,
-    })
-    return mutation
-  }
-  
+  const mutation = useMutation({
+    mutationFn: fetchers.userUpdate,
+  })
+  return mutation
+}

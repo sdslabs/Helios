@@ -14,12 +14,12 @@ const NumberCard: React.FC<NumberCardProps> = ({ type, quantity }: NumberCardPro
       justify='center'
       rowGap='1vw'
       padding='1vh'
-      height='30vh'
+      height='28vh'
     >
-      <Heading fontSize='6vh' textAlign='center' fontWeight='600' color='#604195'>
+      <Heading fontSize='7vh' textAlign='center' fontWeight='600' color='#604195'>
         {quantity}
       </Heading>
-      <Heading fontSize='2vh' textAlign='center' fontWeight='400' color='#604195'>
+      <Heading fontSize='2.5vh' textAlign='center' fontWeight='400' color='#604195'>
         {type === NumberCardType.hosted ? 'Hosted' : 'Attempted'}
         <br />
         Quizzes

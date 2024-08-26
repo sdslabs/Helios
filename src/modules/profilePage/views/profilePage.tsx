@@ -9,11 +9,13 @@ import Info from '../components/Info'
 import UserQuizzes from '../components/UserQuizzes'
 import { useParams } from 'react-router-dom'
 import useQuizDetailsStore from '../store/QuizDetailsStore'
+import useSocialHandlesStore from '@auth/store/SocialHandlesStore'
 
 const ProfilePage = () => {
   const { data, isLoading } = useProfilePage()
   const setUserDetails = useUserDetailsStore((state) => state.setDetails)
   const setQuizDetails = useQuizDetailsStore((state) => state.setDetails)
+  const setSocialMediaDetails = useSocialHandlesStore((state) => state.updateHandle)
   const { user } = useAuthStore()
   const isAdmin = user.role === UserRoles.admin
   navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
@@ -22,6 +24,17 @@ const ProfilePage = () => {
       track.enabled = false
     })
   })
+
+  const getPlatformLabel = {
+    github: "Github",
+    codeforces: "Code Forces",
+    codechef: "Code Chef",
+    linkedin: "Linkedin",
+    instagram: "Instagram",
+    facebook: "Facebook",
+    behance: "Behance",
+    dribble: "Dribble",
+  }
 
   useEffect(() => {
     if (data) {
@@ -34,6 +47,19 @@ const ProfilePage = () => {
       setQuizDetails(data.quizzes)
     }
   }, [data])
+
+  useEffect(() => {
+    if(data) {
+      data.userDetails.socialHandles.map((socialMedia: any, index: number) => {
+        const key: keyof typeof getPlatformLabel = socialMedia.type
+        setSocialMediaDetails(index, {
+          platformLabel: getPlatformLabel[key],
+          platformValue: socialMedia.type,
+          link: socialMedia.handle,
+        })
+      })
+    }
+  })
 
   const { attemptedQuizzes, attemptedQuizzesNo } = useQuizDetailsStore((state) => {
     return { attemptedQuizzes: state.quizzes, attemptedQuizzesNo: state.attemptedQuizzes }
