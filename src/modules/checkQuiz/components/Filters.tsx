@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Select } from 'chakra-react-select'
-import { Button, HStack, Input, Select as SelectChakra, Text } from '@chakra-ui/react'
+import { Button, HStack, Input, IconButton, Select as SelectChakra, Text } from '@chakra-ui/react'
 import { useLeaderboard } from '@checkQuiz/api/useLeaderboard'
 import AutocheckModal from './Modals/Autocheck'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import { Section } from '@checkQuiz/types'
 import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
 import { getDashboard } from '@checkQuiz/api/getDashboard'
+import { AddIcon } from '@chakra-ui/icons';
 
 interface FiltersProps {
   question?: boolean
@@ -28,8 +29,14 @@ const Filters: React.FC<FiltersProps> = ({
     state.leaderboard,
     state.setLeaderboard,
   ])
+  const [searchQuery, setSearchQuery] = useState('')
 
-  const { data, isFetched, refetch } = useFetchDashboard(quizId, sectionIndex)
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value.toLocaleLowerCase())
+    console.log('Search query:', searchQuery)
+  }
+
+  const { data, isFetched, refetch } = useFetchDashboard(quizId, sectionIndex, searchQuery)
 
   useEffect(() => {
     if (isFetched && data) {
@@ -66,14 +73,14 @@ const Filters: React.FC<FiltersProps> = ({
     data: sectionData,
     isFetched: sectionDataIsFetched,
     refetch: sectionDataRefetch,
-  } = useFetchDashboard(quizId, sectionIndex)
+  } = useFetchDashboard(quizId, sectionIndex, searchQuery)
 
   const handleLeaderboard = (sectionIndex: number | null) => {
     generateLeaderboard(
-      { quizId, sectionIndex },
+      { quizId, sectionIndex, searchQuery },
       {
         onSuccess: () => {
-          window.location.reload()
+          console.log('Leaderboard generated successfully')
         },
       },
     )
@@ -101,6 +108,10 @@ const Filters: React.FC<FiltersProps> = ({
     }
   }
 
+  const handleAddClick = () => {
+    console.log('Add button clicked');
+  };
+
   useEffect(() => {
     sectionDataRefetch()
   }, [sectionIndex])
@@ -111,42 +122,62 @@ const Filters: React.FC<FiltersProps> = ({
         <HStack spacing={4} alignItems='center' width='full'>
           {question && (
             <>
-              <Text fontSize='0.875rem' color='#939393'>
-                Assigned to:
-              </Text>
-              <Select
-                styles={{
-                  option: (provided, state) => ({
-                    ...provided,
-                    padding: '0.75rem',
-                    fontSize: '0.875rem',
-                    fontWeight: '600',
-                    borderRadius: '0.25rem',
-                  }),
-                }}
-                value={assignees}
-                options={availableAssignees}
-                isMulti
-                placeholder='Assignees'
-                onChange={handleAssigneesChange}
-              />
-            </>
+            <Input
+              maxWidth='20rem'
+              placeholder='Search or add assignee'
+              variant='outline'
+              borderColor='#939393'
+              borderRadius='0.25rem'
+              fontSize='0.875rem'
+              fontWeight='600'
+              color='#939393'
+              value={searchQuery}
+              onChange={handleSearchChange}
+              _placeholder={{ color: '#939393' }}
+            />
+            <IconButton
+              aria-label="Add"
+              icon={<AddIcon />}
+              onClick={handleAddClick}
+              size="sm"
+              bgColor="brand"
+              color="white"
+              borderRadius="0.25rem"
+            />
+          </>
           )}
 
           {participants && (
             <>
-              <Input
-                maxWidth='20rem'
-                placeholder='Search'
-                variant='outline'
-                borderColor='#939393'
-                borderRadius='0.25rem'
-                fontSize='0.875rem'
-                fontWeight='600'
-                color='#939393'
-                _placeholder={{ color: '#939393' }}
-              />
-            </>
+            <Input
+              maxWidth='20rem'
+              placeholder='Search'
+              variant='outline'
+              borderColor='#939393'
+              borderRadius='0.25rem'
+              fontSize='0.875rem'
+              fontWeight='600'
+              color='#939393'
+              value={searchQuery}
+              onChange={handleSearchChange}
+              _placeholder={{ color: '#939393' }}
+            />
+            <Text fontSize='0.875rem' color='#939393'>
+              Sort by
+            </Text>
+            <SelectChakra
+              width='12rem'
+              placeholder='None'
+              color='#939393'
+              onChange={handleSectionChange}
+            >
+              {sections.map((section, index) => (
+                <option value={index} key={section.name}>
+                  {section.name}
+                </option>
+              ))}
+            </SelectChakra>
+          </>
           )}
         </HStack>
         {participants && (
@@ -191,3 +222,4 @@ const Filters: React.FC<FiltersProps> = ({
 }
 
 export default Filters
+

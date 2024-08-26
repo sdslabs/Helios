@@ -4,17 +4,27 @@ import axiosInstance from './axiosInstance'
 export const GenerateLeaderboard = async ({
   quizId,
   sectionIndex = null,
+  searchQuery = null,
 }: {
   quizId: string
   sectionIndex: number | null
+  searchQuery: string | null
 }) => {
   try {
-    if (sectionIndex === null) {
+    if (sectionIndex === null && searchQuery === null) {
       const res = await axiosInstance.patch(`/checkQuiz/leaderboard/${quizId}`)
+      return res.data
+    } else if (sectionIndex !== null && searchQuery === null) {
+      const res = await axiosInstance.patch(
+        `/checkQuiz/generateSectionLeaderboard/${quizId}/${sectionIndex}`,
+      )
+      return res.data
+    } else if (sectionIndex === null && searchQuery !== null) {
+      const res = await axiosInstance.patch(`/checkQuiz/leaderboard/${quizId}?search=${searchQuery}`)
       return res.data
     } else {
       const res = await axiosInstance.patch(
-        `/checkQuiz/generateSectionLeaderboard/${quizId}/${sectionIndex}`,
+        `/checkQuiz/generateSectionLeaderboard/${quizId}/${sectionIndex}?search=${searchQuery}`,
       )
       return res.data
     }
