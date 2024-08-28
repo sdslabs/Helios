@@ -1,4 +1,4 @@
-import { Flex, Button, Text, Box, RadioGroup, Radio } from '@chakra-ui/react'
+import { Flex, Button, Text, Box, CheckboxGroup, Checkbox, Stack } from '@chakra-ui/react'
 import CustomRichTextEditor, { renderPreview } from '@common/components/CustomRichTextEditor'
 import { useState, useEffect } from 'react'
 import useQuizStore from '../store/QuizStore'
@@ -22,7 +22,7 @@ const QuestionView = () => {
   const [questionNumber, setQuestionNumber] = useState(1)
   const [question, setQuestion] = useState('')
   const [options, setOptions] = useState<Option[]>([])
-  const [answer, setAnswer] = useState('')
+  const [answer, setAnswer] = useState<string | string[]>(''); 
   const [mark, setMark] = useState(4)
   const [isLastQuestion, setIsLastQuestion] = useState(false)
   const { mutate: deleteResponse } = useDeleteResponse()
@@ -63,7 +63,7 @@ const QuestionView = () => {
   } = useGetResponse(quizId, currentQuestion)
 
   const handleClearResponse = () => {
-    setAnswer('')
+    setAnswer(questionType === 'mcq' ? [] : '');
     deleteResponse(
       {
         quizId,
@@ -81,24 +81,25 @@ const QuestionView = () => {
   }
 
   async function handleSave() {
-    handleSaveButton(
-      answer,
-      isCurrentQuestionMarked,
-      currentQuestion,
-      quizId,
-      mutate,
-      deleteResponse,
-      questionType,
-      nextQuestion,
-      setAnsweredQuestions,
-      setMarkedQuestions,
-      setMarkedAnsweredQuestions,
-      markedAnsweredQuestions,
-      answeredQuestions,
-      markedQuestions,
-      queryClient
-     )
-  }
+  const answerValue = Array.isArray(answer) ? answer.join(',') : answer; // Convert array to string if needed
+  handleSaveButton(
+    answerValue,
+    isCurrentQuestionMarked,
+    currentQuestion,
+    quizId,
+    mutate,
+    deleteResponse,
+    questionType,
+    nextQuestion,
+    setAnsweredQuestions,
+    setMarkedQuestions,
+    setMarkedAnsweredQuestions,
+    markedAnsweredQuestions,
+    answeredQuestions,
+    markedQuestions,
+    queryClient
+  );
+}
 
   useEffect(() => {
     setIsLastQuestion(
@@ -125,7 +126,7 @@ const QuestionView = () => {
           setIsCurrentQuestionMarked(false)
         }
       } else {
-        setAnswer('')
+        setAnswer(questionType === 'mcq' ? [] : '')
         setIsCurrentQuestionMarked(false)
       }
     }
@@ -178,19 +179,19 @@ const QuestionView = () => {
           </Text>
           {questionType === 'mcq' ? (
             <Flex flexDirection='column' w={'full'} mb={4}>
-              <RadioGroup
-                name='form-name'
-                display={'flex'}
-                flexDirection={'column'}
-                value={answer}
-                onChange={(event) => setAnswer(event)}
+              <CheckboxGroup
+                value={answer as string[]} // `answer` should be a string array for multiple-choice questions
+                onChange={(selectedValues: string[]) => setAnswer(selectedValues)} // Ensure selectedValues is string[]
               >
+              <Stack direction="column">
                 {options.map((option) => (
-                  <Radio key={option.label} value={option.id} mb={4}>
+                  <Checkbox key={option.label} value={option.id.toString()} mb={4}>
                     {option.label}
-                  </Radio>
+                  </Checkbox>
                 ))}
-              </RadioGroup>
+  </Stack>
+</CheckboxGroup>
+
               <Button
                 alignSelf='flex-end'
                 variant={'ghost'}
@@ -203,7 +204,10 @@ const QuestionView = () => {
             </Flex>
           ) : (
             <Box w='full' height='max-content' mb={4}>
-              <CustomRichTextEditor value={answer} onChange={(value) => setAnswer(value ?? '')} />
+              <CustomRichTextEditor
+                value={typeof answer === 'string' ? answer : ''} // Ensure value is a string
+                onChange={(value) => setAnswer(value ?? '')} // Handle the case where value is not a string
+              />
             </Box>
           )}
           <Flex flexDirection='row' w='full' justifyContent='flex-end'>

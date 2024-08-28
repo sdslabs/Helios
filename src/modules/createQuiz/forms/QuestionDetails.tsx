@@ -19,6 +19,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
+import select from 'react-select'
 import { useEffect, useState } from 'react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { QuestionType, Option } from '../../types'
@@ -36,7 +37,7 @@ const QuestionDetails = () => {
   const [marks, setMarks] = useState<number>(0)
   const [autoCheck, setAutoCheck] = useState<boolean>(false)
   const [options, setOptions] = useState<Option[]>([])
-  const [answer, setAnswer] = useState<string>('')
+  const [answer, setAnswer] = useState<string[]>([]);
 
   const { sections, currentSectionIdx, currentQuestionIdx } = useSectionStore((state) => state)
   const activeSection = sections[currentSectionIdx ?? 0]
@@ -61,7 +62,7 @@ const QuestionDetails = () => {
     setMarks(data?.question.maxMarks ?? 0)
     setAutoCheck(data?.question?.autoCheck ?? false)
     setOptions(data?.question?.options ?? [])
-    setAnswer(data?.question?.correctAnswer ?? '')
+    setAnswer(Array.isArray(data.question?.correctAnswer) ? data.question.correctAnswer : [data.question?.correctAnswer ?? '']);
   }
   const handleEdit = (id: string, newLabel: string) => {
     setOptions((prevOptions) =>
@@ -98,9 +99,13 @@ const QuestionDetails = () => {
       setAutoCheck(data.question?.autoCheck)
       setOptions(data.question?.options)
       setNotes(data.question?.checkerNotes)
-      setAnswer(data.question?.correctAnswer)
+      setAnswer(Array.isArray(data.question?.correctAnswer) ? data.question.correctAnswer : [data.question?.correctAnswer ?? '']);
     }
   }, [isFetched, isLoading, data])
+
+  // useEffect(() => {
+  //   console.log(answer);
+  // },[answer])
 
   const renderChoiceBuilder = () => {
     if (type === QuestionType.SUB) return null
@@ -210,13 +215,21 @@ const QuestionDetails = () => {
               <Text color='accentBlack' fontSize='sm'>
                 Answer:
               </Text>
-              <Select w={48} value={answer} onChange={(e) => setAnswer(e.target.value)}>
-                {options?.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.id}
-                  </option>
-                ))}
-              </Select>
+              <select
+                value={answer}
+                onChange={(e) => {
+                  const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+                  setAnswer(selectedOptions);
+                }}
+                multiple
+                style={{ width: '100%' }} 
+              >
+              {options?.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.id}
+              </option>
+              ))}
+            </select>
             </HStack>
           </>
         )}

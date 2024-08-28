@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Select } from 'chakra-react-select'
 import { Button, HStack, Input, IconButton, Select as SelectChakra, Text } from '@chakra-ui/react'
 import { useLeaderboard } from '@checkQuiz/api/useLeaderboard'
 import AutocheckModal from './Modals/Autocheck'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import { Section } from '@checkQuiz/types'
 import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
-import { getDashboard } from '@checkQuiz/api/getDashboard'
 import { AddIcon } from '@chakra-ui/icons';
 
 interface FiltersProps {
@@ -30,13 +28,23 @@ const Filters: React.FC<FiltersProps> = ({
     state.setLeaderboard,
   ])
   const [searchQuery, setSearchQuery] = useState('')
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery)
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value.toLocaleLowerCase())
-    console.log('Search query:', searchQuery)
   }
 
-  const { data, isFetched, refetch } = useFetchDashboard(quizId, sectionIndex, searchQuery)
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery]);
+
+  const { data, isFetched, refetch } = useFetchDashboard(quizId, sectionIndex, debouncedSearchQuery)
 
   useEffect(() => {
     if (isFetched && data) {
@@ -54,6 +62,7 @@ const Filters: React.FC<FiltersProps> = ({
     }
   }, [sectionIndex, isFetched, data])
 
+  
   useEffect(() => {
     if (sections) {
       let totalAutocheckQuestionsCount = 0
@@ -66,18 +75,18 @@ const Filters: React.FC<FiltersProps> = ({
       })
       setTotalAutocheckQuestions(totalAutocheckQuestionsCount)
     }
-  }, [sections])
+  }, [sections, searchQuery])
 
   const { mutate: generateLeaderboard } = useLeaderboard()
   const {
     data: sectionData,
     isFetched: sectionDataIsFetched,
     refetch: sectionDataRefetch,
-  } = useFetchDashboard(quizId, sectionIndex, searchQuery)
+  } = useFetchDashboard(quizId, sectionIndex, debouncedSearchQuery)
 
   const handleLeaderboard = (sectionIndex: number | null) => {
     generateLeaderboard(
-      { quizId, sectionIndex, searchQuery },
+      { quizId, sectionIndex, searchQuery: debouncedSearchQuery }, // Correct property name
       {
         onSuccess: () => {
           console.log('Leaderboard generated successfully')
@@ -85,6 +94,7 @@ const Filters: React.FC<FiltersProps> = ({
       },
     )
   }
+  
 
   // TODO: fetch assignees from athena
   const [availableAssignees] = useState([
@@ -222,4 +232,3 @@ const Filters: React.FC<FiltersProps> = ({
 }
 
 export default Filters
-
