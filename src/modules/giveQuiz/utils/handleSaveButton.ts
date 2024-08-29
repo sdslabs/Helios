@@ -26,9 +26,9 @@ export const handleSaveButton = async (
 ) => {
   let status: ResponseStatus = ResponseStatus.unanswered
   if (!answer && !isCurrentQuestionMarked) {
-    console.log('answer', answer)
-    console.log('isCurrentQuestionMarked', isCurrentQuestionMarked)
-    displayErrorToast('This question is unanswered and not marked for review', {
+    console.log('answer', answer) // answer did not come //TODO: remove this line
+    console.log('isCurrentQuestionMarked', isCurrentQuestionMarked) // came false
+    displayErrorToast('This question is unanswered and not marked for review', { 
       type: 'info',
       autoClose: 2000,
     })
@@ -57,6 +57,7 @@ export const handleSaveButton = async (
       },
       {
         onError: (error: any) => {
+          console.log('error', error) //TODO: remove this line
           displayErrorToast('Failed to clear response. Please try again.')
         },
       },

@@ -200,6 +200,7 @@ const Filters: React.FC<FiltersProps> = ({
             fontWeight='400'
             onClick={() => {
               handleLeaderboard(sectionIndex)
+              window.location.reload()
             }}
           >
             Generate Leaderboard

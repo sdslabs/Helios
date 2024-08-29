@@ -22,7 +22,7 @@ const QuestionView = () => {
   const [questionNumber, setQuestionNumber] = useState(1)
   const [question, setQuestion] = useState('')
   const [options, setOptions] = useState<Option[]>([])
-  const [answer, setAnswer] = useState<string | string[]>(''); 
+  const [answer, setAnswer] = useState<string | string[]>(questionType === 'mcq' ? [] : '');
   const [mark, setMark] = useState(4)
   const [isLastQuestion, setIsLastQuestion] = useState(false)
   const { mutate: deleteResponse } = useDeleteResponse()
@@ -81,7 +81,9 @@ const QuestionView = () => {
   }
 
   async function handleSave() {
+  console.log('raw answer', answer) //TODO: remove this line
   const answerValue = Array.isArray(answer) ? answer.join(',') : answer; // Convert array to string if needed
+  console.log('answerValue', answerValue) //TODO: remove this line
   handleSaveButton(
     answerValue,
     isCurrentQuestionMarked,
@@ -113,7 +115,7 @@ const QuestionView = () => {
       if (isGetResponseSuccess && getResponseData?.response?.length > 0) {
         const firstItem = getResponseData.response[0]
         if (firstItem.selectedOptionId) {
-          setAnswer(firstItem.selectedOptionId)
+          setAnswer(Array.isArray(firstItem.selectedOptionId) ? firstItem.selectedOptionId : [firstItem.selectedOptionId]);
         } else if (firstItem.subjectiveAnswer) {
           setAnswer(firstItem.subjectiveAnswer)
         }
@@ -145,6 +147,11 @@ const QuestionView = () => {
       setQuestionType(questionData.question.type)
     }
   }, [currentQuestionIndex, questionData])
+
+  useEffect(() => {
+    console.log('Current Answer State:', answer);
+  }, [answer]);
+  
 
   if (isQuestionDataLoading || isGetResponseLoading) {
     return <Fetching />
@@ -180,17 +187,20 @@ const QuestionView = () => {
           {questionType === 'mcq' ? (
             <Flex flexDirection='column' w={'full'} mb={4}>
               <CheckboxGroup
-                value={answer as string[]} // `answer` should be a string array for multiple-choice questions
-                onChange={(selectedValues: string[]) => setAnswer(selectedValues)} // Ensure selectedValues is string[]
+                value={Array.isArray(answer) ? answer : []} // answer should be string[]
+                onChange={(selectedValues: string[]) => {
+                  console.log('selectedValues', selectedValues); // Check if this logs correctly
+                  setAnswer(selectedValues); // Set selected values as the answer
+                }}
               >
               <Stack direction="column">
                 {options.map((option) => (
-                  <Checkbox key={option.label} value={option.id.toString()} mb={4}>
+                  <Checkbox key={option.id} value={option.id.toString()} mb={4}>
                     {option.label}
                   </Checkbox>
                 ))}
-  </Stack>
-</CheckboxGroup>
+              </Stack>
+              </CheckboxGroup>
 
               <Button
                 alignSelf='flex-end'
@@ -206,7 +216,10 @@ const QuestionView = () => {
             <Box w='full' height='max-content' mb={4}>
               <CustomRichTextEditor
                 value={typeof answer === 'string' ? answer : ''} // Ensure value is a string
-                onChange={(value) => setAnswer(value ?? '')} // Handle the case where value is not a string
+                onChange={(value) => {
+                  console.log('value', value) //TODO: remove this line
+                  setAnswer(value ?? '')
+                }} // Handle the case where value is not a string
               />
             </Box>
           )}
@@ -224,7 +237,10 @@ const QuestionView = () => {
               colorScheme='purple'
               bgColor='brand'
               alignSelf='flex-end'
-              onClick={handleSave}
+              onClick={() => {
+                console.log('Answer before save:', answer); //TODO: remove this line
+                handleSave();
+              }}
             >
               {isLastQuestion ? 'Save' : 'Save & Next'}
             </Button>
