@@ -82,7 +82,7 @@ const QuestionView = () => {
 
   async function handleSave() {
   console.log('raw answer', answer) //TODO: remove this line
-  const answerValue = Array.isArray(answer) ? answer.join(',') : answer; // Convert array to string if needed
+  const answerValue = answer; 
   console.log('answerValue', answerValue) //TODO: remove this line
   handleSaveButton(
     answerValue,
