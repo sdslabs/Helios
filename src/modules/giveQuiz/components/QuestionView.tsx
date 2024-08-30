@@ -81,9 +81,7 @@ const QuestionView = () => {
   }
 
   async function handleSave() {
-  console.log('raw answer', answer) //TODO: remove this line
   const answerValue = answer; 
-  console.log('answerValue', answerValue) //TODO: remove this line
   handleSaveButton(
     answerValue,
     isCurrentQuestionMarked,
@@ -147,10 +145,6 @@ const QuestionView = () => {
       setQuestionType(questionData.question.type)
     }
   }, [currentQuestionIndex, questionData])
-
-  useEffect(() => {
-    console.log('Current Answer State:', answer);
-  }, [answer]);
   
 
   if (isQuestionDataLoading || isGetResponseLoading) {
@@ -189,8 +183,7 @@ const QuestionView = () => {
               <CheckboxGroup
                 value={Array.isArray(answer) ? answer : []} // answer should be string[]
                 onChange={(selectedValues: string[]) => {
-                  console.log('selectedValues', selectedValues); // Check if this logs correctly
-                  setAnswer(selectedValues); // Set selected values as the answer
+                  setAnswer(selectedValues); 
                 }}
               >
               <Stack direction="column">
@@ -215,11 +208,10 @@ const QuestionView = () => {
           ) : (
             <Box w='full' height='max-content' mb={4}>
               <CustomRichTextEditor
-                value={typeof answer === 'string' ? answer : ''} // Ensure value is a string
+                value={typeof answer === 'string' ? answer : ''} 
                 onChange={(value) => {
-                  console.log('value', value) //TODO: remove this line
                   setAnswer(value ?? '')
-                }} // Handle the case where value is not a string
+                }} 
               />
             </Box>
           )}
@@ -238,7 +230,6 @@ const QuestionView = () => {
               bgColor='brand'
               alignSelf='flex-end'
               onClick={() => {
-                console.log('Answer before save:', answer); //TODO: remove this line
                 handleSave();
               }}
             >

@@ -3,7 +3,6 @@ import axiosInstance from './axiosInstance'
 
 export const getDashboard = async (quizId: string, sectionIndex: number | null = null, searchQuery: string | null = null) => {
   try {
-    console.log('getDashboard', quizId, sectionIndex, searchQuery)
     if (sectionIndex === null && searchQuery === null) {
       const res = await axiosInstance.get(`/checkQuiz/dashboard/${quizId}`)
       return res.data

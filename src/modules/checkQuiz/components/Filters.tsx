@@ -136,14 +136,14 @@ const Filters: React.FC<FiltersProps> = ({
               maxWidth='20rem'
               placeholder='Search or add assignee'
               variant='outline'
-              borderColor='#939393'
+              borderColor='grey'
               borderRadius='0.25rem'
               fontSize='0.875rem'
               fontWeight='600'
-              color='#939393'
+              color='grey'
               value={searchQuery}
               onChange={handleSearchChange}
-              _placeholder={{ color: '#939393' }}
+              _placeholder={{ color: 'grey' }}
             />
             <IconButton
               aria-label="Add"
@@ -163,22 +163,22 @@ const Filters: React.FC<FiltersProps> = ({
               maxWidth='20rem'
               placeholder='Search'
               variant='outline'
-              borderColor='#939393'
+              borderColor='grey'
               borderRadius='0.25rem'
               fontSize='0.875rem'
               fontWeight='600'
-              color='#939393'
+              color='grey'
               value={searchQuery}
               onChange={handleSearchChange}
-              _placeholder={{ color: '#939393' }}
+              _placeholder={{ color: 'grey' }}
             />
-            <Text fontSize='0.875rem' color='#939393'>
+            <Text fontSize='0.875rem' color='grey'>
               Sort by
             </Text>
             <SelectChakra
               width='12rem'
               placeholder='None'
-              color='#939393'
+              color='grey'
               onChange={handleSectionChange}
             >
               {sections.map((section, index) => (

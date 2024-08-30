@@ -103,10 +103,6 @@ const QuestionDetails = () => {
     }
   }, [isFetched, isLoading, data])
 
-  // useEffect(() => {
-  //   console.log(answer);
-  // },[answer])
-
   const renderChoiceBuilder = () => {
     if (type === QuestionType.SUB) return null
 
