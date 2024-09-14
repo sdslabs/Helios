@@ -14,7 +14,6 @@ import {
   Input,
   FormLabel,
   Text,
-  useToast,
 } from '@chakra-ui/react'
 import {
   PageInfoIcon,
@@ -27,6 +26,7 @@ import QuestionsNavItem from './QuestionsNavItem'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import { usePublishQuiz, useUpdateQuizDetails } from '@createQuiz/api/useQuiz'
 import { useNavigate } from 'react-router-dom'
+import { displayErrorToast } from '@giveQuiz/utils/toastNotifications'
 
 interface SideNavContentProps {
   stage: QuizCreationSteps
@@ -41,8 +41,6 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
   const { details, setKey } = useQuizDetailsStore()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isOpen: isConfirmationOpen, onOpen: onConfirmationOpen, onClose: onConfirmationClose } = useDisclosure()
-  
-  const toast = useToast() 
 
   const confirmPublishQuiz = () => {
     mutatePublishQuiz(
@@ -64,13 +62,8 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
     const { startDate, startTime, endDate, endTime, duration } = details
 
     if (!startDate || !startTime || !endDate || !endTime || !duration) {
-      toast({
-        title: "Incomplete Details",
-        description: "Please fill in all required fields before saving.",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-      })
+      console.log("bsdfvju")
+      displayErrorToast('Please fill in all required fields before saving.')
     } else {
       const updatedFields: Record<string, any> = {}
     

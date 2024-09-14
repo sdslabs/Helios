@@ -66,7 +66,6 @@ const columns = [
 
 const Registrants = () => {
   const [leaderboard] = useCheckQuizStore((state) => [state.leaderboard])
-  //const [leaderboardUserDetails] = useCheckQuizStore((state) => [state.leaderboardUserDetails])
   const [_, refresh] = useState<number>(0)
   useEffect(() => {
     refresh((state) => {
