@@ -6,6 +6,7 @@ import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import { Section } from '@checkQuiz/types'
 import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
 import { AddIcon } from '@chakra-ui/icons';
+import useDebouncedValue from '@checkQuiz/hooks/useDebouncedValue'
 
 interface FiltersProps {
   question?: boolean
@@ -28,21 +29,11 @@ const Filters: React.FC<FiltersProps> = ({
     state.setLeaderboard,
   ])
   const [searchQuery, setSearchQuery] = useState('')
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery)
+  const debouncedSearchQuery = useDebouncedValue(searchQuery, 300)
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value.toLocaleLowerCase())
   }
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearchQuery(searchQuery);
-    }, 300);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [searchQuery]);
 
   const { data, isFetched, refetch } = useFetchDashboard(quizId, sectionIndex, debouncedSearchQuery)
 
@@ -86,7 +77,7 @@ const Filters: React.FC<FiltersProps> = ({
 
   const handleLeaderboard = (sectionIndex: number | null) => {
     generateLeaderboard(
-      { quizId, sectionIndex, searchQuery: debouncedSearchQuery }, // Correct property name
+      { quizId, sectionIndex, searchQuery: debouncedSearchQuery }, 
       {
         onSuccess: () => {
           console.log('Leaderboard generated successfully')
