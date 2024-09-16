@@ -1,5 +1,15 @@
 import React, { useState } from 'react'
-import { Card, CardBody, Box, Text, Flex, useDisclosure, Avatar, Image } from '@chakra-ui/react'
+import {
+  Card,
+  CardBody,
+  Box,
+  Text,
+  Flex,
+  useDisclosure,
+  Avatar,
+  Image,
+  Link,
+} from '@chakra-ui/react'
 import { EditProfileModal } from '../Modals/EditProfileModal'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -62,6 +72,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
           onClick={() => {
             window.open(link)
           }}
+          cursor='pointer'
         />
       )
     else if (socialMedia == 'codeforces')
@@ -73,6 +84,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
           onClick={() => {
             window.open(link)
           }}
+          cursor='pointer'
         />
       )
     else if (socialMedia == 'codechef')
@@ -84,6 +96,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
           onClick={() => {
             window.open(link)
           }}
+          cursor='pointer'
         />
       )
     else if (socialMedia == 'behance')
@@ -95,6 +108,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
           onClick={() => {
             window.open(link)
           }}
+          cursor='pointer'
         />
       )
     else if (socialMedia == 'dribble')
@@ -106,6 +120,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
           onClick={() => {
             window.open(link)
           }}
+          cursor='pointer'
         />
       )
     else if (socialMedia == 'linkedin')
@@ -117,6 +132,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
           onClick={() => {
             window.open(link)
           }}
+          cursor='pointer'
         />
       )
     else if (socialMedia == 'instagram')
@@ -128,6 +144,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
           onClick={() => {
             window.open(link)
           }}
+          cursor='pointer'
         />
       )
     else if (socialMedia == 'facebook')
@@ -139,6 +156,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
           onClick={() => {
             window.open(link)
           }}
+          cursor='pointer'
         />
       )
   }
@@ -153,6 +171,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
         width='48vw'
         justifyContent='space-between'
         height='28vh'
+        boxShadow='sm'
       >
         <Flex>
           <Flex gap={2} alignItems='center'>
@@ -167,7 +186,13 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
                   minW='36%'
                 />
               </Box>
-              <Text color='#604195' fontSize='2vh' padding='1.5vh' onClick={handleClick}>
+              <Text
+                color='#604195'
+                fontSize='2vh'
+                padding='1.5vh'
+                onClick={handleClick}
+                cursor='pointer'
+              >
                 Edit Details
                 <EditProfileModal
                   open={isEditProfileModalOpen}
@@ -188,10 +213,14 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
                 {city}, {country}
               </Text>
               <Flex alignItems={{ base: 'row', sm: 'column' }}>
-                <Image src={gmail} alt='gmail' paddingTop='2vh' width={8} height={10} />
-                <Text fontSize='2vh' paddingTop='2.5vh' paddingLeft='0.2vw'>
-                  {emailAdd}
-                </Text>
+                <Link href={`mailto:${emailAdd}`}>
+                  <Image src={gmail} alt='gmail' paddingTop='2vh' width={8} height={10} />
+                </Link>
+                <Link href={`mailto:${emailAdd}`}>
+                  <Text fontSize='2vh' paddingTop='2.5vh' paddingLeft='0.2vw'>
+                    {emailAdd}
+                  </Text>
+                </Link>
               </Flex>
               <Flex alignItems={{ base: 'row', sm: 'column' }}>
                 <Image src={phone} alt='phone' paddingTop='0.8vh' width={8} height={7} />

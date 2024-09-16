@@ -7,7 +7,6 @@ import useUserDetailsStore from '../store/UserDetailsStore'
 import { UserRoles } from '../../types'
 import Info from '../components/Info'
 import UserQuizzes from '../components/UserQuizzes'
-import { useParams } from 'react-router-dom'
 import useQuizDetailsStore from '../store/QuizDetailsStore'
 import useSocialHandlesStore from '@auth/store/SocialHandlesStore'
 

@@ -15,6 +15,7 @@ import defaultQuizBg from '@assets/images/default-quiz-bg.png'
 import { ButtonType } from '../../types'
 
 interface QuizCardProps {
+  quizId: string
   name: string
   description: string
   creator: string
@@ -26,6 +27,7 @@ interface QuizCardProps {
 }
 
 const QuizCard: React.FC<QuizCardProps> = ({
+  quizId,
   name,
   description,
   creator,
@@ -50,11 +52,11 @@ const QuizCard: React.FC<QuizCardProps> = ({
     formattedTime = 'Invalid'
   }
 
-  const handleClick = () => {
-    //Handle View Report
-  }
-
   const navigate = useNavigate()
+
+  const handleClick = () => {
+    navigate(`/view-report/${quizId}`)
+  }
 
   return (
     <>
@@ -66,6 +68,7 @@ const QuizCard: React.FC<QuizCardProps> = ({
         width='full'
         height='22vh'
         justifyContent='space-between'
+        shadow='sm'
       >
         <Flex w='80%'>
           <Image

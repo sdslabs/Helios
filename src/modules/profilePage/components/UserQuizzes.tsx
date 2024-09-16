@@ -17,12 +17,13 @@ const UserQuizzes: React.FC<UserQuizzesProps> = ({
           Attempted Quizzes
         </Heading>
       </Flex>
-      <Flex padding='2vh' rowGap='2vh' direction={{ base: 'row', sm: 'column' }}>
+      <Flex padding='2vh' paddingBottom='10vh' rowGap='2vh' direction={{ base: 'row', sm: 'column' }}>
         {attemptedQuizzes.map(
           (quiz: any, index: number) =>
             quiz && quiz._id && (
               <QuizCard
                 key={index}
+                quizId={quiz._id}
                 name={quiz.name}
                 description={quiz.description}
                 creator={quiz.creator}
