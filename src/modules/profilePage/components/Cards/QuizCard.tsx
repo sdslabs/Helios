@@ -88,7 +88,7 @@ const QuizCard: React.FC<QuizCardProps> = ({
                 <Text>
                  Created by: 
                 </Text>
-                <Text color='purple'>
+                <Text color='brand'>
                 {creator}
                 </Text>
               </Flex>

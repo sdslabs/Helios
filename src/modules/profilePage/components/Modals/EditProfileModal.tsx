@@ -99,9 +99,9 @@ export const EditProfileModal = ({ open, close, toggleIsOpen, userID }: EditProf
   })
 
   return (
-    <Modal isOpen={open} onClose={close} isCentered size='4xl'>
+    <Modal isOpen={open} onClose={close} isCentered size='4xl' scrollBehavior='outside'>
       <ModalOverlay />
-      <ModalContent padding={6} borderRadius={0} overflowY='auto' paddingTop='40vh'>
+      <ModalContent padding={8} borderRadius={4} overflowY='auto' height='2xl'> 
         <Flex flexDirection='row' justifyContent='space-between' mb={4}>
           <Text fontSize='1.125rem' fontStyle='normal' fontWeight='600'>
             Edit Profile
@@ -112,6 +112,7 @@ export const EditProfileModal = ({ open, close, toggleIsOpen, userID }: EditProf
             w='0.875rem'
             h='0.875rem'
             alignSelf='center'
+            cursor='pointer'
           />
         </Flex>
         <Flex flexDirection='row' mb={4} mt={4} gap='0.625rem'>
