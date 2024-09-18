@@ -7,6 +7,7 @@ import { Section } from '@checkQuiz/types'
 import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
 import { AddIcon } from '@chakra-ui/icons';
 import useDebouncedValue from '@checkQuiz/hooks/useDebouncedValue'
+import { useNavigate, useLocation } from 'react-router-dom'; // For URL handling
 
 interface FiltersProps {
   question?: boolean
@@ -30,6 +31,9 @@ const Filters: React.FC<FiltersProps> = ({
   ])
   const [searchQuery, setSearchQuery] = useState('')
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 300)
+  
+  const navigate = useNavigate(); // For navigating without reloading
+  const location = useLocation(); // For getting current URL
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value.toLocaleLowerCase())
@@ -69,53 +73,36 @@ const Filters: React.FC<FiltersProps> = ({
   }, [sections, searchQuery])
 
   const { mutate: generateLeaderboard } = useLeaderboard()
-  const {
-    data: sectionData,
-    isFetched: sectionDataIsFetched,
-    refetch: sectionDataRefetch,
-  } = useFetchDashboard(quizId, sectionIndex, debouncedSearchQuery)
 
   const handleLeaderboard = (sectionIndex: number | null) => {
+    console.log('handleLeaderboard - sectionIndex:', sectionIndex);
+    console.log('handleLeaderboard - searchQuery:', debouncedSearchQuery);
     generateLeaderboard(
       { quizId, sectionIndex, searchQuery: debouncedSearchQuery }, 
       {
         onSuccess: () => {
+          refetch() // Refetch the data without reloading
           console.log('Leaderboard generated successfully')
         },
       },
     )
   }
-  
 
-  // TODO: fetch assignees from athena
-  const [availableAssignees] = useState([
-    { value: '1', label: 'A' },
-    { value: '2', label: 'B' },
-    { value: '3', label: 'C' },
-    { value: '4', label: 'D' },
-    { value: '5', label: 'E' },
-  ])
-
-  const handleAssigneesChange = (selectedOptions: any) => {
-    const selectedAssignees = Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions]
-    setAssignees(selectedAssignees)
-  }
-
+  // Modify sectionIndex handling to update the URL without causing a page reload
   const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value != '') {
-      setSectionIndex(parseInt(e.target.value))
+    const value = e.target.value;
+    console.log('value', value);
+    if (value !== '') {
+      const newSectionIndex = parseInt(value, 10);
+      setSectionIndex(newSectionIndex);
     } else {
-      setSectionIndex(null)
+      setSectionIndex(null);
     }
   }
 
   const handleAddClick = () => {
     console.log('Add button clicked');
   };
-
-  useEffect(() => {
-    sectionDataRefetch()
-  }, [sectionIndex])
 
   return (
     <>
@@ -191,7 +178,6 @@ const Filters: React.FC<FiltersProps> = ({
             fontWeight='400'
             onClick={() => {
               handleLeaderboard(sectionIndex)
-              window.location.reload()
             }}
           >
             Generate Leaderboard
@@ -223,4 +209,4 @@ const Filters: React.FC<FiltersProps> = ({
   )
 }
 
-export default Filters
+export default Filters;
