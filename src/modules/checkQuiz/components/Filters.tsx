@@ -75,14 +75,11 @@ const Filters: React.FC<FiltersProps> = ({
   const { mutate: generateLeaderboard } = useLeaderboard()
 
   const handleLeaderboard = (sectionIndex: number | null) => {
-    console.log('handleLeaderboard - sectionIndex:', sectionIndex);
-    console.log('handleLeaderboard - searchQuery:', debouncedSearchQuery);
     generateLeaderboard(
       { quizId, sectionIndex, searchQuery: debouncedSearchQuery }, 
       {
         onSuccess: () => {
           refetch() // Refetch the data without reloading
-          console.log('Leaderboard generated successfully')
         },
       },
     )
@@ -91,7 +88,6 @@ const Filters: React.FC<FiltersProps> = ({
   // Modify sectionIndex handling to update the URL without causing a page reload
   const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    console.log('value', value);
     if (value !== '') {
       const newSectionIndex = parseInt(value, 10);
       setSectionIndex(newSectionIndex);
