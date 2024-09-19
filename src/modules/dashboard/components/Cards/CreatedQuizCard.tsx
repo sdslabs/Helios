@@ -42,9 +42,9 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
 
   const handleClick = () => {
     if (edit) {
-      navigate(`/create-quiz/${quizId}`) 
+      navigate(`/create-quiz/${quizId}`)
     } else {
-      navigate(`/check-quiz/${quizId}`) 
+      navigate(`/check-quiz/${quizId}`)
     }
   }
 
@@ -61,8 +61,10 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
           alt='Quiz Banner'
           objectFit='cover'
           borderRadius={4}
+          width={{ base: '100%', sm: '150px' }}  // Constrain the width
+          height={{ base: '150px', sm: 'auto' }}  // Constrain height for smaller screens
         />
-        <Stack>
+        <Stack flex='1' ml={{ base: 0, sm: 4 }}>  {/* Add spacing between image and content */}
           <CardBody>
             <Flex gap={2} alignItems='center'>
               <Heading size='sm' textTransform='capitalize'>
