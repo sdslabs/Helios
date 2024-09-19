@@ -118,7 +118,12 @@ const QuestionDetails = () => {
         </Text>
         <Box w='full'>
           <Menu>
-            <MenuButton as={Button} colorScheme='purple'>
+            <MenuButton as={Button} 
+            color='white'
+            colorScheme='purple'
+            bgColor='brand'
+            fontWeight='400'
+            >
               {answer.length > 0 ? `${answer.length} selected` : 'Select correct answers'}
             </MenuButton>
             <MenuList>

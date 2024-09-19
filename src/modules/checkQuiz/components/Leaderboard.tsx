@@ -32,7 +32,7 @@ const Leaderboard = () => {
     columnHelper.accessor('Sr', {
       cell: (info) => info.row.index + 1,
       header: 'Sr.',
-      enableColumnFilter: true,
+      enableColumnFilter: false,
     }),
 
     columnHelper.accessor('name', {
@@ -67,7 +67,7 @@ const Leaderboard = () => {
     columnHelper.accessor('rank', {
       cell: (info) => info.row.index + 1,
       header: 'Current rank',
-      enableColumnFilter: true,
+      enableColumnFilter: false,
     }),
     columnHelper.accessor('marks', {
       cell: (info) => info.row.original.marks,

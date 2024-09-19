@@ -23,7 +23,8 @@ const Filters: React.FC<FiltersProps> = ({
   const [assignees, setAssignees] = useState<any>([])
   const [isAutocheckModalOpen, setIsAutocheckModalOpen] = useState<boolean>(false)
   const [totalAutocheckQuestions, setTotalAutocheckQuestions] = useState<number>(0)
-  const [sectionIndex, setSectionIndex] = useState<number | null>(null)
+  const [sectionIndex, setSectionIndex] = useState<number | null>(null) // Actual sectionIndex state
+  const [tempSectionIndex, setTempSectionIndex] = useState<number | null>(null) // Temporary sectionIndex state
   const [quizId] = useCheckQuizStore((state) => [state.quizId])
   const [leaderboard, setLeaderboard] = useCheckQuizStore((state) => [
     state.leaderboard,
@@ -31,9 +32,9 @@ const Filters: React.FC<FiltersProps> = ({
   ])
   const [searchQuery, setSearchQuery] = useState('')
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 300)
-  
-  const navigate = useNavigate(); // For navigating without reloading
-  const location = useLocation(); // For getting current URL
+
+  const navigate = useNavigate(); 
+  const location = useLocation(); 
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value.toLocaleLowerCase())
@@ -52,12 +53,9 @@ const Filters: React.FC<FiltersProps> = ({
           setLeaderboard(data?.sectionLeaderboard[0].participants || [])
         }
       }
-    } else {
-      refetch()
     }
-  }, [sectionIndex, isFetched, data])
+  }, [sectionIndex, isFetched, data, setLeaderboard])
 
-  
   useEffect(() => {
     if (sections) {
       let totalAutocheckQuestionsCount = 0
@@ -74,25 +72,24 @@ const Filters: React.FC<FiltersProps> = ({
 
   const { mutate: generateLeaderboard } = useLeaderboard()
 
-  const handleLeaderboard = (sectionIndex: number | null) => {
+  const handleLeaderboard = () => {
+    setSectionIndex(tempSectionIndex);
     generateLeaderboard(
-      { quizId, sectionIndex, searchQuery: debouncedSearchQuery }, 
+      { quizId, sectionIndex: tempSectionIndex, searchQuery: debouncedSearchQuery }, 
       {
         onSuccess: () => {
-          refetch() // Refetch the data without reloading
+          refetch() 
         },
       },
     )
   }
 
-  // Modify sectionIndex handling to update the URL without causing a page reload
   const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     if (value !== '') {
-      const newSectionIndex = parseInt(value, 10);
-      setSectionIndex(newSectionIndex);
+      setTempSectionIndex(parseInt(value, 10)); 
     } else {
-      setSectionIndex(null);
+      setTempSectionIndex(null); 
     }
   }
 
@@ -153,7 +150,7 @@ const Filters: React.FC<FiltersProps> = ({
               width='12rem'
               placeholder='None'
               color='grey'
-              onChange={handleSectionChange}
+              onChange={handleSectionChange} 
             >
               {sections.map((section, index) => (
                 <option value={index} key={section.name}>
@@ -172,9 +169,7 @@ const Filters: React.FC<FiltersProps> = ({
             py={3}
             fontSize='0.875rem'
             fontWeight='400'
-            onClick={() => {
-              handleLeaderboard(sectionIndex)
-            }}
+            onClick={handleLeaderboard} 
           >
             Generate Leaderboard
           </Button>
