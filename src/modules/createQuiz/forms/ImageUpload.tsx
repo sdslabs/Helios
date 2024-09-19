@@ -1,14 +1,20 @@
 import { Button, Center, Input, Text } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 
-const ImageUpload = () => {
+interface ImageUploadProps {
+  onImageUpload: (imageUrl: string | null) => void
+}
+
+const ImageUpload = ({ onImageUpload }: ImageUploadProps) => {
   const fileUploadInputRef = useRef<HTMLInputElement>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-    setImagePreview(URL.createObjectURL(file))
+    const imageUrl = URL.createObjectURL(file)
+    setImagePreview(imageUrl)
+    onImageUpload(imageUrl)
   }
 
   const handleOpenFileUpload = () => {
@@ -17,6 +23,7 @@ const ImageUpload = () => {
 
   const handleDeleteImage = () => {
     setImagePreview(null)
+    onImageUpload(null) 
     if (fileUploadInputRef.current) {
       fileUploadInputRef.current.value = ''
     }
