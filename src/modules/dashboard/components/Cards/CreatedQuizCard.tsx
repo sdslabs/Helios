@@ -61,10 +61,10 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
           alt='Quiz Banner'
           objectFit='cover'
           borderRadius={4}
-          width={{ base: '100%', sm: '150px' }}  // Constrain the width
-          height={{ base: '150px', sm: 'auto' }}  // Constrain height for smaller screens
+          width={{ base: '100%', sm: '150px' }}  
+          height={{ base: '150px', sm: 'auto' }}  
         />
-        <Stack flex='1' ml={{ base: 0, sm: 4 }}>  {/* Add spacing between image and content */}
+        <Stack flex='1' ml={{ base: 0, sm: 4 }}>  
           <CardBody>
             <Flex gap={2} alignItems='center'>
               <Heading size='sm' textTransform='capitalize'>
