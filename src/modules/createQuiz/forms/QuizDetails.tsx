@@ -73,7 +73,7 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
           />
         </GridItem>
         <GridItem colSpan={2} rowSpan={3}>
-          <ImageUpload onImageUpload={handleImageUpload} /> 
+          <ImageUpload onImageUpload={handleImageUpload} initialImage={details?.bannerImage}/> 
         </GridItem>
         <GridItem colSpan={1}>
           <InputField
