@@ -7,7 +7,6 @@ interface QuestionCounterProps {
 }
 
 const QuestionCounter: React.FC<QuestionCounterProps> = ({ checkedQuestion, totalQuestions }) => {
-  // Remove repeated code
   if (checkedQuestion === totalQuestions) {
     return (
       <Text fontSize='0.875rem' fontWeight={'600'} color={'answeredBubbleBorder'}>

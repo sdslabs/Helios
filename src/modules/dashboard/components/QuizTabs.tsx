@@ -8,7 +8,7 @@ import NoQuizzesCard from './Cards/NoQuizzesCard'
 interface TabsProps {
   isAdmin?: boolean
   quizzes: QuizDetails[]
-  createdQuizzes: any //this will have the type of array of quizSchema of backend
+  createdQuizzes: any 
 }
 
 const QuizTabs: React.FC<TabsProps> = ({ isAdmin = false, quizzes, createdQuizzes }: TabsProps) => {

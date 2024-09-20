@@ -13,8 +13,6 @@ const QuizCard: React.FC<QuizCardProps> = ({
   quizName,
   quizStartTime,
   quizDescription,
-  quizIcon,
-  quizId,
 }) => {
   return (
     <Box p={4} borderRadius={2} border={'1px'} borderColor={'v1'}>
