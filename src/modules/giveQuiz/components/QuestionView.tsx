@@ -1,4 +1,4 @@
-import { Flex, Button, Text, Box, RadioGroup, Radio } from '@chakra-ui/react'
+import { Flex, Button, Text, Box, CheckboxGroup, Checkbox, Stack } from '@chakra-ui/react'
 import CustomRichTextEditor, { renderPreview } from '@common/components/CustomRichTextEditor'
 import { useState, useEffect } from 'react'
 import useQuizStore from '../store/QuizStore'
@@ -22,7 +22,7 @@ const QuestionView = () => {
   const [questionNumber, setQuestionNumber] = useState(1)
   const [question, setQuestion] = useState('')
   const [options, setOptions] = useState<Option[]>([])
-  const [answer, setAnswer] = useState('')
+  const [answer, setAnswer] = useState<string | string[]>(questionType === 'mcq' ? [] : '');
   const [mark, setMark] = useState(4)
   const [isLastQuestion, setIsLastQuestion] = useState(false)
   const { mutate: deleteResponse } = useDeleteResponse()
@@ -63,7 +63,7 @@ const QuestionView = () => {
   } = useGetResponse(quizId, currentQuestion)
 
   const handleClearResponse = () => {
-    setAnswer('')
+    setAnswer(questionType === 'mcq' ? [] : '');
     deleteResponse(
       {
         quizId,
@@ -81,24 +81,25 @@ const QuestionView = () => {
   }
 
   async function handleSave() {
-    handleSaveButton(
-      answer,
-      isCurrentQuestionMarked,
-      currentQuestion,
-      quizId,
-      mutate,
-      deleteResponse,
-      questionType,
-      nextQuestion,
-      setAnsweredQuestions,
-      setMarkedQuestions,
-      setMarkedAnsweredQuestions,
-      markedAnsweredQuestions,
-      answeredQuestions,
-      markedQuestions,
-      queryClient
-     )
-  }
+  const answerValue = answer; 
+  handleSaveButton(
+    answerValue,
+    isCurrentQuestionMarked,
+    currentQuestion,
+    quizId,
+    mutate,
+    deleteResponse,
+    questionType,
+    nextQuestion,
+    setAnsweredQuestions,
+    setMarkedQuestions,
+    setMarkedAnsweredQuestions,
+    markedAnsweredQuestions,
+    answeredQuestions,
+    markedQuestions,
+    queryClient
+  );
+}
 
   useEffect(() => {
     setIsLastQuestion(
@@ -112,7 +113,7 @@ const QuestionView = () => {
       if (isGetResponseSuccess && getResponseData?.response?.length > 0) {
         const firstItem = getResponseData.response[0]
         if (firstItem.selectedOptionId) {
-          setAnswer(firstItem.selectedOptionId)
+          setAnswer(Array.isArray(firstItem.selectedOptionId) ? firstItem.selectedOptionId : [firstItem.selectedOptionId]);
         } else if (firstItem.subjectiveAnswer) {
           setAnswer(firstItem.subjectiveAnswer)
         }
@@ -125,7 +126,7 @@ const QuestionView = () => {
           setIsCurrentQuestionMarked(false)
         }
       } else {
-        setAnswer('')
+        setAnswer(questionType === 'mcq' ? [] : '')
         setIsCurrentQuestionMarked(false)
       }
     }
@@ -144,6 +145,7 @@ const QuestionView = () => {
       setQuestionType(questionData.question.type)
     }
   }, [currentQuestionIndex, questionData])
+  
 
   if (isQuestionDataLoading || isGetResponseLoading) {
     return <Fetching />
@@ -178,19 +180,21 @@ const QuestionView = () => {
           </Text>
           {questionType === 'mcq' ? (
             <Flex flexDirection='column' w={'full'} mb={4}>
-              <RadioGroup
-                name='form-name'
-                display={'flex'}
-                flexDirection={'column'}
-                value={answer}
-                onChange={(event) => setAnswer(event)}
+              <CheckboxGroup
+                value={Array.isArray(answer) ? answer : []} // answer should be string[]
+                onChange={(selectedValues: string[]) => {
+                  setAnswer(selectedValues); 
+                }}
               >
+              <Stack direction="column">
                 {options.map((option) => (
-                  <Radio key={option.label} value={option.id} mb={4}>
+                  <Checkbox key={option.id} value={option.id.toString()} mb={4}>
                     {option.label}
-                  </Radio>
+                  </Checkbox>
                 ))}
-              </RadioGroup>
+              </Stack>
+              </CheckboxGroup>
+
               <Button
                 alignSelf='flex-end'
                 variant={'ghost'}
@@ -203,7 +207,12 @@ const QuestionView = () => {
             </Flex>
           ) : (
             <Box w='full' height='max-content' mb={4}>
-              <CustomRichTextEditor value={answer} onChange={(value) => setAnswer(value ?? '')} />
+              <CustomRichTextEditor
+                value={typeof answer === 'string' ? answer : ''} 
+                onChange={(value) => {
+                  setAnswer(value ?? '')
+                }} 
+              />
             </Box>
           )}
           <Flex flexDirection='row' w='full' justifyContent='flex-end'>
@@ -220,7 +229,9 @@ const QuestionView = () => {
               colorScheme='purple'
               bgColor='brand'
               alignSelf='flex-end'
-              onClick={handleSave}
+              onClick={() => {
+                handleSave();
+              }}
             >
               {isLastQuestion ? 'Save' : 'Save & Next'}
             </Button>

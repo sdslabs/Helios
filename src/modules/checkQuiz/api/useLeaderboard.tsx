@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query'
-import axiosInstance from './axiosInstance'
 import { GenerateLeaderboard } from './generateLeaderboard'
 
 export const useLeaderboard = () => {

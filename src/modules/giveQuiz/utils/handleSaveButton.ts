@@ -3,7 +3,7 @@ import { displayErrorToast } from './toastNotifications'
 import handleQuestionShift from '@giveQuiz/utils/handleQuestionShift'
 
 export const handleSaveButton = async (
-  answer: string,
+  answer: string | string[],
   isCurrentQuestionMarked: boolean,
   currentQuestion: string,
   quizId: string,
@@ -26,7 +26,7 @@ export const handleSaveButton = async (
 ) => {
   let status: ResponseStatus = ResponseStatus.unanswered
   if (!answer && !isCurrentQuestionMarked) {
-    displayErrorToast('This question is unanswered and not marked for review', {
+    displayErrorToast('This question is unanswered and not marked for review', { 
       type: 'info',
       autoClose: 2000,
     })
@@ -62,8 +62,8 @@ export const handleSaveButton = async (
     return nextQuestion()
   }
   const responseData = {
-    selectedOptionId: questionType === QuestionType.MCQ ? answer : undefined,
-    subjectiveAnswer: questionType !== QuestionType.MCQ ? answer : undefined,
+    selectedOptionId: questionType === QuestionType.MCQ ? (Array.isArray(answer) ? answer : [answer]) : undefined,  // Handle multiple correct answers
+    subjectiveAnswer: questionType !== QuestionType.MCQ ? (typeof answer === 'string' ? answer : '') : undefined,
     status: status,
   }
   mutate(
