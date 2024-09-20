@@ -74,15 +74,20 @@ const Filters: React.FC<FiltersProps> = ({
 
   const handleLeaderboard = () => {
     setSectionIndex(tempSectionIndex);
-    generateLeaderboard(
-      { quizId, sectionIndex: tempSectionIndex, searchQuery: debouncedSearchQuery }, 
-      {
-        onSuccess: () => {
-          refetch() 
-        },
-      },
-    )
   }
+
+  useEffect(() => {
+    if (quizId !== null) {
+      generateLeaderboard(
+        { quizId, sectionIndex: sectionIndex, searchQuery: debouncedSearchQuery },
+        {
+          onSuccess: () => {
+            refetch();
+          },
+        }
+      );
+    }
+  }, [sectionIndex, quizId, debouncedSearchQuery, generateLeaderboard, refetch]);
 
   const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;

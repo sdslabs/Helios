@@ -11,23 +11,15 @@ export const GenerateLeaderboard = async ({
   searchQuery: string | null
 }) => {
   try {
-    if (sectionIndex === null && searchQuery === null) {
-      const res = await axiosInstance.patch(`/checkQuiz/leaderboard/${quizId}`)
+    if (searchQuery === null) {
+      const res = await axiosInstance.patch(`/checkQuiz/generateSectionLeaderboard/${quizId}/${sectionIndex}`,)
       return res.data
-    } else if (sectionIndex !== null && searchQuery === null) {
-      const res = await axiosInstance.patch(
-        `/checkQuiz/generateSectionLeaderboard/${quizId}/${sectionIndex}`,
-      )
-      return res.data
-    } else if (sectionIndex === null && searchQuery !== null) {
-      const res = await axiosInstance.patch(`/checkQuiz/leaderboard/${quizId}?search=${searchQuery}`)
-      return res.data
-    } else {
+    } else{
       const res = await axiosInstance.patch(
         `/checkQuiz/generateSectionLeaderboard/${quizId}/${sectionIndex}?search=${searchQuery}`,
       )
       return res.data
-    }
+    } 
   } catch (e: any) {
     if (axios.isAxiosError(e)) {
       return e.response?.data || e.message
