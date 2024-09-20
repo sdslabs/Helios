@@ -17,6 +17,8 @@ import { useUpdateSection } from '@createQuiz/api/useSection'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import { useCreateQuestion } from '@createQuiz/api/useQuestion'
 import { QuizCreationSteps } from '../types'
+import { displayErrorToast } from '@giveQuiz/utils/toastNotifications'
+
 interface SectionDetailsProps {
   setStage: (stage: QuizCreationSteps) => void;
 }
@@ -67,13 +69,13 @@ const SectionDetails = ({ setStage }: SectionDetailsProps) => {
                   setStage(4);
                 },
                 onError: (err) => {
-                  // Handle error if question creation fails
+                  displayErrorToast('Question creation fails')
                 },
               }
             )
           },
           onError: (err) => {
-            // Handle error if section save fails
+            displayErrorToast('Section save fails')
           },
         }
       )

@@ -45,15 +45,6 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
   const confirmPublishQuiz = () => {
     mutatePublishQuiz(
       { quizId },
-      {
-        onSuccess: () => {
-          console.log('Quiz published successfully')
-          navigate('/')
-        },
-        onError: () => {
-          console.log('Quiz publish failed')
-        },
-      },
     )
     onConfirmationClose()
   }
@@ -62,7 +53,6 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
     const { startDate, startTime, endDate, endTime, duration } = details
 
     if (!startDate || !startTime || !endDate || !endTime || !duration) {
-      console.log("bsdfvju")
       displayErrorToast('Please fill in all required fields before saving.')
     } else {
       const updatedFields: Record<string, any> = {}
@@ -79,14 +69,6 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
 
       mutateUpdateQuizDetails(
         { quizId, body: updatedFields },
-        {
-          onSuccess: () => {
-            console.log('Quiz details updated successfully.')
-          },
-          onError: (error) => {
-            console.error('Failed to update quiz details:', error)
-          },
-        }
       )
       onClose()
     }
