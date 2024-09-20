@@ -1,14 +1,8 @@
 import { Box, Heading, Text } from '@chakra-ui/react'
-import { createColumnHelper } from '@tanstack/react-table'
-import Table from '../components/Table'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
-import { useState ,useEffect } from 'react'
-enum Status {
-  Registered = 'Registered',
-  Submitted = 'Submitted',
-  Started = 'Started',
-}
-
+import { createColumnHelper } from '@tanstack/react-table'
+import { useEffect, useState } from 'react'
+import Table from '../components/Table'
 type Registrant = {
   Sr: number
   Name: string

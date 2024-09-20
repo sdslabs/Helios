@@ -1,19 +1,19 @@
 import {
   Box,
   Button,
-  Grid,
-  GridItem,
-  Heading,
-  VStack,
-  HStack,
   FormControl,
   FormLabel,
+  Grid,
+  GridItem,
+  HStack,
+  Heading,
+  VStack,
 } from '@chakra-ui/react'
 import InputField from '@common/components/CustomInputWithLabel'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
-import ImageUpload from './ImageUpload'
 import { useUpdateQuizDetails } from '@createQuiz/api/useQuiz'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
+import ImageUpload from './ImageUpload'
 
 interface QuizDetailsProps {
   setQuizStage: (stage: number) => void

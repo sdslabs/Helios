@@ -25,7 +25,6 @@ import { QuizCreationSteps } from '../types'
 import QuestionsNavItem from './QuestionsNavItem'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import { usePublishQuiz, useUpdateQuizDetails } from '@createQuiz/api/useQuiz'
-import { useNavigate } from 'react-router-dom'
 import { displayErrorToast } from '@giveQuiz/utils/toastNotifications'
 
 interface SideNavContentProps {
@@ -37,7 +36,6 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
   const quizId = useQuizDetailsStore((state) => state.quizId)
   const { mutate: mutatePublishQuiz } = usePublishQuiz()
   const { mutate: mutateUpdateQuizDetails } = useUpdateQuizDetails()
-  const navigate = useNavigate()
   const { details, setKey } = useQuizDetailsStore()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isOpen: isConfirmationOpen, onOpen: onConfirmationOpen, onClose: onConfirmationClose } = useDisclosure()
