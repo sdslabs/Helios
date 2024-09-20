@@ -1,5 +1,4 @@
-import { useQuery, useMutation } from '@tanstack/react-query'
-import axiosInstance from './axiosInstance'
+import { useQuery} from '@tanstack/react-query'
 import { getDashboard } from './getDashboard'
 
 export const useFetchDashboard = (quizId: string, sectionIndex: number | null = null) => {

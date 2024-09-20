@@ -1,5 +1,4 @@
-import { useQuery, useMutation } from '@tanstack/react-query'
-import axiosInstance from './axiosInstance'
+import { useQuery} from '@tanstack/react-query'
 import { getAllResponse, getResponse } from './getResponse'
 
 export const useAllResponse = ({ quizId, questionId }: { quizId: string; questionId: string }) => {

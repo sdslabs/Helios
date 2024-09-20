@@ -11,6 +11,8 @@ import Spin from '@common/components/Spinner';
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import useRegistrationFormStore from '@createQuiz/store/useRegistrationFormStore'
 import useSectionStore from '@createQuiz/store/useSectionStore'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const CreateQuiz = () => {
   const [quizStage, setQuizStage] = useState<QuizCreationSteps>(0)
@@ -38,7 +40,7 @@ const CreateQuiz = () => {
         return <RegistrationForm setQuizStage={setQuizStage} />
       case QuizCreationSteps.questions:
       case QuizCreationSteps.sectionDetails:
-        return <SectionDetails />
+        return <SectionDetails setStage={setQuizStage}/>
       case QuizCreationSteps.questionDetails:
         return <QuestionDetails />
       case QuizCreationSteps.registrants:
@@ -55,6 +57,7 @@ const CreateQuiz = () => {
   return (
     <>
       <TopNav />
+      <ToastContainer />
       <WithSidebarWrapper
         sidebarContent={<SideNavContent stage={quizStage} setStage={setQuizStage} />}
       >

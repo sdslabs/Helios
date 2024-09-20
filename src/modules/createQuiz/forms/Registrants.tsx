@@ -1,14 +1,8 @@
-import { Box, Grid, Heading, Text } from '@chakra-ui/react'
+import { Box, Heading, Text } from '@chakra-ui/react'
+import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import { createColumnHelper } from '@tanstack/react-table'
+import { useEffect, useState } from 'react'
 import Table from '../components/Table'
-import data from './MOCK_DATA.json'
-
-enum Status {
-  Registered = 'Registered',
-  Submitted = 'Submitted',
-  Started = 'Started',
-}
-
 type Registrant = {
   Sr: number
   Name: string
@@ -65,10 +59,17 @@ const columns = [
 ]
 
 const Registrants = () => {
+  const [leaderboard] = useCheckQuizStore((state) => [state.leaderboard])
+  const [_, refresh] = useState<number>(0)
+  useEffect(() => {
+    refresh((state) => {
+      return state++
+    })
+  }, [leaderboard])
   return (
     <Box w='48vw' mx='auto' my='8vh'>
       <Heading>Registrants</Heading>
-      <Table data={data} columns={columns} />
+      <Table data={leaderboard} columns={columns} />
     </Box>
   )
 }

@@ -13,8 +13,6 @@ import {
 import { ButtonType } from '../../types'
 import { StartModal } from '@dashboard/components/StartQuizModal'
 import { RegisterModal } from '../RegisterModal'
-import useQuizStore from '@giveQuiz/store/QuizStore'
-import { useNavigate } from 'react-router-dom'
 import defaultQuizBg from '@assets/images/default-quiz-bg.png'
 
 interface QuizCardProps {
@@ -59,7 +57,6 @@ const QuizCard: React.FC<QuizCardProps> = ({
   const toggleRegisterModal = () => {
     setIsRegisterModalOpen(!isRegisterModalOpen)
   }
-  const navigate = useNavigate()
 
   const handleClick = () => {
     if (btnText == ButtonType.start) {

@@ -1,50 +1,26 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import TopNav from '@common/components/TopNav'
-import { Box, Button, Flex } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 import DashboardHeader from '@checkQuiz/components/DashboardHeader'
 import TabViewDashboard from '@checkQuiz/components/TabViewDashboard'
 import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
-import axios from 'axios'
-import giveQuiz from '@checkQuiz/components/giveQuiz/CheckQuestionView'
 import { useParams } from 'react-router-dom'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 
-interface UserType {
-  userId: string
-  name: string
-  phoneNo: string
-}
-
 const CheckQuiz = () => {
   const { quizId } = useParams() as { quizId: string }
-  const { data, isLoading, isFetched, refetch, error } = useFetchDashboard(quizId)
-  const [leaderboard, setLeaderboard] = useCheckQuizStore((state) => [
-    state.leaderboard,
-    state.setLeaderboard,
-  ])
-  const [sections, setSections] = useCheckQuizStore((state) => [state.sections, state.setSections])
-  const [leaderboardUserDetails, setLeaderboardUserDetails] = useCheckQuizStore((state) => [
-    state.leaderboardUserDetails,
+  const { data, isFetched } = useFetchDashboard(quizId)
+  const [setLeaderboard] = useCheckQuizStore((state) => [state.setLeaderboard])
+  const [setSections] = useCheckQuizStore((state) => [state.setSections])
+  const [setLeaderboardUserDetails] = useCheckQuizStore((state) => [
     state.setLeaderboardUserDetails,
   ])
-  const [totalParticipants, setTotalParticipants] = useCheckQuizStore((state) => [
-    state.totalParticipants,
-    state.setTotalParticipants,
-  ])
-  const [checksCompleted, setChecksCompleted] = useCheckQuizStore((state) => [
-    state.checksCompleted,
-    state.setChecksCompleted,
-  ])
-  const [totalAttempts, setTotalAttempts] = useCheckQuizStore((state) => [
-    state.totalAttempts,
-    state.setTotalAttempts,
-  ])
-  const [admin, setAdmin] = useCheckQuizStore((state) => [state.admin, state.setAdmin])
-  const [quizName, setQuizName] = useCheckQuizStore((state) => [state.quizName, state.setQuizName])
-  const [scheduled, setScheduled] = useCheckQuizStore((state) => [
-    state.scheduled,
-    state.setScheduled,
-  ])
+  const [setTotalParticipants] = useCheckQuizStore((state) => [state.setTotalParticipants])
+  const [setChecksCompleted] = useCheckQuizStore((state) => [state.setChecksCompleted])
+  const [setTotalAttempts] = useCheckQuizStore((state) => [state.setTotalAttempts])
+  const [setAdmin] = useCheckQuizStore((state) => [state.setAdmin])
+  const [setQuizName] = useCheckQuizStore((state) => [state.setQuizName])
+  const [setScheduled] = useCheckQuizStore((state) => [state.setScheduled])
   const [setQuizId] = useCheckQuizStore((state) => [state.setQuizId])
 
   useEffect(() => {

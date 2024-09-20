@@ -84,6 +84,8 @@ const QuestionsNavItem = ({ setStage }: QuestionsNavItemProps) => {
                       {
                         onSuccess: (data) => {
                           addQuestion(idx, data.questionId)
+                          setCurrentQuestionIdx(sections[idx].questions.length-1) // Set current question index to the newly added question
+                          setStage(4)
                         },
                         onError: (err) => {
                           // TODO: handle error using toast or something else

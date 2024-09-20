@@ -44,15 +44,6 @@ const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProp
           {SummaryData[2]}
         </Text>
       </Flex>
-      {/* <Flex flexDirection='row' alignItems='center' justifyContent='center' mb={3}>
-        <Box bgColor={BgColor[3]} w='1rem' h='1rem' borderRadius='20%' alignSelf='center' />
-        <Text fontSize='0.875rem' fontWeight='400' ml={3} color='accentBlack'>
-          Answered and marked for review:&nbsp;
-        </Text>
-        <Text fontSize='0.875rem' fontWeight='600' color='accentBlack'>
-          {SummaryData[3]}
-        </Text>
-      </Flex> */}
     </Flex>
   )
 }

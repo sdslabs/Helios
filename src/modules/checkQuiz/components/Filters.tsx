@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Select } from 'chakra-react-select'
-import { Button, HStack, Input, Select as SelectChakra, Text } from '@chakra-ui/react'
+import { Button, HStack, Input, Select as Text } from '@chakra-ui/react'
 import { useLeaderboard } from '@checkQuiz/api/useLeaderboard'
 import AutocheckModal from './Modals/Autocheck'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import { Section } from '@checkQuiz/types'
 import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
-import { getDashboard } from '@checkQuiz/api/getDashboard'
 
 interface FiltersProps {
   question?: boolean

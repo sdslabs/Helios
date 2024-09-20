@@ -40,6 +40,14 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
 
   const navigate = useNavigate()
 
+  const handleClick = () => {
+    if (edit) {
+      navigate(`/create-quiz/${quizId}`)
+    } else {
+      navigate(`/check-quiz/${quizId}`)
+    }
+  }
+
   return (
     <>
       <Card
@@ -53,8 +61,10 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
           alt='Quiz Banner'
           objectFit='cover'
           borderRadius={4}
+          width={{ base: '100%', sm: '150px' }}  
+          height={{ base: '150px', sm: 'auto' }}  
         />
-        <Stack>
+        <Stack flex='1' ml={{ base: 0, sm: 4 }}>  
           <CardBody>
             <Flex gap={2} alignItems='center'>
               <Heading size='sm' textTransform='capitalize'>
@@ -90,9 +100,9 @@ const CreatedQuizCard: React.FC<CreatedQuizCardProps> = ({
               borderRadius={3}
               size={'sm'}
               mt={4}
-              onClick={() => navigate(`/check-quiz/${quizId}`)}
+              onClick={handleClick}
             >
-              {edit ? 'Check Quiz' : 'Edit Quiz'}
+              {edit ? 'Edit Quiz' : 'Check Quiz'}
             </Button>
           </CardBody>
         </Stack>
