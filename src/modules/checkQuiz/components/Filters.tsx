@@ -7,7 +7,6 @@ import { Section } from '@checkQuiz/types'
 import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
 import { AddIcon } from '@chakra-ui/icons';
 import useDebouncedValue from '@checkQuiz/hooks/useDebouncedValue'
-import { useNavigate, useLocation } from 'react-router-dom'; // For URL handling
 
 interface FiltersProps {
   question?: boolean
@@ -23,8 +22,7 @@ const Filters: React.FC<FiltersProps> = ({
   const [assignees, setAssignees] = useState<any>([])
   const [isAutocheckModalOpen, setIsAutocheckModalOpen] = useState<boolean>(false)
   const [totalAutocheckQuestions, setTotalAutocheckQuestions] = useState<number>(0)
-  const [sectionIndex, setSectionIndex] = useState<number | null>(null) // Actual sectionIndex state
-  const [tempSectionIndex, setTempSectionIndex] = useState<number | null>(null) // Temporary sectionIndex state
+  const [sectionIndex, setSectionIndex] = useState<number | null>(null) 
   const [quizId] = useCheckQuizStore((state) => [state.quizId])
   const [leaderboard, setLeaderboard] = useCheckQuizStore((state) => [
     state.leaderboard,
@@ -33,14 +31,11 @@ const Filters: React.FC<FiltersProps> = ({
   const [searchQuery, setSearchQuery] = useState('')
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 300)
 
-  const navigate = useNavigate(); 
-  const location = useLocation(); 
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value.toLocaleLowerCase())
   }
 
-  const { data, isFetched, refetch } = useFetchDashboard(quizId, sectionIndex, debouncedSearchQuery)
+  const { data, isFetched, refetch } = useFetchDashboard(quizId, sectionIndex)
 
   useEffect(() => {
     if (isFetched && data) {
@@ -71,31 +66,47 @@ const Filters: React.FC<FiltersProps> = ({
   }, [sections, searchQuery])
 
   const { mutate: generateLeaderboard } = useLeaderboard()
+  const {
+    data: sectionData,
+    isFetched: sectionDataIsFetched,
+    refetch: sectionDataRefetch,
+  } = useFetchDashboard(quizId, sectionIndex)
 
-  const handleLeaderboard = () => {
-    setSectionIndex(tempSectionIndex);
+  const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newSectionIndex = e.target.value === '' ? null : parseInt(e.target.value)
+    setSectionIndex(newSectionIndex)
   }
 
   useEffect(() => {
-    if (quizId !== null) {
-      generateLeaderboard(
-        { quizId, sectionIndex: sectionIndex, searchQuery: debouncedSearchQuery },
-        {
-          onSuccess: () => {
-            refetch();
-          },
-        }
-      );
+    if (sectionIndex !== null) {
+      refetch()
     }
-  }, [sectionIndex, quizId, debouncedSearchQuery, generateLeaderboard, refetch]);
+  }, [sectionIndex])
 
-  const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    if (value !== '') {
-      setTempSectionIndex(parseInt(value, 10)); 
-    } else {
-      setTempSectionIndex(null); 
-    }
+  const handleLeaderboard = () => {
+    generateLeaderboard(
+      {quizId, sectionIndex},
+      {
+        onSuccess: () => {
+          refetch()
+        }
+      }
+    )
+    setLeaderboard(data?.leaderboard[0].participants || [])
+  }
+
+  // TODO: fetch assignees from athena
+  const [availableAssignees] = useState([
+    { value: '1', label: 'A' },
+    { value: '2', label: 'B' },
+    { value: '3', label: 'C' },
+    { value: '4', label: 'D' },
+    { value: '5', label: 'E' },
+  ])
+
+  const handleAssigneesChange = (selectedOptions: any) => {
+    const selectedAssignees = Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions]
+    setAssignees(selectedAssignees)
   }
 
   const handleAddClick = () => {
@@ -155,7 +166,9 @@ const Filters: React.FC<FiltersProps> = ({
               width='12rem'
               placeholder='None'
               color='grey'
-              onChange={handleSectionChange} 
+              onChange={
+                handleSectionChange
+              } 
             >
               {sections.map((section, index) => (
                 <option value={index} key={section.name}>
@@ -174,7 +187,9 @@ const Filters: React.FC<FiltersProps> = ({
             py={3}
             fontSize='0.875rem'
             fontWeight='400'
-            onClick={handleLeaderboard} 
+            onClick={
+              handleLeaderboard
+            } 
           >
             Generate Leaderboard
           </Button>
