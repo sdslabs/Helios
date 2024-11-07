@@ -8,7 +8,7 @@ import {
   Input,
   Badge,
   Textarea,
-  Spinner
+  Spinner,
 } from '@chakra-ui/react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { useState, useEffect } from 'react'

@@ -7,6 +7,7 @@ import { Section } from '@checkQuiz/types'
 import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
 import { AddIcon } from '@chakra-ui/icons'
 import useDebouncedValue from '@checkQuiz/hooks/useDebouncedValue'
+import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 
 interface FiltersProps {
   question?: boolean
@@ -31,7 +32,11 @@ const Filters: React.FC<FiltersProps> = ({ question = false, participants = fals
     setSearchQuery(e.target.value.toLocaleLowerCase())
   }
 
-  const { data, isFetched, refetch } = useFetchDashboard(quizId, sectionIndex, debouncedSearchQuery)
+  const { data, isFetched, refetch } = useFetchDashboard(
+    quizId,
+    sectionIndex ?? '',
+    debouncedSearchQuery,
+  )
 
   useEffect(() => {
     if (isFetched && data) {
@@ -60,12 +65,11 @@ const Filters: React.FC<FiltersProps> = ({ question = false, participants = fals
     data: sectionData,
     isFetched: sectionDataIsFetched,
     refetch: sectionDataRefetch,
-  } = useFetchDashboard(quizId, sectionIndex, debouncedSearchQuery)
+  } = useFetchDashboard(quizId, sectionIndex ?? '', debouncedSearchQuery)
 
   const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newSectionIndex = e.target.value === '' ? null : parseInt(e.target.value)
     setSectionIndex(newSectionIndex)
-    // useFetchDashboard(quizId, newSectionIndex, debouncedSearchQuery)
   }
 
   useEffect(() => {
@@ -110,18 +114,12 @@ const Filters: React.FC<FiltersProps> = ({ question = false, participants = fals
         <HStack spacing={4} alignItems='center' width='full'>
           {question && (
             <>
-              <Input
-                maxWidth='20rem'
-                placeholder='Search or add assignee'
-                variant='outline'
-                borderColor='grey'
-                borderRadius='0.25rem'
-                fontSize='0.875rem'
-                fontWeight='600'
-                color='grey'
-                value={searchQuery}
-                onChange={handleSearchChange}
-                _placeholder={{ color: 'grey' }}
+              <CustomInputWithLabel
+                inputProps={{
+                  placeholder: 'Search or add assignee',
+                  value: searchQuery,
+                  onChange: handleSearchChange,
+                }}
               />
               <IconButton
                 aria-label='Add'
@@ -137,18 +135,12 @@ const Filters: React.FC<FiltersProps> = ({ question = false, participants = fals
 
           {participants && (
             <>
-              <Input
-                maxWidth='20rem'
-                placeholder='Search'
-                variant='outline'
-                borderColor='grey'
-                borderRadius='0.25rem'
-                fontSize='0.875rem'
-                fontWeight='600'
-                color='grey'
-                value={searchQuery}
-                onChange={handleSearchChange}
-                _placeholder={{ color: 'grey' }}
+              <CustomInputWithLabel
+                inputProps={{
+                  placeholder: 'Search...',
+                  value: searchQuery,
+                  onChange: handleSearchChange,
+                }}
               />
               <Text fontSize='0.875rem' color='grey'>
                 Sort by

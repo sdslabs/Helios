@@ -10,7 +10,7 @@ import {
 } from '@giveQuiz/api/useResponse'
 import { SubmitQuizModal } from './Modals/SubmitQuizModal'
 import { useParams } from 'react-router-dom'
-import { Option,ResponseStatus } from '../../types'
+import { Option, ResponseStatus } from '../../types'
 import Fetching from '../../../animations/Fetching'
 import removeFromArray from '@giveQuiz/utils/removeFromArray'
 import { useQueryClient } from '@tanstack/react-query'
@@ -22,7 +22,7 @@ const QuestionView = () => {
   const [questionNumber, setQuestionNumber] = useState(1)
   const [question, setQuestion] = useState('')
   const [options, setOptions] = useState<Option[]>([])
-  const [answer, setAnswer] = useState<string | string[]>(questionType === 'mcq' ? [] : '');
+  const [answer, setAnswer] = useState<string | string[]>(questionType === 'mcq' ? [] : '')
   const [mark, setMark] = useState(4)
   const [isLastQuestion, setIsLastQuestion] = useState(false)
   const { mutate: deleteResponse } = useDeleteResponse()
@@ -42,7 +42,7 @@ const QuestionView = () => {
     quizId: string
   }
   const { mutate } = useCreateUpdateResponse()
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   const {
     data: questionData,
     isLoading: isQuestionDataLoading,
@@ -63,7 +63,7 @@ const QuestionView = () => {
   } = useGetResponse(quizId, currentQuestion)
 
   const handleClearResponse = () => {
-    setAnswer(questionType === 'mcq' ? [] : '');
+    setAnswer(questionType === 'mcq' ? [] : '')
     deleteResponse(
       {
         quizId,
@@ -81,25 +81,25 @@ const QuestionView = () => {
   }
 
   async function handleSave() {
-  const answerValue = answer; 
-  handleSaveButton(
-    answerValue,
-    isCurrentQuestionMarked,
-    currentQuestion,
-    quizId,
-    mutate,
-    deleteResponse,
-    questionType,
-    nextQuestion,
-    setAnsweredQuestions,
-    setMarkedQuestions,
-    setMarkedAnsweredQuestions,
-    markedAnsweredQuestions,
-    answeredQuestions,
-    markedQuestions,
-    queryClient
-  );
-}
+    const answerValue = answer
+    handleSaveButton(
+      answerValue,
+      isCurrentQuestionMarked,
+      currentQuestion,
+      quizId,
+      mutate,
+      deleteResponse,
+      questionType,
+      nextQuestion,
+      setAnsweredQuestions,
+      setMarkedQuestions,
+      setMarkedAnsweredQuestions,
+      markedAnsweredQuestions,
+      answeredQuestions,
+      markedQuestions,
+      queryClient,
+    )
+  }
 
   useEffect(() => {
     setIsLastQuestion(
@@ -112,8 +112,13 @@ const QuestionView = () => {
     if (isGetResponseSuccess) {
       if (isGetResponseSuccess && getResponseData?.response?.length > 0) {
         const firstItem = getResponseData.response[0]
+        console.log('response[0]', getResponseData.response[0]);
         if (firstItem.selectedOptionId) {
-          setAnswer(Array.isArray(firstItem.selectedOptionId) ? firstItem.selectedOptionId : [firstItem.selectedOptionId]);
+          setAnswer(
+            Array.isArray(firstItem.selectedOptionId)
+              ? firstItem.selectedOptionId
+              : [firstItem.selectedOptionId],
+          )
         } else if (firstItem.subjectiveAnswer) {
           setAnswer(firstItem.subjectiveAnswer)
         }
@@ -145,7 +150,6 @@ const QuestionView = () => {
       setQuestionType(questionData.question.type)
     }
   }, [currentQuestionIndex, questionData])
-  
 
   if (isQuestionDataLoading || isGetResponseLoading) {
     return <Fetching />
@@ -175,7 +179,15 @@ const QuestionView = () => {
               {mark} Marks
             </Text>
           </Flex>
-          <Text fontSize='1rem' fontWeight='400' mb={6} w='58.5rem' p={4} bgColor='v1' overflow='scroll'>
+          <Text
+            fontSize='1rem'
+            fontWeight='400'
+            mb={6}
+            w='58.5rem'
+            p={4}
+            bgColor='v1'
+            overflow='scroll'
+          >
             {renderPreview(question)}
           </Text>
           {questionType === 'mcq' ? (
@@ -183,16 +195,16 @@ const QuestionView = () => {
               <CheckboxGroup
                 value={Array.isArray(answer) ? answer : []} // answer should be string[]
                 onChange={(selectedValues: string[]) => {
-                  setAnswer(selectedValues); 
+                  setAnswer(selectedValues)
                 }}
               >
-              <Stack direction="column">
-                {options.map((option) => (
-                  <Checkbox key={option.id} value={option.id.toString()} mb={4}>
-                    {option.label}
-                  </Checkbox>
-                ))}
-              </Stack>
+                <Stack direction='column'>
+                  {options.map((option) => (
+                    <Checkbox key={option.id} value={option.id.toString()} mb={4}>
+                      {option.label}
+                    </Checkbox>
+                  ))}
+                </Stack>
               </CheckboxGroup>
 
               <Button
@@ -208,10 +220,10 @@ const QuestionView = () => {
           ) : (
             <Box w='full' height='max-content' mb={4}>
               <CustomRichTextEditor
-                value={typeof answer === 'string' ? answer : ''} 
+                value={typeof answer === 'string' ? answer : ''}
                 onChange={(value) => {
                   setAnswer(value ?? '')
-                }} 
+                }}
               />
             </Box>
           )}
@@ -230,7 +242,7 @@ const QuestionView = () => {
               bgColor='brand'
               alignSelf='flex-end'
               onClick={() => {
-                handleSave();
+                handleSave()
               }}
             >
               {isLastQuestion ? 'Save' : 'Save & Next'}

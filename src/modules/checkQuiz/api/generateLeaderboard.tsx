@@ -9,7 +9,12 @@ export const GenerateLeaderboard = async ({
   sectionIndex: number | null
 }) => {
   try {
-    const res = await axiosInstance.patch(`/checkQuiz/leaderboard/${quizId}/${sectionIndex}`)
+    console.log(`/checkQuiz/leaderboard/${quizId}/${sectionIndex}`)
+    const res = await axiosInstance.patch(
+      sectionIndex
+        ? `/checkQuiz/leaderboard/${quizId}/${sectionIndex}`
+        : `/checkQuiz/leaderboard/${quizId}/`,
+    )
     return res.data
   } catch (e: any) {
     if (axios.isAxiosError(e)) {
