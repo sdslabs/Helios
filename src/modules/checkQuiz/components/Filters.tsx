@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Select } from 'chakra-react-select'
-import { Button, HStack, Input, Select as Text } from '@chakra-ui/react'
+import { Button, HStack, Input, IconButton, Select as SelectChakra, Text } from '@chakra-ui/react'
 import { useLeaderboard } from '@checkQuiz/api/useLeaderboard'
 import AutocheckModal from './Modals/Autocheck'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import { Section } from '@checkQuiz/types'
 import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
+import { AddIcon } from '@chakra-ui/icons'
+import useDebouncedValue from '@checkQuiz/hooks/useDebouncedValue'
+import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 
 interface FiltersProps {
   question?: boolean
@@ -13,11 +15,7 @@ interface FiltersProps {
   sections: Section[]
 }
 
-const Filters: React.FC<FiltersProps> = ({
-  question = false,
-  participants = false,
-  sections,
-}) => {
+const Filters: React.FC<FiltersProps> = ({ question = false, participants = false, sections }) => {
   const [assignees, setAssignees] = useState<any>([])
   const [isAutocheckModalOpen, setIsAutocheckModalOpen] = useState<boolean>(false)
   const [totalAutocheckQuestions, setTotalAutocheckQuestions] = useState<number>(0)
@@ -27,24 +25,26 @@ const Filters: React.FC<FiltersProps> = ({
     state.leaderboard,
     state.setLeaderboard,
   ])
+  const [searchQuery, setSearchQuery] = useState('')
+  const debouncedSearchQuery = useDebouncedValue(searchQuery, 300)
 
-  const { data, isFetched, refetch } = useFetchDashboard(quizId, sectionIndex)
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value.toLocaleLowerCase())
+  }
+
+  const { data, isFetched, refetch } = useFetchDashboard(
+    quizId,
+    sectionIndex ?? '',
+    debouncedSearchQuery,
+  )
 
   useEffect(() => {
     if (isFetched && data) {
-      if (sectionIndex === null) {
-        if (data?.leaderboard?.length > 0) {
-          setLeaderboard(data?.leaderboard[0]?.participants || [])
-        }
-      } else {
-        if (data?.sectionLeaderboard?.length > 0) {
-          setLeaderboard(data?.sectionLeaderboard[0].participants || [])
-        }
+      if (data?.leaderboard?.length > 0) {
+        setLeaderboard(data?.leaderboard[0]?.participants || [])
       }
-    } else {
-      refetch()
     }
-  }, [sectionIndex, isFetched, data])
+  }, [sectionIndex, isFetched, data, setLeaderboard])
 
   useEffect(() => {
     if (sections) {
@@ -58,24 +58,36 @@ const Filters: React.FC<FiltersProps> = ({
       })
       setTotalAutocheckQuestions(totalAutocheckQuestionsCount)
     }
-  }, [sections])
+  }, [sections, searchQuery])
 
   const { mutate: generateLeaderboard } = useLeaderboard()
   const {
     data: sectionData,
     isFetched: sectionDataIsFetched,
     refetch: sectionDataRefetch,
-  } = useFetchDashboard(quizId, sectionIndex)
+  } = useFetchDashboard(quizId, sectionIndex ?? '', debouncedSearchQuery)
 
-  const handleLeaderboard = (sectionIndex: number | null) => {
+  const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newSectionIndex = e.target.value === '' ? null : parseInt(e.target.value)
+    setSectionIndex(newSectionIndex)
+  }
+
+  useEffect(() => {
+    if (sectionIndex !== null) {
+      refetch()
+    }
+  }, [sectionIndex])
+
+  const handleLeaderboard = () => {
     generateLeaderboard(
       { quizId, sectionIndex },
       {
         onSuccess: () => {
-          window.location.reload()
+          refetch()
         },
       },
     )
+    setLeaderboard(data?.leaderboard[0].participants || [])
   }
 
   // TODO: fetch assignees from athena
@@ -92,17 +104,9 @@ const Filters: React.FC<FiltersProps> = ({
     setAssignees(selectedAssignees)
   }
 
-  const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value != '') {
-      setSectionIndex(parseInt(e.target.value))
-    } else {
-      setSectionIndex(null)
-    }
+  const handleAddClick = () => {
+    console.log('Add button clicked')
   }
-
-  useEffect(() => {
-    sectionDataRefetch()
-  }, [sectionIndex])
 
   return (
     <>
@@ -110,41 +114,49 @@ const Filters: React.FC<FiltersProps> = ({
         <HStack spacing={4} alignItems='center' width='full'>
           {question && (
             <>
-              <Text fontSize='0.875rem' color='#939393'>
-                Assigned to:
-              </Text>
-              <Select
-                styles={{
-                  option: (provided, state) => ({
-                    ...provided,
-                    padding: '0.75rem',
-                    fontSize: '0.875rem',
-                    fontWeight: '600',
-                    borderRadius: '0.25rem',
-                  }),
+              <CustomInputWithLabel
+                inputProps={{
+                  placeholder: 'Search or add assignee',
+                  value: searchQuery,
+                  onChange: handleSearchChange,
                 }}
-                value={assignees}
-                options={availableAssignees}
-                isMulti
-                placeholder='Assignees'
-                onChange={handleAssigneesChange}
+              />
+              <IconButton
+                aria-label='Add'
+                icon={<AddIcon />}
+                onClick={handleAddClick}
+                size='sm'
+                bgColor='brand'
+                color='white'
+                borderRadius='0.25rem'
               />
             </>
           )}
 
           {participants && (
             <>
-              <Input
-                maxWidth='20rem'
-                placeholder='Search'
-                variant='outline'
-                borderColor='#939393'
-                borderRadius='0.25rem'
-                fontSize='0.875rem'
-                fontWeight='600'
-                color='#939393'
-                _placeholder={{ color: '#939393' }}
+              <CustomInputWithLabel
+                inputProps={{
+                  placeholder: 'Search...',
+                  value: searchQuery,
+                  onChange: handleSearchChange,
+                }}
               />
+              <Text fontSize='0.875rem' color='grey'>
+                Sort by
+              </Text>
+              <SelectChakra
+                width='12rem'
+                placeholder='None'
+                color='grey'
+                onChange={handleSectionChange}
+              >
+                {sections.map((section, index) => (
+                  <option value={index} key={section.name}>
+                    {section.name}
+                  </option>
+                ))}
+              </SelectChakra>
             </>
           )}
         </HStack>
@@ -156,9 +168,7 @@ const Filters: React.FC<FiltersProps> = ({
             py={3}
             fontSize='0.875rem'
             fontWeight='400'
-            onClick={() => {
-              handleLeaderboard(sectionIndex)
-            }}
+            onClick={handleLeaderboard}
           >
             Generate Leaderboard
           </Button>

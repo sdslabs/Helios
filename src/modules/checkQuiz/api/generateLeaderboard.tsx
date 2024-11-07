@@ -9,15 +9,13 @@ export const GenerateLeaderboard = async ({
   sectionIndex: number | null
 }) => {
   try {
-    if (sectionIndex === null) {
-      const res = await axiosInstance.patch(`/checkQuiz/leaderboard/${quizId}`)
-      return res.data
-    } else {
-      const res = await axiosInstance.patch(
-        `/checkQuiz/generateSectionLeaderboard/${quizId}/${sectionIndex}`,
-      )
-      return res.data
-    }
+    console.log(`/checkQuiz/leaderboard/${quizId}/${sectionIndex}`)
+    const res = await axiosInstance.patch(
+      sectionIndex
+        ? `/checkQuiz/leaderboard/${quizId}/${sectionIndex}`
+        : `/checkQuiz/leaderboard/${quizId}/`,
+    )
+    return res.data
   } catch (e: any) {
     if (axios.isAxiosError(e)) {
       return e.response?.data || e.message

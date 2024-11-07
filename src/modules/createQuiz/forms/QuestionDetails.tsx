@@ -18,7 +18,13 @@ import {
   Switch,
   Text,
   VStack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Checkbox,
 } from '@chakra-ui/react'
+import select from 'react-select'
 import { useEffect, useState } from 'react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { QuestionType, Option } from '../../types'
@@ -36,7 +42,7 @@ const QuestionDetails = () => {
   const [marks, setMarks] = useState<number>(0)
   const [autoCheck, setAutoCheck] = useState<boolean>(false)
   const [options, setOptions] = useState<Option[]>([])
-  const [answer, setAnswer] = useState<string>('')
+  const [answer, setAnswer] = useState<string[]>([]);
 
   const { sections, currentSectionIdx, currentQuestionIdx } = useSectionStore((state) => state)
   const activeSection = sections[currentSectionIdx ?? 0]
@@ -61,7 +67,7 @@ const QuestionDetails = () => {
     setMarks(data?.question.maxMarks ?? 0)
     setAutoCheck(data?.question?.autoCheck ?? false)
     setOptions(data?.question?.options ?? [])
-    setAnswer(data?.question?.correctAnswer ?? '')
+    setAnswer(Array.isArray(data.question?.correctAnswer) ? data.question.correctAnswer : [data.question?.correctAnswer ?? '']);
   }
   const handleEdit = (id: string, newLabel: string) => {
     setOptions((prevOptions) =>
@@ -98,9 +104,51 @@ const QuestionDetails = () => {
       setAutoCheck(data.question?.autoCheck)
       setOptions(data.question?.options)
       setNotes(data.question?.checkerNotes)
-      setAnswer(data.question?.correctAnswer)
+      setAnswer(Array.isArray(data.question?.correctAnswer) ? data.question.correctAnswer : [data.question?.correctAnswer ?? '']);
     }
   }, [isFetched, isLoading, data])
+
+  const renderCorrectAnswerMenu = () => {
+    if (type === QuestionType.SUB) return null;
+  
+    return (
+      <HStack>
+        <Text color='accentBlack' fontSize='sm'>
+          Answer:
+        </Text>
+        <Box w='full'>
+          <Menu>
+            <MenuButton as={Button} 
+            color='white'
+            colorScheme='purple'
+            bgColor='brand'
+            fontWeight='400'
+            >
+              {answer.length > 0 ? `${answer.length} selected` : 'Select correct answers'}
+            </MenuButton>
+            <MenuList>
+              {options.map((option) => (
+                <MenuItem key={option.id} closeOnSelect={false}>
+                  <Checkbox
+                    isChecked={answer.includes(option.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setAnswer((prev) => [...prev, option.id]);
+                      } else {
+                        setAnswer((prev) => prev.filter((id) => id !== option.id));
+                      }
+                    }}
+                  >
+                    {option.label}
+                  </Checkbox>
+                </MenuItem>
+              ))}
+            </MenuList>
+          </Menu>
+        </Box>
+      </HStack>
+    );
+  };  
 
   const renderChoiceBuilder = () => {
     if (type === QuestionType.SUB) return null
@@ -183,44 +231,34 @@ const QuestionDetails = () => {
         <Divider borderWidth={1} borderColor='v1' />
       </VStack>
       <HStack my={8} justifyContent='space-between'>
-        <HStack>
-          <Text color='accentBlack' fontSize='sm'>
-            Marks:
-          </Text>
-          <Input
-            type='number'
-            w={20}
-            value={marks}
-            onChange={(e) => setMarks(parseInt(e.target.value, 10))}
-          />
-        </HStack>
-        {type === QuestionType.MCQ && (
-          <>
-            <HStack>
-              <Text color='accentBlack' fontSize='sm'>
-                Autocheck:
-              </Text>
-              <Switch
-                colorScheme='purple'
-                isChecked={autoCheck}
-                onChange={(e) => setAutoCheck(e.target.checked)}
-              />
-            </HStack>
-            <HStack>
-              <Text color='accentBlack' fontSize='sm'>
-                Answer:
-              </Text>
-              <Select w={48} value={answer} onChange={(e) => setAnswer(e.target.value)}>
-                {options?.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.id}
-                  </option>
-                ))}
-              </Select>
-            </HStack>
-          </>
-        )}
+  <HStack>
+    <Text color='accentBlack' fontSize='sm'>
+      Marks:
+    </Text>
+    <Input
+      type='number'
+      w={20}
+      value={marks}
+      onChange={(e) => setMarks(parseInt(e.target.value, 10))}
+    />
+  </HStack>
+  {type === QuestionType.MCQ && (
+    <>
+      <HStack>
+        <Text color='accentBlack' fontSize='sm'>
+          Autocheck:
+        </Text>
+        <Switch
+          colorScheme='purple'
+          isChecked={autoCheck}
+          onChange={(e) => setAutoCheck(e.target.checked)}
+        />
       </HStack>
+      {renderCorrectAnswerMenu()}
+    </>
+  )}
+</HStack>
+
       {type === QuestionType.SUB && (
         <FormControl>
           <FormLabel fontWeight='400' fontSize='sm' color='gray.500'>
