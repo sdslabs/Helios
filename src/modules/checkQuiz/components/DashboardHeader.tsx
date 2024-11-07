@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Box, Button, Flex, Text, HStack } from '@chakra-ui/react'
 import HighlightCard from './HighlightCard'
 import { PublishResultModal } from './Modals/PublishQuizModal'

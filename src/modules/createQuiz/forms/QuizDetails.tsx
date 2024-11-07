@@ -1,19 +1,19 @@
 import {
   Box,
   Button,
-  Grid,
-  GridItem,
-  Heading,
-  VStack,
-  HStack,
   FormControl,
   FormLabel,
+  Grid,
+  GridItem,
+  HStack,
+  Heading,
+  VStack,
 } from '@chakra-ui/react'
 import InputField from '@common/components/CustomInputWithLabel'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
-import ImageUpload from './ImageUpload'
 import { useUpdateQuizDetails } from '@createQuiz/api/useQuiz'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
+import ImageUpload from './ImageUpload'
 
 interface QuizDetailsProps {
   setQuizStage: (stage: number) => void
@@ -23,12 +23,15 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
   // TODO: Managers daalte hi code fat rha hai. Fix the bug
   const { quizId, details, setKey } = useQuizDetailsStore((state) => state)
   const { mutate } = useUpdateQuizDetails()
+
   const handleChange = (key: string, value: string) => {
     setKey(key, value)
   }
+
   const handleChangeQuizInstructions = (value?: string) => {
     setKey('instructions', value ?? '')
   }
+
   const handleSaveQuizDetails = () => {
     const { managers, ...rest } = details
     const { startTime, endTime, startDate, endDate, duration, ...metadata } = rest
@@ -43,10 +46,16 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
     const updatedDetails = {
       quizMetadata: updatedMetadata,
       managers: managers,
+      bannerImage: details?.bannerImage, 
     }
     mutate({ quizId, body: updatedDetails })
     setQuizStage(1)
   }
+
+  const handleImageUpload = (imageUrl: string | null) => {
+    setKey('bannerImage', imageUrl ?? '')
+  }
+
   return (
     <Box w='930px' mx='auto' my={14}>
       <Heading fontSize='3xl' color='accentBlack'>
@@ -64,7 +73,7 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
           />
         </GridItem>
         <GridItem colSpan={2} rowSpan={3}>
-          <ImageUpload />
+          <ImageUpload onImageUpload={handleImageUpload} initialImage={details?.bannerImage}/> 
         </GridItem>
         <GridItem colSpan={1}>
           <InputField

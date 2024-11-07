@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Chart as ChartJS, ArcElement, Legend } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
 import { Box, Flex } from '@chakra-ui/react'
@@ -24,7 +23,7 @@ const QuizSummaryPie: React.FC<QuizSummaryPieProps> = ({ summaryData }) => {
     datasets: [
       {
         data: summaryData,
-        backgroundColor: ['#AD9EC9', '#27A624', '#FF8900', '#604195'], // pie chart colors
+        backgroundColor: ['#AD9EC9', '#27A624', '#FF8900', '#604195'], 
       },
     ],
   }

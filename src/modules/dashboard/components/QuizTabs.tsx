@@ -8,7 +8,7 @@ import NoQuizzesCard from './Cards/NoQuizzesCard'
 interface TabsProps {
   isAdmin?: boolean
   quizzes: QuizDetails[]
-  createdQuizzes: any //this will have the type of array of quizSchema of backend
+  createdQuizzes: any 
 }
 
 const QuizTabs: React.FC<TabsProps> = ({ isAdmin = false, quizzes, createdQuizzes }: TabsProps) => {
@@ -95,7 +95,7 @@ const QuizTabs: React.FC<TabsProps> = ({ isAdmin = false, quizzes, createdQuizze
                         tags={tags}
                         content={quiz?.quizMetadata?.description}
                         schedule={quiz?.quizMetadata?.startDateTimestamp}
-                        edit={quiz.isPublished}
+                        edit={date.getTime() < new Date(quiz?.quizMetadata?.startDateTimestamp).getTime()}
                         id={quiz._id}
                       />
                     )

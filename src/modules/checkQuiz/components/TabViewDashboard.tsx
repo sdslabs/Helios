@@ -1,11 +1,7 @@
-import { useState, useEffect } from 'react'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator } from '@chakra-ui/react'
 import Filters from './Filters'
 import Leaderboard from './Leaderboard'
 import QuestionsBoard from './QuestionsBoard'
-import { Section } from '@checkQuiz/types'
-import { PublishResultModal } from './Modals/PublishQuizModal'
-import { QuestionType } from '../../types'
 import checkQuizStore from '@checkQuiz/store/checkQuizStore'
 
 const TabViewDashboard = () => {

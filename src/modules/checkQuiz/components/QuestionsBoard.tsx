@@ -17,15 +17,11 @@ const QuestionsBoard: React.FC<QuestionsBoardProps> = ({ quizId }) => {
   const Navigate = useNavigate()
   const [sections] = useCheckQuizStore((state) => [state.sections])
   const [
-    currentSection,
     setCurrentSection,
-    currentSectionIndex,
     setCurrentSectionIndex,
     setCurrentQuestionIndex,
   ] = useCheckQuizStore((state) => [
-    state.currentSection,
     state.setCurrentSection,
-    state.currentSectionIndex,
     state.setCurrentSectionIndex,
     state.setCurrentQuestionIndex,
   ])

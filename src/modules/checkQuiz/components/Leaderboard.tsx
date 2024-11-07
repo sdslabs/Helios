@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, Text } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import Table from '@checkQuiz/components/Table'
 import QuestionCounter from './QuestionCounter'

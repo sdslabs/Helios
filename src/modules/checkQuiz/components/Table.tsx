@@ -7,9 +7,8 @@ import {
   getFilteredRowModel,
   getFacetedUniqueValues,
 } from '@tanstack/react-table'
-import { useMemo, useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { usePaginationRange } from '@createQuiz/hooks/usePaginationRange'
-import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 
 const Filter = ({ column, table }: any) => {
   const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id)

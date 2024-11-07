@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, HStack, Text, Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
+import { Button, HStack, Avatar, AvatarGroup } from '@chakra-ui/react'
 
 interface AssignViewProps {
   AssignedTo: string[]

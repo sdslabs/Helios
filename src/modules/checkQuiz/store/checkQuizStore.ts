@@ -1,6 +1,5 @@
 import { create, SetState } from 'zustand'
-import { Question, Section } from '@checkQuiz/types'
-import { set } from 'lodash'
+import { Section } from '@checkQuiz/types'
 
 interface CheckQuizStore {
   sections: Section[]

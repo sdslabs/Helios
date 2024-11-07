@@ -28,7 +28,7 @@ function QuizSummaryPie() {
     answeredQuestions.length,
     markedQuestions.length,
     markedAnsweredQuestions.length,
-  ]) // order according to labels
+  ]) 
 
   const theme = useTheme()
 
