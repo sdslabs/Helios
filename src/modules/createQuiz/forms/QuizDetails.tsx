@@ -14,6 +14,7 @@ import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { useUpdateQuizDetails } from '@createQuiz/api/useQuiz'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import ImageUpload from './ImageUpload'
+import { useState } from 'react'
 
 interface QuizDetailsProps {
   setQuizStage: (stage: number) => void
@@ -21,8 +22,10 @@ interface QuizDetailsProps {
 
 const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
   // TODO: Managers daalte hi code fat rha hai. Fix the bug
-  const { quizId, details, setKey } = useQuizDetailsStore((state) => state)
+  const { quizId, details, setKey,resetQuizDetails } = useQuizDetailsStore((state) => state)
   const { mutate } = useUpdateQuizDetails()
+
+  const [forceUpdate, setForceUpdate] = useState(0)
 
   const handleChange = (key: string, value: string) => {
     setKey(key, value)
@@ -56,8 +59,14 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
     setKey('bannerImage', imageUrl ?? '')
   }
 
+
+  const handleReset = ()=>{
+    resetQuizDetails()
+    setForceUpdate(forceUpdate + 1)
+  }
+
   return (
-    <Box w='930px' mx='auto' my={14}>
+    <Box w='930px' mx='auto' my={14} key={forceUpdate}>
       <Heading fontSize='3xl' color='accentBlack'>
         Quiz Details
       </Heading>
@@ -166,7 +175,7 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
         </FormControl>
       </VStack>
       <HStack justifyContent='end' my={12} gap={3}>
-        <Button color='brand' colorScheme='purple' fontWeight='400' variant='outline'>
+        <Button color='brand' colorScheme='purple' fontWeight='400' variant='outline' onClick={handleReset}>
           Reset
         </Button>
         <Button

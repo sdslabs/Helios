@@ -20,6 +20,7 @@ export interface QuizDetailsStore {
   setDetails: (quizDetails: QuizDetails) => void
   setKey: (key: string, value: string) => void
   setQuizId: (quizId: string) => void
+  resetQuizDetails: () => void
 }
 
 const useQuizDetailsStore = create<QuizDetailsStore>((set) => ({
@@ -28,6 +29,9 @@ const useQuizDetailsStore = create<QuizDetailsStore>((set) => ({
   setDetails: (details) => set({ details }),
   setKey: (key, value) => set((state) => ({ details: { ...state.details, [key]: value } })),
   setQuizId: (quizId) => set({ quizId }),
+  resetQuizDetails: () => {
+    set((state) => ({ details: {} }));
+  }, 
 }))
 
 export default useQuizDetailsStore
