@@ -53,10 +53,13 @@ const SideNavContent = ({ stage, setStage }: SideNavContentProps) => {
 
   const handleSaveDetails = () => {
     const { startDate, startTime, endDate, endTime, duration } = details
-
     if (!startDate || !startTime || !endDate || !endTime || !duration) {
       displayErrorToast('Please fill in all required fields before saving.')
-    } else {
+    }
+    else if (new Date(`${startDate} ${startTime}`) >= new Date(`${endDate} ${endTime}`)) {
+      displayErrorToast('Start time should be before end time.')
+    } 
+    else {
       const updatedFields: Record<string, any> = {}
     
       if (startDate && startTime) {
