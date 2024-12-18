@@ -13,6 +13,7 @@ import InputField from '@common/components/CustomInputWithLabel'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { useUpdateQuizDetails } from '@createQuiz/api/useQuiz'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
+import { displayErrorToast } from '@giveQuiz/utils/toastNotifications'
 import ImageUpload from './ImageUpload'
 import { useState } from 'react'
 
@@ -38,6 +39,10 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
   const handleSaveQuizDetails = () => {
     const { managers, ...rest } = details
     const { startTime, endTime, startDate, endDate, duration, ...metadata } = rest
+    if (new Date(`${startDate} ${startTime}`) >= new Date(`${endDate} ${endTime}`)) {
+          displayErrorToast('Start time should be before end time.')
+          return
+        } 
     const updatedMetadata = {
       ...metadata,
       startDateTimestamp: new Date(`${startDate} ${startTime}`).getTime(),
