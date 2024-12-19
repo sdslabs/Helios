@@ -36,3 +36,15 @@ export const submitQuiz = async (quizId: string) => {
     throw e
   }
 }
+
+export const getStartTime = async ({ quizId, body }: { quizId: string; body: any }) => {
+  try {
+    const res = await axiosInstance.get(`/giveQuiz/user/getStartTime/${quizId}`, body)
+    return res.data
+  } catch (e: unknown) {
+    if (e instanceof AxiosError) {
+      return e.response?.data || e.message
+    }
+    throw e
+  }
+}

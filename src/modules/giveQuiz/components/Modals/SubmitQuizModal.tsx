@@ -6,15 +6,13 @@ import * as io from 'socket.io-client'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSubmitQuiz } from '../../api/useUser'
 import useQuizStore from '@giveQuiz/store/QuizStore'
-import { baseURL, reactAppURL } from '../../../../config/config'
+import { reactAppURL } from '../../../../config/config'
 import { useQueryClient } from '@tanstack/react-query'
 
 interface SubmitQuizModalProps {
   open: boolean
   toggleIsOpen: () => void
 }
-
-const socket = io.connect(`${baseURL}`)
 
 export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) => {
   const queryClient = useQueryClient()
@@ -26,7 +24,6 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
   const navigate = useNavigate();
 
   const handleQuizSubmit = async () => {
-    socket.disconnect()
     if (quizId) {
       mutate(quizId, {
         onSuccess: () => {
