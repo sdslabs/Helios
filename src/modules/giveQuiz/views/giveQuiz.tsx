@@ -17,10 +17,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import 'react-toastify/dist/ReactToastify.css'
 import useLog from '@giveQuiz/api/useLog'
-import { baseURL } from '../../../config/config'
 import useAuthStore from '@auth/store/authStore'
-import * as io from 'socket.io-client'
-import { useSubmitQuiz } from '@giveQuiz/api/useUser'
+import { useSubmitQuiz, useGetStartTime } from '@giveQuiz/api/useUser'
 import {displayToast,displayErrorToast} from '@giveQuiz/utils/toastNotifications'
 import useLogIP from '@giveQuiz/hooks/useLogIP';
 
@@ -41,6 +39,7 @@ const giveQuiz = () => {
   const isStarted = useQuizStore((state) => state.isStarted)
   const { setIsStarted } = useQuizStore()
   const { mutate } = useSubmitQuiz()
+  const { mutate: getStartTime } = useGetStartTime()
   const navigate = useNavigate()
 
   const reportChange = useCallback(
@@ -77,28 +76,27 @@ const giveQuiz = () => {
         }
         setCount(count + 1)
         setQuizStage(GiveQuizSteps.Instructions)
-        const socket = io.connect(`${baseURL}`)
-        if (isStarted) {
-          socket.emit('checkRejoin', { quizId: quizId, userId: user.userId })
-        }
-        socket.emit('join_quiz', { quizId: quizId, userId: user.userId })
-        socket.on('sendTime', (timeLeft) => {
-          setTimer(timeLeft)
-          if (timeLeft < 0) {
-            socket.disconnect()
-            if (quizId) {
-              mutate(quizId, {
-                onSuccess: () => {
-                  navigate('/dashboard');
-                },
-                onError: (error) => {
-                  displayErrorToast('Failed to submit quiz. Please try again.')
-                },
-              });
-            }
-          }
-          setIsStarted(true)
-        })
+          getStartTime({ quizId: quizId, body: { userId: user.userId } }, {
+            onSuccess: (data) => {
+              setTimer(data.userLeftTime)
+              if (data.userLeftTime < 0) {
+                if (quizId) {
+                  mutate(quizId, {
+                    onSuccess: () => {
+                      navigate('/dashboard');
+                    },
+                    onError: (error) => {
+                      displayErrorToast('Failed to submit quiz. Please try again.')
+                    },
+                  });
+                }
+              }
+              setIsStarted(true)
+            },
+            onError: (error) => {
+              displayErrorToast('Failed to get time left. Please try again.')
+            },
+          })
       }
     },
     [fullScreenHandle],

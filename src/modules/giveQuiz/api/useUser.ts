@@ -21,3 +21,10 @@ export const useSubmitQuiz = () => {
   })
   return mutation
 }
+
+export const useGetStartTime = () => {
+  const mutation = useMutation({
+    mutationFn: fetchers.getStartTime,
+  })
+  return mutation
+}

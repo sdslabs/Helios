@@ -6,11 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import { QuizSummaryModal } from './Modals/QuizSummaryModal'
 import { useSubmitQuiz } from '@giveQuiz/api/useUser'
-import * as io from 'socket.io-client'
-import { baseURL } from '../../../config/config'
 import { useQueryClient } from '@tanstack/react-query'
-
-const socket = io.connect(`${baseURL}`)
 
 function Countdown() {
   const { timerValue } = useTimer()
@@ -46,7 +42,6 @@ function Countdown() {
         setCountSeconds(seconds.toString().padStart(2, '0'))
         setDuration((prevDuration) => (prevDuration !== null ? prevDuration - 1000 : prevDuration))
         if (duration <= 1000) {
-          socket.disconnect()
           if (quizId) {
             mutate(quizId, {
               onSuccess: () => {
