@@ -21,6 +21,7 @@ import useAuthStore from '@auth/store/authStore'
 import { useSubmitQuiz, useGetStartTime } from '@giveQuiz/api/useUser'
 import {displayToast,displayErrorToast} from '@giveQuiz/utils/toastNotifications'
 import useLogIP from '@giveQuiz/hooks/useLogIP';
+import { startMedia } from '@giveQuiz/utils/mediaControls'
 
 const giveQuiz = () => {
   const { quizId } = useParams() as { quizId: string }

@@ -8,6 +8,7 @@ import { useSubmitQuiz } from '../../api/useUser'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import { reactAppURL } from '../../../../config/config'
 import { useQueryClient } from '@tanstack/react-query'
+import { stopMedia } from '@giveQuiz/utils/mediaControls'
 
 interface SubmitQuizModalProps {
   open: boolean
