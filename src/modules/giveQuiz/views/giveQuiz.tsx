@@ -45,6 +45,7 @@ const giveQuiz = () => {
   const reportChange = useCallback(
     (state: boolean) => {
       if (state === false) {
+        startMedia()
         setQuizStage(GiveQuizSteps.AccessWindow);
         displayToast('Quiz must be given on Full Screen. Press `Ctrl + F` to go to Fullscreen', {
           toastId: 'fsToast',

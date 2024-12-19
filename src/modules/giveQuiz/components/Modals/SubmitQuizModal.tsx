@@ -27,6 +27,7 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
     if (quizId) {
       mutate(quizId, {
         onSuccess: () => {
+          stopMedia()
           setIsQuizSubmitted(true)
           queryClient.invalidateQueries({ exact: true, queryKey: ['dashboard'] })
           queryClient.invalidateQueries({ exact: true, queryKey: ['quiz', quizId] })
