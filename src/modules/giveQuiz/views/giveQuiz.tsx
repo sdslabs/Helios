@@ -19,9 +19,9 @@ import 'react-toastify/dist/ReactToastify.css'
 import useLog from '@giveQuiz/api/useLog'
 import useAuthStore from '@auth/store/authStore'
 import { useSubmitQuiz, useGetStartTime } from '@giveQuiz/api/useUser'
-import {displayToast,displayErrorToast} from '@giveQuiz/utils/toastNotifications'
-import useLogIP from '@giveQuiz/hooks/useLogIP';
-import { startMedia } from '@giveQuiz/utils/mediaControls'
+import { displayToast, displayErrorToast } from '@giveQuiz/utils/toastNotifications'
+import useLogIP from '@giveQuiz/hooks/useLogIP'
+import useMedia from '@giveQuiz/hooks/useMedia'
 
 const giveQuiz = () => {
   const { quizId } = useParams() as { quizId: string }
@@ -29,11 +29,11 @@ const giveQuiz = () => {
     setQuizId: state.setQuizId,
     currentQuestion: state.currentQuestion,
   }))
-  const { mutate: log } = useLog() 
+  const { mutate: log } = useLog()
   const [quizStage, setQuizStage] = useState<GiveQuizSteps>(-1)
   const [count, setCount] = useState<number>(0)
   const fullScreenHandle = useFullScreenHandle()
-  const [isMediaPermission, setIsMediaPermission] = useState<boolean>(false)
+  // const [isMediaPermission, setIsMediaPermission] = useState<boolean>(false)
   const { hasLocationAccess } = useLocationAccess()
   const { setTimer } = useTimer()
   const user = useAuthStore((state) => state.user)
@@ -42,16 +42,16 @@ const giveQuiz = () => {
   const { mutate } = useSubmitQuiz()
   const { mutate: getStartTime } = useGetStartTime()
   const navigate = useNavigate()
+  const { isMediaPermission } = useMedia()
 
   const reportChange = useCallback(
     (state: boolean) => {
       if (state === false) {
-        startMedia()
-        setQuizStage(GiveQuizSteps.AccessWindow);
+        setQuizStage(GiveQuizSteps.AccessWindow)
         displayToast('Quiz must be given on Full Screen. Press `Ctrl + F` to go to Fullscreen', {
           toastId: 'fsToast',
           hideProgressBar: true,
-        });
+        })
       } else {
         toast.dismiss('fsToast')
         //TODO: use something more robust than settimeout
@@ -63,34 +63,38 @@ const giveQuiz = () => {
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
-        });
+            })
           }, 2000)
-          log({
-            questionId: currentQuestion,
-            logType: LogType.FullScreenExit,
-            quizId: quizId,
-          },
-          {
-            onError: (error) => {
-              console.error("An error occurred while logging:", error);
-           },
-          })
+          log(
+            {
+              questionId: currentQuestion,
+              logType: LogType.FullScreenExit,
+              quizId: quizId,
+            },
+            {
+              onError: (error) => {
+                console.error('An error occurred while logging:', error)
+              },
+            },
+          )
         }
         setCount(count + 1)
         setQuizStage(GiveQuizSteps.Instructions)
-          getStartTime({ quizId: quizId, body: { userId: user.userId } }, {
+        getStartTime(
+          { quizId: quizId, body: { userId: user.userId } },
+          {
             onSuccess: (data) => {
               setTimer(data.userLeftTime)
               if (data.userLeftTime < 0) {
                 if (quizId) {
                   mutate(quizId, {
                     onSuccess: () => {
-                      navigate('/dashboard');
+                      navigate('/dashboard')
                     },
                     onError: (error) => {
                       displayErrorToast('Failed to submit quiz. Please try again.')
                     },
-                  });
+                  })
                 }
               }
               setIsStarted(true)
@@ -98,7 +102,8 @@ const giveQuiz = () => {
             onError: (error) => {
               displayErrorToast('Failed to get time left. Please try again.')
             },
-          })
+          },
+        )
       }
     },
     [fullScreenHandle],
@@ -107,18 +112,19 @@ const giveQuiz = () => {
   useKeyLogging({ handle: fullScreenHandle })
 
   useEffect(() => {
+    console.log(isMediaPermission, 'from giveQuizzz')
     if (!isMediaPermission) {
       displayToast('Please allow microphone and camera access for the quiz to start', {
         toastId: 'mediaToast',
         hideProgressBar: true,
         type: 'error',
-      });
+      })
     } else {
       toast.dismiss('mediaToast')
       displayToast('Microphone and Camera access detected!', {
         position: 'top-right',
         type: 'info',
-      });
+      })
     }
   }, [isMediaPermission])
 
@@ -128,11 +134,11 @@ const giveQuiz = () => {
       displayToast('Location access detected!', {
         position: 'top-left',
         type: 'info',
-      });
+      })
     }
   }, [hasLocationAccess])
 
-  useLogIP();
+  useLogIP()
 
   const renderQuiz = () => {
     switch (quizStage) {
@@ -151,7 +157,7 @@ const giveQuiz = () => {
     return (
       <>
         <ToastContainer />
-        <MediaAccess setIsMediaPermission={setIsMediaPermission} hidden={false} />
+        <MediaAccess hidden={false} />
       </>
     )
   }
@@ -161,7 +167,7 @@ const giveQuiz = () => {
       return (
         <>
           <ToastContainer />
-          <MediaAccess setIsMediaPermission={setIsMediaPermission} hidden={false} />
+          <MediaAccess hidden={false} />
           <FullScreen handle={fullScreenHandle} onChange={reportChange} className='bg-white'>
             {' '}
           </FullScreen>
@@ -171,7 +177,7 @@ const giveQuiz = () => {
     return (
       <>
         <ToastContainer />
-        <MediaAccess setIsMediaPermission={setIsMediaPermission} hidden={false} />
+        <MediaAccess hidden={false} />
         <FullScreen handle={fullScreenHandle} onChange={reportChange} className='bg-white'>
           <ToastContainer />
           <TopNav />
