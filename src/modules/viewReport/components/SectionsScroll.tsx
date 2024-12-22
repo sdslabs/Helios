@@ -1,5 +1,7 @@
 import useQuizDetailsStore from '../store/QuizDetailsStore'
 import { Grid, GridItem, Text, Flex } from '@chakra-ui/react'
+import theme from '@common/theme'
+import { Section } from '../types'
 
 const SectionsScroll: React.FC = () => {
   const { sections, rank, marks, totalMarks } = useQuizDetailsStore((state) => {
@@ -35,12 +37,15 @@ const SectionsScroll: React.FC = () => {
             </Text>
           </Flex>
         </GridItem>
-        {sections.map((section: any, key: number) => {
+        <>
+        {sections.map((section: Section, key: number) => {
           <GridItem>
             <Flex
               w='100%'
               flexDirection='row'
-              backgroundColor={key % 2 == 0 ? '#F9F8FB' : '#FEFEFE'}
+              backgroundColor={
+                key % 2 == 0 ? theme.colors.listItemColor1 : theme.colors.listItemColor2
+              }
               padding='2vh'
               borderRadius={6}
             >
@@ -62,6 +67,7 @@ const SectionsScroll: React.FC = () => {
             </Flex>
           </GridItem>
         })}
+        </>
         <GridItem>
           <Flex
             w='100%'

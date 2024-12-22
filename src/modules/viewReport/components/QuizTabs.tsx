@@ -17,10 +17,10 @@ const QuizTabs: React.FC = () => {
         </TabList>
         <TabPanels borderColor='v1'>
           <TabPanel borderColor='v1'>
-            <QuestionsScroll/>
+            <QuestionsScroll />
           </TabPanel>
           <TabPanel borderColor='v1'>
-            <SectionsScroll/>
+            <SectionsScroll />
           </TabPanel>
         </TabPanels>
       </Tabs>

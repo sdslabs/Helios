@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import useQuizDetailsStore from '../store/QuizDetailsStore'
 import { TriangleDownIcon } from '@chakra-ui/icons'
+import theme from '@common/theme'
+import { Section, Question } from '../types'
 import {
   Grid,
   GridItem,
@@ -61,7 +63,7 @@ const QuestionsScroll: React.FC = () => {
                   <MenuItem fontSize='2vh' onClick={() => setSectionType('All sections')}>
                     All sections
                   </MenuItem>
-                  {sections.map((section: any, key: number) => (
+                  {sections.map((section: Section, key: number) => (
                     <MenuItem key={key} fontSize='2vh' onClick={() => setSectionType(section.name)}>
                       {section.name}
                     </MenuItem>
@@ -169,15 +171,18 @@ const QuestionsScroll: React.FC = () => {
       </Grid>
       {/* TO DO: Question wise analysis modal */}
       <Grid paddingRight='5vh' paddingTop='5vh' paddingBottom='10vh' autoRows='15vh'>
-        {sections.map((section: any) => {
-          section.questions.map((question: any, key: number) => {
+        <>
+        {sections.map((section: Section) => {
+          section.questions.map((question: Question, key: number) => {
             {
               ;(question.status == questionType || questionType == 'All questions') &&
                 (section.name == sectionType || sectionType == 'All sections') && (
                   <GridItem>
                     <Flex
                       w='100%'
-                      backgroundColor={key % 2 == 0 ? '#F9F8FB' : '#FEFEFE'}
+                      backgroundColor={
+                        key % 2 == 0 ? theme.colors.listItemColor1 : theme.colors.listItemColor2
+                      }
                       padding='2vh'
                       borderRadius={6}
                     >
@@ -186,7 +191,7 @@ const QuestionsScroll: React.FC = () => {
                       </Text>
                       <Flex w='70%' flexDirection='column' gap={3}>
                         <Flex w='100%'>
-                          <Text key={key} fontSize='2vh' color='#604195' noOfLines={2}>
+                          <Text key={key} fontSize='2vh' color={theme.colors.v6} noOfLines={2}>
                             {question.description}
                           </Text>
                         </Flex>
@@ -220,6 +225,7 @@ const QuestionsScroll: React.FC = () => {
             }
           })
         })}
+        </>
       </Grid>
     </>
   )

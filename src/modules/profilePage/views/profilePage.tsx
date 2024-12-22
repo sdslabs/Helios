@@ -25,14 +25,14 @@ const ProfilePage = () => {
   })
 
   const getPlatformLabel = {
-    github: "Github",
-    codeforces: "Code Forces",
-    codechef: "Code Chef",
-    linkedin: "Linkedin",
-    instagram: "Instagram",
-    facebook: "Facebook",
-    behance: "Behance",
-    dribble: "Dribble",
+    github: 'Github',
+    codeforces: 'Code Forces',
+    codechef: 'Code Chef',
+    linkedin: 'Linkedin',
+    instagram: 'Instagram',
+    facebook: 'Facebook',
+    behance: 'Behance',
+    dribble: 'Dribble',
   }
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const ProfilePage = () => {
   }, [data])
 
   useEffect(() => {
-    if(data) {
+    if (data) {
       data.userDetails.socialHandles.map((socialMedia: any, index: number) => {
         const key: keyof typeof getPlatformLabel = socialMedia.type
         setSocialMediaDetails(index, {
@@ -71,7 +71,7 @@ const ProfilePage = () => {
       <TopNav isDashboard={false} isAdmin={isAdmin} />
       <div style={{ paddingLeft: '12.4vw', paddingRight: '12.4vw', paddingTop: '8vh' }}>
         <Info />
-        <UserQuizzes attemptedQuizzes={attemptedQuizzes} attemptedQuizzesNo={attemptedQuizzesNo}/>
+        <UserQuizzes attemptedQuizzes={attemptedQuizzes} attemptedQuizzesNo={attemptedQuizzesNo} />
       </div>
     </>
   )

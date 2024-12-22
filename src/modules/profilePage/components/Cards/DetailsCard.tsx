@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import theme from '@common/theme'
 import {
   Card,
   CardBody,
@@ -10,6 +11,7 @@ import {
   Image,
   Link,
 } from '@chakra-ui/react'
+import { SocialHandle } from '../../types'
 import { EditProfileModal } from '../Modals/EditProfileModal'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -35,7 +37,7 @@ interface DetailsCardProps {
   emailAdd: string
   phoneNo: string
   profileImage: string
-  socialHandles: any
+  socialHandles: SocialHandle[]
 }
 
 const DetailsCard: React.FC<DetailsCardProps> = ({
@@ -187,7 +189,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
                 />
               </Box>
               <Text
-                color='#604195'
+                color={theme.colors.v6}
                 fontSize='2vh'
                 padding='1.5vh'
                 onClick={handleClick}
@@ -205,11 +207,11 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
           </Flex>
           <Flex gap={2} paddingLeft='2vw' alignItems='center'>
             <Flex direction={{ base: 'row', sm: 'column' }}>
-              <Text color='#604195' fontWeight='700' fontSize='xl'>
+              <Text color={theme.colors.v6} fontWeight='700' fontSize='xl'>
                 {firstName} {lastName}
               </Text>
               <Text fontSize='2vh'>{instituteName}</Text>
-              <Text color='#604195' fontSize='2vh'>
+              <Text color={theme.colors.v6} fontSize='2vh'>
                 {city}, {country}
               </Text>
               <Flex alignItems={{ base: 'row', sm: 'column' }}>
@@ -233,7 +235,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
         </Flex>
         <Flex>
           <Flex gap={5} flexDirection={{ base: 'row', sm: 'column' }} paddingTop='4vh'>
-            {socialHandles.map((socialMedia: any, index: number) => {
+            {socialHandles.map((socialMedia: SocialHandle, index: number) => {
               return SocialMediaSelector(socialMedia.type, socialMedia.handle, index)
             })}
           </Flex>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import theme from '@common/theme'
 import {
   Card,
   CardBody,
@@ -13,6 +14,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import defaultQuizBg from '@assets/images/default-quiz-bg.png'
 import { ButtonType } from '../../types'
+import handleTime from '../../utils/handleTime'
 
 interface QuizCardProps {
   quizId: string
@@ -37,20 +39,7 @@ const QuizCard: React.FC<QuizCardProps> = ({
   rank,
   totalParticipants,
 }: QuizCardProps) => {
-  let formattedTime
-  if (time) {
-    formattedTime = new Intl.DateTimeFormat('en-US', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-      timeZone: 'IST',
-    }).format(new Date(time))
-  } else {
-    formattedTime = 'Invalid'
-  }
+  const formattedTime = handleTime(time)
 
   const navigate = useNavigate()
 
@@ -82,21 +71,16 @@ const QuizCard: React.FC<QuizCardProps> = ({
           <Stack>
             <CardBody paddingTop={-1} fontSize='2vh'>
               <Flex gap={2} alignItems='center'>
-                <Heading size='sm'>
-                  {name} |
-                </Heading>
-                <Text>
-                 Created by: 
-                </Text>
-                <Text color='brand'>
-                {creator}
-                </Text>
+                <Heading size='sm'>{name} |</Heading>
+                <Text>Created by:</Text>
+                <Text color='brand'>{creator}</Text>
               </Flex>
               <Text pt='2' color='n6'>
                 {description}
               </Text>
               <Text pt='2' color='n6'>
-                Scheduled : <span style={{ color: '#191919' }}> {formattedTime} </span>
+                Scheduled :{' '}
+                <span style={{ color: theme.colors.accentBlack }}> {formattedTime} </span>
               </Text>
 
               {btnText === ButtonType.unchecked ? (
@@ -121,13 +105,13 @@ const QuizCard: React.FC<QuizCardProps> = ({
           </Stack>
         </Flex>
         <Card boxShadow='none' justify='center' rowGap='0.5vw' padding='2vh'>
-          <Heading fontSize='2.5vh' textAlign='center' fontWeight='400' color='#604195'>
+          <Heading fontSize='2.5vh' textAlign='center' fontWeight='400' color={theme.colors.v6}>
             Rank
           </Heading>
-          <Heading fontSize='5vh' textAlign='center' fontWeight='600' color='#604195'>
+          <Heading fontSize='5vh' textAlign='center' fontWeight='600' color={theme.colors.v6}>
             {rank}
           </Heading>
-          <Heading fontSize='1.6vh' textAlign='center' fontWeight='200' color='#604195'>
+          <Heading fontSize='1.6vh' textAlign='center' fontWeight='200' color={theme.colors.v6}>
             (Out of {totalParticipants})
           </Heading>
         </Card>

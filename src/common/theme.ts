@@ -21,6 +21,9 @@ const theme = extendTheme({
     answered: '#22C35E',
     markedForReview: '#ECC94B',
     answeredAndMarkedForReview: '#1DA1F2',
+    gridColor: '#EFECF4',
+    listItemColor1: '#F9F8FB',
+    listItemColor2: '#FEFEFE',
   },
   fonts: {
     heading: 'Open Sans',
@@ -30,8 +33,8 @@ const theme = extendTheme({
     Steps,
   },
   shadows: {
-    depth: 'inset 0 4px 4px 0 rgba(0,0,0,0.1)'
-  }
+    depth: 'inset 0 4px 4px 0 rgba(0,0,0,0.1)',
+  },
 })
 
 export default theme

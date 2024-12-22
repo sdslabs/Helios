@@ -1,8 +1,10 @@
 import { Flex, Heading } from '@chakra-ui/react'
 import QuizCard from './Cards/QuizCard'
+import theme from '@common/theme'
+import { Quiz } from '../types'
 
 interface UserQuizzesProps {
-  attemptedQuizzes: any
+  attemptedQuizzes: Quiz[]
   attemptedQuizzesNo: number
 }
 
@@ -13,14 +15,20 @@ const UserQuizzes: React.FC<UserQuizzesProps> = ({
   return (
     <>
       <Flex padding='2vh'>
-        <Heading fontSize='3vh' fontWeight='600' color='#604195'>
+        <Heading fontSize='3vh' fontWeight='600' color={theme.colors.v6}>
           Attempted Quizzes
         </Heading>
       </Flex>
-      <Flex padding='2vh' paddingBottom='10vh' rowGap='2vh' direction={{ base: 'row', sm: 'column' }}>
+      <Flex
+        padding='2vh'
+        paddingBottom='10vh'
+        rowGap='2vh'
+        direction={{ base: 'row', sm: 'column' }}
+      >
         {attemptedQuizzes.map(
-          (quiz: any, index: number) =>
-            quiz && quiz._id && (
+          (quiz: Quiz, index: number) =>
+            quiz &&
+            quiz._id && (
               <QuizCard
                 key={index}
                 quizId={quiz._id}

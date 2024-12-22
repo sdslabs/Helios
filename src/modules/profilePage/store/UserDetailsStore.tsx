@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { SocialHandle } from '../types'
 
 interface UserDetailsStore {
   userID: string
@@ -10,7 +11,7 @@ interface UserDetailsStore {
   country: string
   city: string
   profileImage: string
-  socialHandles: any
+  socialHandles: SocialHandle[]
   setFirstName: (firstName: string) => void
   setLastName: (lastName: string) => void
   setEmailAdd: (emailAdd: string) => void
@@ -19,7 +20,7 @@ interface UserDetailsStore {
   setCountry: (country: string) => void
   setCity: (city: string) => void
   setProfileImage: (profileImage: string) => void
-  setSocialHandles: (socialHandles: any) => void
+  setSocialHandles: (socialHandles: SocialHandle[]) => void
   setDetails: (details: UserDetailsStore) => void
 }
 
@@ -34,16 +35,16 @@ const useUserDetailsStore = create<UserDetailsStore>((set) => ({
   city: '',
   profileImage: '',
   socialHandles: [],
-  setFirstName: (firstName) => set({ firstName }),
-  setLastName: (lastName) => set({ lastName }),
-  setEmailAdd: (emailAdd) => set({ emailAdd }),
-  setPhoneNo: (phoneNo) => set({ phoneNo }),
-  setInstituteName: (instituteName) => set({ instituteName }),
-  setCountry: (country) => set({ country }),
-  setCity: (city) => set({ city }),
-  setProfileImage: (profileImage) => set({ profileImage }),
-  setSocialHandles: (socialHandles) => set({ socialHandles }),
-  setDetails: (details) => set(details),
+  setFirstName: (firstName: string) => set({ firstName: firstName }),
+  setLastName: (lastName: string) => set({ lastName: lastName }),
+  setEmailAdd: (emailAdd: string) => set({ emailAdd: emailAdd }),
+  setPhoneNo: (phoneNo: string) => set({ phoneNo: phoneNo }),
+  setInstituteName: (instituteName: string) => set({ instituteName: instituteName }),
+  setCountry: (country: string) => set({ country: country }),
+  setCity: (city: string) => set({ city: city }),
+  setProfileImage: (profileImage: string) => set({ profileImage: profileImage }),
+  setSocialHandles: (socialHandles: SocialHandle[]) => set({ socialHandles: socialHandles }),
+  setDetails: (details: UserDetailsStore) => set(details),
 }))
 
 export default useUserDetailsStore

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-
+import { Section } from '../types'
 interface QuizDetailsStore {
   quizName: string
   creator: string
@@ -9,16 +9,16 @@ interface QuizDetailsStore {
   marks: number
   totalParticipants: number
   totalMarks: number
-  sections: any
-  setQuizName: (quizName: any) => void
-  setCreator: (creator: any) => void
+  sections: Section[]
+  setQuizName: (quizName: string) => void
+  setCreator: (creator: string) => void
   setDateOfQuiz: (dateOfQuiz: any) => void
   setDateOfResult: (dateOfResult: any) => void
-  setRank: (rank: any) => void
-  setMarks: (marks: any) => void
-  setTotalParticipants: (totalParticipants: any) => void
-  setTotalMarks: (totalMarks: any) => void
-  setSections: (sections: any) => void
+  setRank: (rank: number) => void
+  setMarks: (marks: number) => void
+  setTotalParticipants: (totalParticipants: number) => void
+  setTotalMarks: (totalMarks: number) => void
+  setSections: (sections: Section[]) => void
   setDetails: (details: QuizDetailsStore) => void
 }
 
@@ -31,17 +31,18 @@ const useQuizDetailsStore = create<QuizDetailsStore>((set) => ({
   marks: 0,
   totalParticipants: 0,
   totalMarks: 0,
-  sections: '',
-  setQuizName: (quizName) => set(quizName),
-  setCreator: (creator) => set(creator),
-  setDateOfQuiz: (dateOfQuiz) => set(dateOfQuiz),
-  setDateOfResult: (dateOfResult) => set(dateOfResult),
-  setRank: (rank) => set(rank),
-  setMarks: (marks) => set(marks),
-  setTotalParticipants: (totalParticipants) => set(totalParticipants),
-  setTotalMarks: (totalMarks) => set(totalMarks),
-  setSections: (sections) => set(sections),
-  setDetails: (details) => set(details),
+  sections: [],
+  setQuizName: (quizName: string) => set({ quizName: quizName }),
+  setCreator: (creator: string) => set({ creator: creator }),
+  setDateOfQuiz: (dateOfQuiz: any) => set(dateOfQuiz),
+  setDateOfResult: (dateOfResult: any) => set(dateOfResult),
+  setRank: (rank: number) => set({ rank: rank }),
+  setMarks: (marks: number) => set({ marks: marks }),
+  setTotalParticipants: (totalParticipants: number) =>
+    set({ totalParticipants: totalParticipants }),
+  setTotalMarks: (totalMarks: number) => set({ totalMarks: totalMarks }),
+  setSections: (sections: Section[]) => set({ sections: sections }),
+  setDetails: (details: QuizDetailsStore) => set(details),
 }))
 
 export default useQuizDetailsStore

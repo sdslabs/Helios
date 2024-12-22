@@ -101,7 +101,7 @@ export const EditProfileModal = ({ open, close, toggleIsOpen, userID }: EditProf
   return (
     <Modal isOpen={open} onClose={close} isCentered size='4xl' scrollBehavior='outside'>
       <ModalOverlay />
-      <ModalContent padding={8} borderRadius={4} overflowY='auto' height='2xl'> 
+      <ModalContent padding={8} borderRadius={4} overflowY='auto' height='2xl'>
         <Flex flexDirection='row' justifyContent='space-between' mb={4}>
           <Text fontSize='1.125rem' fontStyle='normal' fontWeight='600'>
             Edit Profile
@@ -280,7 +280,7 @@ export const EditProfileModal = ({ open, close, toggleIsOpen, userID }: EditProf
         </Stack>
         <Flex justifyContent='space-between'>
           <Flex paddingTop='4vh' paddingLeft='1vh'>
-            <Text fontSize='sm' color='gray.500' paddingTop='2vh' >
+            <Text fontSize='sm' color='gray.500' paddingTop='2vh'>
               Show best ranks on Public Profile:
             </Text>
             <Switch

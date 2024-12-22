@@ -1,27 +1,28 @@
 import { create } from 'zustand'
+import { Quiz } from '../types'
 
 interface QuizDetailsStore {
-    createdQuizzes: any
-    quizzes: any
-    attemptedQuizzes: number
-    hostedQuizzes: number
-    setCreatedQuizzes: (createdQuizzes: any) => void
-    setQuizzes: (quizzes: any) => void
-    setAttemptedQuizzes: (attemptedQuizzes: any) => void
-    setHostedQuizzes: (hostedQuizzes: any) => void
-    setDetails: (details: QuizDetailsStore) => void
+  createdQuizzes: Quiz[]
+  quizzes: Quiz[]
+  attemptedQuizzes: number
+  hostedQuizzes: number
+  setCreatedQuizzes: (createdQuizzes: Quiz[]) => void
+  setQuizzes: (quizzes: Quiz[]) => void
+  setAttemptedQuizzes: (attemptedQuizzes: number) => void
+  setHostedQuizzes: (hostedQuizzes: number) => void
+  setDetails: (details: QuizDetailsStore) => void
 }
 
 const useQuizDetailsStore = create<QuizDetailsStore>((set) => ({
-    createdQuizzes: [],
-    quizzes: [],
-    attemptedQuizzes: 0,
-    hostedQuizzes: 0,
-    setCreatedQuizzes: (createdQuizzes) => set(createdQuizzes),
-    setQuizzes: (quizzes) => set(quizzes),
-    setAttemptedQuizzes: (attemptedQuizzes) => set(attemptedQuizzes),
-    setHostedQuizzes: (hostedQuizzes) => set(hostedQuizzes),
-    setDetails: (details) => set(details),
+  createdQuizzes: [],
+  quizzes: [],
+  attemptedQuizzes: 0,
+  hostedQuizzes: 0,
+  setCreatedQuizzes: (createdQuizzes: Quiz[]) => set({ createdQuizzes: createdQuizzes }),
+  setQuizzes: (quizzes: Quiz[]) => set({ quizzes: quizzes }),
+  setAttemptedQuizzes: (attemptedQuizzes: number) => set({ attemptedQuizzes: attemptedQuizzes }),
+  setHostedQuizzes: (hostedQuizzes: number) => set({ hostedQuizzes: hostedQuizzes }),
+  setDetails: (details: QuizDetailsStore) => set(details),
 }))
 
 export default useQuizDetailsStore
