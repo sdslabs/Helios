@@ -41,7 +41,12 @@ interface SocialMediaOption {
   icon?: JSX.Element
 }
 
-const socialMediaOptions: SocialMediaOption[] = [
+interface SocialMedia {
+  type: string
+  handle: string
+} 
+
+export const socialMediaOptions: SocialMediaOption[] = [
   { value: '', label: 'Select...' },
   { value: 'github', label: 'GitHub', icon: <GithubIconPurple /> },
   { value: 'codeforces', label: 'Code Forces', icon: <CodeForcesIcon /> },
@@ -53,7 +58,7 @@ const socialMediaOptions: SocialMediaOption[] = [
   { value: 'facebook', label: 'Facebook', icon: <FacebookIcon /> },
 ]
 
-const CustomOptionComponent: React.FC<any> = ({ innerProps, label, data }) => (
+export const CustomOptionComponent: React.FC<any> = ({ innerProps, label, data }) => (
   <Stack
     direction={'row'}
     px={2}
@@ -150,6 +155,14 @@ export const SocialHandlesForm = (props: FormProps) => {
     phoneNo: phone,
   }
 
+  const socialHandles: SocialMedia[] = []
+  socialMediaHandles.map((socialHandle: any, key: number) => {
+    socialHandles.push({
+      type: socialHandle.platformValue,
+      handle: socialHandle.link
+    })
+  })
+
   const educationalDetails = {
     instituteName: org,
     country: country,
@@ -161,7 +174,7 @@ export const SocialHandlesForm = (props: FormProps) => {
       {
         personalDetails,
         educationalDetails,
-        socialMediaHandles,
+        socialHandles,
         user,
       },
       {
