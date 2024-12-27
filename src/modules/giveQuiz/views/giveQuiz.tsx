@@ -33,7 +33,6 @@ const giveQuiz = () => {
   const [quizStage, setQuizStage] = useState<GiveQuizSteps>(-1)
   const [count, setCount] = useState<number>(0)
   const fullScreenHandle = useFullScreenHandle()
-  // const [isMediaPermission, setIsMediaPermission] = useState<boolean>(false)
   const { hasLocationAccess } = useLocationAccess()
   const { setTimer } = useTimer()
   const user = useAuthStore((state) => state.user)
