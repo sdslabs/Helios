@@ -8,6 +8,7 @@ import { useSubmitQuiz } from '../../api/useUser'
 import useQuizStore from '@giveQuiz/store/QuizStore'
 import { reactAppURL } from '../../../../config/config'
 import { useQueryClient } from '@tanstack/react-query'
+import useMedia from '@giveQuiz/hooks/useMedia'
 
 interface SubmitQuizModalProps {
   open: boolean
@@ -20,19 +21,22 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false)
   const timer = useQuizStore((state) => state.timer)
   const { quizId } = useParams()
-  const { mutate } = useSubmitQuiz()
+  const { mutateAsync: submitQuiz } = useSubmitQuiz()
   const navigate = useNavigate();
+  const { stopMedia } = useMedia();
 
   const handleQuizSubmit = async () => {
     if (quizId) {
-      mutate(quizId, {
+      await submitQuiz(quizId, {
         onSuccess: () => {
+          console.log('quiz submitted anna', quizId)
           setIsQuizSubmitted(true)
           queryClient.invalidateQueries({ exact: true, queryKey: ['dashboard'] })
           queryClient.invalidateQueries({ exact: true, queryKey: ['quiz', quizId] })
           navigate(`${reactAppURL}/dashboard`);
         },
       })
+      stopMedia();
     }
   }
 

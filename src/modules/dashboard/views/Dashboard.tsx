@@ -7,24 +7,29 @@ import Hero from '../components/Hero'
 import { UserRoles } from '../../types'
 import useUserDetailsStore from '@dashboard/store/UserDetailsStore'
 import { useEffect } from 'react'
+import useMedia from '@giveQuiz/hooks/useMedia';
 
 const Dashboard = () => {
   const { data, isLoading,refetch } = useDashboard()
   const setDetails = useUserDetailsStore((state) => state.setDetails)
   const { user } = useAuthStore()
   const isAdmin = user.role === UserRoles.admin
-  navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-    stream.getTracks().forEach((track) => {
-      track.stop()
-      track.enabled = false
-    })
-  })
+
+  const {startMedia, stopMedia} = useMedia();
 
   useEffect(() => {
     if (data) {
       setDetails(data.userDetails)
       refetch()
     }
+  }, [])
+
+  useEffect(() => {
+    startMedia();
+    setTimeout(() => {
+      console.log('roko mkc')
+      stopMedia()
+    }, 2000)
   }, [])
 
   return isLoading ? (

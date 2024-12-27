@@ -1,38 +1,26 @@
 import { useEffect, useRef } from 'react'
 import { Flex, Text } from '@chakra-ui/react'
+import useMedia from '@giveQuiz/hooks/useMedia'
 
 interface MediaAccessProps {
-  setIsMediaPermission: (value: boolean) => void
   hidden?: boolean
 }
 
-const MediaAccess = ({ setIsMediaPermission, hidden = true }: MediaAccessProps) => {
+const MediaAccess = ({ hidden = true }: MediaAccessProps) => {
   const videoRef = useRef<HTMLVideoElement>(null)
-
-  const getVideo = () => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((stream) => {
-        const video = videoRef.current
-        if (video) {
-          video.srcObject = stream
-          video.play()
-        }
-
-        // disable audio
-        stream.getAudioTracks().forEach((audioTrack) => audioTrack.stop())
-
-        setIsMediaPermission(true)
-      })
-      .catch((err) => {
-        setIsMediaPermission(false)
-        console.log('Error getting camera and microphone permission:', err)
-      })
-  }
+  const { startMedia, mediaStream, isMediaPermission } = useMedia()
 
   useEffect(() => {
-    getVideo()
-  }, [videoRef])
+    startMedia();
+  }, [])
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (video) {
+      video.srcObject = mediaStream
+      video.play()
+    }
+  }, [isMediaPermission, videoRef])
 
   return (
     <Flex
