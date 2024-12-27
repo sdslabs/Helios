@@ -96,7 +96,7 @@ const SocialMediaSelect: React.FC = () => {
                   Option: CustomOptionComponent,
                 }}
                 isSearchable
-                onChange={(option) => {
+                onChange={(option: SocialMediaOption | null) => {
                   if (option) {
                     setSelectedOption(option)
                     handle.platformLabel = option.label
