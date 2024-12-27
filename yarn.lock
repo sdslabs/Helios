@@ -4240,17 +4240,12 @@ ccount@^2.0.0:
   resolved "https://registry.npmjs.org/ccount/-/ccount-2.0.1.tgz"
   integrity sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==
 
-chakra-multiselect@^0.4.13:
-  version "0.4.13"
-  resolved "https://registry.yarnpkg.com/chakra-multiselect/-/chakra-multiselect-0.4.13.tgz#d0b184a48d28f70b8f4c36a22c669a53513fc82c"
-  integrity sha512-OsBqEbfLSfMuW/WjGlCeuON50ZbPvsjz+Ba6EnE5+8rox5898Z++FBhMWZpcgI2TulSpL7v5tBPxB26zf+bRew==
-
-chakra-react-select@^4.7.0:
-  version "4.7.0"
-  resolved "https://registry.npmjs.org/chakra-react-select/-/chakra-react-select-4.7.0.tgz"
-  integrity sha512-BHo4OnLhsfmxMr7ntIL7Sp55zhZKgeU2XOQK/9a0bnnRH6qyd0GMxwII+XnF3TsRHdtrI/2HxdQuX3KKQPFuDg==
+chakra-react-select@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/chakra-react-select/-/chakra-react-select-5.0.2.tgz#f82d594c2039d95c0fa68fc2a6fc681a2d14dd74"
+  integrity sha512-DI82ICGya/yu99Np8Uk8rW14o4NIt45i4qHDm/h0eRFVTHsRJqE+My99A9cPGJ72V5tM/WK1EeWxYUxWxhzxkA==
   dependencies:
-    react-select "5.7.4"
+    react-select "5.8.x"
 
 chakra-ui-steps@^2.1.0:
   version "2.1.0"
@@ -9813,10 +9808,10 @@ react-scripts@5.0.1:
   optionalDependencies:
     fsevents "^2.3.2"
 
-react-select@5.7.4:
-  version "5.7.4"
-  resolved "https://registry.npmjs.org/react-select/-/react-select-5.7.4.tgz"
-  integrity sha512-NhuE56X+p9QDFh4BgeygHFIvJJszO1i1KSkg/JPcIJrbovyRtI+GuOEa4XzFCEpZRAEoEI8u/cAHK+jG/PgUzQ==
+react-select@5.8.x:
+  version "5.8.3"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.8.3.tgz#64e89ad20a846348b18c6fbb395b939d0153ed74"
+  integrity sha512-lVswnIq8/iTj1db7XCG74M/3fbGB6ZaluCzvwPGT5ZOjCdL/k0CLWhEK0vCBLuU5bHTEf6Gj8jtSvi+3v+tO1w==
   dependencies:
     "@babel/runtime" "^7.12.0"
     "@emotion/cache" "^11.4.0"

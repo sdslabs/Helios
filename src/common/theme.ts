@@ -1,6 +1,5 @@
 import { extendTheme } from '@chakra-ui/react'
 import { StepsTheme as Steps } from 'chakra-ui-steps'
-import { MultiSelectTheme } from 'chakra-multiselect'
 
 const theme = extendTheme({
   colors: {
@@ -31,8 +30,7 @@ const theme = extendTheme({
     body: 'Open Sans',
   },
   components: {
-    Steps,
-    MultiSelect: MultiSelectTheme
+    Steps
   },
   shadows: {
     depth: 'inset 0 4px 4px 0 rgba(0,0,0,0.1)',
