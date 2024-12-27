@@ -16,6 +16,7 @@ import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import { displayErrorToast } from '@giveQuiz/utils/toastNotifications'
 import ImageUpload from './ImageUpload'
 import { useState } from 'react'
+import MultiSelectWithLabel from '@common/components/MultiSelectWithLabel'
 
 interface QuizDetailsProps {
   setQuizStage: (stage: number) => void
@@ -142,7 +143,7 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
         </GridItem>
       </Grid>
       <VStack mt={8} spacing={6} alignItems='stretch'>
-        <InputField
+        {/* <InputField
           label='Managers'
           inputProps={{
             placeholder: 'Add managers',
@@ -150,7 +151,8 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
             onChange: (e) => handleChange('managers', e.target.value),
           }}
           subtext='TODO: Add tags'
-        />
+        /> */}
+        <MultiSelectWithLabel />
         <InputField
           label='Access Code (Optional)'
           inputProps={{

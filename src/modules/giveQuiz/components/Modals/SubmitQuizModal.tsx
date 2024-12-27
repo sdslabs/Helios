@@ -29,7 +29,6 @@ export const SubmitQuizModal = ({ open, toggleIsOpen }: SubmitQuizModalProps) =>
     if (quizId) {
       await submitQuiz(quizId, {
         onSuccess: () => {
-          console.log('quiz submitted anna', quizId)
           setIsQuizSubmitted(true)
           queryClient.invalidateQueries({ exact: true, queryKey: ['dashboard'] })
           queryClient.invalidateQueries({ exact: true, queryKey: ['quiz', quizId] })
