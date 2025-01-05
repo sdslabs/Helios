@@ -17,6 +17,7 @@ import { displayErrorToast } from '@giveQuiz/utils/toastNotifications'
 import ImageUpload from './ImageUpload'
 import { useState } from 'react'
 import MultiSelectWithLabel from '@common/components/MultiSelectWithLabel'
+import SelectManagers from '@createQuiz/components/selectManagers'
 
 interface QuizDetailsProps {
   setQuizStage: (stage: number) => void
@@ -64,7 +65,6 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
   const handleImageUpload = (imageUrl: string | null) => {
     setKey('bannerImage', imageUrl ?? '')
   }
-
 
   const handleReset = ()=>{
     resetQuizDetails()
@@ -152,7 +152,7 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
           }}
           subtext='TODO: Add tags'
         /> */}
-        <MultiSelectWithLabel />
+        <SelectManagers />
         <InputField
           label='Access Code (Optional)'
           inputProps={{

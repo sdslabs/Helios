@@ -18,7 +18,7 @@ export interface QuizDetailsStore {
   details: QuizDetails
   quizId: string
   setDetails: (quizDetails: QuizDetails) => void
-  setKey: (key: string, value: string) => void
+  setKey: (key: string, value: string | string[]) => void
   setQuizId: (quizId: string) => void
   resetQuizDetails: () => void
 }

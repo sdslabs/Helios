@@ -2,17 +2,6 @@ import { Select, OptionBase, type ChakraStylesConfig } from 'chakra-react-select
 import { useState } from 'react'
 import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/react'
 
-interface Option extends OptionBase {
-  label: string
-  value: string
-}
-
-const options: Option[] = [
-  { label: 'Option 1', value: 'option1' },
-  { label: 'Option 2', value: 'option2' },
-  { label: 'Option 3', value: 'option3' },
-]
-
 const customStyles = {
   input: (base: ChakraStylesConfig['input']) => ({
     ...base,
@@ -31,28 +20,36 @@ const customStyles = {
   }),
 }
 
-const MultiSelectWithLabel = () => {
-  const [value, setValue] = useState<Option[]>([])
+interface MultiSelectWithLabelProps {
+  label: string
+  helperText?: string
+  options: OptionBase[]
+  value: OptionBase[]
+  setValue: (value: OptionBase[]) => void
+}
+
+const MultiSelectWithLabel = (props: MultiSelectWithLabelProps) => {
   return (
     <FormControl size='sm' color='gray.500'>
       <FormLabel fontWeight='500' fontSize='sm'>
-        Managers
+        {props.label}
       </FormLabel>
       <Select
         isMulti
         id='managers'
-        options={options}
+        options={props.options}
         placeholder='Add Managers'
         closeMenuOnSelect={false}
         chakraStyles={customStyles}
-        onChange={(value: Option[]) => {
-          setValue(value)
-          console.log(value)
+        onChange={(value: OptionBase[]) => {
+          props.setValue(value)
         }}
       />
-      <FormHelperText color='gray.400' mt={1} textAlign='right' fontSize='xs'>
-        Managers
-      </FormHelperText>
+      {props.helperText && (
+        <FormHelperText color='gray.400' mt={1} textAlign='right' fontSize='xs'>
+          {props.helperText}
+        </FormHelperText>
+      )}
     </FormControl>
   )
 }
