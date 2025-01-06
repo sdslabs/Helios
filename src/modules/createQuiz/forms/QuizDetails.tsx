@@ -16,7 +16,6 @@ import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import { displayErrorToast } from '@giveQuiz/utils/toastNotifications'
 import ImageUpload from './ImageUpload'
 import { useState } from 'react'
-import MultiSelectWithLabel from '@common/components/MultiSelectWithLabel'
 import SelectManagers from '@createQuiz/components/selectManagers'
 
 interface QuizDetailsProps {
