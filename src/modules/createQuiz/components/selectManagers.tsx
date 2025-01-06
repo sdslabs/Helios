@@ -6,7 +6,7 @@ import {
   chakraComponents,
 } from 'chakra-react-select'
 import { FormControl, FormHelperText, FormLabel, Text } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import { useSearchUsers } from '@createQuiz/api/useManager'
 import useDebouncedValue from '@common/hooks/useDebouncedValue'
@@ -18,28 +18,46 @@ interface ManagerOption {
 }
 
 const SelectManagers = () => {
-  const { setKey } = useQuizDetailsStore()
+  const { setKey, details } = useQuizDetailsStore()
+
+  // For populating already selected managers
+  const {
+    data: selectedManagersData,
+    isFetched: selectedManagersFetched,
+    isSuccess: selectedManagersSuccess,
+  } = useSearchUsers({
+    by: 'ids',
+    searchParams: details.managers ?? [],
+  })
+  const [selectedManagers, setSelectedManagers] = useState<ManagerOption[]>([])
+
+  useEffect(() => {
+    if (details.managers && selectedManagersFetched && selectedManagersSuccess) {
+      const initialOptions = selectedManagersData.users.map(mapUserToOption)
+      setSelectedManagers(initialOptions)
+    }
+  }, [details.managers, selectedManagersFetched, selectedManagersSuccess, selectedManagersData])
+
+  // For searching managers
   const [inputString, setInputString] = useState('')
   const debouncedInput = useDebouncedValue(inputString, 300)
-  const { data, isFetched, isSuccess } = useSearchUsers(debouncedInput)
+  const {
+    data: searchedManagersData,
+    isFetched: searchedManagersFetched,
+    isSuccess: searchedManagersSuccess,
+  } = useSearchUsers({
+    by: 'query',
+    searchParams: debouncedInput,
+  })
 
   const loadOptions = async (input: string, callback: (options: ManagerOption[]) => void) => {
     setInputString(input)
-    if (isFetched && isSuccess) {
-      const filteredOptions = data.users.map((user: any) => ({
-        label: user.personalDetails.name,
-        value: user._id,
-        email: user.personalDetails.emailAdd,
-      }))
+    if (searchedManagersFetched && searchedManagersSuccess) {
+      const filteredOptions = searchedManagersData.users.map(mapUserToOption)
       callback(filteredOptions)
     } else {
       callback([])
     }
-  }
-
-  const handleChange = (value: ManagerOption[]) => {
-    const managerIds = value.map((manager) => manager.value)
-    setKey('managers', managerIds)
   }
 
   return (
@@ -55,7 +73,13 @@ const SelectManagers = () => {
         chakraStyles={customStyles}
         components={customComponents}
         loadOptions={loadOptions}
-        onChange={handleChange}
+        value={selectedManagers}
+        onChange={(value: ManagerOption[]) =>
+          setKey(
+            'managers',
+            value.map((manager: ManagerOption) => manager.value),
+          )
+        }
       />
       <FormHelperText color='gray.400' mt={1} textAlign='right' fontSize='xs'>
         Managers
@@ -63,6 +87,12 @@ const SelectManagers = () => {
     </FormControl>
   )
 }
+
+const mapUserToOption = (user: any): ManagerOption => ({
+  label: user.personalDetails.name,
+  value: user._id,
+  email: user.personalDetails.emailAdd,
+})
 
 const customComponents: SelectComponentsConfig<ManagerOption, true, GroupBase<ManagerOption>> = {
   ...chakraComponents,

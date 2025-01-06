@@ -1,14 +1,20 @@
 import { isAxiosError } from 'axios'
 import axiosInstance from './axiosInstance'
 
-export const searchUsers = async (query: string) => {
+export const searchUsers = async ({ query, ids }: { query?: string; ids?: string[] }) => {
+  if (!query && !ids) {
+    throw new Error('Either query or ids parameter is required')
+  }
   try {
-    const res = await axiosInstance.get(`/common/searchUsers?query=${query}`)
+    const res = query
+      ? await axiosInstance.get(`/common/searchUsers?query=${query}`)
+      : await axiosInstance.get(`/common/searchUsers?ids=${ids?.join(',')}`)
+
     return res.data
-  } catch (e: unknown) {
-    if (isAxiosError(e)) {
-      return e.response?.data || e.message
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      return error.response?.data || error.message
     }
-    throw e
+    throw error
   }
 }

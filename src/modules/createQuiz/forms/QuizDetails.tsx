@@ -24,8 +24,7 @@ interface QuizDetailsProps {
 }
 
 const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
-  // TODO: Managers daalte hi code fat rha hai. Fix the bug
-  const { quizId, details, setKey,resetQuizDetails } = useQuizDetailsStore((state) => state)
+  const { quizId, details, setKey, resetQuizDetails } = useQuizDetailsStore((state) => state)
   const { mutate } = useUpdateQuizDetails()
 
   const [forceUpdate, setForceUpdate] = useState(0)
@@ -69,7 +68,7 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
     const updatedDetails = {
       quizMetadata: updatedMetadata,
       managers: managers,
-      bannerImage: details?.bannerImage, 
+      bannerImage: details?.bannerImage,
     }
     mutate({ quizId, body: updatedDetails })
     setQuizStage(1)
@@ -79,7 +78,7 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
     setKey('bannerImage', imageUrl ?? '')
   }
 
-  const handleReset = ()=>{
+  const handleReset = () => {
     resetQuizDetails()
     setForceUpdate(forceUpdate + 1)
   }
@@ -101,7 +100,7 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
           />
         </GridItem>
         <GridItem colSpan={2} rowSpan={3}>
-          <ImageUpload onImageUpload={handleImageUpload} initialImage={details?.bannerImage}/> 
+          <ImageUpload onImageUpload={handleImageUpload} initialImage={details?.bannerImage} />
         </GridItem>
         <GridItem colSpan={1}>
           <InputField
@@ -195,7 +194,13 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
         </FormControl>
       </VStack>
       <HStack justifyContent='end' my={12} gap={3}>
-        <Button color='brand' colorScheme='purple' fontWeight='400' variant='outline' onClick={handleReset}>
+        <Button
+          color='brand'
+          colorScheme='purple'
+          fontWeight='400'
+          variant='outline'
+          onClick={handleReset}
+        >
           Reset
         </Button>
         <Button
