@@ -3,7 +3,7 @@ import * as fetchers from './managerFetcher'
 
 export const useSearchUsers = (search: string) => {
   const query = useQuery({
-    queryKey: ['searchUsers'],
+    queryKey: ['searchUsers', search],
     queryFn: () => fetchers.searchUsers(search),
   })
   return query

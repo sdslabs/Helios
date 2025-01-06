@@ -6,7 +6,7 @@ import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import { Section } from '@checkQuiz/types'
 import { useFetchDashboard } from '@checkQuiz/api/useDashboard'
 import { AddIcon } from '@chakra-ui/icons'
-import useDebouncedValue from '@checkQuiz/hooks/useDebouncedValue'
+import useDebouncedValue from '@common/hooks/useDebouncedValue'
 import CustomInputWithLabel from '@common/components/CustomInputWithLabel'
 
 interface FiltersProps {
