@@ -33,7 +33,7 @@ const SelectManagers = () => {
 
   useEffect(() => {
     if (details.managers && selectedManagersFetched && selectedManagersSuccess) {
-      const initialOptions = selectedManagersData.users.map(mapUserToOption)
+      const initialOptions = selectedManagersData.users?.map(mapUserToOption)
       setSelectedManagers(initialOptions)
     }
   }, [details.managers, selectedManagersFetched, selectedManagersSuccess, selectedManagersData])
