@@ -89,7 +89,7 @@ const QuestionDetails = () => {
       correctAnswer: type === QuestionType.SUB ? '' : answer ?? '1',
       autoCheck: type === QuestionType.SUB ? false : autoCheck,
       options: type === QuestionType.SUB ? [] : options,
-      checkerNotes: type === QuestionType.SUB ? notes : '',
+      checkersNotes: type === QuestionType.SUB ? notes : '',
     }
     mutateQuestion({ questionId: activeQuestionId, body: updatedQuestion, quizId: quizId })
   }
@@ -103,7 +103,7 @@ const QuestionDetails = () => {
       setMarks(data.question?.maxMarks)
       setAutoCheck(data.question?.autoCheck)
       setOptions(data.question?.options)
-      setNotes(data.question?.checkerNotes)
+      setNotes(data.question?.checkersNotes)
       setAnswer(Array.isArray(data.question?.correctAnswer) ? data.question.correctAnswer : [data.question?.correctAnswer ?? '']);
     }
   }, [isFetched, isLoading, data])
