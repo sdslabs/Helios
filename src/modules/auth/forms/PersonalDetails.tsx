@@ -77,6 +77,8 @@ export const PersonalDetailsForm = (props: FormProps) => {
                 placeholder: 'Phone Number',
                 type: 'number',
                 defaultValue: personalDetails.phone,
+                max: 9999999999,
+                min: 1000000000,
                 onChange: (e) => personalDetails.updatePhone(e.target.value),
               }}
             />
