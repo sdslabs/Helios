@@ -25,7 +25,7 @@ import useMedia from '@giveQuiz/hooks/useMedia'
 
 const giveQuiz = () => {
   const { quizId } = useParams() as { quizId: string }
-  const { currentQuestion } = useQuizStore((state) => ({
+  const { setQuizId, currentQuestion } = useQuizStore((state) => ({
     setQuizId: state.setQuizId,
     currentQuestion: state.currentQuestion,
   }))
@@ -136,6 +136,11 @@ const giveQuiz = () => {
       })
     }
   }, [hasLocationAccess])
+
+  //TODO: refactor
+  useEffect(() => {
+    setQuizId(quizId)
+  }, [quizId])
 
   useLogIP()
 

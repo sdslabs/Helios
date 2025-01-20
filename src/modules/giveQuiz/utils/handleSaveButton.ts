@@ -25,18 +25,24 @@ export const handleSaveButton = async (
   queryClient: any,
 ) => {
   let status: ResponseStatus = ResponseStatus.unanswered
-  if (!answer && !isCurrentQuestionMarked) {
-    displayErrorToast('This question is unanswered and not marked for review', { 
-      type: 'info',
-      autoClose: 2000,
-    })
-  } else if (!answer && isCurrentQuestionMarked) {
-    status = ResponseStatus.marked
-  } else if (answer && !isCurrentQuestionMarked) {
-    status = ResponseStatus.answered
-  } else if (answer && isCurrentQuestionMarked) {
-    status = ResponseStatus.markedanswer
+  
+  if (!answer.length) {
+    if (!isCurrentQuestionMarked) {
+      displayErrorToast('This question is unanswered and not marked for review', { 
+        type: 'info',
+        autoClose: 2000,
+      })
+    } else {
+      status = ResponseStatus.marked
+    }
+  } else {
+    if (!isCurrentQuestionMarked) {
+      status = ResponseStatus.answered
+    } else {
+      status = ResponseStatus.markedanswer
+    }
   }
+
   handleQuestionShift(
     markedAnsweredQuestions,
     answeredQuestions,
