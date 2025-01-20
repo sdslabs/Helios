@@ -34,6 +34,8 @@ import useSectionStore from '@createQuiz/store/useSectionStore'
 import useQuizDetailsStore from '@createQuiz/store/useQuizDetailsStore'
 import { useGetQuestion, useUpdateQuestion } from '@createQuiz/api/useQuestion'
 import Spin from '@common/components/Spinner';
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const QuestionDetails = () => {
   const [description, setDescription] = useState<string>('')
@@ -91,7 +93,14 @@ const QuestionDetails = () => {
       options: type === QuestionType.SUB ? [] : options,
       checkersNotes: type === QuestionType.SUB ? notes : '',
     }
-    mutateQuestion({ questionId: activeQuestionId, body: updatedQuestion, quizId: quizId })
+    mutateQuestion({ questionId: activeQuestionId, body: updatedQuestion, quizId: quizId }, {
+      onSuccess: () => {
+        toast.success('Question Saved')
+      },
+      onError: (error) => {
+        toast.error('Failed to save question')
+      }
+    })
   }
 
   useEffect(() => {
@@ -208,6 +217,7 @@ const QuestionDetails = () => {
 
   return (
     <Box w='930px' mx='auto' my={14}>
+      <ToastContainer autoClose={3000}/>
       <Heading fontSize='3xl' color='accentBlack'>
         {activeSection?.name}
       </Heading>
