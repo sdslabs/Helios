@@ -112,8 +112,7 @@ const QuestionView = () => {
     if (isGetResponseSuccess) {
       if (isGetResponseSuccess && getResponseData?.response?.length > 0) {
         const firstItem = getResponseData.response[0]
-        console.log('response[0]', getResponseData.response[0]);
-        if (firstItem.selectedOptionId) {
+        if (firstItem.selectedOptionId.length > 0) {
           setAnswer(
             Array.isArray(firstItem.selectedOptionId)
               ? firstItem.selectedOptionId

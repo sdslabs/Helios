@@ -75,10 +75,11 @@ export const PersonalDetailsForm = (props: FormProps) => {
               isRequired
               inputProps={{
                 placeholder: 'Phone Number',
-                type: 'number',
+                type: 'text',
                 defaultValue: personalDetails.phone,
+                pattern: '[0-9]{10}',
                 onChange: (e) => personalDetails.updatePhone(e.target.value),
-              }}
+                }}
             />
           </Stack>
           <Flex minWidth={'max-content'} alignItems='center' my='6'>
