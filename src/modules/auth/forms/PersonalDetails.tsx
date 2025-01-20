@@ -77,16 +77,8 @@ export const PersonalDetailsForm = (props: FormProps) => {
                 placeholder: 'Phone Number',
                 type: 'text',
                 defaultValue: personalDetails.phone,
-                maxLength: 10,
-                minLength: 10,
-                onChange: (e) => {
-                  const value = e.target.value
-                  if (/^\d*$/.test(value)) {
-                    personalDetails.updatePhone(value)
-                  } else {
-                    e.target.value = value.slice(0, -1)
-                  }
-                  },
+                pattern: '[0-9]{10}',
+                onChange: (e) => personalDetails.updatePhone(e.target.value),
                 }}
             />
           </Stack>
