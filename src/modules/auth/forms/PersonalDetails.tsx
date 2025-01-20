@@ -75,12 +75,19 @@ export const PersonalDetailsForm = (props: FormProps) => {
               isRequired
               inputProps={{
                 placeholder: 'Phone Number',
-                type: 'number',
+                type: 'text',
                 defaultValue: personalDetails.phone,
-                max: 9999999999,
-                min: 1000000000,
-                onChange: (e) => personalDetails.updatePhone(e.target.value),
-              }}
+                maxLength: 10,
+                minLength: 10,
+                onChange: (e) => {
+                  const value = e.target.value
+                  if (/^\d*$/.test(value)) {
+                    personalDetails.updatePhone(value)
+                  } else {
+                    e.target.value = value.slice(0, -1)
+                  }
+                  },
+                }}
             />
           </Stack>
           <Flex minWidth={'max-content'} alignItems='center' my='6'>
