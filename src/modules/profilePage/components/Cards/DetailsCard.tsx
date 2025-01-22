@@ -10,6 +10,7 @@ import {
   Avatar,
   Image,
   Link,
+  Button,
 } from '@chakra-ui/react'
 import { SocialHandle } from '../../types'
 import { EditProfileModal } from '../Modals/EditProfileModal'
@@ -26,6 +27,7 @@ import {
 } from '@common/components/Icons'
 import phone from '@assets/images/mdi_phone.svg'
 import gmail from '@assets/images/mdi_gmail.svg'
+import axios from '@auth/api/axiosInstance'
 
 interface DetailsCardProps {
   userID: string
@@ -62,6 +64,22 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
 
   const handleClick = () => {
     onEditProfileModalOpen()
+  }
+
+  const handleLogout = () => {
+    axios.post('/auth/logout')
+      .then(response => {
+        if (response.status === 200) {
+          console.log('Logout successful')
+          navigate("/")
+          navigate(0)
+        } else {
+          console.error('Logout failed')
+        }
+      })
+      .catch(error => {
+        console.error('An error occurred during logout', error)
+      })
   }
 
   const SocialMediaSelector = (socialMedia: string, link: string, index: number) => {
@@ -229,6 +247,11 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
                 <Text fontSize='2vh' paddingTop='0.8vh' paddingLeft='0.2vw'>
                   {phoneNo}
                 </Text>
+              </Flex>
+              <Flex alignItems={{ base: 'row', sm: 'column' }}>
+                <Button colorScheme='purple' bgColor='brand' px={4} onClick={handleLogout}>
+                  Logout
+                </Button>
               </Flex>
             </Flex>
           </Flex>
