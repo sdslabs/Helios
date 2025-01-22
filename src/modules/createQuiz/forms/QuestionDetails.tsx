@@ -64,7 +64,7 @@ const QuestionDetails = () => {
   }
   const handleDiscardChanges = async () => {
     setDescription(data?.question.description ?? '')
-    setNotes(data?.question.checkerNotes ?? '')
+    setNotes(data?.question.checkersNotes ?? '')
     setType(data?.question.type ?? QuestionType.SUB)
     setMarks(data?.question.maxMarks ?? 0)
     setAutoCheck(data?.question?.autoCheck ?? false)
@@ -91,7 +91,7 @@ const QuestionDetails = () => {
       correctAnswer: type === QuestionType.SUB ? '' : answer ?? '1',
       autoCheck: type === QuestionType.SUB ? false : autoCheck,
       options: type === QuestionType.SUB ? [] : options,
-      checkerNotes: type === QuestionType.SUB ? notes : '',
+      checkersNotes: type === QuestionType.SUB ? notes : '',
     }
     mutateQuestion({ questionId: activeQuestionId, body: updatedQuestion, quizId: quizId }, {
       onSuccess: () => {
@@ -112,14 +112,14 @@ const QuestionDetails = () => {
       setMarks(data.question?.maxMarks)
       setAutoCheck(data.question?.autoCheck)
       setOptions(data.question?.options)
-      setNotes(data.question?.checkerNotes)
+      setNotes(data.question?.checkersNotes)
       setAnswer(Array.isArray(data.question?.correctAnswer) ? data.question.correctAnswer : [data.question?.correctAnswer ?? '']);
     }
   }, [isFetched, isLoading, data])
 
   const renderCorrectAnswerMenu = () => {
     if (type === QuestionType.SUB) return null;
-  
+
     return (
       <HStack>
         <Text color='accentBlack' fontSize='sm'>
@@ -127,11 +127,11 @@ const QuestionDetails = () => {
         </Text>
         <Box w='full'>
           <Menu>
-            <MenuButton as={Button} 
-            color='white'
-            colorScheme='purple'
-            bgColor='brand'
-            fontWeight='400'
+            <MenuButton as={Button}
+              color='white'
+              colorScheme='purple'
+              bgColor='brand'
+              fontWeight='400'
             >
               {answer.length > 0 ? `${answer.length} selected` : 'Select correct answers'}
             </MenuButton>
@@ -157,7 +157,7 @@ const QuestionDetails = () => {
         </Box>
       </HStack>
     );
-  };  
+  };
 
   const renderChoiceBuilder = () => {
     if (type === QuestionType.SUB) return null
@@ -217,7 +217,7 @@ const QuestionDetails = () => {
 
   return (
     <Box w='930px' mx='auto' my={14}>
-      <ToastContainer autoClose={3000}/>
+      <ToastContainer autoClose={3000} />
       <Heading fontSize='3xl' color='accentBlack'>
         {activeSection?.name}
       </Heading>
@@ -241,33 +241,33 @@ const QuestionDetails = () => {
         <Divider borderWidth={1} borderColor='v1' />
       </VStack>
       <HStack my={8} justifyContent='space-between'>
-  <HStack>
-    <Text color='accentBlack' fontSize='sm'>
-      Marks:
-    </Text>
-    <Input
-      type='number'
-      w={20}
-      value={marks}
-      onChange={(e) => setMarks(parseInt(e.target.value, 10))}
-    />
-  </HStack>
-  {type === QuestionType.MCQ && (
-    <>
-      <HStack>
-        <Text color='accentBlack' fontSize='sm'>
-          Autocheck:
-        </Text>
-        <Switch
-          colorScheme='purple'
-          isChecked={autoCheck}
-          onChange={(e) => setAutoCheck(e.target.checked)}
-        />
+        <HStack>
+          <Text color='accentBlack' fontSize='sm'>
+            Marks:
+          </Text>
+          <Input
+            type='number'
+            w={20}
+            value={marks}
+            onChange={(e) => setMarks(parseInt(e.target.value, 10))}
+          />
+        </HStack>
+        {type === QuestionType.MCQ && (
+          <>
+            <HStack>
+              <Text color='accentBlack' fontSize='sm'>
+                Autocheck:
+              </Text>
+              <Switch
+                colorScheme='purple'
+                isChecked={autoCheck}
+                onChange={(e) => setAutoCheck(e.target.checked)}
+              />
+            </HStack>
+            {renderCorrectAnswerMenu()}
+          </>
+        )}
       </HStack>
-      {renderCorrectAnswerMenu()}
-    </>
-  )}
-</HStack>
 
       {type === QuestionType.SUB && (
         <FormControl>

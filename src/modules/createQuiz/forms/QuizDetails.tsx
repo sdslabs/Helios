@@ -43,6 +43,18 @@ const QuizDetails = ({ setQuizStage }: QuizDetailsProps) => {
       displayErrorToast('Start time should be before end time.')
       return
     }
+    function parseDuration(duration: string): number {
+      const [hours, minutes] = duration.split(':').map(Number);
+      return (hours * 60 * 60 * 1000) + (minutes * 60 * 1000);
+  }
+  let result = 0;
+  if (duration !== undefined) {
+    result = parseDuration(duration);
+  } 
+  if (new Date(`${endDate} ${endTime}`).getTime() - new Date(`${startDate} ${startTime}`).getTime() < result) {
+    displayErrorToast('Duration should be lesser than the time difference between start time and end time.')
+    return
+}
     const updatedMetadata = {
       ...metadata,
       startDateTimestamp: new Date(`${startDate} ${startTime}`).getTime(),
