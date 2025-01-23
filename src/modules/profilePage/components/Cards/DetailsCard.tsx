@@ -28,6 +28,7 @@ import {
 import phone from '@assets/images/mdi_phone.svg'
 import gmail from '@assets/images/mdi_gmail.svg'
 import axios from '@auth/api/axiosInstance'
+import logout from '@auth/api/logout'
 
 interface DetailsCardProps {
   userID: string
@@ -66,22 +67,17 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
     onEditProfileModalOpen()
   }
 
-  const handleLogout = () => {
-    axios.post('/auth/logout')
-      .then(response => {
-        if (response.status === 200) {
-          console.log('Logout successful')
-          navigate("/")
-          navigate(0)
-        } else {
-          console.error('Logout failed')
-        }
-      })
-      .catch(error => {
-        console.error('An error occurred during logout', error)
-      })
+  const handleLogout = async () => {
+    const result = await logout()
+    if (result) {
+      navigate('/login')
+      navigate(0)
+    } else {
+      console.error('Logout failed')
+    }
   }
 
+  
   const SocialMediaSelector = (socialMedia: string, link: string, index: number) => {
     if (socialMedia == 'github')
       return (
