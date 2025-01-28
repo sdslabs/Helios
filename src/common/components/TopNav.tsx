@@ -46,7 +46,7 @@ const TopNav = ({ isDashboard = false, isAdmin = false }: TopNavProps) => {
         )}
         {isDashboard && (
           <>
-                        <Avatar name='User Name' src={profileUrl} size='sm' onClick={() => {navigate('/profile')}}/>
+                        <Avatar name='User Name' src={profileUrl} size='sm' cursor='pointer' onClick={() => {navigate('/profile')}}/>
           </>
         )}
       </HStack>
