@@ -23,11 +23,14 @@ interface CustomRichTextEditorProps {
 
 export const renderPreview = (value: string) => {
   return (
-    <MDEditor.Markdown
+    <div data-color-mode="light">
+      <MDEditor.Markdown
       source={value}
       rehypePlugins={[[rehypeSanitize]]}
-      style={{ color: 'black', whiteSpace: 'pre-wrap', backgroundColor: 'inherit' }}
+      style={{whiteSpace: 'pre-wrap', backgroundColor: 'inherit' }}
     />
+    </div>
+    
   )
 }
 
