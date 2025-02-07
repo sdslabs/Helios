@@ -5,6 +5,7 @@ export const useGetResponse = (quizId: string, questionId: string) => {
   const query = useQuery({
     queryKey: ['response', quizId, questionId],
     queryFn: () => fetchers.getResponse(quizId, questionId),
+    staleTime: 1000 * 60 * 60 * 3,
   })
   return query
 }
