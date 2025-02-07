@@ -1,0 +1,45 @@
+name: Deploy Build to Remote Server
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Build Project
+        run: yarn build
+
+      - name: Deploy Build via SCP to pa-001 machine
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST_01}}
+          username: ${{ secrets.REMOTE_USER_01 }}
+          key: ${{ secrets.REMOTE_PRIVATE_KEY }}
+          port: ${{ secrets.REMOTE_PORT_01 }}
+          source: "build/"           
+          target: "/var/www/helios" 
+
+      - name: Deploy Build via SCP to pa-002 machine
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST_02}}
+          username: ${{ secrets.REMOTE_USER_02 }}
+          key: ${{ secrets.REMOTE_PRIVATE_KEY }}
+          port: ${{ secrets.REMOTE_PORT_02 }}
+          source: "build/"            
+          target: "/var/www/helios"  
