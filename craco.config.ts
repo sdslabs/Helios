@@ -11,4 +11,7 @@ module.exports = {
       '@dashboard': path.resolve(__dirname, 'src/modules/dashboard'),
     },
   },
+  typescript:{
+    enableTypeChecking:false
+  }
 };

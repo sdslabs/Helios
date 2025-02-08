@@ -1,4 +1,4 @@
-const isProduction = false
+const isProduction = true
 export const baseURL = isProduction ? 'https://api.quizio.sdslabs.co' : 'http://localhost:4000'
 export const ipURL = 'https://api.ipify.org/?format=json'
 export const reactAppURL = isProduction ? 'https://quizio.sdslabs.co' : 'http://localhost:3000'
