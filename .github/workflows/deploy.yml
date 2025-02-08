@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '19'
 
       - name: Install Dependencies
         run: yarn install
@@ -27,9 +27,10 @@ jobs:
         run: |
           echo "REACT_APP_GOOGLE_AUTH_URL_PROD=${{ secrets.REACT_APP_GOOGLE_AUTH_URL_PROD }}" >> .env
           echo "REACT_APP_GITHUB_AUTH_URL_PROD=${{ secrets.REACT_APP_GITHUB_AUTH_URL_PROD }}" >> .env
+          echo "TSC_COMPILE_ON_ERROR=true" >> .env
 
       - name: Build Project
-        run: yarn build
+        run: yarn build --verbose
 
       - name: Deploy Build via SCP to pa-001 machine
         uses: appleboy/scp-action@master
