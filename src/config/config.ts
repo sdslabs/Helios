@@ -5,7 +5,6 @@ export const baseURL = isProduction
   : process.env.REACT_APP_BASE_URL_DEV
 
 export const ipURL = 'https://api.ipify.org/?format=json'
-console.log('baseURL', process.env.REACT_APP_NODE_ENV, baseURL)
 
 export const reactAppURL = isProduction
   ? process.env.REACT_APP_URL_PROD

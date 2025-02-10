@@ -90,7 +90,6 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
   useEffect(() => {
     if (questionIsFetched && questionData) {
       setQuestion(questionData.question)
-      console.log(questionData.question)
     }
   }, [questionIsFetched, questionData])
 
