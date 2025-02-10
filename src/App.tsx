@@ -18,6 +18,14 @@ import { TimerProvider } from './modules/giveQuiz/components/TimerContext'
 import Spin from '@common/components/Spinner';
 import ProfilePage from './modules/profilePage/views/profilePage'
 import ViewReport from './modules/viewReport/views/viewReport'
+import '@tanstack/react-query';
+import { AxiosError } from 'axios';
+
+declare module '@tanstack/react-query' {
+  interface Register {
+    defaultError: AxiosError
+  }
+}
 
 function App() {
   const authStore = useAuthStore()
