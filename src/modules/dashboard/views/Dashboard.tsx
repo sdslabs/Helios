@@ -9,17 +9,17 @@ import useUserDetailsStore from '@dashboard/store/UserDetailsStore'
 import { useEffect } from 'react'
 
 const Dashboard = () => {
-  const { data, isLoading,refetch } = useDashboard()
+  const { data, isLoading,isSuccess, refetch } = useDashboard()
   const setDetails = useUserDetailsStore((state) => state.setDetails)
   const { user } = useAuthStore()
   const isAdmin = user.role === UserRoles.admin
 
   useEffect(() => {
-    if (data) {
+    if (isSuccess) {
       setDetails(data.userDetails)
       refetch()
     }
-  }, [])
+  }, [isSuccess])
 
   return isLoading ? (
     <Spin />
