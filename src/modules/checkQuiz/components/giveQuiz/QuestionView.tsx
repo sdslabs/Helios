@@ -39,6 +39,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
     options: [],
     type: QuestionType.MCQ,
     maxMarks: 0,
+    checkersNotes: '',
   })
 
   const [response, setResponse] = useState({
@@ -316,7 +317,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
             w={'full'}
           >
             <Text>Checker&apos;s notes</Text>
-            <Input height={'4rem'} mb={8} disabled></Input>
+            <Input height={'4rem'} mb={8} disabled value={question.checkersNotes}></Input>
           </Flex>
         </Flex>
       </Flex>
