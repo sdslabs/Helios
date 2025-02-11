@@ -13,7 +13,7 @@ const useKeyLogging = ({ handle }: { handle: FullScreenHandle }) => {
     quizId: state.quizId,
   }))
   const handleSusAction = (logType: string, key: string) => {
-    displayToast('Action logged (${logType}), avoid using suspicious key presses during quiz.', {
+    displayToast(`Action logged (${logType}), avoid using suspicious key presses during quiz.`, {
       autoClose: 5000,
       closeOnClick: true,
       pauseOnHover: true,
