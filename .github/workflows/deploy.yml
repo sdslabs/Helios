@@ -25,6 +25,10 @@ jobs:
 
       - name: Create .env
         run: |
+          echo "REACT_APP_NODE_ENV=${{ secrets.REACT_APP_NODE_ENV }}" >> .env
+          echo "PORT=${{ secrets.PORT }}" >> .env
+          echo "REACT_APP_URL_PROD=${{ secrets.PREACT_APP_URL_PROD }}" >> .env
+          echo "REACT_APP_BASE_URL_PROD=${{ secrets.REACT_APP_BASE_URL_PROD }}" >> .env
           echo "REACT_APP_GOOGLE_AUTH_URL_PROD=${{ secrets.REACT_APP_GOOGLE_AUTH_URL_PROD }}" >> .env
           echo "REACT_APP_GITHUB_AUTH_URL_PROD=${{ secrets.REACT_APP_GITHUB_AUTH_URL_PROD }}" >> .env
           echo "TSC_COMPILE_ON_ERROR=true" >> .env
