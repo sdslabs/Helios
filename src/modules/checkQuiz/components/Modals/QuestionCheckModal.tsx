@@ -11,16 +11,17 @@ interface QuestionsCheckModalProps {
 }
 
 export const QuestionsCheckModal = ({ open, toggleIsOpen }: QuestionsCheckModalProps) => {
-  const [quizId, allResponsesId] = useCheckQuizStore((state) => [
+  const [quizId, allResponsesId, CheckedQuestions] = useCheckQuizStore((state) => [
     state.quizId,
     state.allResponsesId,
+    state.checksCompleted
   ])
 
-  const [summaryData, setSummaryData] = useState([0, 0, 0, 0])
+  const [summaryData, setSummaryData] = useState([0, 0])
 
   useEffect(() => {
     if (allResponsesId.length > 0) {
-      setSummaryData([allResponsesId.length, 0, 0, 20])
+      setSummaryData([CheckedQuestions, allResponsesId.length - CheckedQuestions])
     }
   }, [allResponsesId])
 

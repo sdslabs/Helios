@@ -9,7 +9,6 @@ export const GenerateLeaderboard = async ({
   sectionIndex: number | null
 }) => {
   try {
-    console.log(`/checkQuiz/leaderboard/${quizId}/${sectionIndex}`)
     const res = await axiosInstance.patch(
       sectionIndex
         ? `/checkQuiz/leaderboard/${quizId}/${sectionIndex}`

@@ -111,7 +111,6 @@ const giveQuiz = () => {
   useKeyLogging({ handle: fullScreenHandle })
 
   useEffect(() => {
-    console.log(isMediaPermission, 'from giveQuizzz')
     if (!isMediaPermission) {
       displayToast('Please allow microphone and camera access for the quiz to start', {
         toastId: 'mediaToast',

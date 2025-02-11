@@ -1,12 +1,11 @@
 import { Flex, Box, Text } from '@chakra-ui/react'
 
 interface SummaryStatsProps {
-  TotalQuestions: number
   SummaryData: number[]
   BgColor: string[]
 }
 
-const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProps) => {
+const SummaryStats = ({ SummaryData, BgColor }: SummaryStatsProps) => {
   return (
     <Flex flexDirection='column' alignItems='flex-start' justifyContent='center'>
       <Flex flexDirection='row' alignItems='center' justifyContent='center' mb={5}>
@@ -14,13 +13,13 @@ const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProp
           Total number of Questions:&nbsp;
         </Text>
         <Text fontSize='1.25rem' fontWeight='600' color='accentBlack'>
-          {TotalQuestions}
+          {SummaryData[0]+SummaryData[1]}
         </Text>
       </Flex>
       <Flex flexDirection='row' alignItems='center' justifyContent='center' mb={3}>
         <Box bgColor={BgColor[0]} w='1rem' h='1rem' borderRadius='20%' alignSelf='center' />
         <Text fontSize='0.875rem' fontWeight='400' ml={3} color='accentBlack'>
-          Not visited:&nbsp;
+          Checked:&nbsp;
         </Text>
         <Text fontSize='0.875rem' fontWeight='600' color='accentBlack'>
           {SummaryData[0]}
@@ -29,19 +28,10 @@ const SummaryStats = ({ TotalQuestions, SummaryData, BgColor }: SummaryStatsProp
       <Flex flexDirection='row' alignItems='center' justifyContent='center' mb={3}>
         <Box bgColor={BgColor[1]} w='1rem' h='1rem' borderRadius='20%' alignSelf='center' />
         <Text fontSize='0.875rem' fontWeight='400' ml={3} color='accentBlack'>
-          Answered questions:&nbsp;
+          Unchecked:&nbsp;
         </Text>
         <Text fontSize='0.875rem' fontWeight='600' color='accentBlack'>
           {SummaryData[1]}
-        </Text>
-      </Flex>
-      <Flex flexDirection='row' alignItems='center' justifyContent='center' mb={3}>
-        <Box bgColor={BgColor[2]} w='1rem' h='1rem' borderRadius='20%' alignSelf='center' />
-        <Text fontSize='0.875rem' fontWeight='400' ml={3} color='accentBlack'>
-          Marked for review:&nbsp;
-        </Text>
-        <Text fontSize='0.875rem' fontWeight='600' color='accentBlack'>
-          {SummaryData[2]}
         </Text>
       </Flex>
     </Flex>

@@ -58,16 +58,12 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
     isSuccess: isQuizDataSuccess,
     isError: isQuizDataError,
     error: quizError,
-  } = useGetQuiz(quizId) as unknown as {
-    data: QuizData
-    isLoading: boolean
-    isError: boolean
-    isSuccess: boolean
-    error: Error
-  }
+    refetch,
+  } = useGetQuiz(quizId)
   const navigate = useNavigate()
 
   useEffect(() => {
+    refetch();
     if (isQuizDataSuccess) {
       setQuizName(quizData.quiz.name)
       setQuizDescription(quizData.quiz.description)
@@ -75,7 +71,7 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
       setAnsweredQuestions(quizData.answeredQuestionIds)
       setMarkedQuestions(quizData.markedQuestionIds)
       setMarkedAnsweredQuestions(quizData.markedAnsweredQuestionIds)
-      const sectionData = quizData.quiz.sections.map((section) => {
+      const sectionData = quizData.quiz.sections.map((section: any) => {
         return {
           name: section.name,
           description: section.description,
@@ -84,7 +80,7 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
       })
       setSections(sectionData)
       const totalQuestions = sectionData.reduce(
-        (total, section) => total + section.questions.length,
+        (total: any, section: any) => total + section.questions.length,
         0,
       )
       setTotalQuestion(totalQuestions)

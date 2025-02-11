@@ -19,11 +19,11 @@ interface QuizSummaryPieProps {
 
 const QuizSummaryPie: React.FC<QuizSummaryPieProps> = ({ summaryData }) => {
   const data = {
-    labels: ['Not Visited', 'Answered', 'Marked for Review', 'Answered and Marked for Review'],
+    labels: ['Checked', 'Unchecked'],
     datasets: [
       {
         data: summaryData,
-        backgroundColor: ['#AD9EC9', '#27A624', '#FF8900', '#604195'], 
+        backgroundColor: ['#27A624', '#FF8900'], 
       },
     ],
   }
@@ -34,7 +34,6 @@ const QuizSummaryPie: React.FC<QuizSummaryPieProps> = ({ summaryData }) => {
         <Pie data={data} options={options} />
       </Box>
       <SummaryStats
-        TotalQuestions={summaryData[0]}
         SummaryData={summaryData}
         BgColor={data.datasets[0].backgroundColor}
       />
