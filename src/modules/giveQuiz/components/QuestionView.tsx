@@ -71,7 +71,9 @@ const QuestionView = () => {
       },
       {
         onError: (error) => {
-          displayErrorToast('Failed to clear response. Please try again.')
+          if (error.response?.status === 500) {
+            displayErrorToast('Failed to clear response. Please try again.')
+          }
         },
       },
     )
