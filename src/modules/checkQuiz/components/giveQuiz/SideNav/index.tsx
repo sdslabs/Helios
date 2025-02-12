@@ -44,26 +44,7 @@ const SideNavContent = () => {
     setCurrentSection,
     setallResponsesId,
     setallResponsesStatus
-  } = useCheckQuizStore(state => ({
-    sections: state.sections,
-    quizId: state.quizId,
-    currentSection: state.currentSection,
-    currentQuestionIndex: state.currentQuestionIndex,
-    currentSectionIndex: state.currentSectionIndex,
-    quizName: state.quizName,
-    totalParticipants: state.totalParticipants,
-    checksCompleted: state.checksCompleted,
-    allResponsesId: state.allResponsesId,
-    currentResponseIndex: state.currentResponseIndex,
-    allResponsesStatus: state.allResponsesStatus,
-    setChecksCompleted: state.setChecksCompleted,
-    setcurrentResponseIndex: state.setcurrentResponseIndex,
-    setCurrentQuestionIndex: state.setCurrentQuestionIndex,
-    setCurrentSectionIndex: state.setCurrentSectionIndex,
-    setCurrentSection: state.setCurrentSection,
-    setallResponsesId: state.setallResponsesId,
-    setallResponsesStatus: state.setallResponsesStatus
-  }))
+  } = useCheckQuizStore()
 
   const handleNavigation = async (targetSectionIndex: number, targetQuestionIndex: number) => {
     if (isNavigating) return

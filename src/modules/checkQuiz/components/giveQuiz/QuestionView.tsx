@@ -1,14 +1,4 @@
-import {
-  Flex,
-  Button,
-  Text,
-  Box,
-  RadioGroup,
-  Radio,
-  Input,
-  Badge,
-  Spinner,
-} from '@chakra-ui/react'
+import { Flex, Button, Text, Box, RadioGroup, Radio, Input, Badge, Spinner } from '@chakra-ui/react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { useState, useEffect } from 'react'
 import { QuestionType, ResponseStatus, Option } from '../../../types'
@@ -39,9 +29,11 @@ const LoadingSpinner = () => (
 )
 
 const ErrorDisplay = ({ onRetry }: { onRetry: () => void }) => (
-  <Flex direction="column" align="center" justify="center" minHeight="400px">
+  <Flex direction='column' align='center' justify='center' minHeight='400px'>
     <Text mb={4}>There was an error loading the question. Please try again.</Text>
-    <Button onClick={onRetry} colorScheme="purple">Retry</Button>
+    <Button onClick={onRetry} colorScheme='purple'>
+      Retry
+    </Button>
   </Flex>
 )
 
@@ -86,19 +78,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
     setallResponsesId,
     setallResponsesStatus,
     goToNextQuestion,
-  } = useCheckQuizStore((state) => ({
-    currentQuestionIndex: state.currentQuestionIndex,
-    currentSectionIndex: state.currentSectionIndex,
-    currentResponseIndex: state.currentResponseIndex,
-    allResponsesId: state.allResponsesId,
-    allResponsesStatus: state.allResponsesStatus,
-    checksCompleted: state.checksCompleted,
-    setChecksCompleted: state.setChecksCompleted,
-    setcurrentResponseIndex: state.setcurrentResponseIndex,
-    setallResponsesId: state.setallResponsesId,
-    setallResponsesStatus: state.setallResponsesStatus,
-    goToNextQuestion: state.goToNextQuestion,
-  }))
+  } = useCheckQuizStore()
 
   const [isQuestionCheckModalOpen, setIsQuestionCheckModalOpen] = useState(false)
 
@@ -120,13 +100,13 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
 
   useEffect(() => {
     let isMounted = true
-    
+
     const loadData = async () => {
       if (!questionId) return
-      
+
       setIsLoading(true)
       setHasError(false)
-      
+
       try {
         setResponse({
           user: '',
@@ -136,15 +116,15 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
           status: ResponseStatus.unanswered,
           checkedBy: '',
         })
-        
+
         setcurrentResponseIndex(0)
         setallResponsesId([])
         setallResponsesStatus([])
 
         await questionRefetch()
-        
+
         const responsesResult = await allResponsesRefetch()
-        
+
         if (isMounted && responsesResult.data) {
           const responses = responsesResult.data.responses || []
           setallResponsesId(responses.map((r: any) => r.responseId))
@@ -159,7 +139,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
     }
 
     loadData()
-    
+
     return () => {
       isMounted = false
     }
@@ -174,62 +154,67 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
   useEffect(() => {
     if (responseIsFetched && responseData?.response && allResponsesId[currentResponseIndex]) {
       const newResponse = responseData.response
-      setResponse(prev => ({
+      setResponse((prev) => ({
         ...newResponse,
-        marksAwarded: newResponse.status === ResponseStatus.answered ? 0 : newResponse.marksAwarded
+        marksAwarded: newResponse.status === ResponseStatus.answered ? 0 : newResponse.marksAwarded,
       }))
     }
   }, [responseIsFetched, responseData, currentResponseIndex, allResponsesId])
 
   const handleMarksChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const marks = parseFloat(e.target.value)
-    setResponse(prev => ({
+    setResponse((prev) => ({
       ...prev,
-      marksAwarded: isNaN(marks) ? 0 : Math.min(marks, question.maxMarks)
+      marksAwarded: isNaN(marks) ? 0 : Math.min(marks, question.maxMarks),
     }))
   }
 
   const handleNextResponse = async () => {
     if (isSaving) return
-    
     setIsSaving(true)
-    
-    try {
-      await new Promise<void>((resolve) => {
-        mutateResponse(
-          {
-            quizId,
-            responseId: allResponsesId[currentResponseIndex],
-            body: { marksAwarded: response.marksAwarded },
-          },
-          {
-            onSuccess: () => {
-              if (currentResponseIndex < allResponsesId.length - 1) {
-                if (allResponsesStatus[currentResponseIndex] === ResponseStatus.answered) {
-                  setChecksCompleted(checksCompleted + 1)
-                }
-                
-                setallResponsesStatus([
-                  ...allResponsesStatus.slice(0, currentResponseIndex),
-                  ResponseStatus.checked,
-                  ...allResponsesStatus.slice(currentResponseIndex + 1),
-                ])
-                
-                setcurrentResponseIndex(currentResponseIndex + 1)
-              } else {
-                goToNextQuestion()
-                allResponsesRefetch()
-              }
-              resolve()
-            },
-          },
-        )
-      })
-    } catch (error) {
-      console.error('Error saving response:', error)
-    } finally {
+
+    const responseId = allResponsesId[currentResponseIndex]
+
+    if (!responseId) {
+      console.error('No response ID found for the current index:', currentResponseIndex)
       setIsSaving(false)
+      return
     }
+
+    mutateResponse(
+      {
+        quizId,
+        responseId: allResponsesId[currentResponseIndex],
+        body: { marksAwarded: response.marksAwarded },
+      },
+      {
+        onSuccess: () => {
+          if (currentResponseIndex < allResponsesId.length - 1) {
+            if (allResponsesStatus[currentResponseIndex] === ResponseStatus.answered) {
+              setChecksCompleted(checksCompleted + 1)
+            }
+
+            setallResponsesStatus([
+              ...allResponsesStatus.slice(0, currentResponseIndex),
+              ResponseStatus.checked,
+              ...allResponsesStatus.slice(currentResponseIndex + 1),
+            ])
+
+            setcurrentResponseIndex(currentResponseIndex + 1)
+            goToNextQuestion()
+          } else {
+            allResponsesRefetch()
+          }
+        },
+        onError: (error) => {
+          console.error('Error saving response:', error)
+        },
+        onSettled: () => {
+          setIsSaving(false)
+        },
+      },
+    )
+
   }
   const toggleQuestionCheckModal = () => {
     setIsQuestionCheckModalOpen(!isQuestionCheckModalOpen)
@@ -303,10 +288,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
             </Flex>
           ) : (
             <Box w='full' height='max-content' mb={4}>
-              <CustomRichTextEditor 
-                value={response.subjectiveAnswer} 
-                onChange={() => undefined} 
-              />
+              <CustomRichTextEditor value={response.subjectiveAnswer} onChange={() => undefined} />
             </Box>
           )}
 
@@ -349,26 +331,15 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
               mb={6}
               onClick={handleNextResponse}
               isLoading={isSaving}
-              loadingText="Saving..."
+              loadingText='Saving...'
             >
               Save & Next
             </Button>
           </Flex>
 
-          <Flex
-            flexDirection='column'
-            fontSize='0.875rem'
-            color='N6'
-            alignItems='start'
-            w='full'
-          >
-           <Text>Checker&apos;s notes</Text>
-            <Input 
-              height="4rem" 
-              mb={8} 
-              disabled 
-              value={question.checkersNotes}
-            />
+          <Flex flexDirection='column' fontSize='0.875rem' color='N6' alignItems='start' w='full'>
+            <Text>Checker&apos;s notes</Text>
+            <Input height='4rem' mb={8} disabled value={question.checkersNotes} />
           </Flex>
         </Flex>
       </Flex>
