@@ -1,8 +1,28 @@
-import { useState, useEffect } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { HStack, Box } from '@chakra-ui/react'
 import Countdown from './Countdown'
 import Bubble from './Bubble'
 import useQuizStore from '../store/QuizStore'
+
+interface BubbleProps {
+  label: string;
+  value: number;
+  colorScheme: string;
+  variant: string;
+  textColor: string;
+}
+
+const BubbleComponent = memo(({ label, value, colorScheme, variant, textColor }: BubbleProps) => (
+  <Bubble
+    label={label}
+    value={value}
+    colorScheme={colorScheme}
+    variant={variant}
+    textColor={textColor}
+  />
+))
+
+BubbleComponent.displayName = 'Bubble'
 
 const SectionTopBar = () => {
   const answeredQuestions = useQuizStore((state) => state.answeredQuestions)
@@ -47,32 +67,32 @@ const SectionTopBar = () => {
       height='100%'
     >
       <HStack spacing='2.5rem' height='100%' px={12} py={3}>
-        <Bubble
+        <BubbleComponent
           label='Unanswered'
           value={notVisitedQuestions}
-          colorScheme={'purple'}
-          variant={'ghost'}
+          colorScheme='purple'
+          variant='ghost'
           textColor='v6'
         />
-        <Bubble
+        <BubbleComponent
           label='Marked for Review'
           value={markedForReviewQuestions}
-          colorScheme={'yellow'}
-          variant={'solid'}
+          colorScheme='yellow'
+          variant='solid'
           textColor='white'
         />
-        <Bubble
+        <BubbleComponent
           label='Answered'
           value={answeredQuestion}
-          colorScheme={'whatsapp'}
-          variant={'solid'}
+          colorScheme='whatsapp'
+          variant='solid'
           textColor='white'
         />
-        <Bubble
+        <BubbleComponent
           label='Answered & Marked for Review'
           value={answeredAndMarkedForReviewQuestions}
-          colorScheme={'twitter'}
-          variant={'solid'}
+          colorScheme='twitter'
+          variant='solid'
           textColor='white'
         />
       </HStack>
@@ -83,4 +103,4 @@ const SectionTopBar = () => {
   )
 }
 
-export default SectionTopBar
+export default memo(SectionTopBar)
