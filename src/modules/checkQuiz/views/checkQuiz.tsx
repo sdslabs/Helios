@@ -10,18 +10,29 @@ import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 const CheckQuiz = () => {
   const { quizId } = useParams() as { quizId: string }
   const { data, isFetched } = useFetchDashboard(quizId)
-  const [setLeaderboard] = useCheckQuizStore((state) => [state.setLeaderboard])
-  const [setSections] = useCheckQuizStore((state) => [state.setSections])
-  const [setLeaderboardUserDetails] = useCheckQuizStore((state) => [
+  const [
+    setLeaderboard,
+    setSections,
+    setLeaderboardUserDetails,
+    setTotalParticipants,
+    setChecksCompleted,
+    setTotalAttempts,
+    setAdmin,
+    setQuizName,
+    setScheduled,
+    setQuizId,
+  ] = useCheckQuizStore((state) => [
+    state.setLeaderboard,
+    state.setSections,
     state.setLeaderboardUserDetails,
+    state.setTotalParticipants,
+    state.setChecksCompleted,
+    state.setTotalAttempts,
+    state.setAdmin,
+    state.setQuizName,
+    state.setScheduled,
+    state.setQuizId,
   ])
-  const [setTotalParticipants] = useCheckQuizStore((state) => [state.setTotalParticipants])
-  const [setChecksCompleted] = useCheckQuizStore((state) => [state.setChecksCompleted])
-  const [setTotalAttempts] = useCheckQuizStore((state) => [state.setTotalAttempts])
-  const [setAdmin] = useCheckQuizStore((state) => [state.setAdmin])
-  const [setQuizName] = useCheckQuizStore((state) => [state.setQuizName])
-  const [setScheduled] = useCheckQuizStore((state) => [state.setScheduled])
-  const [setQuizId] = useCheckQuizStore((state) => [state.setQuizId])
 
   useEffect(() => {
     if (isFetched && data) {

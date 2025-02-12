@@ -17,6 +17,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { handleSaveButton } from '@giveQuiz/utils/handleSaveButton'
 import { displayErrorToast } from '@giveQuiz/utils/toastNotifications'
 
+// eslint-disable-next-line react/display-name
 const MemoizedOption = memo(({ option, checked, onChange }: { 
   option: Option; 
   checked: boolean;
@@ -33,6 +34,7 @@ const MemoizedOption = memo(({ option, checked, onChange }: {
   </Checkbox>
 ));
 
+// eslint-disable-next-line react/display-name
 const QuestionText = memo(({ text }: { text: string }) => (
   <Text
     fontSize="1rem"
@@ -41,12 +43,13 @@ const QuestionText = memo(({ text }: { text: string }) => (
     w="58.5rem"
     p={4}
     bgColor="v1"
-    overflow="scroll"
+    overflow="auto"
   >
     {renderPreview(text)}
   </Text>
 ));
 
+// eslint-disable-next-line react/display-name
 const MemoizedRichTextEditor = memo(({ value, onChange }: {
   value: string;
   onChange: (value: string) => void;
@@ -218,7 +221,7 @@ const QuestionView = () => {
   }
 
   return (
-    <Box as="main" display="flex" mt={10} overflow="scroll">
+    <Box as="main" display="flex" my={10} overflow="auto">
       <Flex flexDirection="column" alignItems="center" justifyContent="center" w="full">
         <Flex
           width="min-content"

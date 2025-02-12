@@ -17,13 +17,7 @@ const ProfilePage = () => {
   const setSocialMediaDetails = useSocialHandlesStore((state) => state.updateHandle)
   const { user } = useAuthStore()
   const isAdmin = user.role === UserRoles.admin
-  navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-    stream.getTracks().forEach((track) => {
-      track.stop()
-      track.enabled = false
-    })
-  })
-
+  
   const getPlatformLabel = {
     github: 'Github',
     codeforces: 'Code Forces',
