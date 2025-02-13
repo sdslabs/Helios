@@ -1,6 +1,6 @@
 import { Flex, Button, Text, Box, RadioGroup, Radio, Input, Badge, Spinner } from '@chakra-ui/react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { QuestionType, ResponseStatus, Option } from '../../../types'
 import { QuestionsCheckModal } from '../Modals/QuestionCheckModal'
 import { useQuestion } from '@checkQuiz/api/useQuestion'
@@ -41,13 +41,35 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [hasError, setHasError] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [isQuestionCheckModalOpen, setIsQuestionCheckModalOpen] = useState(false)
 
   const {
-    data: questionData,
-    isLoading: questionIsLoading,
-    isFetched: questionIsFetched,
-    refetch: questionRefetch,
-  } = useQuestion(questionId)
+    currentQuestionIndex,
+    currentSectionIndex,
+    currentResponseIndex,
+    allResponsesId,
+    allResponsesStatus,
+    checksCompleted,
+    setChecksCompleted,
+    setcurrentResponseIndex,
+    setallResponsesId,
+    setallResponsesStatus,
+  } = useCheckQuizStore()
+
+  const { data: questionData, isLoading: questionIsLoading, refetch: questionRefetch } = useQuestion(questionId)
+  const { mutate: mutateResponse } = useCheckResponse(allResponsesId[currentResponseIndex] || '')
+  
+  const {
+    data: allResponses,
+    isLoading: allResponsesIsLoading,
+    refetch: allResponsesRefetch,
+  } = useAllResponse({ quizId, questionId })
+
+  const {
+    data: responseData,
+    isLoading: responseIsLoading,
+    refetch: responseRefetch,
+  } = useResponse(allResponsesId[currentResponseIndex], quizId)
 
   const [question, setQuestion] = useState({
     description: '',
@@ -66,104 +88,63 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
     checkedBy: '',
   })
 
-  const {
-    currentQuestionIndex,
-    currentSectionIndex,
-    currentResponseIndex,
-    allResponsesId,
-    allResponsesStatus,
-    checksCompleted,
-    setChecksCompleted,
-    setcurrentResponseIndex,
-    setallResponsesId,
-    setallResponsesStatus,
-    goToNextQuestion,
-  } = useCheckQuizStore()
+  const loadData = useCallback(async () => {
+    if (!questionId) return
+    
+    setIsLoading(true)
+    setHasError(false)
+    
+    try {
+      const [questionResult, responsesResult] = await Promise.all([
+        questionRefetch(),
+        allResponsesRefetch()
+      ])
 
-  const [isQuestionCheckModalOpen, setIsQuestionCheckModalOpen] = useState(false)
+      if (questionResult.data?.question) {
+        setQuestion(questionResult.data.question)
+      }
 
-  const {
-    data: allResponses,
-    isLoading: allResponsesIsLoading,
-    isFetched: allResponsesIsFetched,
-    refetch: allResponsesRefetch,
-  } = useAllResponse({ quizId, questionId })
-
-  const { mutate: mutateResponse } = useCheckResponse(allResponsesId[currentResponseIndex] || '')
-
-  const {
-    data: responseData,
-    isLoading: responseIsLoading,
-    isFetched: responseIsFetched,
-    refetch: responseRefetch,
-  } = useResponse(allResponsesId[currentResponseIndex], quizId)
+      if (responsesResult.data?.responses) {
+        const responses = responsesResult.data.responses
+        setallResponsesId(responses.map((r: any) => r.responseId))
+        setallResponsesStatus(responses.map((r: any) => r.status))
+      }
+    } catch (error) {
+      console.error('Error loading data:', error)
+      setHasError(true)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [questionId, questionRefetch, allResponsesRefetch, setallResponsesId, setallResponsesStatus])
 
   useEffect(() => {
-    let isMounted = true
-
-    const loadData = async () => {
-      if (!questionId) return
-
-      setIsLoading(true)
-      setHasError(false)
-
+    const loadResponse = async () => {
+      if (!allResponsesId[currentResponseIndex]) return
+      
       try {
-        setResponse({
-          user: '',
-          selectedOptionId: '',
-          subjectiveAnswer: '',
-          marksAwarded: 0,
-          status: ResponseStatus.unanswered,
-          checkedBy: '',
-        })
-
-        setcurrentResponseIndex(0)
-        setallResponsesId([])
-        setallResponsesStatus([])
-
-        await questionRefetch()
-
-        const responsesResult = await allResponsesRefetch()
-
-        if (isMounted && responsesResult.data) {
-          const responses = responsesResult.data.responses || []
-          setallResponsesId(responses.map((r: any) => r.responseId))
-          setallResponsesStatus(responses.map((r: any) => r.status))
+        const result = await responseRefetch()
+        if (result.data?.response) {
+          const newResponse = result.data.response
+          setResponse(prev => ({
+            ...newResponse,
+            marksAwarded: newResponse.status === ResponseStatus.answered ? 0 : newResponse.marksAwarded,
+          }))
         }
       } catch (error) {
-        console.error('Error loading question data:', error)
-        if (isMounted) setHasError(true)
-      } finally {
-        if (isMounted) setIsLoading(false)
+        console.error('Error loading response:', error)
       }
     }
 
+    loadResponse()
+  }, [currentResponseIndex, allResponsesId, responseRefetch])
+
+  useEffect(() => {
     loadData()
-
-    return () => {
-      isMounted = false
-    }
-  }, [questionId])
-
-  useEffect(() => {
-    if (questionIsFetched && questionData?.question) {
-      setQuestion(questionData.question)
-    }
-  }, [questionIsFetched, questionData])
-
-  useEffect(() => {
-    if (responseIsFetched && responseData?.response && allResponsesId[currentResponseIndex]) {
-      const newResponse = responseData.response
-      setResponse((prev) => ({
-        ...newResponse,
-        marksAwarded: newResponse.status === ResponseStatus.answered ? 0 : newResponse.marksAwarded,
-      }))
-    }
-  }, [responseIsFetched, responseData, currentResponseIndex, allResponsesId])
+  }, [loadData])
 
   const handleMarksChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const marks = parseFloat(e.target.value)
-    setResponse((prev) => ({
+    setResponse(prev => ({
       ...prev,
       marksAwarded: isNaN(marks) ? 0 : Math.min(marks, question.maxMarks),
     }))
@@ -172,49 +153,47 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
   const handleNextResponse = async () => {
     if (isSaving) return
     setIsSaving(true)
-
+  
     const responseId = allResponsesId[currentResponseIndex]
-
     if (!responseId) {
-      console.error('No response ID found for the current index:', currentResponseIndex)
+      console.error('No response ID found')
       setIsSaving(false)
       return
     }
-
-    mutateResponse(
-      {
-        quizId,
-        responseId: allResponsesId[currentResponseIndex],
-        body: { marksAwarded: response.marksAwarded },
-      },
-      {
-        onSuccess: () => {
-          if (currentResponseIndex < allResponsesId.length - 1) {
-            if (allResponsesStatus[currentResponseIndex] === ResponseStatus.answered) {
-              setChecksCompleted(checksCompleted + 1)
-            }
-
-            setallResponsesStatus([
-              ...allResponsesStatus.slice(0, currentResponseIndex),
-              ResponseStatus.checked,
-              ...allResponsesStatus.slice(currentResponseIndex + 1),
-            ])
-
-            setcurrentResponseIndex(currentResponseIndex + 1)
-            goToNextQuestion()
-          } else {
-            allResponsesRefetch()
-          }
-        },
-        onError: (error) => {
-          console.error('Error saving response:', error)
-        },
-        onSettled: () => {
-          setIsSaving(false)
-        },
-      },
-    )
-
+  
+    try {
+      await new Promise((resolve) => {
+        mutateResponse(
+          {
+            quizId,
+            responseId,
+            body: { marksAwarded: response.marksAwarded },
+          },
+          {
+            onSuccess: () => {
+              if (allResponsesStatus[currentResponseIndex] === ResponseStatus.answered) {
+                setChecksCompleted(checksCompleted + 1)
+              }
+  
+              const newStatuses = [...allResponsesStatus]
+              newStatuses[currentResponseIndex] = ResponseStatus.checked
+              setallResponsesStatus(newStatuses)
+  
+              if (currentResponseIndex < allResponsesId.length - 1) {
+                setcurrentResponseIndex(currentResponseIndex + 1)
+              }
+              resolve(undefined)
+            },
+            onError: (error) => {
+              console.error('Error saving response:', error)
+              resolve(undefined)
+            },
+          },
+        )
+      })
+    } finally {
+      setIsSaving(false)
+    }
   }
   const toggleQuestionCheckModal = () => {
     setIsQuestionCheckModalOpen(!isQuestionCheckModalOpen)
