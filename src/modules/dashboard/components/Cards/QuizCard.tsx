@@ -87,11 +87,11 @@ const QuizCard: React.FC<QuizCardProps> = ({
         <Stack>
           <CardBody>
             <Flex gap={2} alignItems='center'>
-              <Heading size='sm' textTransform='capitalize'>
+            <Heading size='sm' textTransform='capitalize' style={{ overflow: 'hidden',whiteSpace: 'nowrap',textOverflow: 'ellipsis',maxWidth: '40%'}}>
                 {title}
               </Heading>
             </Flex>
-            <Text pt='2' color='n6'>
+            <Text pt='2' color='n6' style={{ overflow: 'hidden',whiteSpace: 'nowrap',textOverflow: 'ellipsis',maxWidth: '40%'}}>
               {content}
             </Text>
             <Text pt='2' color='n6'>

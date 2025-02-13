@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { memo, useCallback, useState, useEffect } from 'react'
 import { TimeIcon } from '@chakra-ui/icons'
 import { Flex } from '@chakra-ui/react'
 import { useTimer } from './TimerContext'
@@ -7,71 +7,56 @@ import useQuizStore from '@giveQuiz/store/QuizStore'
 import { QuizSummaryModal } from './Modals/QuizSummaryModal'
 import { useSubmitQuiz } from '@giveQuiz/api/useUser'
 import { useQueryClient } from '@tanstack/react-query'
+import { useCountdown } from '../hooks/useCountdown'
 
-function Countdown() {
+const Countdown = memo(() => {
   const { timerValue } = useTimer()
   const queryClient = useQueryClient()
-  const [duration, setDuration] = useState(0)
-  const [countHours, setCountHours] = useState('00')
-  const [countMinutes, setCountMinutes] = useState('00')
-  const [countSeconds, setCountSeconds] = useState('00')
   const { setTimer } = useQuizStore()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { mutate } = useSubmitQuiz()
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen)
-  }
   const { quizId } = useParams()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+
+  const handleComplete = useCallback(() => {
+    if (quizId) {
+      mutate(quizId, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ exact: true, queryKey: ['dashboard'] })
+          queryClient.invalidateQueries({ exact: true, queryKey: ['quiz', quizId] })
+          navigate(`/dashboard`)
+        },
+      })
+    }
+  }, [quizId, mutate, queryClient, navigate])
+
+  const { hours, minutes, seconds } = useCountdown(timerValue, handleComplete)
+  
+  const toggleModal = useCallback(() => {
+    setIsModalOpen(prev => !prev)
+  }, [])
 
   useEffect(() => {
-    setDuration((prevDuration) => (timerValue !== null ? timerValue : prevDuration))
-  }, [timerValue])
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const seconds = Math.floor((duration / 1000) % 60)
-      const minutes = Math.floor((duration / 1000 / 60) % 60)
-      const hours = Math.floor((duration / (1000 * 60 * 60)) % 24)
-
-      if (duration <= 0) {
-        clearInterval(interval)
-      } else {
-        setCountHours(hours.toString().padStart(2, '0'))
-        setCountMinutes(minutes.toString().padStart(2, '0'))
-        setCountSeconds(seconds.toString().padStart(2, '0'))
-        setDuration((prevDuration) => (prevDuration !== null ? prevDuration - 1000 : prevDuration))
-        if (duration <= 1000) {
-          if (quizId) {
-            mutate(quizId, {
-              onSuccess: () => {
-                queryClient.invalidateQueries({ exact: true, queryKey: ['dashboard'] })
-                queryClient.invalidateQueries({ exact: true, queryKey: ['quiz', quizId] })
-                navigate(`/dashboard`);
-              },
-            })
-          }
-          clearInterval(interval)
-        }
-        setTimer(duration)
-      }
-    }, 1000)
-    return () => clearInterval(interval)
-  }, [duration])
+    if (timerValue !== null) {
+      setTimer(timerValue)
+    }
+  }, [timerValue, setTimer])
 
   return (
     <Flex bgColor='v1' justifyContent='center' alignItems='center' gap='0.3rem' height='100%'>
       <div style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
         <TimeIcon color='v6' style={{ marginRight: '0.5rem' }} />
-        {countHours === '00' && countMinutes === '00' && countSeconds === '00' ? (
-          <span> Loading</span>
+        {hours === '00' && minutes === '00' && seconds === '00' ? (
+          <span>Loading</span>
         ) : (
-          <span>{`${countHours} : ${countMinutes} : ${countSeconds}`}</span>
+          <span>{`${hours} : ${minutes} : ${seconds}`}</span>
         )}
       </div>
       <QuizSummaryModal open={isModalOpen} toggleIsOpen={toggleModal} />
     </Flex>
   )
-}
+})
+
+Countdown.displayName = 'Countdown'
 
 export default Countdown

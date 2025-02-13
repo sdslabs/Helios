@@ -18,7 +18,7 @@ export const getDashboard = async (
       const res = await axiosInstance.get(
         searchQuery
           ? `/checkQuiz/dashboard/${quizId}/?search=${searchQuery}`
-          : `/checkQuiz/dashboard/${quizId}/`,
+          : `/checkQuiz/dashboard/${quizId}`,
       )
       return res.data
     }

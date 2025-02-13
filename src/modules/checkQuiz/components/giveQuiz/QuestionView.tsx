@@ -1,38 +1,75 @@
-import {
-  Flex,
-  Button,
-  Text,
-  Box,
-  RadioGroup,
-  Radio,
-  Input,
-  Badge,
-  Textarea,
-  Spinner,
-} from '@chakra-ui/react'
+import { Flex, Button, Text, Box, RadioGroup, Radio, Input, Badge, Spinner } from '@chakra-ui/react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { QuestionType, ResponseStatus, Option } from '../../../types'
 import { QuestionsCheckModal } from '../Modals/QuestionCheckModal'
 import { useQuestion } from '@checkQuiz/api/useQuestion'
 import { useResponse, useAllResponse } from '@checkQuiz/api/useResponse'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
 import useCheckResponse from '@checkQuiz/api/useCheckResponse'
-import { useNavigate } from 'react-router-dom'
 
 interface QuestionViewProps {
   quizId: string
   questionId: string
 }
 
+const LoadingSpinner = () => (
+  <div
+    style={{
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: '400px',
+    }}
+  >
+    <Spinner size='xl' />
+  </div>
+)
+
+const ErrorDisplay = ({ onRetry }: { onRetry: () => void }) => (
+  <Flex direction='column' align='center' justify='center' minHeight='400px'>
+    <Text mb={4}>There was an error loading the question. Please try again.</Text>
+    <Button onClick={onRetry} colorScheme='purple'>
+      Retry
+    </Button>
+  </Flex>
+)
+
 const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
+  const [isQuestionCheckModalOpen, setIsQuestionCheckModalOpen] = useState(false)
+
   const {
-    data: questionData,
-    isLoading: questionIsLoading,
-    isFetched: questionIsFetched,
-    refetch: questionRefetch,
-    error: questionError,
-  } = useQuestion(questionId)
+    currentQuestionIndex,
+    currentSectionIndex,
+    currentResponseIndex,
+    allResponsesId,
+    allResponsesStatus,
+    checksCompleted,
+    setChecksCompleted,
+    setcurrentResponseIndex,
+    setallResponsesId,
+    setallResponsesStatus,
+  } = useCheckQuizStore()
+
+  const { data: questionData, isLoading: questionIsLoading, refetch: questionRefetch } = useQuestion(questionId)
+  const { mutate: mutateResponse } = useCheckResponse(allResponsesId[currentResponseIndex] || '')
+  
+  const {
+    data: allResponses,
+    isLoading: allResponsesIsLoading,
+    refetch: allResponsesRefetch,
+  } = useAllResponse({ quizId, questionId })
+
+  const {
+    data: responseData,
+    isLoading: responseIsLoading,
+    refetch: responseRefetch,
+  } = useResponse(allResponsesId[currentResponseIndex], quizId)
 
   const [question, setQuestion] = useState({
     description: '',
@@ -51,188 +88,169 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
     checkedBy: '',
   })
 
-  const [currentQuestionIndex] = useCheckQuizStore((state) => [state.currentQuestionIndex])
+  const loadData = useCallback(async () => {
+    if (!questionId) return
+    
+    setIsLoading(true)
+    setHasError(false)
+    
+    try {
+      const [questionResult, responsesResult] = await Promise.all([
+        questionRefetch(),
+        allResponsesRefetch()
+      ])
 
-  const [isQuestionCheckModalOpen, setIsQuestionCheckModalOpen] = useState(false)
-  const [currentSectionIndex] = useCheckQuizStore((state) => [state.currentSectionIndex])
-
-  const [currentResponseIndex, setCurrentResponseIndex] = useCheckQuizStore((state) => [
-    state.currentResponseIndex,
-    state.setcurrentResponseIndex,
-  ])
-
-  const [allResponsesId, allResponsesStatus, setAllResponsesId, setAllResponesesStatus] =
-    useCheckQuizStore((state) => [
-      state.allResponsesId,
-      state.allResponsesStatus,
-      state.setallResponsesId,
-      state.setallResponsesStatus,
-    ])
-
-  const [checksCompleted, setChecksCompleted] = useCheckQuizStore((state) => [
-    state.checksCompleted,
-    state.setChecksCompleted,
-  ])
-
-  const {
-    data: allResponses,
-    isLoading: allResponsesIsLoading,
-    isFetched: allResponsesIsFetched,
-    refetch: allResponsesRefetch,
-    error: allResponsesError,
-  } = useAllResponse({
-    quizId,
-    questionId,
-  })
-
-  const Navigate = useNavigate()
-
-  useEffect(() => {
-    if (questionIsFetched && questionData) {
-      setQuestion(questionData.question)
-    }
-  }, [questionIsFetched, questionData])
-
-  useEffect(() => {
-    setCurrentResponseIndex(0)
-    if (allResponsesIsFetched && allResponses && Array.isArray(allResponses.responses)) {
-      if (allResponses.questionId !== questionId) {
-        Navigate(`/check-quiz/${quizId}/${allResponses.responses[0].questionId}`)
+      if (questionResult.data?.question) {
+        setQuestion(questionResult.data.question)
       }
-      setAllResponsesId(allResponses.responses.map((response: any) => response.responseId))
-      setAllResponesesStatus(allResponses.responses.map((response: any) => response.status))
+
+      if (responsesResult.data?.responses) {
+        const responses = responsesResult.data.responses
+        setallResponsesId(responses.map((r: any) => r.responseId))
+        setallResponsesStatus(responses.map((r: any) => r.status))
+      }
+    } catch (error) {
+      console.error('Error loading data:', error)
+      setHasError(true)
+    } finally {
+      setIsLoading(false)
     }
-  }, [allResponsesIsFetched])
-
-  const { mutate: mutateResponse } = useCheckResponse(allResponsesId[currentResponseIndex])
-
-  const {
-    data: responseData,
-    isLoading: responseIsLoading,
-    isFetched: responseIsFetched,
-    refetch: responseRefetch,
-    error: responseError,
-  } = useResponse(allResponsesId[currentResponseIndex], quizId)
+  }, [questionId, questionRefetch, allResponsesRefetch, setallResponsesId, setallResponsesStatus])
 
   useEffect(() => {
-    if (responseIsFetched && responseData) {
-      setResponse(responseData.response)
-      if (responseData.response.status === ResponseStatus.answered) {
-        setResponse({
-          ...responseData.response,
-          marksAwarded: 0,
-        })
+    const loadResponse = async () => {
+      if (!allResponsesId[currentResponseIndex]) return
+      
+      try {
+        const result = await responseRefetch()
+        if (result.data?.response) {
+          const newResponse = result.data.response
+          setResponse(prev => ({
+            ...newResponse,
+            marksAwarded: newResponse.status === ResponseStatus.answered ? 0 : newResponse.marksAwarded,
+          }))
+        }
+      } catch (error) {
+        console.error('Error loading response:', error)
       }
     }
-  }, [responseIsFetched, responseData])
 
-  const handleNextResponse = () => {
-    mutateResponse(
-      {
-        quizId: quizId,
-        responseId: allResponsesId[currentResponseIndex],
-        body: {
-          marksAwarded: response.marksAwarded,
-        },
-      },
-      {
-        onSuccess: () => {
-          if (currentResponseIndex < allResponsesId.length - 1) {
-            if (allResponsesStatus[currentResponseIndex] === ResponseStatus.answered) {
-              setChecksCompleted(checksCompleted + 1)
-            }
-            setAllResponesesStatus([
-              ...allResponsesStatus.slice(0, currentResponseIndex),
-              ResponseStatus.checked,
-              ...allResponsesStatus.slice(currentResponseIndex + 1),
-            ])
-            setCurrentResponseIndex(currentResponseIndex + 1)
-          } else {
-            setIsQuestionCheckModalOpen(true)
-          }
-        },
-      },
-    )
+    loadResponse()
+  }, [currentResponseIndex, allResponsesId, responseRefetch])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
+
+  const handleMarksChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const marks = parseFloat(e.target.value)
+    setResponse(prev => ({
+      ...prev,
+      marksAwarded: isNaN(marks) ? 0 : Math.min(marks, question.maxMarks),
+    }))
   }
 
+  const handleNextResponse = async () => {
+    if (isSaving) return
+    setIsSaving(true)
+  
+    const responseId = allResponsesId[currentResponseIndex]
+    if (!responseId) {
+      console.error('No response ID found')
+      setIsSaving(false)
+      return
+    }
+  
+    try {
+      await new Promise((resolve) => {
+        mutateResponse(
+          {
+            quizId,
+            responseId,
+            body: { marksAwarded: response.marksAwarded },
+          },
+          {
+            onSuccess: () => {
+              if (allResponsesStatus[currentResponseIndex] === ResponseStatus.answered) {
+                setChecksCompleted(checksCompleted + 1)
+              }
+  
+              const newStatuses = [...allResponsesStatus]
+              newStatuses[currentResponseIndex] = ResponseStatus.checked
+              setallResponsesStatus(newStatuses)
+  
+              if (currentResponseIndex < allResponsesId.length - 1) {
+                setcurrentResponseIndex(currentResponseIndex + 1)
+              }
+              resolve(undefined)
+            },
+            onError: (error) => {
+              console.error('Error saving response:', error)
+              resolve(undefined)
+            },
+          },
+        )
+      })
+    } finally {
+      setIsSaving(false)
+    }
+  }
   const toggleQuestionCheckModal = () => {
     setIsQuestionCheckModalOpen(!isQuestionCheckModalOpen)
   }
 
-  if (questionIsLoading || responseIsLoading || allResponsesIsLoading) {
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Spinner size='xl' />
-      </div>
-    )
+  if (isLoading || questionIsLoading || responseIsLoading || allResponsesIsLoading) {
+    return <LoadingSpinner />
+  }
+
+  if (hasError) {
+    return <ErrorDisplay onRetry={() => questionRefetch()} />
   }
 
   return (
     <Box as='main' display='flex' mt={10}>
-      <Flex flexDirection='column' alignItems='center' justifyContent='center' w={'full'}>
+      <Flex flexDirection='column' alignItems='center' justifyContent='center' w='full'>
         <Flex
           width='min-content'
           flexDirection='column'
           alignItems='center'
           justifyContent='center'
         >
-          {/* <Text fontSize='2rem' fontWeight='700' mb={6} alignSelf='start'>
-            {participantName}
-          </Text> */}
           <Flex flexDirection='row' w='full' justifyContent='space-between'>
             <Text
               fontSize='1rem'
               fontWeight='600'
               mb={6}
               alignSelf='self-start'
-              color={'accentBlack'}
+              color='accentBlack'
             >
-              <Text as={'span'} fontWeight={700}>
+              <Text as='span' fontWeight={700}>
                 Section {currentSectionIndex}-
               </Text>{' '}
               Question {currentQuestionIndex}
             </Text>
-            {response.status === ResponseStatus.checked ? (
-              <Badge
-                colorScheme='whatsapp'
-                py='0.25rem'
-                px='0.62rem'
-                borderRadius='0.25rem'
-                fontSize='0.875rem'
-                height={'max-content'}
-              >
-                Checked
-              </Badge>
-            ) : (
-              <Badge
-                colorScheme='orange'
-                py='0.25rem'
-                px='0.62rem'
-                borderRadius='0.25rem'
-                fontSize='0.875rem'
-                height={'max-content'}
-              >
-                Unchecked
-              </Badge>
-            )}
+            <Badge
+              colorScheme={response.status === ResponseStatus.checked ? 'whatsapp' : 'orange'}
+              py='0.25rem'
+              px='0.62rem'
+              borderRadius='0.25rem'
+              fontSize='0.875rem'
+              height='max-content'
+            >
+              {response.status === ResponseStatus.checked ? 'Checked' : 'Unchecked'}
+            </Badge>
           </Flex>
+
           <Text fontSize='1rem' fontWeight='400' mb={6} w='58.5rem' p={4} bgColor='v1'>
             {question.description}
           </Text>
+
           {question.type === QuestionType.MCQ ? (
-            <Flex flexDirection='column' w={'full'} mb={4}>
+            <Flex flexDirection='column' w='full' mb={4}>
               <RadioGroup
                 name='form-name'
-                display={'flex'}
-                flexDirection={'column'}
+                display='flex'
+                flexDirection='column'
                 value={response.selectedOptionId?.toString() || ''}
               >
                 {question.options.map((option: Option) => (
@@ -252,48 +270,38 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
               <CustomRichTextEditor value={response.subjectiveAnswer} onChange={() => undefined} />
             </Box>
           )}
+
           <Flex
             flexDirection='row'
             w='full'
             justifyContent='space-between'
-            alignItems={'center'}
+            alignItems='center'
             mb={6}
           >
-            <Flex alignItems={'center'}>
-              <Text colorScheme='accentBlack' fontSize={'0.875rem'}>
+            <Flex alignItems='center'>
+              <Text colorScheme='accentBlack' fontSize='0.875rem'>
                 Marks (out of {question.maxMarks}) :
               </Text>
               <Input
                 colorScheme='accentBlack'
                 type='number'
-                fontSize={'0.875rem'}
-                w={'4rem'}
+                fontSize='0.875rem'
+                w='4rem'
                 ml={2}
                 step={0.1}
                 value={response.marksAwarded}
-                onChange={(e) => {
-                  const marks = parseFloat(e.target.value)
-                  if (!isNaN(marks) && marks <= question.maxMarks) {
-                    setResponse({
-                      ...response,
-                      marksAwarded: marks,
-                    })
-                  } else {
-                    setResponse({
-                      ...response,
-                      marksAwarded: 0,
-                    })
-                  }
-                }}
+                onChange={handleMarksChange}
+                isDisabled={isSaving}
               />
             </Flex>
-            <Text colorScheme='accentBlack' fontSize={'0.875rem'}>
-              Checked by :{' '}
-              <Text as='span' color={'v6'}>
+            <Text colorScheme='accentBlack' fontSize='0.875rem'>
+              Checked by:{' '}
+              <Text as='span' color='v6'>
                 {response.checkedBy}
               </Text>
             </Text>
           </Flex>
+
           <Flex flexDirection='row' w='full' justifyContent='flex-end'>
             <Button
               colorScheme='purple'
@@ -301,26 +309,24 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
               alignSelf='flex-end'
               mb={6}
               onClick={handleNextResponse}
+              isLoading={isSaving}
+              loadingText='Saving...'
             >
               Save & Next
             </Button>
-            <QuestionsCheckModal
-              open={isQuestionCheckModalOpen}
-              toggleIsOpen={toggleQuestionCheckModal}
-            />
           </Flex>
-          <Flex
-            flexDirection={'column'}
-            fontSize={'0.875rem'}
-            color={'N6'}
-            alignItems={'start'}
-            w={'full'}
-          >
+
+          <Flex flexDirection='column' fontSize='0.875rem' color='N6' alignItems='start' w='full'>
             <Text>Checker&apos;s notes</Text>
-            <Input height={'4rem'} mb={8} disabled value={question.checkersNotes}></Input>
+            <Input height='4rem' mb={8} disabled value={question.checkersNotes} />
           </Flex>
         </Flex>
       </Flex>
+
+      <QuestionsCheckModal
+        open={isQuestionCheckModalOpen}
+        toggleIsOpen={toggleQuestionCheckModal}
+      />
     </Box>
   )
 }

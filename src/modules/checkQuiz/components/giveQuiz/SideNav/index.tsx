@@ -22,7 +22,10 @@ import { useNavigate } from 'react-router-dom'
 import { ResponseStatus } from '../../../../types'
 
 const SideNavContent = () => {
-  const [
+  const navigate = useNavigate()
+  const [isNavigating, setIsNavigating] = useState(false)
+  
+  const {
     sections,
     quizId,
     currentSection,
@@ -31,7 +34,6 @@ const SideNavContent = () => {
     quizName,
     totalParticipants,
     checksCompleted,
-    totalAttempts,
     allResponsesId,
     currentResponseIndex,
     allResponsesStatus,
@@ -40,184 +42,186 @@ const SideNavContent = () => {
     setCurrentQuestionIndex,
     setCurrentSectionIndex,
     setCurrentSection,
-  ] = useCheckQuizStore((state) => [
-    state.sections,
-    state.quizId,
-    state.currentSection,
-    state.currentQuestionIndex,
-    state.currentSectionIndex,
-    state.quizName,
-    state.totalParticipants,
-    state.checksCompleted,
-    state.totalAttempts,
-    state.allResponsesId,
-    state.currentResponseIndex,
-    state.allResponsesStatus,
-    state.setChecksCompleted,
-    state.setcurrentResponseIndex,
-    state.setCurrentQuestionIndex,
-    state.setCurrentSectionIndex,
-    state.setCurrentSection,
-  ])
-  const Navigate = useNavigate()
+    setallResponsesId,
+    setallResponsesStatus
+  } = useCheckQuizStore()
+
+  const handleNavigation = async (targetSectionIndex: number, targetQuestionIndex: number) => {
+    if (isNavigating) return
+    
+    setIsNavigating(true)
+    
+    try {
+      const targetSection = sections[targetSectionIndex - 1]
+      if (!targetSection) {
+        console.error('Target section not found')
+        return
+      }
+      
+      const targetQuestion = targetSection.questions[targetQuestionIndex - 1]
+      if (!targetQuestion) {
+        console.error('Target question not found')
+        return
+      }
+
+      setallResponsesId([])
+      setallResponsesStatus([])
+      setcurrentResponseIndex(0)
+
+      setCurrentSectionIndex(targetSectionIndex)
+      setCurrentQuestionIndex(targetQuestionIndex)
+      setCurrentSection(targetSection)
+
+      const newUrl = `/check-quiz/${quizId}/${targetQuestion._id}`
+      navigate(newUrl, { replace: true })
+      
+    } catch (error) {
+      console.error('Navigation error:', error)
+    } finally {
+      setIsNavigating(false)
+    }
+  }
 
   const NextQuestion = () => {
-    if (
-      currentSectionIndex < sections.length &&
-      currentQuestionIndex === currentSection.questions.length
-    ) {
-      setCurrentSectionIndex(currentSectionIndex + 1)
-      setCurrentSection(sections[currentSectionIndex])
-      setCurrentQuestionIndex(1)
-    } else {
-      if (currentQuestionIndex == currentSection.questions.length) {
-        setCurrentQuestionIndex(currentSection.questions.length)
-      } else {
-        setCurrentQuestionIndex(currentQuestionIndex + 1)
-      }
+    if (!sections.length || isNavigating) return
+
+    const currentSection = sections[currentSectionIndex - 1]
+    if (!currentSection) return
+
+    if (currentQuestionIndex < currentSection.questions.length) {
+      handleNavigation(currentSectionIndex, currentQuestionIndex + 1)
+    } else if (currentSectionIndex < sections.length) {
+      handleNavigation(currentSectionIndex + 1, 1)
     }
-    Navigate(`/check-quiz/${quizId}/${currentSection.questions[currentQuestionIndex - 1]._id}`)
   }
 
   const PrevQuestion = () => {
+    if (!sections.length || isNavigating) return
+
     if (currentQuestionIndex > 1) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1)
-    } else {
-      if (currentSectionIndex > 1) {
-        const previousSection = sections[currentSectionIndex - 2]
-        setCurrentSectionIndex(currentSectionIndex - 1)
-        setCurrentSection(previousSection)
-        setCurrentQuestionIndex(previousSection.questions.length)
-      } else {
-        setCurrentQuestionIndex(1)
-      }
+      handleNavigation(currentSectionIndex, currentQuestionIndex - 1)
+    } else if (currentSectionIndex > 1) {
+      const prevSection = sections[currentSectionIndex - 2]
+      handleNavigation(currentSectionIndex - 1, prevSection.questions.length)
     }
-    Navigate(`/check-quiz/${quizId}/${currentSection.questions[currentQuestionIndex - 1]._id}`)
+  }
+
+  const handleResponseClick = (index: number) => {
+    if (isNavigating) return
+    setcurrentResponseIndex(index)
   }
 
   useEffect(() => {
     if (allResponsesStatus.length > 0) {
-      const checkedResponses = allResponsesStatus.filter(
-        (status) => status === ResponseStatus.checked,
-      )
-      setChecksCompleted(checkedResponses.length)
+      const checkedCount = allResponsesStatus.filter(
+        status => status === ResponseStatus.checked
+      ).length
+      setChecksCompleted(checkedCount)
     }
-  }, [allResponsesStatus])
+  }, [allResponsesStatus, setChecksCompleted])
 
   return (
-    <>
-      <Flex
-        flexDirection='column'
-        justifyContent='center'
-        alignItems='flex-start'
-        w='100%'
-        h='100%'
-        pl={6}
-      >
-        <Heading fontSize='xl' color='brand' pl={4} pb={6} mb={'1.5rem'}>
-          {quizName}
-        </Heading>
-        <Flex flexDirection={'row'} mb={4} w={'full'} alignItems={'center'}>
-          <ChevronLeftIcon w={8} h={8} color={'v6'} onClick={PrevQuestion}/>
-          <Text color={'v6'} fontSize={'1.25rem'} fontWeight={600}>
-            Section {currentSectionIndex} - Question {currentQuestionIndex}
-          </Text>
-          <ChevronRightIcon w={8} h={8} color={'v6'} onClick={NextQuestion}/>
-        </Flex>
-
-        <Flex flexDirection={'row'} mb={5} bgColor={'v1'} p={3} w={'full'} borderRadius={'0.25rem'}>
-          <Flex flexDirection={'column'} gap={2}>
-            <Text fontSize={'0.75rem'} color={'accentBlack'}>
-              Total Students:{' '}
-              <Text as={'span'} color={'v6'} fontWeight={600}>
-                {totalParticipants}
-              </Text>
-            </Text>
-            <Text fontSize={'0.75rem'} color={'accentBlack'}>
-              Total Responses:{' '}
-              <Text as={'span'} color={'v6'} fontWeight={600}>
-                {allResponsesId.length}
-              </Text>
-            </Text>
-          </Flex>
-          <Flex flexDirection={'column'} ml={8} gap={2}>
-            <Text fontSize={'0.75rem'} color={'accentBlack'}>
-              Checked:{' '}
-              <Text as={'span'} color={'v6'} fontWeight={600}>
-                {checksCompleted}
-              </Text>
-            </Text>
-            <Text fontSize={'0.75rem'} color={'accentBlack'}>
-              Unchecked:{' '}
-              <Text as={'span'} color={'v6'} fontWeight={600}>
-                {allResponsesId.length - checksCompleted}
-              </Text>
-            </Text>
-          </Flex>
-        </Flex>
-        {/* <Flex flexDirection={'row'} w={'full'} alignItems={'center'} mb={5}>
-          <Text color={'accentBlack'} fontSize={'0.875rem'} mr={2}>
-            Assigned to:
-          </Text>
-          <AssignView AssignedTo={['Lakshya', 'Nova']} />
-        </Flex> */}
-        <Flex mb={4}>
-          <Checkbox w={6} h={6} colorScheme='purple' />
-          <Text fontSize={'0.875rem'} color={'accentBlack'}>
-            Show only unchecked questions
-          </Text>
-        </Flex>
-        <Flex
-          bgColor={'v1'}
-          color={'v6'}
-          fontWeight={600}
-          w={'full'}
-          borderRadius={'0.25rem'}
-          px={7}
-          h={'3rem'}
-          alignItems={'center'}
-        >
-          Total Response
-        </Flex>
-        <VStack flexGrow={1} w='100%' mt={8} overflowY={'auto'}>
-          {allResponsesId?.map((response, index) => (
-            <Flex
-              key={index}
-              flexDirection='row'
-              w='100%'
-              alignItems={'center'}
-              backgroundColor={currentResponseIndex == index ? 'v1' : undefined}
-              padding={2}
-              borderRadius={'0.25rem'}
-              onClick={() => {
-                setcurrentResponseIndex(index)
-              }}
-            >
-              <Button
-                bgColor={
-                  allResponsesStatus[index] == ResponseStatus.checked
-                    ? 'green'
-                    : 'yellowMarkedForReview'
-                }
-                rounded={'full'}
-                variant='outline'
-                size={'sm'}
-                borderColor={
-                  allResponsesStatus[index] == ResponseStatus.checked
-                    ? 'answeredBubbleBorder'
-                    : 'markedForReviewBubbleBorder'
-                }
-                _hover={{}}
-                _focus={{}}
-              />
-              <Text color={'accentBlack'} ml={2}>
-                {index + 1}
-              </Text>
-            </Flex>
-          ))}
-        </VStack>
+    <Flex
+      flexDirection='column'
+      justifyContent='center'
+      alignItems='flex-start'
+      w='100%'
+      h='100%'
+      pl={6}
+    >
+      <Heading fontSize='xl' color='brand' pl={4} pb={6} mb={'1.5rem'}>
+        {quizName}
+      </Heading>
+      
+      <Flex flexDirection={'row'} mb={4} w={'full'} alignItems={'center'}>
+        <ChevronLeftIcon 
+          w={8} 
+          h={8} 
+          color={isNavigating ? 'gray.400' : 'v6'} 
+          cursor={isNavigating ? 'not-allowed' : 'pointer'}
+          onClick={PrevQuestion}
+        />
+        <Text color={'v6'} fontSize={'1.25rem'} fontWeight={600}>
+          Section {currentSectionIndex} - Question {currentQuestionIndex}
+        </Text>
+        <ChevronRightIcon 
+          w={8} 
+          h={8} 
+          color={isNavigating ? 'gray.400' : 'v6'}
+          cursor={isNavigating ? 'not-allowed' : 'pointer'}
+          onClick={NextQuestion}
+        />
       </Flex>
-    </>
+
+      <Flex flexDirection={'row'} mb={5} bgColor={'v1'} p={3} w={'full'} borderRadius={'0.25rem'}>
+        <Flex flexDirection={'column'} gap={2}>
+          <Text fontSize={'0.75rem'} color={'accentBlack'}>
+            Total Students:{' '}
+            <Text as={'span'} color={'v6'} fontWeight={600}>
+              {totalParticipants}
+            </Text>
+          </Text>
+          <Text fontSize={'0.75rem'} color={'accentBlack'}>
+            Total Responses:{' '}
+            <Text as={'span'} color={'v6'} fontWeight={600}>
+              {allResponsesId.length}
+            </Text>
+          </Text>
+        </Flex>
+        <Flex flexDirection={'column'} ml={8} gap={2}>
+          <Text fontSize={'0.75rem'} color={'accentBlack'}>
+            Checked:{' '}
+            <Text as={'span'} color={'v6'} fontWeight={600}>
+              {checksCompleted}
+            </Text>
+          </Text>
+          <Text fontSize={'0.75rem'} color={'accentBlack'}>
+            Unchecked:{' '}
+            <Text as={'span'} color={'v6'} fontWeight={600}>
+              {allResponsesId.length - checksCompleted}
+            </Text>
+          </Text>
+        </Flex>
+      </Flex>
+
+      <VStack flexGrow={1} w='100%' mt={8} overflowY={'auto'}>
+        {allResponsesId?.map((response, index) => (
+          <Flex
+            key={response}
+            flexDirection='row'
+            w='100%'
+            alignItems={'center'}
+            backgroundColor={currentResponseIndex === index ? 'v1' : undefined}
+            padding={2}
+            borderRadius={'0.25rem'}
+            cursor={isNavigating ? 'not-allowed' : 'pointer'}
+            onClick={() => handleResponseClick(index)}
+          >
+            <Button
+              bgColor={
+                allResponsesStatus[index] === ResponseStatus.checked
+                  ? 'green'
+                  : 'yellowMarkedForReview'
+              }
+              rounded={'full'}
+              variant='outline'
+              size={'sm'}
+              borderColor={
+                allResponsesStatus[index] === ResponseStatus.checked
+                  ? 'answeredBubbleBorder'
+                  : 'markedForReviewBubbleBorder'
+              }
+              _hover={{}}
+              _focus={{}}
+              isDisabled={isNavigating}
+            />
+            <Text color={'accentBlack'} ml={2}>
+              {index + 1}
+            </Text>
+          </Flex>
+        ))}
+      </VStack>
+    </Flex>
   )
 }
 

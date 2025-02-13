@@ -6,31 +6,112 @@ import SectionTopBar from '@checkQuiz/components/giveQuiz/SectionTopBar'
 import QuestionView from '@checkQuiz/components/giveQuiz/QuestionView'
 import { useNavigate, useParams } from 'react-router-dom'
 import useCheckQuizStore from '@checkQuiz/store/checkQuizStore'
-import { useAllResponse } from '@checkQuiz/api/useResponse'
 
 const CheckQuestionView = () => {
   const { quizId, questionIdParam } = useParams() as { quizId: string; questionIdParam: string }
-  const [sections] = useCheckQuizStore((state) => [state.sections])
-  const [currentQuestionIndex, currentSectionIndex] = useCheckQuizStore((state) => [
-    state.currentQuestionIndex,
-    state.currentSectionIndex,
-  ])
-  const Navigate = useNavigate()
-  const [questionId, setQuestionId] = useState(questionIdParam)
-
-  if (sections.length == 0) {
-    Navigate(`/check-quiz/${quizId}`)
-  }
+  const [sections, currentQuestionIndex, currentSectionIndex, currentResponseIndex, setCurrentSection] =
+    useCheckQuizStore((state) => [
+      state.sections,
+      state.currentQuestionIndex,
+      state.currentSectionIndex,
+      state.currentResponseIndex,
+      state.setCurrentSection
+    ])
+  const navigate = useNavigate()
+  const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
-    if (sections[currentSectionIndex - 1]?.questions[currentQuestionIndex - 1]) {
-      setQuestionId(sections[currentSectionIndex - 1]?.questions[currentQuestionIndex - 1]?._id)
-      renderQuiz()
+    if (sections.length === 0) {
+      navigate(`/check-quiz/${quizId}`)
+    } else if (!isInitialized) {
+      setIsInitialized(true)
     }
-  }, [currentQuestionIndex, currentSectionIndex])
+  }, [sections.length, navigate, quizId, isInitialized])
 
-  const renderQuiz = () => {
-    return <QuestionView quizId={quizId} questionId={questionId} key={questionId} />
+  useEffect(() => {
+    if (!isInitialized || sections.length === 0) return
+
+    const validateAndUpdateState = () => {
+      let foundSectionIndex = -1
+      let foundQuestionIndex = -1
+
+      sections.forEach((section, sIdx) => {
+        const qIdx = section.questions.findIndex((q) => q._id === questionIdParam)
+        if (qIdx !== -1) {
+          foundSectionIndex = sIdx
+          foundQuestionIndex = qIdx
+        }
+      })
+
+      if (foundSectionIndex === -1 || foundQuestionIndex === -1) {
+        const firstQuestionId = sections[0]?.questions[0]?._id
+        if (firstQuestionId) {
+          navigate(`/check-quiz/${quizId}/${firstQuestionId}`, { replace: true })
+          useCheckQuizStore.setState({
+            currentSectionIndex: 1,
+            currentQuestionIndex: 1,
+            currentResponseIndex: 0,
+            allResponsesId: [],
+            allResponsesStatus: [],
+            currentSection: sections[0]
+          })
+        }
+        return
+      }
+
+      if (currentSectionIndex !== foundSectionIndex + 1 || 
+          currentQuestionIndex !== foundQuestionIndex + 1) {
+        useCheckQuizStore.setState({
+          currentSectionIndex: foundSectionIndex + 1,
+          currentQuestionIndex: foundQuestionIndex + 1,
+          currentResponseIndex: 0,
+          allResponsesId: [],
+          allResponsesStatus: [],
+          currentSection: sections[foundSectionIndex]
+        })
+      }
+    }
+
+    validateAndUpdateState()
+  }, [questionIdParam, sections, quizId, navigate, currentSectionIndex, 
+      currentQuestionIndex, isInitialized])
+
+  useEffect(() => {
+    if (sections.length > 0 && currentSectionIndex > 0) {
+      const sectionData = sections[currentSectionIndex - 1]
+      if (sectionData) {
+        setCurrentSection(sectionData)
+      }
+    }
+  }, [sections, currentSectionIndex, setCurrentSection])
+
+  useEffect(() => {
+    if (!isInitialized || sections.length === 0) return
+
+    const currentSection = sections[currentSectionIndex - 1]
+    if (!currentSection) return
+
+    if (currentQuestionIndex > currentSection.questions.length) {
+      if (currentSectionIndex < sections.length) {
+        const nextSection = sections[currentSectionIndex]
+        const nextQuestionId = nextSection.questions[0]._id
+        
+        navigate(`/check-quiz/${quizId}/${nextQuestionId}`)
+        useCheckQuizStore.setState({
+          currentSectionIndex: currentSectionIndex + 1,
+          currentQuestionIndex: 1,
+          currentResponseIndex: 0,
+          allResponsesId: [],
+          allResponsesStatus: [],
+          currentSection: nextSection
+        })
+      }
+    }
+  }, [currentQuestionIndex, currentSectionIndex, sections, quizId, 
+      navigate, isInitialized])
+
+  if (!isInitialized || sections.length === 0) {
+    return null 
   }
 
   return (
@@ -38,7 +119,11 @@ const CheckQuestionView = () => {
       <TopNav />
       <WithSidebarWrapper sidebarContent={<SideNavContent />}>
         <SectionTopBar />
-        {renderQuiz()}
+        <QuestionView
+          key={`${questionIdParam}-${currentResponseIndex}`}
+          quizId={quizId}
+          questionId={questionIdParam}
+        />
       </WithSidebarWrapper>
     </>
   )
