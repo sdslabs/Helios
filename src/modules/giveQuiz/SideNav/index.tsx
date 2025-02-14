@@ -74,6 +74,7 @@ const QuestionBubble = (props: QuestionBubbleProps) => {
         width='1'
         textColor={isNotVisited && !isCurrentQuestion ? 'v6' : 'white'}
         ml={4}
+        mb={2}
         onClick={() =>
           handleQuestionBubbleClick(
             props.question,

@@ -26,7 +26,6 @@ const MemoizedOption = memo(({ option, checked, onChange }: {
   <Checkbox 
     key={option.id} 
     value={option.id.toString()} 
-    mb={4}
     isChecked={checked}
     onChange={(e) => onChange(e.target.value)}
   >
