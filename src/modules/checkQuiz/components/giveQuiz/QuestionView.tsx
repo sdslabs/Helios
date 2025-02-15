@@ -1,4 +1,4 @@
-import { Flex, Button, Text, Box, RadioGroup, Radio, Input, Badge, Spinner } from '@chakra-ui/react'
+import { Flex, Button, Text, Box, RadioGroup, Radio, Input, Badge, Spinner, CheckboxGroup, Checkbox } from '@chakra-ui/react'
 import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
 import { useState, useEffect, useCallback } from 'react'
 import { QuestionType, ResponseStatus, Option } from '../../../types'
@@ -81,7 +81,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
 
   const [response, setResponse] = useState({
     user: '',
-    selectedOptionId: '',
+    selectedOptionId: [] as string[],
     subjectiveAnswer: '',
     marksAwarded: 0,
     status: ResponseStatus.unanswered,
@@ -246,27 +246,27 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
           </Text>
 
           {question.type === QuestionType.MCQ ? (
-            <Flex flexDirection='column' w='full' mb={4}>
-              <RadioGroup
-                name='form-name'
-                display='flex'
-                flexDirection='column'
-                value={response.selectedOptionId?.toString() || ''}
-              >
-                {question.options.map((option: Option) => (
-                  <Radio
-                    key={option.id}
-                    value={option.id}
-                    mb={4}
-                    isChecked={response.selectedOptionId === option.id}
-                  >
-                    {option.label}
-                  </Radio>
-                ))}
-              </RadioGroup>
-            </Flex>
+          <Flex flexDirection="column" w="full" mb={4}>
+            <CheckboxGroup
+              value={Array.isArray(response.selectedOptionId) ? response.selectedOptionId : [response.selectedOptionId]}
+              isDisabled={true}
+            >
+              {question.options.map((option: Option) => (
+                <Checkbox
+                  key={option.id}
+                  value={option.id}
+                  mb={4}
+                  isChecked={Array.isArray(response.selectedOptionId) 
+                    ? response.selectedOptionId.includes(option.id)
+                    : response.selectedOptionId === option.id}
+                >
+                  {option.label}
+                </Checkbox>
+              ))}
+            </CheckboxGroup>
+          </Flex>
           ) : (
-            <Box w='full' height='max-content' mb={4}>
+            <Box w="full" height="max-content" mb={4}>
               <CustomRichTextEditor value={response.subjectiveAnswer} onChange={() => undefined} />
             </Box>
           )}
