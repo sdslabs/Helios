@@ -3,6 +3,7 @@ import Filters from './Filters'
 import Leaderboard from './Leaderboard'
 import QuestionsBoard from './QuestionsBoard'
 import checkQuizStore from '@checkQuiz/store/checkQuizStore'
+import ParticipantInfo from './ParticipantInfo'
 
 const TabViewDashboard = () => {
   const tabStyle = {
@@ -18,6 +19,7 @@ const TabViewDashboard = () => {
       <Tabs width={'100%'} variant={'line'} mt={8}>
         <TabList>
           <Tab {...tabStyle}>Question</Tab>
+          <Tab {...tabStyle}>Leaderboard</Tab>
           <Tab {...tabStyle}>Participants</Tab>
         </TabList>
         <TabIndicator mt='-1.5px' height='2px' bg='brand' borderRadius='1px' />
@@ -29,6 +31,9 @@ const TabViewDashboard = () => {
           <TabPanel>
             <Filters sections={sections} participants />
             <Leaderboard />
+          </TabPanel>
+          <TabPanel>
+            <ParticipantInfo />
           </TabPanel>
         </TabPanels>
       </Tabs>
