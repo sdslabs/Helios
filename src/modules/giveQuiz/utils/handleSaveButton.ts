@@ -65,6 +65,10 @@ export const handleSaveButton = async (
         },
       },
     )
+    queryClient.invalidateQueries({
+      exact: true,
+      queryKey: ['response', quizId, currentQuestion],
+    })
     return nextQuestion()
   }
   const responseData = {
@@ -84,14 +88,16 @@ export const handleSaveButton = async (
           type: 'success',
         })
         nextQuestion()
-        queryClient.invalidateQueries({
-          exact: true,
-          queryKey: ['response', quizId, currentQuestion],
-        })
       },
       onError: (error: any) => {
         displayErrorToast('Failed to save response. Please try again.')
       },
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          exact: true,
+          queryKey: ['response', quizId, currentQuestion],
+        })
+      }
     },
   )
 }
