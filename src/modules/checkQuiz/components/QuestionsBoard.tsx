@@ -44,11 +44,11 @@ const QuestionsBoard: React.FC<QuestionsBoardProps> = ({ quizId }) => {
       header: 'Question',
       enableColumnFilter: false,
     }),
-    columnHelper.accessor('assignedTo', {
-      cell: (info: any) => <AssignView AssignedTo={info.row.original.assignedTo} />,
-      header: 'Assigned To',
-      enableColumnFilter: false,
-    }),
+    // columnHelper.accessor('assignedTo', {
+    //   cell: (info: any) => <AssignView AssignedTo={info.row.original.assignedTo} />,
+    //   header: 'Assigned To',
+    //   enableColumnFilter: false,
+    // }),
     columnHelper.accessor('checkedAttempts', {
       cell: (info: any) => (
         <div

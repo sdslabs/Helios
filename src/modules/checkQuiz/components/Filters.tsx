@@ -99,14 +99,14 @@ const Filters: React.FC<FiltersProps> = ({ question = false, participants = fals
     { value: '5', label: 'E' },
   ])
 
-  const handleAssigneesChange = (selectedOptions: any) => {
-    const selectedAssignees = Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions]
-    setAssignees(selectedAssignees)
-  }
+  // const handleAssigneesChange = (selectedOptions: any) => {
+  //   const selectedAssignees = Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions]
+  //   setAssignees(selectedAssignees)
+  // }
 
-  const handleAddClick = () => {
-    console.log('Add button clicked')
-  }
+  // const handleAddClick = () => {
+  //   console.log('Add button clicked')
+  // }
 
   return (
     <>
@@ -114,14 +114,14 @@ const Filters: React.FC<FiltersProps> = ({ question = false, participants = fals
         <HStack spacing={4} alignItems='center' width='full'>
           {question && (
             <>
-              <CustomInputWithLabel
+              {/* <CustomInputWithLabel
                 inputProps={{
                   placeholder: 'Search or add assignee',
                   value: searchQuery,
                   onChange: handleSearchChange,
                 }}
-              />
-              <IconButton
+              /> */}
+              {/* <IconButton
                 aria-label='Add'
                 icon={<AddIcon />}
                 onClick={handleAddClick}
@@ -129,7 +129,7 @@ const Filters: React.FC<FiltersProps> = ({ question = false, participants = fals
                 bgColor='brand'
                 color='white'
                 borderRadius='0.25rem'
-              />
+              /> */}
             </>
           )}
 

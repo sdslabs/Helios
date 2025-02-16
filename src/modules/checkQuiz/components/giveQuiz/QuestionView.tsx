@@ -1,5 +1,5 @@
 import { Flex, Button, Text, Box, RadioGroup, Radio, Input, Badge, Spinner, CheckboxGroup, Checkbox } from '@chakra-ui/react'
-import CustomRichTextEditor from '@common/components/CustomRichTextEditor'
+import CustomRichTextEditor, { renderPreview } from '@common/components/CustomRichTextEditor'
 import { useState, useEffect, useCallback } from 'react'
 import { QuestionType, ResponseStatus, Option } from '../../../types'
 import { QuestionsCheckModal } from '../Modals/QuestionCheckModal'
@@ -241,8 +241,16 @@ const QuestionView: React.FC<QuestionViewProps> = ({ quizId, questionId }) => {
             </Badge>
           </Flex>
 
-          <Text fontSize='1rem' fontWeight='400' mb={6} w='58.5rem' p={4} bgColor='v1'>
-            {question.description}
+          <Text
+            fontSize="1rem"
+            fontWeight="400"
+            mb={6}
+            w="58.5rem"
+            p={4}
+            bgColor="v1"
+            overflow="auto"
+          >
+            {renderPreview(question.description)}
           </Text>
 
           {question.type === QuestionType.MCQ ? (

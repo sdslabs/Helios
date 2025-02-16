@@ -21,7 +21,6 @@ const SectionInstructions = ({ stage, setStage }: SideNavContentProps) => {
   useEffect(() => {
     setSectionInstructions(currentSection?.description)
     setCurrentQuestion(currentSection.questions[0])
-    console.log(currentSection)
     setCurrentQuestionIndex(1)
   }, [currentSection, currentSectionIndex])
 

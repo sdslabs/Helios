@@ -109,11 +109,11 @@ const Table = ({ data, columns, showPagination = true }: any) => {
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
-                    {header.column.getCanFilter() ? (
+                    {/* {header.column.getCanFilter() ? (
                       <div>
                         <Filter column={header.column} table={table} />
                       </div>
-                    ) : null}
+                    ) : null} */}
                   </Flex>
                 </Th>
               ))}

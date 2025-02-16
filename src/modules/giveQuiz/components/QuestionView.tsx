@@ -70,8 +70,6 @@ const QuestionView = () => {
   const [mark, setMark] = useState(4)
   const [isLastQuestion, setIsLastQuestion] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  
-  console.log("component question view rendered")
 
   const { quizId } = useParams() as { quizId: string }
   const queryClient = useQueryClient()
