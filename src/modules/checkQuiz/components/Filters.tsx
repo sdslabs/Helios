@@ -99,14 +99,14 @@ const Filters: React.FC<FiltersProps> = ({ question = false, participants = fals
     { value: '5', label: 'E' },
   ])
 
-  const handleAssigneesChange = (selectedOptions: any) => {
-    const selectedAssignees = Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions]
-    setAssignees(selectedAssignees)
-  }
+  // const handleAssigneesChange = (selectedOptions: any) => {
+  //   const selectedAssignees = Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions]
+  //   setAssignees(selectedAssignees)
+  // }
 
-  const handleAddClick = () => {
-    console.log('Add button clicked')
-  }
+  // const handleAddClick = () => {
+  //   console.log('Add button clicked')
+  // }
 
   return (
     <>

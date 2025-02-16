@@ -71,7 +71,6 @@ const Instructions = ({ stage, setStage }: SideNavContentProps) => {
       setAnsweredQuestions(quizData.answeredQuestionIds)
       setMarkedQuestions(quizData.markedQuestionIds)
       setMarkedAnsweredQuestions(quizData.markedAnsweredQuestionIds)
-      console.log(quizData.quiz.sections)
       const sectionData = quizData.quiz.sections.map((section: any) => {
         return {
           name: section.name,
